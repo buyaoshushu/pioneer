@@ -1,0 +1,37 @@
+Source: gnocatan
+Section: games
+Priority: optional
+Maintainer: Jeff Breidenbach <jeff@alum.mit.edu>
+Build-Depends: debhelper, cygnus-stylesheets, libgnome-dev, automake, libtool
+Standards-Version: 3.1.1
+
+Package: gnocatan-client
+Architecture: any
+Depends: gnocatan-data (>= 0.6.1), ${shlibs:Depends}
+Suggests: gnocatan-help
+Recommends: gnocatan-server
+Description: Gnocatan client - a game for Gnome
+ Gnocatan is an emulation of the Settlers of Catan board game which
+ can be played over the internet.
+
+Package: gnocatan-server
+Architecture: any
+Depends: ${shlibs:Depends}
+Recommends: gnocatan-client
+Description: Gnocatan server - a game for Gnome
+ Gnocatan is an emulation of the Settlers of Catan board game which
+ can be played over the internet.
+
+Package: gnocatan-data
+Architecture: all
+Depends: ${shlibs:Depends}
+Description: Data required by the Gnocatan client
+ Gnocatan is an emulation of the Settlers of Catan board game which
+ can be played over the internet.
+
+Package: gnocatan-help
+Architecture: all
+Depends: ${shlibs:Depends}
+Description: Online help for the Gnocatan client
+ Gnocatan is an emulation of the Settlers of Catan board game which
+ can be played over the internet.
