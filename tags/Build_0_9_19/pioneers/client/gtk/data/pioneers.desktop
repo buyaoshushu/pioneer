@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Pioneers
+Comment=Pioneers game client
+Exec=pioneers
+Icon=gnome-pioneers.png
+Terminal=0
+Type=Application
