@@ -1,0 +1,106 @@
+2006-02-02 Daniel Nylander <po@danielnylander.se>
+	* sv.po: Added the missing translations
+
+2006-01-25 Roland Clobus <rclobus@bigfoot.com>
+	* nl.po: Added the new strings
+	* de.po, fr.po, it.po: Removed some obviously wrong translated fuzzy
+        entries
+	* Updated line numbers to match 0.9.49
+
+2006-01-12 Daniel Nylander <po@danielnylander.se>
+	* sv.po: Added Swedish translation
+
+2005-12-30 Roland Clobus <rclobus@bigfoot.com>
+	* nl.po: Fixed a typo
+	
+2005-12-21 Roland Clobus <rclobus@bigfoot.com>
+	* Updated the translations to match the 0.9.40 release
+	* nl.po: Added one translation
+	
+2005-11-16 Roland Clobus <rclobus@bigfoot.com>
+	* nl.po: Fixed 2 typos
+	
+2005-10-02 Roland Clobus <rclobus@bigfoot.com>
+	* Updated line numbers to match 0.9.32
+
+2005-09-09 Ferenc Bánhidi <banhidi@inf.elte.hu>
+	* hu.po: Added Hungarian translation
+	
+2005-08-14 Roland Clobus <rclobus@bigfoot.com>
+	* Added formatting tags to modified strings in 0.9.22
+	* nl.po: Added a new string
+
+2005-07-14 Roland Clobus <rclobus@bigfoot.com>
+	* Updated the translations for the shortcut keys in the toolbar,
+	removed again in 0.9.19
+	
+2005-07-06 Giancarlo Capella <giancarlo@comm.cc>
+	* it.po: Updated to 0.9.17
+
+2005-07-03 Roland Clobus <rclobus@bigfoot.com>
+	* Updated for Q_() patch
+
+2005-07-03 Jens Seidel <jensseidel@users.sf.net>
+	* de.po: Minor translation update (Debian bug #314082)
+	
+2005-06-30 Roland Clobus <rclobus@bigfoot.com>
+	* nl.po, pioneers.pot: Complete Gnocatan free
+
+2005-06-25 Steve Langasek <vorlon@debian.org>
+	* pioneers.pot: new gettext package name
+	* de.po, es.po, fr.po, it.po, nl.po: sync translations to
+	  match the Gnocatan->Pioneers rebranding, where possible
+	* de.po, nl.po: fix up a C string translation in each of these
+	  files which gets rejected by current gettext as being invalid
+
+2005-06-05 Roland Clobus <rclobus@bigfoot.com>
+	* fr.po, nl.po: Updated for Q_() patch
+	
+2005-05-01 Roland Clobus <rclobus@bigfoot.com>
+	* Updated to build 0.9.11
+	
+2005-04-26 Roland Clobus <rclobus@bigfoot.com>
+	* nl.po: Updated Dutch translations to CVS 0.9.10
+	* it.po: Removed clearly wrong Italian translations
+	
+2005-03-20 Roland Clobus <rclobus@bigfoot.com>
+	* Updated to build 0.8.1.57
+	
+2005-03-02 Roland Clobus <rclobus@bigfoot.com>
+	* Updated to build 0.8.1.54
+	
+2005-02-03 Roland Clobus <rclobus@bigfoot.com>
+	* Updated translations to build 0.8.1.52
+	* es.po: Removed some clearly wrong translations
+	
+2005-01-09 Roland Clobus <rclobus@bigfoot.com>
+	* Marked several clearly wrong translations as not translated instead
+	of fuzzy.
+	
+2004-11-21 Roland Clobus <rclobus@bigfoot.com>
+	* Applied bold tags to translations, where applicable
+	
+2004-11-05 LT-P <LT-P@LT-P.net>
+	* fr.po: Spelling corrections
+	
+2004-10-27 Roland Clobus <rclobus@bigfoot.com>
+	* Updated all files to fit 0.8.1.41
+	* nl.po: Added the missing translations. Changed translation of 'chat'
+	
+2004-10-13 Roland Clobus <rclobus@bigfoot.com>
+	* nl.po: fixing a typo
+	
+2004-10-01 Roland Clobus <rclobus@bigfoot.com>
+	* POTFILES.in: Regenerated from scratch, removed admin-gtk.c (old)
+	* Updated all files to fit 0.8.1.37
+	
+2004-09-26 Roland Clobus <rclobus@bigfoot.com>
+	* .cvsignore: Added Makefile.in.in, it is a generated file
+	* POTFILES.in: Added client/ai/greedy.c, server/turn.c
+	
+2004-09-15 Arjen Schrijver <a.schrijver@skydec.nl>
+	* nl.po: fixing a typo
+	
+2004-09-15 Roland Clobus <rclobus@bigfoot.com>
+	* ChangeLog: Added the ChangeLog again, it is required for 
+	'make distcheck' and automake-1.7
