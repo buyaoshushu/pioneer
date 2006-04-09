@@ -1,0 +1,108 @@
+#!/usr/bin/make -f
+# Based on sample debian/rules by Joey Hess.
+
+# Uncomment this to turn on verbose mode. 
+#export DH_VERBOSE=1
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
+	CONFIGUREFLAGS += --enable-maintainer-mode
+endif
+
+AUTO_JUNK = config.guess config.sub configure depcomp INSTALL \
+        install-sh ltmain.sh missing mkinstalldirs aclocal.m4 config.h.in
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	# Commands to compile the package.
+	# --enable-maintainer-mode is implicit for autogen.sh
+	# So don't run configure from it.
+	NOCONFIGURE=true ./autogen.sh
+	./configure --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
+		--datadir=/usr/share $(CONFIGUREFLAGS) --enable-warnings
+	$(MAKE)
+	rsvg --width 32 --height 32 client/gtk/data/pioneers.svg pioneers32.png
+	convert pioneers32.png pioneers.xpm
+	rm pioneers32.png
+	rsvg --width 32 --height 32 server/gtk/pioneers-server.svg pioneers-server32.png
+	convert pioneers-server32.png pioneers-server.xpm
+	rm pioneers-server32.png
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp install-stamp pioneers.xpm pioneers-server.xpm
+	# Commands to clean up after the build process.
+ifneq ($(wildcard Makefile),)
+	$(MAKE) maintainer-clean
+endif
+ifneq ($(wildcard ${AUTO_JUNK}),)
+	rm $(wildcard ${AUTO_JUNK})
+endif
+	find . -name Makefile.in -exec rm {} \;
+	dh_clean
+
+install: install-stamp
+install-stamp: build-stamp
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	# Commands to install the package into debian/tmp.
+	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install
+	install -D -m644 server/*.game debian/tmp/usr/share/games/pioneers
+	install -D -m644 pioneers.xpm debian/tmp/usr/share/pixmaps/pioneers-client.xpm
+	install -D -m644 pioneers-server.xpm debian/tmp/usr/share/pixmaps/pioneers-server.xpm
+	rm -rf debian/tmp/usr/var
+	dh_install --fail-missing -X usr/share/man/man6/ -X pioneers-editor
+	dh_installman
+	rm -rf debian/tmp/usr/share/gnome/help
+	touch install-stamp
+
+# Build architecture-independent files here.
+binary-indep: build install
+	dh_testdir -i
+	dh_testroot -i
+	dh_installdocs -A README
+	dh_scrollkeeper -v --package=pioneers-help ../client/help
+	dh_installmenu -i
+	dh_installchangelogs -i ChangeLog
+	dh_link -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir -a
+	dh_testroot -a
+	dh_installdocs -A README AUTHORS
+	dh_installinit -a
+	dh_installexamples -a
+	dh_installmenu -a
+	dh_installchangelogs -a ChangeLog
+	dh_strip -a
+	dh_link -a
+	dh_compress -a
+	dh_fixperms -a
+	dh_installdeb -a
+	dh_shlibdeps -a
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
+
+source diff:
+	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
+
+binary: binary-indep binary-arch
+.PHONY: configure build clean binary-indep binary-arch binary install
