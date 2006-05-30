@@ -1,0 +1,60 @@
+#! /bin/sh
+
+# These defaults can be overridden in /etc/default/pioneers-meta-server
+
+# Program to run.
+DAEMON=/usr/games/pioneers-meta-server
+
+# Arguments to start-stop-daemon.
+ARGS="--quiet --chuid nobody:nogroup"
+
+# Arguments to meta-server.
+META_SERVER_ARGS="-d -p 5560-5569"
+
+# Reported hostname for servers started by the meta-server.
+PIONEERS_META_SERVER="`dnsdomainname --fqdn`"
+
+# End of variable list.
+
+test -x "$DAEMON" || exit 0
+
+if test -r /etc/default/pioneers-meta-server ; then
+	. /etc/default/pioneers-meta-server
+fi
+
+export PIONEERS_META_SERVER
+
+case "$1" in
+	start)
+		echo -n "Starting Pioneers meta server: pioneers-meta-server..."
+		if start-stop-daemon --start $ARGS --exec "$DAEMON" -- $META_SERVER_ARGS ; then
+			echo "done."
+		else
+			echo "failed."
+		fi
+		;;
+	stop)
+		echo -n "Stopping Pioneers meta server: pioneers-meta-server..."
+		if start-stop-daemon --stop $ARGS --exec "$DAEMON" ; then
+			echo "done."
+		else
+			echo "failed."
+		fi
+		;;
+	restart|force-reload)
+		echo -n "Restarting Pioneers meta server: pioneers-meta-server..."
+		start-stop-daemon --stop --quiet --exec $DAEMON || true
+		sleep 2
+		if start-stop-daemon --start $ARGS --exec $DAEMON -- $META_SERVER_ARGS ; then
+			echo "done."
+		else
+			echo "failed."
+		fi
+		;;
+	*)
+		echo "Usage: /etc/init.d/pioneers-meta-server {start|stop|restart|force-reload}"
+		exit 1
+		;;
+esac
+
+exit 0
