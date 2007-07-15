@@ -1,0 +1,82 @@
+Short guide to install Pioneers in Cygwin
+
+Install a minimal setup
+=======================
+1) Get 'setup.exe' from the Cygwin site (www.cygwin.com)
+2) Select (additional packages will automatically be selected):
+   Category Gnome:
+      libgnome2
+   Category X11:
+      xorg-x11-fscl
+      xorg-x11-fsrv
+   Category Devel:
+      atk-devel
+      gcc
+      gettext-devel
+      gtk-x11-devel
+      intltool
+      libXft-devel
+      libtool1.5
+      make
+      pango-devel
+      pkgconfig
+You now have a minimal setup needed to build and run Pioneers.
+
+Build Pioneers from the repository
+==================================
+If you only want to use released versions, skip to the 'Install Pioneers'
+section.
+
+To compile Pioneers from the Subversion repository,
+you need some extra packages:
+   Category devel:
+      subversion
+      gnome-common
+   Category graphics:
+      ImageMagick
+      ghostscript-base
+      netpbm (10.30-1 does not work, 10.29-1 works ok)
+   Category net:
+      openssh
+
+1) Get the code from the Subversion repository
+   svn checkout https://svn.sourceforge.net/svnroot/pio/trunk/pioneers pioneers
+2) Go to the pioneers directory
+3) Run automake, build and install
+     ./autogen.sh
+     make
+     make install
+
+Install Pioneers
+================
+1) Download the source tarball to your Cygwin home directory
+   (c:\cygwin\home\%username%)
+2) Start the Cygwin shell
+3) Expand the source tarball
+   (tar xvzf pioneers-%versionnumber%.tar.gz)
+4) Enter the source directory (cd pioneers-%versionnumber%)
+5) Configure, build and install
+     ./configure
+     make
+     make install
+
+Start Pioneers
+==============
+6) Start the X server (startx)
+7) Start Pioneers from the XTerm (pioneers)
+
+Known limitations
+=================
+* The help is not built
+* The server will not create new games
+* The metaserver does not work
+
+Miscellaneous
+=============
+I've added the Cygwin Ports project (cygwinports.dotsrc.org)
+URL: ftp://sunsite.dk/projects/cygwinports 
+It adds rsvg and newer versions of Gtk+.
+More news later...
+
+Roland Clobus
+2006-08-31 (Pioneers 0.10.1)
