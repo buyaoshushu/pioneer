@@ -37,8 +37,8 @@ static void check_finished_discard(Game * game, gboolean was_discard)
 	/* tell players the discarding phase is over, but only if there
 	 * actually was a discarding phase */
 	if (was_discard)
-		player_broadcast(player_none(game), PB_SILENT,
-				 "discard-done\n");
+		player_broadcast(player_none(game), PB_SILENT, V0_10,
+				 LATEST_VERSION, "discard-done\n");
 	/* everyone is done discarding, pop all the state machines to their
 	 * original state and push the robber to whoever wants it. */
 	for (list = player_first_real(game);
@@ -81,7 +81,8 @@ gboolean mode_discard_resources(Player * player, gint event)
 		num += discards[idx];
 	if (num != player->discard_num
 	    || !cost_can_afford(discards, player->assets)) {
-		sm_send(sm, "ERR wrong-discard\n");
+		player_send(player, V0_10, LATEST_VERSION,
+			    "ERR wrong-discard\n");
 		return TRUE;
 	}
 
@@ -145,7 +146,8 @@ void discard_resources(Game * game)
 					--scan->assets[idx];
 					++game->bank_deck[idx];
 				}
-				player_broadcast(scan, PB_ALL,
+				player_broadcast(scan, PB_ALL, V0_10,
+						 LATEST_VERSION,
 						 "discarded %R\n",
 						 resource);
 				/* push idle to be popped off when all
@@ -156,7 +158,8 @@ void discard_resources(Game * game)
 				have_discard = TRUE;
 				sm_push(scan->sm, (StateFunc)
 					mode_discard_resources);
-				player_broadcast(scan, PB_ALL,
+				player_broadcast(scan, PB_ALL, V0_10,
+						 LATEST_VERSION,
 						 "must-discard %d\n",
 						 scan->discard_num);
 			}

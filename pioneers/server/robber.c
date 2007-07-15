@@ -24,7 +24,6 @@
 
 static void steal_card_from(Player * player, Player * victim)
 {
-	StateMachine *sm = player->sm;
 	Game *game = player->game;
 	gint idx;
 	gint num;
@@ -37,7 +36,8 @@ static void steal_card_from(Player * player, Player * victim)
 	for (idx = 0; idx < G_N_ELEMENTS(victim->assets); idx++)
 		num += victim->assets[idx];
 	if (num == 0) {
-		sm_send(sm, "ERR no-resources\n");
+		player_send(player, V0_10, LATEST_VERSION,
+			    "ERR no-resources\n");
 		return;
 	}
 
@@ -59,13 +59,13 @@ static void steal_card_from(Player * player, Player * victim)
 
 		if (scan->num >= 0 && !scan->disconnected) {
 			if (scan == player || scan == victim) {
-				sm_send(scan->sm,
-					"player %d stole %r from %d\n",
-					player->num, idx, victim->num);
+				player_send(scan, V0_10, LATEST_VERSION,
+					    "player %d stole %r from %d\n",
+					    player->num, idx, victim->num);
 			} else
-				sm_send(scan->sm,
-					"player %d stole from %d\n",
-					player->num, victim->num);
+				player_send(scan, V0_10, LATEST_VERSION,
+					    "player %d stole from %d\n",
+					    player->num, victim->num);
 		}
 	}
 	/* Alter the assets of the respective players
@@ -97,13 +97,14 @@ gboolean mode_place_robber(Player * player, gint event)
 
 	hex = map_hex(map, x, y);
 	if (hex == NULL || !can_robber_or_pirate_be_moved(hex)) {
-		sm_send(sm, "ERR bad-pos\n");
+		player_send(player, V0_10, LATEST_VERSION,
+			    "ERR bad-pos\n");
 		return TRUE;
 	}
 
 	/* check if the pirate was moved. */
 	if (hex->terrain == SEA_TERRAIN) {
-		player_broadcast(player, PB_RESPOND,
+		player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
 				 "moved-pirate %d %d\n", x, y);
 		map->pirate_hex = hex;
 
@@ -152,7 +153,8 @@ gboolean mode_place_robber(Player * player, gint event)
 			sm_pop(sm);
 			return TRUE;
 		}
-		sm_send(sm, "ERR bad-player\n");
+		player_send(player, V0_10, LATEST_VERSION,
+			    "ERR bad-player\n");
 		return TRUE;
 	}
 
@@ -162,7 +164,8 @@ gboolean mode_place_robber(Player * player, gint event)
 		map->robber_hex->robber = FALSE;
 	map->robber_hex = hex;
 	hex->robber = TRUE;
-	player_broadcast(player, PB_RESPOND, "moved-robber %d %d\n", x, y);
+	player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
+			 "moved-robber %d %d\n", x, y);
 
 	/* If there is no-one to steal from, or the players have no
 	 * resources, we cannot steal resources.
@@ -206,14 +209,15 @@ gboolean mode_place_robber(Player * player, gint event)
 		sm_pop(sm);
 		return TRUE;
 	}
-	sm_send(sm, "ERR bad-player\n");
+	player_send(player, V0_10, LATEST_VERSION, "ERR bad-player\n");
 	return TRUE;
 }
 
 void robber_place(Player * player)
 {
 	StateMachine *sm = player->sm;
-	player_broadcast(player, PB_OTHERS, "is-robber\n");
-	sm_send(sm, "you-are-robber\n");
+	player_broadcast(player, PB_OTHERS, V0_10, LATEST_VERSION,
+			 "is-robber\n");
+	player_send(player, V0_10, LATEST_VERSION, "you-are-robber\n");
 	sm_push(sm, (StateFunc) mode_place_robber);
 }
