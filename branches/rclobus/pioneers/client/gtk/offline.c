@@ -37,7 +37,6 @@ static gboolean connectable = FALSE;
 
 static const gchar *name = NULL;
 static gboolean viewer = FALSE;
-static const gchar *style = NULL;
 static const gchar *server = NULL;
 static const gchar *port = NULL;
 static const gchar *meta_server = NULL;
@@ -239,15 +238,6 @@ void frontend_init(int argc, char **argv)
 			viewer =
 			    config_get_int_with_default("connect/viewer",
 							0) ? TRUE : FALSE;
-		}
-
-		if (!style) {
-			style =
-			    config_get_string("connect/style",
-					      &default_returned);
-			if (default_returned) {
-				style = g_strdup("square");
-			}
 		}
 	}
 	style = config_get_string("connect/style", &default_returned);

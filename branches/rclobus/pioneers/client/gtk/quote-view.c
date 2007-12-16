@@ -268,10 +268,6 @@ static void load_pixmaps(QuoteView * qv)
 			   gtk_widget_get_visual(qv->quotes)->depth);
 
 	gc = gdk_gc_new(pixmap);
-	g_object_unref(pixmap);
-	pixmap =
-	    gdk_pixmap_new(qv->quotes->window, width / 2, height / 2,
-			   gtk_widget_get_visual(qv->quotes)->depth);
 	gdk_gc_set_fill(gc, GDK_TILED);
 	gdk_gc_set_tile(gc, guimap_terrain(SEA_TERRAIN));
 	gdk_gc_set_foreground(gc, &black);

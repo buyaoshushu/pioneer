@@ -101,73 +101,10 @@ struct Player_point {
 static GtkWidget *turn_area;	/** turn indicator in status bar */
 static const gint turn_area_icon_width = 30;
 
-GdkColor default_face_color = { 0, 0xd500, 0x7f00, 0x2000 };
-GdkColor default_variant_color = { 0, 0, 0, 0 };
-
-typedef struct PlayerAvatar {
-	GdkPixbuf *base;
-	GSList *variation;
-} PlayerAvatar;
-
-PlayerAvatar player_avatar;
-GdkPixbuf *ai_avatar;
-
-static gboolean load_pixbuf(const gchar *name, GdkPixbuf **pixbuf)
-{
-	gchar *filename;
-
-	/* determine full path to pixmap file */
-	filename = g_build_filename(DATADIR, "pixmaps", "pioneers", name, NULL);
-	if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
-		GError *error = NULL;
-		*pixbuf =  gdk_pixbuf_new_from_file(filename, &error);
-		if (error != NULL) {
-			g_warning("Error loading pixmap %s\n", filename);
-			g_error_free(error);
-			return FALSE;
-		}
-		return TRUE;
-	} else {
-		return FALSE;
-	}
-}
-
-static void player_init_player_icons(void)
-{
-	GdkColormap *cmap;
-	gint idx;
-	gboolean good;
-
-	cmap = gdk_colormap_get_system();
-	gdk_colormap_alloc_color(cmap, &default_face_color, FALSE, TRUE);
-	gdk_colormap_alloc_color(cmap, &default_variant_color, FALSE,
-				 TRUE);
-
-	load_pixbuf("style-human.png", &player_avatar.base);
-	player_avatar.variation = NULL;
-	idx = 1;
-	do {
-		gchar *name;
-		GdkPixbuf *pixbuf;
-
-		name = g_strdup_printf("style-human-%d.png", idx);
-		good = load_pixbuf(name, &pixbuf);
-		if (good) {
-			player_avatar.variation = g_slist_append(player_avatar.variation, pixbuf);
-		}
-		++idx;
-		g_free(name);
-	} while (good);
-
-	load_pixbuf("style-ai.png", &ai_avatar);
-}
-
 void player_init(void)
 {
 	colors_init();
 	playericon_init();
-
-	player_init_player_icons();
 }
 
 GdkColor *player_color(gint player_num)
@@ -184,41 +121,8 @@ GdkColor *player_or_viewer_color(gint player_num)
 	return colors_get_player(player_num);
 }
 
-static void replace_colors(GdkPixbuf * pixbuf,
-			   const GdkColor * replace_this,
-			   const GdkColor * replace_with)
-{
-	gint i;
-	guint new_color;
-	guint old_color;
-	guint *pixel;
-
-	g_assert(gdk_pixbuf_get_colorspace(pixbuf) == GDK_COLORSPACE_RGB);
-	g_assert(gdk_pixbuf_get_bits_per_sample(pixbuf) == 8);
-	//g_assert(gdk_pixbuf_get_has_alpha(pixbuf));
-	//g_assert(gdk_pixbuf_get_n_channels(pixbuf) == 4);
-
-	pixel = (guint *) gdk_pixbuf_get_pixels(pixbuf);
-	new_color = 0xff000000 |
-	    ((replace_with->red >> 8) & 0xff) |
-	    ((replace_with->green >> 8) & 0xff) << 8 |
-	    ((replace_with->blue >> 8) & 0xff) << 16;
-	old_color = 0xff000000 |
-	    ((replace_this->red >> 8) & 0xff) |
-	    ((replace_this->green >> 8) & 0xff) << 8 |
-	    ((replace_this->blue >> 8) & 0xff) << 16;
-	for (i = 0;
-	     i <
-	     (gdk_pixbuf_get_rowstride(pixbuf) / 4 *
-	      gdk_pixbuf_get_height(pixbuf)); i++) {
-		if (*pixel == old_color)
-			*pixel = new_color;
-		pixel++;
-	}
-}
-
 GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,
-			      gboolean connected, gboolean double_size)
+			      gboolean connected)
 {
 	return playericon_create_icon(widget, player_get_style(player_num),
 				      player_or_viewer_color(player_num),
@@ -583,8 +487,7 @@ static void player_show_connected_at_iter(gint player_num,
 					  GtkTreeIter * iter)
 {
 	GdkPixbuf *pixbuf =
-	    player_create_icon(summary_widget, player_num, connected,
-			       FALSE);
+	    player_create_icon(summary_widget, player_num, connected);
 
 	gtk_list_store_set(summary_store, iter,
 			   SUMMARY_COLUMN_PLAYER_ICON, pixbuf, -1);

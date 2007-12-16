@@ -26,10 +26,6 @@
 #include <unistd.h>
 #include "server.h"
 
-/* Supported version names.  Whenever this list changes, the enum in server.h
- * must also change.  */
-const char *version_names[] = { "0.10", "0.11" };
-
 /* Local function prototypes */
 static gboolean mode_check_version(Player * player, gint event);
 static gboolean mode_check_status(Player * player, gint event);
@@ -133,8 +129,7 @@ static gboolean mode_global(Player * player, gint event)
 					    LATEST_VERSION, "ERR %s\n",
 					    _("chat too long"));
 			else
-				player_broadcast(player, PB_ALL, V0_10,
-						 LATEST_VERSION,
+				player_broadcast(player, PB_ALL,
 						 FIRST_VERSION,
 						 LATEST_VERSION,
 						 "chat %s\n", text);
