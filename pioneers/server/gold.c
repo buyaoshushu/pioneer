@@ -132,8 +132,7 @@ static void distribute_next(GList * list)
 					--game->bank_deck[idx];
 					--totalbank;
 				}
-				player_broadcast(scan, PB_ALL, V0_10,
-						 LATEST_VERSION,
+				player_broadcast(scan, PB_ALL,
 						 FIRST_VERSION,
 						 LATEST_VERSION,
 						 "receive-gold %R\n",

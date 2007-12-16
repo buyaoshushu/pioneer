@@ -51,21 +51,6 @@ enum TFindResult find_integer_in_tree(GtkTreeModel * model,
  */
 void check_victory_points(GameParams * param, GtkWindow * main_window);
 
-/** Convert a string to a color.
- *  The color is allocated in the system colormap.
- * @param spec   The name of the color
- * @retval color The color
- * @return TRUE if the conversion succeeded.
- */
-gboolean string_to_color(const gchar * spec, GdkColor * color);
-
-/** Convert a color to a string.
- *  After use, the string must be freed with g_free()
- *  @param color The color
- *  @return the string
- */
-gchar *color_to_string(GdkColor color);
-
 extern UIDriver GTK_Driver;
 
 #endif				/* __common_gtk_h */

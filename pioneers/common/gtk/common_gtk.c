@@ -325,31 +325,3 @@ void check_victory_points(GameParams * params, GtkWindow * main_window)
 	g_free(win_message);
 	g_free(point_specification);
 }
-
-gboolean string_to_color(const gchar * spec, GdkColor * color)
-{
-	PangoColor pango_color;
-	GdkColormap *cmap;
-
-	if (pango_color_parse(&pango_color, spec)) {
-		color->red = pango_color.red;
-		color->green = pango_color.green;
-		color->blue = pango_color.blue;
-
-		cmap = gdk_colormap_get_system();
-		gdk_colormap_alloc_color(cmap, color, FALSE, TRUE);
-		return TRUE;
-	}
-	return FALSE;
-}
-
-gchar *color_to_string(GdkColor color)
-{
-	PangoColor pango_color;
-
-	pango_color.red = color.red;
-	pango_color.green = color.green;
-	pango_color.blue = color.blue;
-
-	return pango_color_to_string(&pango_color);
-}

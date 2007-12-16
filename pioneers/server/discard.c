@@ -147,8 +147,7 @@ void discard_resources(Game * game)
 					--scan->assets[idx];
 					++game->bank_deck[idx];
 				}
-				player_broadcast(scan, PB_ALL, V0_10,
-						 LATEST_VERSION,
+				player_broadcast(scan, PB_ALL,
 						 FIRST_VERSION,
 						 LATEST_VERSION,
 						 "discarded %R\n",
@@ -161,8 +160,7 @@ void discard_resources(Game * game)
 				have_discard = TRUE;
 				sm_push(scan->sm, (StateFunc)
 					mode_discard_resources);
-				player_broadcast(scan, PB_ALL, V0_10,
-						 LATEST_VERSION,
+				player_broadcast(scan, PB_ALL,
 						 FIRST_VERSION,
 						 LATEST_VERSION,
 						 "must-discard %d\n",

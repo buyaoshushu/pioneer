@@ -270,11 +270,9 @@ GdkColor *player_color(gint player_num);
  *  You should unref the pixbuf when it is no longer needed
  */
 GdkPixbuf *player_create_icon(GtkWidget * widget, gint player_num,
-			      gboolean connected, gboolean double_size);
+			      gboolean connected);
 void player_show_current(gint player_num);
 void set_num_players(gint num);
-extern GdkColor default_face_color;
-extern GdkColor default_variant_color;
 
 /* chat.c */
 /** Create the chat widget */
