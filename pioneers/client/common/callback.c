@@ -32,6 +32,7 @@ struct callbacks callbacks;
 /* these variables must be remembered between connect and handshake */
 gchar *requested_name = NULL;
 gboolean requested_viewer;
+gchar *requested_style = NULL;
 
 /* current callback mode */
 enum callback_mode callback_mode;
@@ -40,7 +41,7 @@ enum callback_mode callback_mode;
 gboolean color_chat_enabled;
 
 void cb_connect(const gchar * server, const gchar * port,
-		const gchar * name, gboolean viewer)
+		const gchar * name, gboolean viewer, const gchar * style)
 {
 	/* connect to a server */
 	g_assert(callback_mode == MODE_INIT);
@@ -48,6 +49,9 @@ void cb_connect(const gchar * server, const gchar * port,
 		g_free(requested_name);
 	requested_name = g_strdup(name);
 	requested_viewer = viewer;
+	if (requested_style)
+		g_free(requested_style);
+	requested_style = g_strdup(style);
 	if (sm_connect(SM(), server, port)) {
 		if (sm_is_connected(SM())) {
 			sm_goto(SM(), mode_start);
@@ -169,7 +173,8 @@ void cb_undo(void)
 	/* undo a move */
 	g_assert(callback_mode == MODE_TURN
 		 || callback_mode == MODE_ROAD_BUILD
-		 || callback_mode == MODE_SETUP);
+		 || callback_mode == MODE_SETUP
+		 || callback_mode == MODE_ROB);
 	sm_send(SM(), "undo\n");
 	sm_push(SM(), mode_undo_response);
 }
@@ -208,12 +213,19 @@ void cb_end_turn(void)
 	sm_push(SM(), mode_done_response);
 }
 
-void cb_place_robber(const Hex * hex, gint victim_num)
+void cb_place_robber(const Hex * hex)
 {
-	/* place robber and rob */
+	/* place robber */
 	g_assert(callback_mode == MODE_ROBBER);
-	sm_send(SM(), "move-robber %d %d %d\n", hex->x, hex->y,
-		victim_num);
+	sm_send(SM(), "move-robber %d %d\n", hex->x, hex->y);
+	sm_push(SM(), mode_robber_move_response);
+}
+
+void cb_rob(gint victim_num)
+{
+	/* after placing the robber, rob someone */
+	g_assert(callback_mode == MODE_ROB);
+	sm_send(SM(), "rob %d\n", victim_num);
 	sm_push(SM(), mode_robber_response);
 }
 
@@ -289,6 +301,13 @@ void cb_name_change(const gchar * name)
 	/* change your name */
 	g_assert(callback_mode != MODE_INIT);
 	sm_send(SM(), "name %s\n", name);
+}
+
+void cb_style_change(const gchar * style)
+{
+	/* change your style */
+	g_assert(callback_mode != MODE_INIT);
+	sm_send(SM(), "style %s\n", style);
 }
 
 void cb_discard(const gint * resources)

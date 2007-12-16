@@ -1,8 +1,57 @@
+2007-12-09 Filipe Roque <flip.roque@gmail.com>
+	* pt.po: New Portuguese translation
+
+2007-12-09 Carson (http://launchpad.net/~nanker)
+	* da.po: New Danish translation
+
+2007-12-09 Roland Clobus <rclobus@bigfoot.com>
+	* all: Reverted changes made 2007-11-22, because it is not time for a 
+	release yet.
+
+2007-11-22 Roland Clobus <rclobus@bigfoot.com>
+	* all: Updated linenumbers for 0.11.4 release
+	* nl.po: Update for 0.11.4
+
+2007-10-07 Roland Clobus <rclobus@bigfoot.com>
+	* all: Updated linenumbers for 0.11.3 release
+	* de.po, fr.po, hu.po, it.po, ja.po, nl.po, sv.po: Updated version
+	number to 0.11.3
+
+2007-08-05 Roland Clobus <rclobus@bigfoot.com>
+	* all: Updated linenumbers for 0.11.2 release
+
+2007-07-22 Roland Clobus <rclobus@bigfoot.com>
+	* all: Updated to 0.11.1 release
+
+2007-07-22 Pit Garbe <piiit@gmx.de>
+	* de.po: Small update
+
+2007-07-21 Ferenc Bánhidi <bferike@mailbox.hu>
+	* hu.po: Updated for 0.11.1
+
+2007-07-20 Yasuhiko Takasugi <takasugi@flcl.org>
+	* ja.po: Small update
+
+2007-07-19 Yasuhiko Takasugi <takasugi@flcl.org>
+	* ja.po: Updated to 0.11.1
+
+2007-07-18 Giancarlo Capella <giancarlo@comm.cc>
+	* it.po: Updated to 0.11.1
+
+2007-07-17 Daniel Nylander <po@danielnylander.se>
+	* sv.po: Updated to 0.11.1
+
+2007-07-17 Jean-Charles GRANGER <traduction@vecteur.org>
+	* fr.po: Updated
+
+2007-07-16 Jean-Charles GRANGER <traduction@vecteur.org>
+	* fr.po: Updated to 0.11.1
+
 2007-07-14 Pit Garbe <piiit@gmx.de>
-	* de.po: Updated
+	* de.po: Updated to 0.11.1
 
 2007-07-12 Roland Clobus <rclobus@bigfoot.com>
-	* nl.po: Updated
+	* nl.po: Updated to 0.11.1
 	* All: updated the *.po files for the pending release
 	  The strings for player shape and the robber fix have also been
 	  added.
@@ -150,7 +199,7 @@
 2006-01-25 Roland Clobus <rclobus@bigfoot.com>
 	* nl.po: Added the new strings
 	* de.po, fr.po, it.po: Removed some obviously wrong translated fuzzy
-        entries
+	entries
 	* Updated line numbers to match 0.9.49
 
 2006-01-12 Daniel Nylander <po@danielnylander.se>

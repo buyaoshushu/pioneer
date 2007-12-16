@@ -37,7 +37,8 @@
  * changed when the enum changes.  */
 typedef enum {
 	V0_10, /**< Lowest supported version */
-	V0_11, /**< City walls */
+	V0_11, /**< City walls, player style, robber undo */
+	FIRST_VERSION = V0_10,
 	LATEST_VERSION = V0_11
 } ClientVersionType;
 
@@ -52,6 +53,7 @@ typedef struct {
 	gchar *location;	/* reverse lookup player hostname */
 	gint num;		/* number each player */
 	char *name;		/* give each player a name */
+	gchar *style;		/* description of the player icon */
 	ClientVersionType version;	/* version, so adapted messages can be sent */
 
 	GList *build_list;	/* list of building that can be undone */
@@ -214,6 +216,9 @@ void resource_refund(Player * player, const gint * cost);
 /* robber.c */
 void robber_place(Player * player);
 gboolean mode_place_robber(Player * player, gint event);
+gboolean mode_select_pirated(Player * player, gint event);
+gboolean mode_select_robbed(Player * player, gint event);
+void robber_undo(Player * player);
 
 /* server.c */
 void start_timeout(void);
@@ -247,6 +252,7 @@ void cfg_set_terrain_type(GameParams * params, gint terrain_type);
 void cfg_set_tournament_time(GameParams * params, gint tournament_time);
 void cfg_set_quit(GameParams * params, gboolean quitdone);
 void cfg_set_timeout(gint to);
+void admin_broadcast(const gchar * message);
 
 /* callbacks related to server starting / stopping */
 gboolean start_server(const GameParams * params, const gchar * hostname,
@@ -275,7 +281,12 @@ void trade_begin_domestic(Player * player, gint * supply, gint * receive);
 gboolean mode_idle(Player * player, gint event);
 gboolean mode_turn(Player * player, gint event);
 void turn_next_player(Game * game);
-void check_victory(Player * player);
+/** Check whether this player has won the game.
+ *  If so, return TRUE and set all state machines to idle
+ *  @param player Has this player won?
+ *  @return TRUE if the given player has won
+ */
+gboolean check_victory(Player * player);
 
 /* gold.c */
 gboolean gold_limited_bank(const Game * game, int limit,

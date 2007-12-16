@@ -31,6 +31,7 @@ extern Map *map;
 extern GameParams *game_params;
 extern gchar *requested_name;
 extern gboolean requested_viewer;
+extern gchar *requested_style;
 
 /********* client.c ***********/
 /* client initialization */
@@ -47,6 +48,7 @@ gboolean mode_build_response(StateMachine * sm, gint event);
 gboolean mode_move_response(StateMachine * sm, gint event);
 gboolean mode_done_response(StateMachine * sm, gint event);
 gboolean mode_robber_response(StateMachine * sm, gint event);
+gboolean mode_robber_move_response(StateMachine * sm, gint event);
 gboolean mode_monopoly_response(StateMachine * sm, gint event);
 gboolean mode_year_of_plenty_response(StateMachine * sm, gint event);
 gboolean mode_play_develop_response(StateMachine * sm, gint event);
@@ -93,6 +95,8 @@ void player_get_point(gint player_num, gint id, const gchar * str,
 		      gint num);
 void player_lose_point(gint player_num, gint id);
 void player_take_point(gint player_num, gint id, gint old_owner);
+void player_change_style(gint player_num, const gchar * style);
+
 gint find_viewer_by_name(const gchar * name);
 
 /********* build.c **********/
@@ -156,8 +160,8 @@ void modify_bank(const gint * bank_change);
 /********** robber.c **********/
 void robber_move_on_map(gint x, gint y);
 void pirate_move_on_map(gint x, gint y);
-void robber_moved(gint player_num, gint x, gint y);
-void pirate_moved(gint player_num, gint x, gint y);
+void robber_moved(gint player_num, gint x, gint y, gboolean is_undo);
+void pirate_moved(gint player_num, gint x, gint y, gboolean is_undo);
 void robber_begin_move(gint player_num);
 
 /********* setup.c *********/

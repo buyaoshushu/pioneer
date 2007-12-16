@@ -93,7 +93,7 @@ static void distribute_next(GList * list)
 				send_message = TRUE;
 		}
 		if (send_message)
-			player_broadcast(scan, PB_ALL, V0_10,
+			player_broadcast(scan, PB_ALL, FIRST_VERSION,
 					 LATEST_VERSION,
 					 "receives %R %R\n", resource,
 					 wanted);
@@ -134,10 +134,13 @@ static void distribute_next(GList * list)
 				}
 				player_broadcast(scan, PB_ALL, V0_10,
 						 LATEST_VERSION,
+						 FIRST_VERSION,
+						 LATEST_VERSION,
 						 "receive-gold %R\n",
 						 resource);
 			} else {
-				player_send(scan, V0_10, LATEST_VERSION,
+				player_send(scan, FIRST_VERSION,
+					    LATEST_VERSION,
 					    "choose-gold %d %R\n",
 					    scan->gold, limited_bank);
 				sm_push(scan->sm,
@@ -148,7 +151,7 @@ static void distribute_next(GList * list)
 		/* no player is choosing gold, give resources to next player */
 	}			/* end loop over all players */
 	/* tell everyone the resource distribution is finished */
-	player_broadcast(player, PB_SILENT, V0_10, LATEST_VERSION,
+	player_broadcast(player, PB_SILENT, FIRST_VERSION, LATEST_VERSION,
 			 "done-resources\n");
 	/* pop everyone back to the state before we started giving out
 	 * resources */
@@ -188,14 +191,14 @@ gboolean mode_choose_gold(Player * player, gint event)
 	for (idx = 0; idx < NO_RESOURCE; ++idx) {
 		num += resources[idx];
 		if (game->bank_deck[idx] < resources[idx]) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR wrong-gold\n");
 			return FALSE;
 		}
 	}
 	/* see if the right amount was taken */
 	if (num != player->gold) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR wrong-gold\n");
 		return FALSE;
 	}
@@ -208,7 +211,7 @@ gboolean mode_choose_gold(Player * player, gint event)
 		/* take it out of the bank */
 		game->bank_deck[idx] -= resources[idx];
 	}
-	player_broadcast(player, PB_ALL, V0_10, LATEST_VERSION,
+	player_broadcast(player, PB_ALL, FIRST_VERSION, LATEST_VERSION,
 			 "receive-gold %R\n", resources);
 	/* pop back to mode_idle */
 	sm_pop(sm);
@@ -232,7 +235,7 @@ void distribute_first(GList * list)
 		if (player_is_viewer(game, scan->num))
 			continue;
 		if (scan->gold > 0) {
-			player_broadcast(scan, PB_ALL, V0_10,
+			player_broadcast(scan, PB_ALL, FIRST_VERSION,
 					 LATEST_VERSION,
 					 "prepare-gold %d\n", scan->gold);
 		}

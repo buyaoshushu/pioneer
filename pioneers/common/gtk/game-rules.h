@@ -5,6 +5,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtktable.h>
+#include "gtkbugs.h"
 
 G_BEGIN_DECLS
 #define GAMERULES_TYPE            (game_rules_get_type ())
@@ -18,13 +19,12 @@ typedef struct _GameRulesClass GameRulesClass;
 struct _GameRules {
 	GtkTable table;
 
-	GtkTooltips *tooltips;
-
 	GtkCheckButton *random_terrain;
 	GtkWidget *radio_sevens[3];	/* radio buttons for sevens rules */
 	GtkCheckButton *use_pirate;
 	GtkCheckButton *strict_trade;
 	GtkCheckButton *domestic_trade;
+	GtkCheckButton *check_victory_at_end_of_turn;
 };
 
 struct _GameRulesClass {
@@ -46,6 +46,8 @@ void game_rules_set_strict_trade(GameRules * gr, gboolean val);
 gboolean game_rules_get_strict_trade(GameRules * gr);
 void game_rules_set_domestic_trade(GameRules * gr, gboolean val);
 gboolean game_rules_get_domestic_trade(GameRules * gr);
+void game_rules_set_victory_at_end_of_turn(GameRules * gr, gboolean val);
+gboolean game_rules_get_victory_at_end_of_turn(GameRules * gr);
 
 G_END_DECLS
 #endif				/* __GAMERULES_H__ */
