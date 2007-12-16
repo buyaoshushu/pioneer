@@ -34,7 +34,7 @@ gboolean resource_available(Player * player, gint * resources,
 		*num_in_bank = 0;
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		if (resources[idx] > game->bank_deck[idx]) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR no-cards %r\n", idx);
 			return FALSE;
 		}
@@ -91,7 +91,7 @@ void resource_end(Game * game, const gchar * action, gint mult)
 		if (send_message) {
 			for (idx = 0; idx < NO_RESOURCE; idx++)
 				resource[idx] *= mult;
-			player_broadcast(player, PB_ALL, V0_10,
+			player_broadcast(player, PB_ALL, FIRST_VERSION,
 					 LATEST_VERSION, "%s %R\n", action,
 					 resource);
 		}

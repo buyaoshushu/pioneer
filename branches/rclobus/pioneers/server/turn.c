@@ -34,7 +34,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	Points *special_points;
 
 	if (!game->rolled_dice) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR roll-dice\n");
 		return;
 	}
@@ -47,14 +47,14 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (!map_road_vacant(map, x, y, pos)
 		    || !map_road_connect_ok(map, player->num, x, y, pos)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR bad-pos\n");
 			return;
 		}
 		/* Make sure the player can afford the road
 		 */
 		if (!cost_can_afford(cost_road(), player->assets)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-expensive\n");
 			return;
 		}
@@ -62,7 +62,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (player->num_roads ==
 		    game->params->num_build_type[BUILD_ROAD]) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-many road\n");
 			return;
 		}
@@ -76,14 +76,14 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (!map_road_vacant(map, x, y, pos)
 		    || !map_bridge_connect_ok(map, player->num, x, y, pos)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR bad-pos\n");
 			return;
 		}
 		/* Make sure the player can afford the bridge
 		 */
 		if (!cost_can_afford(cost_bridge(), player->assets)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-expensive\n");
 			return;
 		}
@@ -91,7 +91,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (player->num_bridges ==
 		    game->params->num_build_type[BUILD_BRIDGE]) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-many bridge\n");
 			return;
 		}
@@ -105,14 +105,14 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (!map_ship_vacant(map, x, y, pos)
 		    || !map_ship_connect_ok(map, player->num, x, y, pos)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR bad-pos\n");
 			return;
 		}
 		/* Make sure the player can afford the ship
 		 */
 		if (!cost_can_afford(cost_ship(), player->assets)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-expensive\n");
 			return;
 		}
@@ -120,7 +120,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (player->num_ships ==
 		    game->params->num_build_type[BUILD_SHIP]) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-many ship\n");
 			return;
 		}
@@ -131,7 +131,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	if (type == BUILD_CITY_WALL) {
 		if (!can_city_wall_be_built(map_node(map, x, y, pos),
 					    player->num)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR bad-pos\n");
 			return;
 		}
@@ -139,12 +139,12 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (player->num_city_walls ==
 		    game->params->num_build_type[BUILD_CITY_WALL]) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-many city wall\n");
 			return;
 		}
 		if (!cost_can_afford(cost_city_wall(), player->assets)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-expensive\n");
 			return;
 		}
@@ -156,7 +156,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	 */
 	if (!map_building_vacant(map, type, x, y, pos)
 	    || !map_building_spacing_ok(map, player->num, type, x, y, pos)) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR bad-pos\n");
 		return;
 	}
@@ -168,13 +168,13 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (player->num_cities ==
 		    game->params->num_build_type[BUILD_CITY]) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-many city\n");
 			return;
 		}
 		if (!cost_can_afford(cost_upgrade_settlement(),
 				     player->assets)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-expensive\n");
 			return;
 		}
@@ -183,7 +183,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (!map_building_connect_ok
 		    (map, player->num, type, x, y, pos)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR bad-pos\n");
 			return;
 		}
@@ -193,7 +193,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		 */
 		if (player->num_settlements ==
 		    game->params->num_build_type[BUILD_SETTLEMENT]) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-many settlement\n");
 			return;
 		}
@@ -202,7 +202,8 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		if (type == BUILD_SETTLEMENT) {
 			if (!cost_can_afford
 			    (cost_settlement(), player->assets)) {
-				player_send(player, V0_10, LATEST_VERSION,
+				player_send(player, FIRST_VERSION,
+					    LATEST_VERSION,
 					    "ERR too-expensive\n");
 				return;
 			}
@@ -211,12 +212,14 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 			 */
 			if (player->num_cities ==
 			    game->params->num_build_type[BUILD_CITY]) {
-				player_send(player, V0_10, LATEST_VERSION,
+				player_send(player, FIRST_VERSION,
+					    LATEST_VERSION,
 					    "ERR too-many city\n");
 				return;
 			}
 			if (!cost_can_afford(cost_city(), player->assets)) {
-				player_send(player, V0_10, LATEST_VERSION,
+				player_send(player, FIRST_VERSION,
+					    LATEST_VERSION,
 					    "ERR too-expensive\n");
 				return;
 			}
@@ -264,7 +267,7 @@ static void build_remove(Player * player)
 	/* Remove the settlement/road we just built
 	 */
 	if (!perform_undo(player))
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR bad-undo\n");
 }
 
@@ -279,7 +282,7 @@ static void build_move(Player * player, gint sx, gint sy, gint spos,
 
 	/* Allow only one move per turn */
 	if (map->has_moved_ship) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR already-moved\n");
 		return;
 	}
@@ -289,7 +292,7 @@ static void build_move(Player * player, gint sx, gint sy, gint spos,
 	    || to->owner >= 0
 	    || !can_ship_be_moved(map_edge(map, sx, sy, spos),
 				  player->num)) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR bad-pos\n");
 		return;
 	}
@@ -299,7 +302,8 @@ static void build_move(Player * player, gint sx, gint sy, gint spos,
 		/* check that the pirate is not on the from hexes */
 		for (idx = 0; idx < G_N_ELEMENTS(from->hexes); ++idx) {
 			if (map->pirate_hex == from->hexes[idx]) {
-				player_send(player, V0_10, LATEST_VERSION,
+				player_send(player, FIRST_VERSION,
+					    LATEST_VERSION,
 					    "ERR has-pirate\n");
 				return;
 			}
@@ -317,13 +321,13 @@ static void build_move(Player * player, gint sx, gint sy, gint spos,
 	    || !can_ship_be_built(to, player->num)) {
 		from->owner = player->num;
 		from->type = BUILD_SHIP;
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR bad-pos\n");
 		return;
 	}
 
 	/* everything is fine, tell everybode the ship has moved */
-	player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
+	player_broadcast(player, PB_RESPOND, FIRST_VERSION, LATEST_VERSION,
 			 "move %d %d %d %d %d %d\n", sx, sy, spos, dx, dy,
 			 dpos);
 
@@ -389,11 +393,15 @@ static gboolean distribute_resources(G_GNUC_UNUSED Map * map, Hex * hex,
 	return FALSE;
 }
 
-void check_victory(Player * player)
+gboolean check_victory(Player * player)
 {
 	Game *game = player->game;
 	GList *list;
 	gint points;
+
+	if (player->num != game->curr_player)
+		/* Only the player that has the turn can win */
+		return FALSE;
 
 	points = player->num_settlements
 	    + player->num_cities * 2 + player->develop_points;
@@ -413,8 +421,8 @@ void check_victory(Player * player)
 	if (points >= game->params->victory_points) {
 		GList *list;
 
-		player_broadcast(player, PB_ALL, V0_10, LATEST_VERSION,
-				 "won with %d\n", points);
+		player_broadcast(player, PB_ALL, FIRST_VERSION,
+				 LATEST_VERSION, "won with %d\n", points);
 		game->is_game_over = TRUE;
 		/* Set all state machines to idle, to make sure nothing
 		 * happens. */
@@ -427,7 +435,9 @@ void check_victory(Player * player)
 		meta_unregister();
 
 		game_is_over(game);
+		return TRUE;
 	}
+	return FALSE;
 }
 
 /* Handle all actions that a player may perform in a turn
@@ -453,7 +463,7 @@ gboolean mode_turn(Player * player, gint event)
 		gint roll;
 
 		if (game->rolled_dice) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR already-rolled\n");
 			return TRUE;
 		}
@@ -478,8 +488,9 @@ gboolean mode_turn(Player * player, gint event)
 		}
 
 		/* let people know what we rolled */
-		player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
-				 "rolled %d %d\n", game->die1, game->die2);
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION, "rolled %d %d\n",
+				 game->die1, game->die2);
 
 		if (roll == 7) {
 			/* Find all players with more than 7 cards -
@@ -500,15 +511,17 @@ gboolean mode_turn(Player * player, gint event)
 	/* try to end a turn */
 	if (sm_recv(sm, "done")) {
 		if (!game->rolled_dice) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR roll-dice\n");
 			return TRUE;
 		}
 		/* Ok, finish turn */
-		player_send(player, V0_10, LATEST_VERSION, "OK\n");
-		/* pop the state machine back to idle */
-		sm_pop(sm);
-		turn_next_player(game);
+		player_send(player, FIRST_VERSION, LATEST_VERSION, "OK\n");
+		if (!check_victory(player)) {
+			/* game isn't over, so pop the state machine back to idle */
+			sm_pop(sm);
+			turn_next_player(game);
+		}
 		return TRUE;
 	}
 	if (sm_recv(sm, "buy-develop")) {
@@ -517,7 +530,8 @@ gboolean mode_turn(Player * player, gint event)
 	}
 	if (sm_recv(sm, "play-develop %d", &idx, &devel_type)) {
 		develop_play(player, idx);
-		check_victory(player);
+		if (!game->params->check_victory_at_end_of_turn)
+			check_victory(player);
 		return TRUE;
 	}
 	if (sm_recv(sm, "maritime-trade %d supply %r receive %r",
@@ -543,14 +557,16 @@ gboolean mode_turn(Player * player, gint event)
 	}
 	if (sm_recv(sm, "build %B %d %d %d", &build_type, &x, &y, &pos)) {
 		build_add(player, build_type, x, y, pos);
-		check_victory(player);
+		if (!game->params->check_victory_at_end_of_turn)
+			check_victory(player);
 		return TRUE;
 	}
 	if (sm_recv
 	    (sm, "move %d %d %d %d %d %d", &sx, &sy, &spos, &dx, &dy,
 	     &dpos)) {
 		build_move(player, sx, sy, spos, dx, dy, dpos);
-		check_victory(player);
+		if (!game->params->check_victory_at_end_of_turn)
+			check_victory(player);
 		return TRUE;
 	}
 	if (sm_recv(sm, "undo")) {
@@ -606,7 +622,7 @@ void turn_next_player(Game * game)
 	game->params->map->has_moved_ship = FALSE;
 
 	/* tell everyone what's happening */
-	player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
+	player_broadcast(player, PB_RESPOND, FIRST_VERSION, LATEST_VERSION,
 			 "turn %d\n", game->curr_turn);
 
 	/* put the player in the right state */

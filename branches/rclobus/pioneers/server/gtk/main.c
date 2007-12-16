@@ -63,7 +63,6 @@ static GtkWidget *addcomputer_btn;	/* button to add computer players */
 static GtkWidget *launchclient_btn;	/* button to launch client window */
 
 static GtkWidget *start_btn;	/* start/stop the server */
-static GtkTooltips *tooltips;	/* tooltips */
 
 static GtkListStore *store;	/* shows player connection status */
 static gboolean is_running;	/* current server status */
@@ -136,11 +135,7 @@ static void port_entry_changed_cb(GtkWidget * widget,
 static void register_toggle_cb(GtkToggleButton * toggle,
 			       G_GNUC_UNUSED gpointer user_data)
 {
-	GtkWidget *label = GTK_BIN(toggle)->child;
-
 	register_server = gtk_toggle_button_get_active(toggle);
-	gtk_label_set_text(GTK_LABEL(label),
-			   register_server ? _("Yes") : _("No"));
 	gtk_widget_set_sensitive(meta_entry, register_server);
 	gtk_widget_set_sensitive(overridden_hostname_entry,
 				 register_server);
@@ -149,21 +144,13 @@ static void register_toggle_cb(GtkToggleButton * toggle,
 static void random_toggle_cb(GtkToggleButton * toggle,
 			     G_GNUC_UNUSED gpointer user_data)
 {
-	GtkWidget *label = GTK_BIN(toggle)->child;
-
 	random_order = gtk_toggle_button_get_active(toggle);
-	gtk_label_set_text(GTK_LABEL(label),
-			   random_order ? _("Yes") : _("No"));
 }
 
 static void chat_toggle_cb(GtkToggleButton * toggle,
 			   G_GNUC_UNUSED gpointer user_data)
 {
-	GtkWidget *label = GTK_BIN(toggle)->child;
-
 	want_ai_chat = gtk_toggle_button_get_active(toggle);
-	gtk_label_set_text(GTK_LABEL(label),
-			   want_ai_chat ? _("Yes") : _("No"));
 }
 
 /* The server does not need to respond to changed game settings directly
@@ -188,6 +175,9 @@ static void update_game_settings(const GameParams * params)
 				  params->num_players);
 	game_settings_set_victory_points(GAMESETTINGS(game_settings),
 					 params->victory_points);
+	game_rules_set_victory_at_end_of_turn(GAMERULES(game_rules),
+					      params->
+					      check_victory_at_end_of_turn);
 	game_rules_set_random_terrain(GAMERULES(game_rules),
 				      params->random_terrain);
 	game_rules_set_sevens_rule(GAMERULES(game_rules),
@@ -233,9 +223,9 @@ static void gui_set_server_state(gboolean running)
 	gtk_button_set_label(GTK_BUTTON(start_btn),
 			     running ? _("Stop server") :
 			     _("Start server"));
-	gtk_tooltips_set_tip(tooltips, start_btn,
-			     running ? _("Stop the server") :
-			     _("Start the server"), NULL);
+	gtk_widget_set_tooltip_text(start_btn,
+				    running ? _("Stop the server") :
+				    _("Start the server"));
 
 	fullname = g_find_program_in_path(PIONEERS_AI_PATH);
 	if (fullname) {
@@ -264,9 +254,12 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 		cfg_set_victory_points(params,
 				       game_settings_get_victory_points
 				       (GAMESETTINGS(game_settings)));
+		params->check_victory_at_end_of_turn =
+		    game_rules_get_victory_at_end_of_turn(GAMERULES
+							  (game_rules));
 		cfg_set_sevens_rule(params,
-				    game_rules_get_sevens_rule
-				    (GAMERULES(game_rules)));
+				    game_rules_get_sevens_rule(GAMERULES
+							       (game_rules)));
 		cfg_set_terrain_type(params,
 				     game_rules_get_random_terrain
 				     (GAMERULES(game_rules)));
@@ -299,6 +292,9 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 				       params->num_players);
 			config_set_int("game/victory-points",
 				       params->victory_points);
+			config_set_int("game/check-victory-at-end-of-turn",
+				       params->
+				       check_victory_at_end_of_turn);
 			config_set_int("game/sevens-rule",
 				       params->sevens_rule);
 			config_set_int("game/use-pirate",
@@ -457,8 +453,6 @@ static GtkWidget *build_game_settings(GtkWidget * parent,
 	GtkWidget *frame;
 	GtkWidget *vbox;
 
-	tooltips = gtk_tooltips_new();
-
 	frame = gtk_frame_new(_("Game Parameters"));
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(parent), frame, FALSE, TRUE, 0);
@@ -488,8 +482,6 @@ static GtkWidget *build_game_rules(GtkWidget * parent)
 {
 	GtkWidget *frame;
 	GtkWidget *vbox;
-
-	tooltips = gtk_tooltips_new();
 
 	frame = gtk_frame_new(_("Rules"));
 	gtk_widget_show(frame);
@@ -529,14 +521,13 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 {
 	GtkWidget *vbox;
 	GtkWidget *vbox_settings;
+	GtkWidget *vbox_connected;
 	GtkWidget *vbox_ai;
-	GtkWidget *hbox_ai;
 	GtkWidget *frame;
 	GtkWidget *table;
 	GtkWidget *label;
 	GtkWidget *scroll_win;
 	GtkWidget *message_text;
-	GtkTooltips *tooltips;
 	gint novar;
 	gboolean default_returned;
 	gchar *gamename;
@@ -545,8 +536,6 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
-
-	tooltips = gtk_tooltips_new();
 
 	vbox = gtk_vbox_new(FALSE, 5);
 	gtk_widget_show(vbox);
@@ -594,6 +583,11 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	temp = config_get_int("game/victory-points", &default_returned);
 	if (!default_returned)
 		cfg_set_victory_points(params, temp);
+	temp =
+	    config_get_int("game/victory-at-end-of-turn",
+			   &default_returned);
+	if (!default_returned)
+		params->check_victory_at_end_of_turn = temp;
 	temp = config_get_int("game/sevens-rule", &default_returned);
 	if (!default_returned)
 		cfg_set_sevens_rule(params, temp);
@@ -632,25 +626,22 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 			 G_CALLBACK(port_entry_changed_cb), NULL);
 	gtk_widget_show(port_entry);
 	gtk_table_attach(GTK_TABLE(table), port_entry, 1, 2, 0, 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_tooltips_set_tip(tooltips, port_entry,
-			     _("The port for the game server"), NULL);
+			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
+			 0);
+	gtk_widget_set_tooltip_text(port_entry,
+				    _("The port for the game server"));
 
-	label = gtk_label_new(_("Register Server"));
-	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 1, 2,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-
-	register_toggle = gtk_toggle_button_new_with_label(_("No"));
+	register_toggle =
+	    gtk_check_button_new_with_label(_("Register Server"));
 	gtk_widget_show(register_toggle);
-	gtk_table_attach(GTK_TABLE(table), register_toggle, 1, 2, 1, 2,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_table_attach(GTK_TABLE(table), register_toggle, 0, 2, 1, 2,
+			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
+			 0);
 	g_signal_connect(G_OBJECT(register_toggle), "toggled",
 			 G_CALLBACK(register_toggle_cb), NULL);
-	gtk_tooltips_set_tip(tooltips, register_toggle,
-			     _("Register this game at the meta server"),
-			     NULL);
+	gtk_widget_set_tooltip_text(register_toggle,
+				    _
+				    ("Register this game at the meta server"));
 
 	label = gtk_label_new(_("Meta Server"));
 	gtk_widget_show(label);
@@ -663,9 +654,10 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 			 G_CALLBACK(meta_server_changed_cb), NULL);
 	gtk_widget_show(meta_entry);
 	gtk_table_attach(GTK_TABLE(table), meta_entry, 1, 2, 2, 3,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_tooltips_set_tip(tooltips, meta_entry,
-			     _("The address of the meta server"), NULL);
+			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
+			 0);
+	gtk_widget_set_tooltip_text(meta_entry,
+				    _("The address of the meta server"));
 
 	label = gtk_label_new(_("Reported Hostname"));
 	gtk_widget_show(label);
@@ -678,26 +670,22 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 			 G_CALLBACK(overridden_hostname_changed_cb), NULL);
 	gtk_widget_show(overridden_hostname_entry);
 	gtk_table_attach(GTK_TABLE(table), overridden_hostname_entry, 1, 2,
-			 3, 4, GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_tooltips_set_tip(tooltips, overridden_hostname_entry,
-			     _
-			     ("The public name of this computer (needed when playing behind a firewall)"),
-			     NULL);
+			 3, 4, GTK_EXPAND | GTK_FILL,
+			 GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_widget_set_tooltip_text(overridden_hostname_entry,
+				    _
+				    ("The public name of this computer (needed when playing behind a firewall)"));
 
-	label = gtk_label_new(_("Random Turn Order"));
-	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 4, 5,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-
-	random_toggle = gtk_toggle_button_new_with_label(_("No"));
+	random_toggle =
+	    gtk_check_button_new_with_label(_("Random Turn Order"));
 	gtk_widget_show(random_toggle);
-	gtk_table_attach(GTK_TABLE(table), random_toggle, 1, 2, 4, 5,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_table_attach(GTK_TABLE(table), random_toggle, 0, 2, 4, 5,
+			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
+			 0);
 	g_signal_connect(G_OBJECT(random_toggle), "toggled",
 			 G_CALLBACK(random_toggle_cb), NULL);
-	gtk_tooltips_set_tip(tooltips, random_toggle,
-			     _("Randomize turn order"), NULL);
+	gtk_widget_set_tooltip_text(random_toggle,
+				    _("Randomize turn order"));
 
 	/* Initialize server-settings */
 	server_port = config_get_string("server/port="
@@ -742,9 +730,16 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	gtk_widget_show(frame);
 	gtk_box_pack_start(GTK_BOX(vbox_settings), frame, TRUE, TRUE, 0);
 
+	vbox_connected = gtk_vbox_new(FALSE, 5);
+	gtk_widget_show(vbox_connected);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox_connected), 5);
+	gtk_container_add(GTK_CONTAINER(frame), vbox_connected);
+
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);
 	gtk_widget_show(scroll_win);
-	gtk_container_add(GTK_CONTAINER(frame), scroll_win);
+	gtk_box_pack_start(GTK_BOX(vbox_connected), scroll_win, TRUE, TRUE,
+			   0);
+
 	gtk_container_set_border_width(GTK_CONTAINER(scroll_win), 3);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
 				       GTK_POLICY_NEVER,
@@ -762,11 +757,9 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	/* The theme should decide if hints are used */
 	/* gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(label), TRUE); */
 	gtk_container_add(GTK_CONTAINER(scroll_win), label);
-	tooltips = gtk_tooltips_new();
-	gtk_tooltips_set_tip(tooltips, label,
-			     _
-			     ("Shows all players and viewers connected to the server"),
-			     NULL);
+	gtk_widget_set_tooltip_text(label,
+				    _
+				    ("Shows all players and viewers connected to the server"));
 
 	/* Now create columns */
 	column =
@@ -776,9 +769,9 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 						     PLAYER_COLUMN_CONNECTED,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
-	gtk_tooltips_set_tip(tooltips, column->button,
-			     _("Is the player currently connected?"),
-			     NULL);
+	gtk_widget_set_tooltip_text(column->button,
+				    _
+				    ("Is the player currently connected?"));
 	column =
 	    gtk_tree_view_column_new_with_attributes(_("Name"),
 						     gtk_cell_renderer_text_new
@@ -786,8 +779,8 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 						     PLAYER_COLUMN_NAME,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
-	gtk_tooltips_set_tip(tooltips, column->button,
-			     _("Name of the player"), NULL);
+	gtk_widget_set_tooltip_text(column->button,
+				    _("Name of the player"));
 	column =
 	    gtk_tree_view_column_new_with_attributes(_("Location"),
 						     gtk_cell_renderer_text_new
@@ -795,8 +788,8 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 						     PLAYER_COLUMN_LOCATION,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
-	gtk_tooltips_set_tip(tooltips, column->button,
-			     _("Host name of the player"), NULL);
+	gtk_widget_set_tooltip_text(column->button,
+				    _("Host name of the player"));
 
 	renderer = gtk_cell_renderer_text_new();
 	column =
@@ -806,16 +799,14 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 						     NULL);
 	g_object_set(renderer, "xalign", 1.0f, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
-	gtk_tooltips_set_tip(tooltips, column->button,
-			     _("Player number"), NULL);
+	gtk_widget_set_tooltip_text(column->button, _("Player number"));
 
 	renderer = gtk_cell_renderer_text_new();
 	column =
 	    gtk_tree_view_column_new_with_attributes(_("Role"), renderer,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
-	gtk_tooltips_set_tip(tooltips, column->button,
-			     _("Player of viewer"), NULL);
+	gtk_widget_set_tooltip_text(column->button, _("Player of viewer"));
 
 	gtk_tree_view_column_set_cell_data_func(column, renderer,
 						my_cell_player_viewer_to_text,
@@ -825,6 +816,16 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 
 	gtk_widget_show(label);
 
+	launchclient_btn =
+	    gtk_button_new_with_label(_("Launch Pioneers Client"));
+	gtk_widget_show(launchclient_btn);
+	gtk_box_pack_start(GTK_BOX(vbox_connected), launchclient_btn,
+			   FALSE, FALSE, 0);
+	g_signal_connect(G_OBJECT(launchclient_btn), "clicked",
+			 G_CALLBACK(launchclient_clicked_cb), NULL);
+	gtk_widget_set_tooltip_text(launchclient_btn,
+				    _("Launch the Pioneers Client"));
+
 	ai_frame = gtk_frame_new(_("Computer Players"));
 	gtk_widget_show(ai_frame);
 	gtk_box_pack_start(GTK_BOX(vbox_settings), ai_frame, FALSE, FALSE,
@@ -833,22 +834,14 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	gtk_widget_show(vbox_ai);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox_ai), 5);
 	gtk_container_add(GTK_CONTAINER(ai_frame), vbox_ai);
-	hbox_ai = gtk_hbox_new(FALSE, 5);
-	gtk_widget_show(hbox_ai);
-	gtk_box_pack_start(GTK_BOX(vbox_ai), hbox_ai, FALSE, FALSE, 0);
 
-	label = gtk_label_new(_("Enable Chat"));
-	gtk_widget_show(label);
-	gtk_box_pack_start(GTK_BOX(hbox_ai), label, FALSE, FALSE, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-
-	chat_toggle = gtk_toggle_button_new_with_label(_("No"));
+	chat_toggle = gtk_check_button_new_with_label(_("Enable Chat"));
 	gtk_widget_show(chat_toggle);
-	gtk_box_pack_start(GTK_BOX(hbox_ai), chat_toggle, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox_ai), chat_toggle, TRUE, TRUE, 0);
 	g_signal_connect(G_OBJECT(chat_toggle), "toggled",
 			 G_CALLBACK(chat_toggle_cb), NULL);
-	gtk_tooltips_set_tip(tooltips, chat_toggle,
-			     _("Enable chat messages"), NULL);
+	gtk_widget_set_tooltip_text(chat_toggle,
+				    _("Enable chat messages"));
 
 	want_ai_chat = config_get_int_with_default("ai/enable-chat", TRUE);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(chat_toggle),
@@ -861,18 +854,9 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 			   0);
 	g_signal_connect(G_OBJECT(addcomputer_btn), "clicked",
 			 G_CALLBACK(addcomputer_clicked_cb), NULL);
-	gtk_tooltips_set_tip(tooltips, addcomputer_btn,
-			     _("Add a computer player to the game"), NULL);
-
-	launchclient_btn =
-	    gtk_button_new_with_label(_("Launch Pioneers Client"));
-	gtk_widget_show(launchclient_btn);
-	gtk_box_pack_start(GTK_BOX(vbox_ai), launchclient_btn, FALSE,
-			   FALSE, 0);
-	g_signal_connect(G_OBJECT(launchclient_btn), "clicked",
-			 G_CALLBACK(launchclient_clicked_cb), NULL);
-	gtk_tooltips_set_tip(tooltips, launchclient_btn,
-			     _("Launch the Pioneers Client"), NULL);
+	gtk_widget_set_tooltip_text(addcomputer_btn,
+				    _
+				    ("Add a computer player to the game"));
 
 	start_btn = gtk_button_new();
 	gtk_widget_show(start_btn);
@@ -898,8 +882,8 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	gtk_container_add(GTK_CONTAINER(scroll_win), message_text);
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(message_text),
 				    GTK_WRAP_WORD);
-	gtk_tooltips_set_tip(tooltips, message_text,
-			     _("Messages from the server"), NULL);
+	gtk_widget_set_tooltip_text(message_text,
+				    _("Messages from the server"));
 	message_window_set_text(message_text);
 
 	gui_set_server_state(FALSE);
@@ -920,6 +904,8 @@ static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
 	cfg_set_victory_points(params,
 			       game_settings_get_victory_points
 			       (GAMESETTINGS(game_settings)));
+	params->check_victory_at_end_of_turn =
+	    game_rules_get_victory_at_end_of_turn(GAMERULES(game_rules));
 	cfg_set_sevens_rule(params,
 			    game_rules_get_sevens_rule
 			    (GAMERULES(game_rules)));
@@ -1029,8 +1015,6 @@ int main(int argc, char *argv[])
 
 	set_enable_debug(enable_debug);
 
-	themes_init();
-
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	/* Name in the titlebar of the server */
 	gtk_window_set_title(GTK_WINDOW(window), _("Pioneers Server"));
@@ -1058,6 +1042,8 @@ int main(int argc, char *argv[])
 	}
 
 	config_init("pioneers-server");
+
+	themes_init();
 
 	icon_file =
 	    g_build_filename(DATADIR, "pixmaps", MAINICON_FILE, NULL);

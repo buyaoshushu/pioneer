@@ -35,13 +35,13 @@ void trade_perform_maritime(Player * player,
 	if ((!game->rolled_dice) ||
 	    ((player->build_list != NULL || game->bought_develop) &&
 	     game->params->strict_trade)) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR wrong-time\n");
 		return;
 	}
 
 	if (ratio < 2 || ratio > 4) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR trade bad-ratio\n");
 		return;
 	}
@@ -52,14 +52,14 @@ void trade_perform_maritime(Player * player,
 	switch (ratio) {
 	case 4:
 		if (player->assets[supply] < 4) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR maritime trade, not 4 resources\n");
 			return;
 		}
 		break;
 	case 3:
 		if (!info.any_resource || player->assets[supply] < 3) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR maritime trade, not 3 resources\n");
 			return;
 		}
@@ -67,7 +67,7 @@ void trade_perform_maritime(Player * player,
 	case 2:
 		if (!info.specific_resource[supply]
 		    || player->assets[supply] < 2) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR maritime trade, not 2 resources\n");
 			return;
 		}
@@ -84,7 +84,7 @@ void trade_perform_maritime(Player * player,
 	player->assets[supply] -= ratio;
 	player->assets[receive]++;
 
-	player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
+	player_broadcast(player, PB_RESPOND, FIRST_VERSION, LATEST_VERSION,
 			 "maritime-trade %d supply %r receive %r\n",
 			 ratio, supply, receive);
 }
@@ -136,13 +136,14 @@ gboolean mode_domestic_quote(Player * player, gint event)
 							player->num, -1);
 			if (quote == NULL)
 				break;
-			player_broadcast(player, PB_ALL, V0_10,
+			player_broadcast(player, PB_ALL, FIRST_VERSION,
 					 LATEST_VERSION,
 					 "domestic-quote delete %d\n",
 					 quote->var.d.quote_num);
 			quotelist_delete(game->quotes, quote);
 		}
-		player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION,
 				 "domestic-quote finish\n");
 
 		sm_goto(sm, (StateFunc) mode_wait_quote_exit);
@@ -156,12 +157,13 @@ gboolean mode_domestic_quote(Player * player, gint event)
 		quote = quotelist_find_domestic(game->quotes,
 						player->num, quote_num);
 		if (quote == NULL) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR quote already deleted\n");
 			return TRUE;
 		}
 		quotelist_delete(game->quotes, quote);
-		player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION,
 				 "domestic-quote delete %d\n", quote_num);
 		return TRUE;
 	}
@@ -171,7 +173,7 @@ gboolean mode_domestic_quote(Player * player, gint event)
 		/* Make sure that quoting party can satisfy the trade
 		 */
 		if (!cost_can_afford(supply, player->assets)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR quote not enough resources\n");
 			return TRUE;
 		}
@@ -179,14 +181,15 @@ gboolean mode_domestic_quote(Player * player, gint event)
 		 */
 		if (quotelist_find_domestic
 		    (game->quotes, player->num, quote_num) != NULL) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "INFO duplicate quote\n");
 			return TRUE;
 		}
 
 		quotelist_add_domestic(game->quotes, player->num,
 				       quote_num, supply, receive);
-		player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION,
 				 "domestic-quote quote %d supply %R receive %R\n",
 				 quote_num, supply, receive);
 		return TRUE;
@@ -203,7 +206,7 @@ void trade_finish_domestic(Player * player)
 	Game *game = player->game;
 	GList *list;
 
-	player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
+	player_broadcast(player, PB_RESPOND, FIRST_VERSION, LATEST_VERSION,
 			 "domestic-trade finish\n");
 	sm_pop(sm);
 	for (list = player_first_real(game);
@@ -228,7 +231,7 @@ void trade_accept_domestic(Player * player,
 	if ((!game->rolled_dice) ||
 	    (((player->build_list != NULL) || (game->bought_develop)) &&
 	     (game->params->strict_trade))) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR wrong-time\n");
 		return;
 	}
@@ -238,20 +241,20 @@ void trade_accept_domestic(Player * player,
 	quote =
 	    quotelist_find_domestic(game->quotes, partner_num, quote_num);
 	if (quote == NULL) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR quote not found\n");
 		return;
 	}
 	/* Make sure that both parties can satisfy the trade
 	 */
 	if (!cost_can_afford(quote->var.d.receive, player->assets)) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR quote cannot afford\n");
 		return;
 	}
 	partner = player_by_num(game, partner_num);
 	if (!cost_can_afford(quote->var.d.supply, partner->assets)) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR quote partner cannot afford\n");
 		return;
 	}
@@ -263,7 +266,7 @@ void trade_accept_domestic(Player * player,
 	cost_refund(quote->var.d.supply, player->assets);
 	cost_buy(quote->var.d.receive, player->assets);
 
-	player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
+	player_broadcast(player, PB_RESPOND, FIRST_VERSION, LATEST_VERSION,
 			 "domestic-trade accept player %d quote %d supply %R receive %R\n",
 			 partner_num, quote_num, supply, receive);
 
@@ -280,7 +283,7 @@ void trade_accept_domestic(Player * player,
 
 		quote = quotelist_next(quote);
 		if (!cost_can_afford(tmp->var.d.supply, partner->assets)) {
-			player_broadcast(partner, PB_ALL, V0_10,
+			player_broadcast(partner, PB_ALL, FIRST_VERSION,
 					 LATEST_VERSION,
 					 "domestic-quote delete %d\n",
 					 tmp->var.d.quote_num);
@@ -301,7 +304,7 @@ static void process_call_domestic(Player * player, gint * supply,
 		game->quote_receive[i] = receive[i];
 	}
 
-	player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
+	player_broadcast(player, PB_RESPOND, FIRST_VERSION, LATEST_VERSION,
 			 "domestic-trade call supply %R receive %R\n",
 			 supply, receive);
 	/* make sure all the others are back in quote mode.  They may have
@@ -331,7 +334,8 @@ static void call_domestic(Player * player, gint * supply, gint * receive)
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		if (supply[idx]) {
 			if (player->assets[idx] == 0) {
-				player_send(player, V0_10, LATEST_VERSION,
+				player_send(player, FIRST_VERSION,
+					    LATEST_VERSION,
 					    "ERR not enough resources for this quote\n");
 				return;
 			}
@@ -341,7 +345,7 @@ static void call_domestic(Player * player, gint * supply, gint * receive)
 			++num_receive;
 	}
 	if (num_supply == 0 && num_receive == 0) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR empty quote\n");
 		return;
 	}
@@ -364,7 +368,7 @@ static void call_domestic(Player * player, gint * supply, gint * receive)
 		if (idx < NO_RESOURCE) {
 			partner =
 			    player_by_num(game, curr->var.d.player_num);
-			player_broadcast(partner, PB_ALL, V0_10,
+			player_broadcast(partner, PB_ALL, FIRST_VERSION,
 					 LATEST_VERSION,
 					 "domestic-quote delete %d\n",
 					 curr->var.d.quote_num);

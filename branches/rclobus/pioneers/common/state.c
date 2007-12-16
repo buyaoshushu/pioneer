@@ -71,7 +71,11 @@ static void route_event(StateMachine * sm, gint event)
 	StateFunc curr_state;
 	gpointer user_data;
 
-	curr_state = sm_current(sm);
+	if (sm->stack_ptr >= 0)
+		curr_state = sm_current(sm);
+	else
+		curr_state = NULL;
+
 	user_data = sm->user_data;
 	if (user_data == NULL)
 		user_data = sm;
@@ -89,16 +93,18 @@ static void route_event(StateMachine * sm, gint event)
 
 	switch (event) {
 	case SM_ENTER:
-		curr_state(user_data, event);
+		if (curr_state != NULL)
+			curr_state(user_data, event);
 		break;
 	case SM_INIT:
-		curr_state(user_data, event);
+		if (curr_state != NULL)
+			curr_state(user_data, event);
 		if (!sm->is_dead && sm->global !=NULL)
 			sm->global (user_data, event);
 		break;
 	case SM_RECV:
 		sm_cancel_prefix(sm);
-		if (curr_state(user_data, event))
+		if (curr_state != NULL && curr_state(user_data, event))
 			break;
 		sm_cancel_prefix(sm);
 		if (!sm->is_dead
@@ -112,7 +118,8 @@ static void route_event(StateMachine * sm, gint event)
 	case SM_NET_CLOSE:
 		sm_close(sm);
 	default:
-		curr_state(user_data, event);
+		if (curr_state != NULL)
+			curr_state(user_data, event);
 		if (!sm->is_dead && sm->global !=NULL)
 			sm->global (user_data, event);
 		break;
@@ -427,7 +434,7 @@ void sm_write(StateMachine * sm, const gchar * str)
 	if (sm->use_cache) {
 		/* Protect against strange/slow connects */
 		if (g_list_length(sm->cache) > 1000) {
-			net_write(sm->ses, "ERR connection too slow");
+			net_write(sm->ses, "ERR connection too slow\n");
 			net_close_when_flushed(sm->ses);
 		} else {
 			sm->cache =
@@ -650,6 +657,7 @@ void sm_free(StateMachine * sm)
 {
 	if (sm->ses != NULL) {
 		net_free(&(sm->ses));
+		g_return_if_fail(sm->ses == NULL);
 	}
 	if (sm->use_count > 0)
 		sm->is_dead = TRUE;
@@ -662,6 +670,17 @@ void sm_free(StateMachine * sm)
 void sm_close(StateMachine * sm)
 {
 	net_free(&(sm->ses));
+	if (sm->use_cache) {
+		/* Purge the cache */
+		GList *list = sm->cache;
+		sm->cache = NULL;
+		sm_set_use_cache(sm, FALSE);
+		while (list) {
+			gchar *data = list->data;
+			list = g_list_remove(list, data);
+			g_free(data);
+		}
+	}
 }
 
 void sm_stack_dump(StateMachine * sm)

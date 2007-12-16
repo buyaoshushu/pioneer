@@ -436,6 +436,13 @@ void cfg_set_timeout(gint to)
 	no_player_timeout = to;
 }
 
+void admin_broadcast(const gchar * message)
+{
+	/* The message that is sent must not be translated */
+	player_broadcast(player_none(curr_game), PB_SILENT, FIRST_VERSION,
+			 LATEST_VERSION, "NOTE1 %s|%s\n", message, "%s");
+}
+
 gboolean start_server(const GameParams * params, const gchar * hostname,
 		      const gchar * port, gboolean register_server,
 		      const gchar * meta_server_name,
@@ -456,16 +463,6 @@ gboolean start_server(const GameParams * params, const gchar * hostname,
 			      meta_server_name, random_order);
 }
 
-#ifndef G_OS_WIN32
-static void handle_sigpipe(G_GNUC_UNUSED int signum)
-{
-	/* reset the signal handler */
-	signal(SIGPIPE, handle_sigpipe);
-	/* no need to actually handle anything, this will be done by 
-	 * write returning error */
-}
-#endif				/* G_OS_WIN32 */
-
 /* server initialization */
 void server_init(void)
 {
@@ -474,7 +471,11 @@ void server_init(void)
 	 * when the game is over. */
 	/* SIGPIPE does not exist for G_OS_WIN32 */
 #ifndef G_OS_WIN32
-	signal(SIGPIPE, handle_sigpipe);
+	struct sigaction sa;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGPIPE, &sa, NULL);
 #endif				/* G_OS_WIN32 */
 }
 

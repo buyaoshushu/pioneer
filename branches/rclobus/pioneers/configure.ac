@@ -3,7 +3,7 @@
 #
 # Copyright (C) 1999 Dave Cole
 # Copyright (C) 2003-2007 Bas Wijnen <shevek@fmf.nl>
-# Copyright (C) 2004-2006 Roland Clobus <rclobus@bigfoot.com>
+# Copyright (C) 2004-2007 Roland Clobus <rclobus@bigfoot.com>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 AC_PREREQ(2.53)
-AC_INIT([pioneers],[0.11.1],[pio-develop@lists.sourceforge.net])
+AC_INIT([pioneers],[0.11.4],[pio-develop@lists.sourceforge.net])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
@@ -36,7 +36,10 @@ PIONEERS_DEFAULT_META_SERVER=pioneers.debian.net
 
 GLIB_REQUIRED_VERSION=2.6
 GTK_REQUIRED_VERSION=2.6
- 
+
+AC_SUBST(GLIB_REQUIRED_VERSION)
+AC_SUBST(GTK_REQUIRED_VERSION)
+
 AM_MAINTAINER_MODE
 
 AC_PROG_LIBTOOL
@@ -340,29 +343,28 @@ AC_CHECK_FUNCS([setlocale])
 # Data types
 AC_STRUCT_TM
 AC_TYPE_PID_T
-AC_TYPE_SIGNAL
 AC_TYPE_SIZE_T
 # Check if socklen_t is present
 TYPE_SOCKLEN_T
 
 # Defines, accessible for all source files
 AC_DEFINE_UNQUOTED(PROTOCOL_VERSION, "$PROTOCOL_VERSION",
-                   [Protocol version used by the program])
+		   [Protocol version used by the program])
 AC_DEFINE_UNQUOTED(META_PROTOCOL_VERSION, "$META_PROTOCOL_VERSION",
-                   [Protocol version used by the meta server])
+		   [Protocol version used by the meta server])
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_GAME_PORT, "$PIONEERS_DEFAULT_GAME_PORT",
-	[The default port for a new game])
+		   [The default port for a new game])
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_GAME_HOST, "$PIONEERS_DEFAULT_GAME_HOST",
-	[The default host for a new game])
+		   [The default host for a new game])
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_ADMIN_PORT, "$PIONEERS_DEFAULT_ADMIN_PORT",
-	[The default port for the admin interface])
+		   [The default port for the admin interface])
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_META_PORT, "$PIONEERS_DEFAULT_META_PORT",
-	[The port for the meta server])
+		   [The port for the meta server])
 AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_META_SERVER, 
-	"$PIONEERS_DEFAULT_META_SERVER", [The default meta server])
+		   "$PIONEERS_DEFAULT_META_SERVER", [The default meta server])
 
 ## internationalization support
-ALL_LINGUAS="af de es fr hu it ja nl sv"
+ALL_LINGUAS="af da de es fr hu it ja nl pt sv"
 
 GETTEXT_PACKAGE=pioneers
 AC_SUBST(GETTEXT_PACKAGE)

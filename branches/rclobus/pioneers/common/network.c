@@ -3,7 +3,8 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2005,2006 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2005-2007 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2005 Keishi Suenaga
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -152,6 +153,26 @@ static void notify(Session * ses, NetEvent event, gchar * line)
 		ses->notify_func(event, ses->user_data, line);
 }
 
+static gboolean net_would_block(void)
+{
+#ifdef G_OS_WIN32
+	return WSAGetLastError() == WSAEWOULDBLOCK;
+#else				/* G_OS_WIN32 */
+	return errno == EAGAIN;
+#endif				/* G_OS_WIN32 */
+}
+
+static gboolean net_write_error(void)
+{
+#ifdef G_OS_WIN32
+	int lerror = WSAGetLastError();
+	return (lerror != WSAECONNRESET
+		&& lerror != WSAECONNABORTED && lerror != WSAESHUTDOWN);
+#else				/* G_OS_WIN32 */
+	return errno != EPIPE;
+#endif				/* G_OS_WIN32 */
+}
+
 /* Returns the message for error# number */
 static const gchar *net_errormsg_nr(gint number)
 {
@@ -164,7 +185,7 @@ static const gchar *net_errormsg(void)
 	return net_errormsg_nr(errno);
 }
 
-void net_close(Session * ses)
+gboolean net_close(Session * ses)
 {
 	if (ses->timer_id != 0) {
 		g_source_remove(ses->timer_id);
@@ -185,6 +206,7 @@ void net_close(Session * ses)
 			g_free(data);
 		}
 	}
+	return !ses->entered;
 }
 
 void net_close_when_flushed(Session * ses)
@@ -193,8 +215,8 @@ void net_close_when_flushed(Session * ses)
 	if (ses->write_queue != NULL)
 		return;
 
-	net_close(ses);
-	notify(ses, NET_CLOSE, NULL);
+	if (net_close(ses))
+		notify(ses, NET_CLOSE, NULL);
 }
 
 void net_wait_for_close(Session * ses)
@@ -204,8 +226,8 @@ void net_wait_for_close(Session * ses)
 
 static void close_and_callback(Session * ses)
 {
-	net_close(ses);
-	notify(ses, NET_CLOSE, NULL);
+	if (net_close(ses))
+		notify(ses, NET_CLOSE, NULL);
 }
 
 static gboolean ping_function(gpointer s)
@@ -218,7 +240,8 @@ static gboolean ping_function(gpointer s)
 		/* There was no response to the ping in time.  The connection
 		 * should be considered dead.  */
 		log_message(MSG_ERROR,
-			    "No activity and no response to ping.  Closing connection");
+			    "No activity and no response to ping.  Closing connection\n");
+		debug("(%d) --> %s", ses->fd, "no response");
 		close_and_callback(ses);
 	} else if (interval >= PING_PERIOD) {
 		/* There was no activity.
@@ -283,9 +306,9 @@ static void write_ready(Session * ses)
 		debug("write_ready: write(%d, \"%.*s\", %d) = %d",
 		      ses->fd, len, data, len, num);
 		if (num < 0) {
-			if (errno == EAGAIN)
+			if (net_would_block())
 				break;
-			if (errno != EPIPE)
+			if (net_write_error())
 				log_message(MSG_ERROR,
 					    _
 					    ("Error writing socket: %s\n"),
@@ -332,11 +355,11 @@ void net_write(Session * ses, const gchar * data)
 			if (strcmp(data, "yes\n")
 			    && strcmp(data, "hello\n"))
 				debug("(%d) --> %s", ses->fd, data);
-		} else if (errno != EAGAIN)
+		} else if (!net_would_block())
 			debug("(%d) --- Error writing to socket.",
 			      ses->fd);
 		if (num < 0) {
-			if (errno != EAGAIN) {
+			if (!net_would_block()) {
 				log_message(MSG_ERROR,
 					    _
 					    ("Error writing to socket: %s\n"),
@@ -400,7 +423,7 @@ static void read_ready(Session * ses)
 	num = recv(ses->fd, ses->read_buff + ses->read_len,
 		   sizeof(ses->read_buff) - ses->read_len, 0);
 	if (num < 0) {
-		if (errno == EAGAIN)
+		if (net_would_block())
 			return;
 		log_message(MSG_ERROR, _("Error reading socket: %s\n"),
 			    net_errormsg());
@@ -456,6 +479,9 @@ static void read_ready(Session * ses)
 		ses->read_len = 0;
 
 	ses->entered = FALSE;
+	if (ses->fd < 0) {
+		close_and_callback(ses);
+	}
 }
 
 Session *net_new(NetNotifyFunc notify_func, void *user_data)
@@ -631,11 +657,13 @@ gboolean net_connect(Session * ses, const gchar * host, const gchar * port)
 		return FALSE;
 }
 
-/* Free and NULL-ity the session *ses */
+/* Free and NULL-ify the session *ses */
 void net_free(Session ** ses)
 {
-	net_close(*ses);
-
+	/* If the sessions is still in use, do not free it */
+	if (!net_close(*ses)) {
+		return;
+	}
 	if ((*ses)->host != NULL)
 		g_free((*ses)->host);
 	if ((*ses)->port != NULL)
@@ -742,7 +770,7 @@ int net_open_listening_socket(const gchar * port, gchar ** error_message)
 
 	freeaddrinfo(ai);
 
-	if (fcntl(fd, F_SETFL, O_NDELAY) < 0) {
+	if (net_set_socket_non_blocking(fd)) {
 		*error_message =
 		    g_strdup_printf(_
 				    ("Error setting socket non-blocking: %s\n"),

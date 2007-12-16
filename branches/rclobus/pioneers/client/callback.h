@@ -54,13 +54,14 @@ typedef enum {
 
 typedef struct {
 	gchar *name;
+	gchar *style;
 	gint statistics[STAT_DEVELOPMENT + 1];
 	GList *points;		/* bonus points from special actions */
-	void *user_data;	/* used as pixmap in summary and discard list */
 } Player;
 
 typedef struct {
 	gchar *name;
+	gchar *style;
 	gint num;
 } Viewer;
 
@@ -70,6 +71,7 @@ enum callback_mode {
 	MODE_SETUP,		/* do a setup */
 	MODE_TURN,		/* your turn */
 	MODE_ROBBER,		/* place robber */
+	MODE_ROB,		/* select a building/ship to rob */
 	MODE_MONOPOLY,		/* choose monopoly resource */
 	MODE_MONOPOLY_RESPONSE,	/* chosen monopoly resource, waiting */
 	MODE_PLENTY,		/* choose year of plenty resources */
@@ -206,10 +208,16 @@ struct callbacks {
 	void (*draw_hex) (Hex * hex);
 	/* something happened to your pieces stock (ships, roads, etc.) */
 	void (*update_stock) (void);
-	/* You should move the robber or pirate, and steal if allowed */
+	/* You should move the robber or pirate */
 	void (*robber) (void);
 	/* Someone moved the robber */
 	void (*robber_moved) (Hex * old, Hex * new);
+	/* You should steal something from a building */
+	void (*steal_building) (void);
+	/* The robber placement has finished, continue normally */
+	void (*robber_done) (void);
+	/* You should steal something from a ship */
+	void (*steal_ship) (void);
 	/* Someone has been robbed.  The frontend should allow player_num to
 	 * be negative, meaning noone was robbed.  This is not implemented
 	 * yet. */
@@ -240,6 +248,8 @@ struct callbacks {
 	void (*viewer_name) (gint viewer_num, const gchar * name);
 	/* a player changed his/her name */
 	void (*player_name) (gint player_num, const gchar * name);
+	/* a player changed his/her style */
+	void (*player_style) (gint player_num, const gchar * style);
 	/* a player left the game */
 	void (*player_quit) (gint player_num);
 	/* a viewer left the game */
@@ -284,7 +294,7 @@ extern gboolean color_chat_enabled;
  * changes to the board, etc.  The frontend should NEVER touch any game
  * structures directly (except for reading). */
 void cb_connect(const gchar * server, const gchar * port,
-		const gchar * name, gboolean viewer);
+		const gchar * name, gboolean viewer, const gchar * style);
 void cb_disconnect(void);
 void cb_roll(void);
 void cb_build_road(const Edge * edge);
@@ -300,7 +310,8 @@ void cb_undo(void);
 void cb_maritime(gint ratio, Resource supply, Resource receive);
 void cb_domestic(const gint * supply, const gint * receive);
 void cb_end_turn(void);
-void cb_place_robber(const Hex * hex, gint victim_num);
+void cb_place_robber(const Hex * hex);
+void cb_rob(gint victim_num);
 void cb_choose_monopoly(gint resource);
 void cb_choose_plenty(gint * resources);
 void cb_trade(gint player, gint quote, const gint * supply,
@@ -311,6 +322,7 @@ void cb_delete_quote(gint num);
 void cb_end_quote(void);
 void cb_chat(const gchar * text);
 void cb_name_change(const gchar * name);
+void cb_style_change(const gchar * name);
 void cb_discard(const gint * resources);
 void cb_choose_gold(const gint * resources);
 
@@ -329,6 +341,9 @@ gint player_get_score(gint player_num);
 gint my_player_num(void);
 const gchar *my_player_name(void);
 gboolean my_player_viewer(void);
+const gchar *my_player_style(void);
+const gchar *player_get_style(gint player_num);
+void player_set_style(gint player_num, const gchar * style);
 gint num_players(void);
 gint current_player(void);
 /** Find the player or viewer with name
@@ -364,7 +379,6 @@ gboolean road_building_can_build_road(void);
 gboolean road_building_can_build_ship(void);
 gboolean road_building_can_build_bridge(void);
 gboolean road_building_can_finish(void);
-gboolean turn_can_undo(void);
 gboolean turn_can_build_road(void);
 gboolean turn_can_build_ship(void);
 gboolean turn_can_move_ship(void);
@@ -375,7 +389,6 @@ gboolean turn_can_build_city_wall(void);
 gboolean turn_can_trade(void);
 gboolean turn_can_finish(void);
 gboolean can_afford(const gint * cost);
-gboolean setup_can_undo(void);
 gboolean setup_can_build_road(void);
 gboolean setup_can_build_ship(void);
 gboolean setup_can_build_bridge(void);

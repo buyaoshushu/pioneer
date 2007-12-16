@@ -40,7 +40,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	 */
 	num = buildrec_count_type(player->build_list, type);
 	if (num == num_allowed) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR too-many\n");
 		return;
 	}
@@ -49,7 +49,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		/* Make sure that there are some roads left to use */
 		if (player->num_roads ==
 		    game->params->num_build_type[BUILD_ROAD]) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-many road\n");
 			return;
 		}
@@ -60,7 +60,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		if (!buildrec_can_setup_road(player->build_list, map,
 					     map_edge(map, x, y, pos),
 					     game->double_setup)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR bad-pos\n");
 			return;
 		}
@@ -72,7 +72,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		/* Make sure that there are some bridges left to use */
 		if (player->num_bridges ==
 		    game->params->num_build_type[BUILD_BRIDGE]) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-many bridge\n");
 			return;
 		}
@@ -83,7 +83,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		if (!buildrec_can_setup_bridge(player->build_list, map,
 					       map_edge(map, x, y, pos),
 					       game->double_setup)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR bad-pos\n");
 			return;
 		}
@@ -95,7 +95,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		/* Make sure that there are some ships left to use */
 		if (player->num_ships ==
 		    game->params->num_build_type[BUILD_SHIP]) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR too-many ship\n");
 			return;
 		}
@@ -106,7 +106,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 		if (!buildrec_can_setup_ship(player->build_list, map,
 					     map_edge(map, x, y, pos),
 					     game->double_setup)) {
-			player_send(player, V0_10, LATEST_VERSION,
+			player_send(player, FIRST_VERSION, LATEST_VERSION,
 				    "ERR bad-pos\n");
 			return;
 		}
@@ -115,7 +115,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	}
 
 	if (type != BUILD_SETTLEMENT) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR expected-road-or-settlement\n");
 		return;
 	}
@@ -124,7 +124,7 @@ static void build_add(Player * player, BuildType type, gint x, gint y,
 	if (!buildrec_can_setup_settlement(player->build_list, map,
 					   map_node(map, x, y, pos),
 					   game->double_setup)) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR bad-pos\n");
 		return;
 	}
@@ -136,7 +136,7 @@ static void build_remove(Player * player)
 	/* Remove the settlement/road we just built
 	 */
 	if (!perform_undo(player))
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR bad-pos\n");
 }
 
@@ -148,11 +148,12 @@ static void start_setup_player(Player * player)
 	player->build_list = buildrec_free(player->build_list);
 
 	if (game->double_setup)
-		player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
-				 "setup-double\n");
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION, "setup-double\n");
 	else
-		player_broadcast(player, PB_RESPOND, V0_10, LATEST_VERSION,
-				 "setup %d\n", game->reverse_setup);
+		player_broadcast(player, PB_RESPOND, FIRST_VERSION,
+				 LATEST_VERSION, "setup %d\n",
+				 game->reverse_setup);
 
 	sm_goto(sm, (StateFunc) mode_setup);
 }
@@ -197,7 +198,7 @@ static void try_setup_done(Player * player)
 	if (buildrec_count_edges(player->build_list) != num_allowed
 	    || buildrec_count_type(player->build_list,
 				   BUILD_SETTLEMENT) != num_allowed) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR expected-build-or-remove\n");
 		return;
 	}
@@ -205,14 +206,14 @@ static void try_setup_done(Player * player)
 	 * connected to buildings and vice-versa
 	 */
 	if (!buildrec_is_valid(player->build_list, map, player->num)) {
-		player_send(player, V0_10, LATEST_VERSION,
+		player_send(player, FIRST_VERSION, LATEST_VERSION,
 			    "ERR unconnected\n");
 		return;
 	}
 	/* Player has finished setup phase - give resources for second
 	 * settlement
 	 */
-	player_send(player, V0_10, LATEST_VERSION, "OK\n");
+	player_send(player, FIRST_VERSION, LATEST_VERSION, "OK\n");
 
 	if (game->double_setup)
 		allocate_resources(player,
@@ -355,30 +356,34 @@ static void send_player_list(Player * player)
 	Game *game = player->game;
 	GList *list;
 
-	player_send_uncached(player, V0_10, LATEST_VERSION,
+	player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
 			     "players follow\n");
 	for (list = game->player_list; list != NULL;
 	     list = g_list_next(list)) {
 		Player *scan = list->data;
 		if (player == scan || scan->num < 0)
 			continue;
-		player_send_uncached(player, V0_10, LATEST_VERSION,
+		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
 				     "player %d is %s\n", scan->num,
 				     scan->name);
+		player_send_uncached(player, V0_11, LATEST_VERSION,
+				     "player %d style %s\n", scan->num,
+				     scan->style);
 		if (scan->disconnected)
-			player_send_uncached(player, V0_10, LATEST_VERSION,
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION,
 					     "player %d has quit\n",
 					     scan->num);
 	}
-	player_send_uncached(player, V0_10, LATEST_VERSION, ".\n");
+	player_send_uncached(player, FIRST_VERSION, LATEST_VERSION, ".\n");
 }
 
 /* Send the game parameters to the player (uncached)
  */
 static void send_game_line(gpointer player, const gchar * str)
 {
-	player_send_uncached((Player *) player, V0_10, LATEST_VERSION,
-			     "%s\n", str);
+	player_send_uncached((Player *) player, FIRST_VERSION,
+			     LATEST_VERSION, "%s\n", str);
 }
 
 gboolean send_gameinfo_uncached(Map * map, Hex * hex, void *data)
@@ -393,14 +398,14 @@ gboolean send_gameinfo_uncached(Map * map, Hex * hex, void *data)
 		if (hex->nodes[i]->owner >= 0) {
 			switch (hex->nodes[i]->type) {
 			case BUILD_SETTLEMENT:
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "S%d,%d,%d,%d\n",
 						     hex->x, hex->y, i,
 						     hex->nodes[i]->owner);
 				break;
 			case BUILD_CITY:
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "C%d,%d,%d,%d\n",
 						     hex->x, hex->y, i,
@@ -411,7 +416,8 @@ gboolean send_gameinfo_uncached(Map * map, Hex * hex, void *data)
 			}
 			if (hex->nodes[i]->city_wall) {
 				/* Older clients see an extension message */
-				player_send_uncached(player, V0_10, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
+						     V0_10,
 						     "extension city wall\n");
 				player_send_uncached(player, V0_11,
 						     LATEST_VERSION,
@@ -429,21 +435,21 @@ gboolean send_gameinfo_uncached(Map * map, Hex * hex, void *data)
 		if (hex->edges[i]->owner >= 0) {
 			switch (hex->edges[i]->type) {
 			case BUILD_ROAD:
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "R%d,%d,%d,%d\n",
 						     hex->x, hex->y, i,
 						     hex->edges[i]->owner);
 				break;
 			case BUILD_SHIP:
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "SH%d,%d,%d,%d\n",
 						     hex->x, hex->y, i,
 						     hex->edges[i]->owner);
 				break;
 			case BUILD_BRIDGE:
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "B%d,%d,%d,%d\n",
 						     hex->x, hex->y, i,
@@ -456,12 +462,12 @@ gboolean send_gameinfo_uncached(Map * map, Hex * hex, void *data)
 	}
 
 	if (hex->robber) {
-		player_send_uncached(player, V0_10, LATEST_VERSION,
+		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
 				     "RO%d,%d\n", hex->x, hex->y);
 	}
 
 	if (hex == map->pirate_hex) {
-		player_send_uncached(player, V0_10, LATEST_VERSION,
+		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
 				     "P%d,%d\n", hex->x, hex->y);
 	}
 
@@ -483,6 +489,7 @@ gboolean mode_pre_game(Player * player, gint event)
 	gint largestarmypnum = -1;
 	static gboolean recover_from_plenty = FALSE;
 	guint stack_offset;
+	gchar *player_style;
 
 	if (game->longest_road) {
 		longestroadpnum = game->longest_road->num;
@@ -494,7 +501,7 @@ gboolean mode_pre_game(Player * player, gint event)
 	sm_state_name(sm, "mode_pre_game");
 	switch (event) {
 	case SM_ENTER:
-		player_send_uncached(player, V0_10, LATEST_VERSION,
+		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
 				     "player %d of %d, welcome to pioneers server %s\n",
 				     player->num,
 				     game->params->num_players,
@@ -504,80 +511,94 @@ gboolean mode_pre_game(Player * player, gint event)
 		 * know how many players are in the game, and therefore if
 		 * he is a player or a viewer. */
 		/* Tell the other players about this player */
-		player_broadcast(player, PB_OTHERS, V0_10, LATEST_VERSION,
-				 "is %s\n", player->name);
+		player_broadcast(player, PB_OTHERS, FIRST_VERSION,
+				 LATEST_VERSION, "is %s\n", player->name);
 		/* Tell this player his own name */
-		player_send_uncached(player, V0_10, LATEST_VERSION,
+		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
 				     "player %d is %s\n", player->num,
 				     player->name);
 		break;
 
 	case SM_RECV:
+		if (sm_recv(sm, "style %S", &player_style)) {
+			if (player->style)
+				g_free(player->style);
+			player->style = player_style;
+			player_broadcast(player, PB_OTHERS, V0_11,
+					 LATEST_VERSION, "style %s\n",
+					 player_style);
+			player_send_uncached(player, V0_11, LATEST_VERSION,
+					     "player %d style %s\n",
+					     player->num, player_style);
+			return TRUE;
+		}
 		if (sm_recv(sm, "players")) {
 			send_player_list(player);
 			return TRUE;
 		}
 		if (sm_recv(sm, "game")) {
-			player_send_uncached(player, V0_10, LATEST_VERSION,
-					     "game\n");
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "game\n");
 			params_write_lines(game->params, FALSE,
 					   send_game_line, player);
-			player_send_uncached(player, V0_10, LATEST_VERSION,
-					     "end\n");
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "end\n");
 			return TRUE;
 		}
 		if (sm_recv(sm, "gameinfo")) {
-			player_send_uncached(player, V0_10, LATEST_VERSION,
-					     "gameinfo\n");
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "gameinfo\n");
 			map_traverse(map, send_gameinfo_uncached, player);
-			player_send_uncached(player, V0_10, LATEST_VERSION,
-					     ".\n");
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, ".\n");
 
 			/* Notify old clients about new features */
 			if (game->params->num_build_type[BUILD_CITY_WALL] >
 			    0) {
-				player_send_uncached(player, V0_10, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
+						     V0_10,
 						     "extension city wall\n");
 			}
 
 			/* now, send state info */
-			player_send_uncached(player, V0_10, LATEST_VERSION,
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION,
 					     "turn num %d\n",
 					     game->curr_turn);
 			if (game->curr_player >= 0) {
 				Player *playerturn
 				    =
 				    player_by_num(game, game->curr_player);
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "player turn: %d\n",
 						     playerturn->num);
 			}
 			if (game->rolled_dice) {
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "dice rolled: %d %d\n",
 						     game->die1,
 						     game->die2);
 			} else if (game->die1 + game->die2 > 1) {
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "dice value: %d %d\n",
 						     game->die1,
 						     game->die2);
 			}
 			if (game->played_develop) {
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "played develop\n");
 			}
 			if (game->bought_develop) {
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "bought develop\n");
 			}
 			if (player->disconnected) {
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "player disconnected\n");
 			}
@@ -624,19 +645,22 @@ gboolean mode_pre_game(Player * player, gint event)
 			} else
 				prevstate = "PREGAME";
 
-			player_send_uncached(player, V0_10, LATEST_VERSION,
-					     "state %s\n", prevstate);
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "state %s\n",
+					     prevstate);
 
 			/* Send the bank, so the client can count remaining 
 			 * resources
 			 */
-			player_send_uncached(player, V0_10, LATEST_VERSION,
-					     "bank %R\n", game->bank_deck);
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "bank %R\n",
+					     game->bank_deck);
 
 			/* Send the number of development cards played, so the
 			 * client knows how many are left.
 			 */
-			player_send_uncached(player, V0_10, LATEST_VERSION,
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION,
 					     "development-bought %d\n",
 					     game->develop_next);
 
@@ -649,18 +673,19 @@ gboolean mode_pre_game(Player * player, gint event)
 			if (!player_is_viewer(game, player->num)) {
 				GList *list;
 
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "playerinfo: resources: %R\n",
 						     player->assets);
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "playerinfo: numdevcards: %d\n",
 						     player->devel->
 						     num_cards);
 				for (i = 0; i < player->devel->num_cards;
 				     i++) {
-					player_send_uncached(player, V0_10,
+					player_send_uncached(player,
+							     FIRST_VERSION,
 							     LATEST_VERSION,
 							     "playerinfo: devcard: %d %d\n",
 							     (gint)
@@ -672,7 +697,7 @@ gboolean mode_pre_game(Player * player, gint event)
 							     cards[i].
 							     turn_bought);
 				}
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "playerinfo: %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
 						     player->num_roads,
@@ -697,7 +722,8 @@ gboolean mode_pre_game(Player * player, gint event)
 				list = player->special_points;
 				while (list) {
 					Points *points = list->data;
-					player_send_uncached(player, V0_10,
+					player_send_uncached(player,
+							     FIRST_VERSION,
 							     LATEST_VERSION,
 							     "get-point %d %d %d %s\n",
 							     player->num,
@@ -719,7 +745,7 @@ gboolean mode_pre_game(Player * player, gint event)
 				for (i = 0; i < NO_RESOURCE; i++) {
 					numassets += p->assets[i];
 				}
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "otherplayerinfo: %d %d %d %d %d %d %d %d %d %d %d\n",
 						     p->num, numassets,
@@ -739,7 +765,8 @@ gboolean mode_pre_game(Player * player, gint event)
 				list = p->special_points;
 				while (list) {
 					Points *points = list->data;
-					player_send_uncached(player, V0_10,
+					player_send_uncached(player,
+							     FIRST_VERSION,
 							     LATEST_VERSION,
 							     "get-point %d %d %d %s\n",
 							     p->num,
@@ -757,20 +784,20 @@ gboolean mode_pre_game(Player * player, gint event)
 			for (next = player->build_list;
 			     next != NULL; next = g_list_next(next)) {
 				BuildRec *build = (BuildRec *) next->data;
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "buildinfo: %B %d %d %d\n",
 						     build->type, build->x,
 						     build->y, build->pos);
 			}
 
-			player_send_uncached(player, V0_10, LATEST_VERSION,
-					     "end\n");
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "end\n");
 			return TRUE;
 		}
 		if (sm_recv(sm, "start")) {
-			player_send_uncached(player, V0_10, LATEST_VERSION,
-					     "OK\n");
+			player_send_uncached(player, FIRST_VERSION,
+					     LATEST_VERSION, "OK\n");
 
 			/* Some player was in the setup phase */
 			if (game->setup_player != NULL
@@ -780,12 +807,14 @@ gboolean mode_pre_game(Player * player, gint event)
 				    ((Player *) (game->setup_player->
 						 data))->num;
 				if (game->double_setup)
-					player_send_uncached(player, V0_10,
+					player_send_uncached(player,
+							     FIRST_VERSION,
 							     LATEST_VERSION,
 							     "player %d setup-double\n",
 							     num);
 				else
-					player_send_uncached(player, V0_10,
+					player_send_uncached(player,
+							     FIRST_VERSION,
 							     LATEST_VERSION,
 							     "player %d setup %d\n",
 							     num,
@@ -794,7 +823,7 @@ gboolean mode_pre_game(Player * player, gint event)
 			}
 
 			if (recover_from_plenty) {
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "plenty %R\n",
 						     game->bank_deck);
@@ -806,7 +835,8 @@ gboolean mode_pre_game(Player * player, gint event)
 			     next = player_next_real(next)) {
 				Player *p = (Player *) next->data;
 				if (p->discard_num > 0) {
-					player_send_uncached(player, V0_10,
+					player_send_uncached(player,
+							     FIRST_VERSION,
 							     LATEST_VERSION,
 							     "player %d must-discard %d\n",
 							     p->num,
@@ -814,7 +844,8 @@ gboolean mode_pre_game(Player * player, gint event)
 							     discard_num);
 				}
 				if (p->gold > 0) {
-					player_send_uncached(player, V0_10,
+					player_send_uncached(player,
+							     FIRST_VERSION,
 							     LATEST_VERSION,
 							     "player %d prepare-gold %d\n",
 							     p->num,
@@ -829,7 +860,7 @@ gboolean mode_pre_game(Player * player, gint event)
 				gint limited_bank[NO_RESOURCE];
 				gold_limited_bank(game, player->gold,
 						  limited_bank);
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "choose-gold %d %R\n",
 						     player->gold,
@@ -845,7 +876,7 @@ gboolean mode_pre_game(Player * player, gint event)
 				QuoteInfo *quote =
 				    quotelist_first(game->quotes);
 
-				player_send_uncached(player, V0_10,
+				player_send_uncached(player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "player %d domestic-trade call supply %R receive %R\n",
 						     game->curr_player,
@@ -854,7 +885,7 @@ gboolean mode_pre_game(Player * player, gint event)
 				while (quote) {
 					if (quote->is_domestic) {
 						player_send_uncached
-						    (player, V0_10,
+						    (player, FIRST_VERSION,
 						     LATEST_VERSION,
 						     "player %d domestic-quote quote %d supply %R receive %R\n",
 						     quote->var.d.
@@ -870,7 +901,8 @@ gboolean mode_pre_game(Player * player, gint event)
 				 * send reject again */
 				if (state !=
 				    (StateFunc) mode_domestic_quote) {
-					player_send_uncached(player, V0_10,
+					player_send_uncached(player,
+							     FIRST_VERSION,
 							     LATEST_VERSION,
 							     "player %d domestic-quote finish\n",
 							     player->num);

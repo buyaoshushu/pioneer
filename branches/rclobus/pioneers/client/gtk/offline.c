@@ -37,6 +37,7 @@ static gboolean connectable = FALSE;
 
 static const gchar *name = NULL;
 static gboolean viewer = FALSE;
+static const gchar *style = NULL;
 static const gchar *server = NULL;
 static const gchar *port = NULL;
 static const gchar *meta_server = NULL;
@@ -96,13 +97,14 @@ static void frontend_offline_gui(GuiEvent event)
 				   && !connectable);
 		break;
 	case GUI_CONNECT_TRY:
-		gui_show_splash_page(FALSE);
+		gui_show_splash_page(FALSE, NULL);
 		gui_set_net_status(_("Connecting"));
 
 		connectable = FALSE;
 		have_dlg = FALSE;
 		cb_connect(connect_get_server(), connect_get_port(),
-			   connect_get_name(), connect_get_viewer());
+			   connect_get_name(), connect_get_viewer(),
+			   connect_get_style());
 		frontend_gui_update();
 		break;
 	case GUI_CONNECT:
@@ -162,6 +164,7 @@ void frontend_init(int argc, char **argv)
 #endif
 	GOptionContext *context;
 	GError *error = NULL;
+	gchar *style;
 
 	frontend_gui_register_init();
 
@@ -237,9 +240,25 @@ void frontend_init(int argc, char **argv)
 			    config_get_int_with_default("connect/viewer",
 							0) ? TRUE : FALSE;
 		}
+
+		if (!style) {
+			style =
+			    config_get_string("connect/style",
+					      &default_returned);
+			if (default_returned) {
+				style = g_strdup("square");
+			}
+		}
 	}
+	style = config_get_string("connect/style", &default_returned);
+	if (default_returned) {
+		style = g_strdup("square");
+	}
+
 	connect_set_name(name);
 	connect_set_viewer(viewer);
+	connect_set_style(style);
+	g_free(style);
 
 	if (server && port) {
 		server_from_commandline = TRUE;
