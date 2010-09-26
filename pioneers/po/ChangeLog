@@ -1,3 +1,17 @@
+2010-09-26 Roland Clobus <rclobus@rclobus.nl>
+        * en_GB.po: Imported from Launchpad, thanks to Philipp Kleinhenz.
+        * gl.po: Added translation to Galician by Indalecio Freiría Santos.
+        * nl.po: Added missing keyboard shortcuts.
+        * sv.po: Updated from Launchpad.net
+        * cs.po, pt.po: Updated from Launchpad.net
+        * de.po: Updated from Launchpad.net
+        * en_GB.po: Imported from Launchpad, thanks to Philipp Kleinhenz.
+        * es.po: Merged with Launchpad 2010-03-11 19:48+0000
+        * nl.po: Use a spell checker
+        * de.po: Improvement suggested by Jochen Kemnade on Launchpad
+        * nl.po: Fixed a translation and removed a few wrong word separations
+	* LINGUAS: Added en_GB and gl
+
 2009-11-04 Roland Clobus <rclobus@bigfoot.com>
 	* all: Final line number update for 0.12.3
 
