@@ -724,7 +724,7 @@ msgstr "%s removed a bridge.\n"
 #: ../client/common/player.c:673
 #, c-format
 msgid "%s has cancelled a ship's movement.\n"
-msgstr "%s has canceled a ship's movement.\n"
+msgstr "%s has cancelled a ship's movement.\n"
 
 #: ../client/common/player.c:676
 #, c-format
