@@ -212,149 +212,66 @@ static void help_manual_cb(void);
 
 /* Normal items */
 static GtkActionEntry entries[] = {
-	{"GameMenu", NULL,
-	 /* Menu entry */
-	 N_("_Game"), NULL, NULL, NULL},
-	{"GameNew", GTK_STOCK_NEW,
-	 /* Menu entry */
-	 N_("_New Game"), "<control>N",
-	 /* Tooltip for New Game menu entry */
+	{"GameMenu", NULL, N_("_Game"), NULL, NULL, NULL},
+	{"GameNew", GTK_STOCK_NEW, N_("_New game"), "<control>N",
 	 N_("Start a new game"), game_new_cb},
-	{"GameLeave", GTK_STOCK_STOP,
-	 /* Menu entry */
-	 N_("_Leave Game"), NULL,
-	 /* Tooltip for Leave Game menu entry */
+	{"GameLeave", GTK_STOCK_STOP, N_("_Leave game"), NULL,
 	 N_("Leave this game"), game_leave_cb},
 #ifdef ADMIN_GTK
-	{"GameAdmin", NULL,
-	 /* Menu entry */
-	 N_("_Admin"), "<control>A",
-	 /* Tooltip for Admin menu entry */
+	{"GameAdmin", NULL, N_("_Admin"), "<control>A",
 	 N_("Administer Pioneers server"), show_admin_interface},
 #endif
-	{"PlayerName", NULL,
-	 /* Menu entry */
-	 N_("_Player Name"), "<control>P",
-	 /* Tooltip for Player Name menu entry */
+	{"PlayerName", NULL, N_("_Player name"), "<control>P",
 	 N_("Change your player name"), playername_cb},
-	{"Legend", GTK_STOCK_DIALOG_INFO,
-	 /* Menu entry */
-	 N_("L_egend"), NULL,
-	 /* Tooltip for Legend menu entry */
+	{"Legend", GTK_STOCK_DIALOG_INFO, N_("L_egend"), NULL,
 	 N_("Terrain legend and building costs"), game_legend_cb},
-	{"GameSettings", GTK_STOCK_DIALOG_INFO,
-	 /* Menu entry */
-	 N_("_Game Settings"), NULL,
-	 /* Tooltip for Game Settings menu entry */
+	{"GameSettings", GTK_STOCK_DIALOG_INFO, N_("_Game Settings"), NULL,
 	 N_("Settings for the current game"), game_settings_cb},
-	{"DiceHistogram", GTK_STOCK_DIALOG_INFO,
-	 /* Menu entry */
-	 N_("_Dice Histogram"), NULL,
-	 /* Tooltip for Dice Histogram menu entry */
-	 N_("Histogram of dice rolls"), game_histogram_cb},
-	{"GameQuit", GTK_STOCK_QUIT,
-	 /* Menu entry */
-	 N_("_Quit"), "<control>Q",
-	 /* Tooltip for Quit menu entry */
+	{"DiceHistogram", GTK_STOCK_DIALOG_INFO, N_("_Dice Histogram"),
+	 NULL, N_("Histogram of dice rolls"), game_histogram_cb},
+	{"GameQuit", GTK_STOCK_QUIT, N_("_Quit"), "<control>Q",
 	 N_("Quit the program"), game_quit_cb},
-	{"ActionsMenu", NULL,
-	 /* Menu entry */
-	 N_("_Actions"), NULL, NULL, NULL},
-	{"RollDice", PIONEERS_PIXMAP_DICE,
-	 /* Menu entry */
-	 N_("Roll Dice"), "F1",
-	 /* Tooltip for Roll Dice menu entry */
+	{"ActionsMenu", NULL, N_("_Actions"), NULL, NULL, NULL},
+	{"RollDice", PIONEERS_PIXMAP_DICE, N_("Roll Dice"), "F1",
 	 N_("Roll the dice"), roll_dice_cb},
-	{"Trade", PIONEERS_PIXMAP_TRADE,
-	 /* Menu entry */
-	 N_("Trade"), "F2",
-	 /* Tooltip for Trade menu entry */
-	 N_("Trade"),
+	{"Trade", PIONEERS_PIXMAP_TRADE, N_("Trade"), "F2", N_("Trade"),
 	 trade_cb},
-	{"Undo", GTK_STOCK_UNDO,
-	 /* Menu entry */
-	 N_("Undo"), "F3",
-	 /* Tooltip for Undo menu entry */
-	 N_("Undo"), undo_cb},
-	{"Finish", PIONEERS_PIXMAP_FINISH,
-	 /* Menu entry */
-	 N_("Finish"), "F4",
-	 /* Tooltip for Finish menu entry */
+	{"Undo", GTK_STOCK_UNDO, N_("Undo"), "F3", N_("Undo"), undo_cb},
+	{"Finish", PIONEERS_PIXMAP_FINISH, N_("Finish"), "F4",
 	 N_("Finish"), finish_cb},
-	{"BuildRoad", PIONEERS_PIXMAP_ROAD,
-	 /* Menu entry */
-	 N_("Road"), "F5",
-	 /* Tooltip for Road menu entry */
+	{"BuildRoad", PIONEERS_PIXMAP_ROAD, N_("Road"), "F5",
 	 N_("Build a road"), build_road_cb},
-	{"BuildShip", PIONEERS_PIXMAP_SHIP,
-	 /* Menu entry */
-	 N_("Ship"), "F6",
-	 /* Tooltip for Ship menu entry */
+	{"BuildShip", PIONEERS_PIXMAP_SHIP, N_("Ship"), "F6",
 	 N_("Build a ship"), build_ship_cb},
-	{"MoveShip", PIONEERS_PIXMAP_SHIP_MOVEMENT,
-	 /* Menu entry */
-	 N_("Move Ship"), "F7",
-	 /* Tooltip for Move Ship menu entry */
+	{"MoveShip", PIONEERS_PIXMAP_SHIP_MOVEMENT, N_("Move Ship"), "F7",
 	 N_("Move a ship"), move_ship_cb},
-	{"BuildBridge", PIONEERS_PIXMAP_BRIDGE,
-	 /* Menu entry */
-	 N_("Bridge"), "F8",
-	 /* Tooltip for Bridge menu entry */
+	{"BuildBridge", PIONEERS_PIXMAP_BRIDGE, N_("Bridge"), "F8",
 	 N_("Build a bridge"), build_bridge_cb},
-	{"BuildSettlement", PIONEERS_PIXMAP_SETTLEMENT,
-	 /* Menu entry */
-	 N_("Settlement"),
-	 "F9",
-	 /* Tooltip for Settlement menu entry */
-	 N_("Build a settlement"), build_settlement_cb},
-	{"BuildCity", PIONEERS_PIXMAP_CITY,
-	 /* Menu entry */
-	 N_("City"), "F10",
-	 /* Tooltip for City menu entry */
+	{"BuildSettlement", PIONEERS_PIXMAP_SETTLEMENT, N_("Settlement"),
+	 "F9", N_("Build a settlement"), build_settlement_cb},
+	{"BuildCity", PIONEERS_PIXMAP_CITY, N_("City"), "F10",
 	 N_("Build a city"), build_city_cb},
-	{"BuyDevelopment", PIONEERS_PIXMAP_DEVELOP,
-	 /* Menu entry */
-	 N_("Develop"), "F11",
-	 /* Tooltip for Develop menu entry */
+	{"BuyDevelopment", PIONEERS_PIXMAP_DEVELOP, N_("Develop"), "F11",
 	 N_("Buy a development card"), buy_development_cb},
-	{"BuildCityWall", PIONEERS_PIXMAP_CITY_WALL,
-	 /* Menu entry */
-	 N_("City Wall"), NULL,
-	 /* Tooltip for City Wall menu entry */
+	{"BuildCityWall", PIONEERS_PIXMAP_CITY_WALL, N_("City Wall"), NULL,
 	 N_("Build a city wall"), build_city_wall_cb},
 
-	{"SettingsMenu", NULL,
-	 /* Menu entry */
-	 N_("_Settings"), NULL, NULL, NULL},
-	{"Preferences", GTK_STOCK_PREFERENCES,
-	 /* Menu entry */
-	 N_("Prefere_nces"), NULL,
-	 /* Tooltip for Preferences menu entry */
+	{"SettingsMenu", NULL, N_("_Settings"), NULL, NULL, NULL},
+	{"Preferences", GTK_STOCK_PREFERENCES, N_("Prefere_nces"), NULL,
 	 N_("Configure the application"), preferences_cb},
 
-	{"HelpMenu", NULL,
-	 /* Menu entry */
-	 N_("_Help"), NULL, NULL, NULL},
-	{"HelpAbout", NULL,
-	 /* Menu entry */
-	 N_("_About Pioneers"), NULL,
-	 /* Tooltip for About Pioneers menu entry */
+	{"HelpMenu", NULL, N_("_Help"), NULL, NULL, NULL},
+	{"HelpAbout", NULL, N_("_About Pioneers"), NULL,
 	 N_("Information about Pioneers"), help_about_cb},
 #ifdef HAVE_HELP
-	{"HelpManual", GTK_STOCK_HELP,
-	 /* Menu entry */
-	 N_("_Help"), "<control>H",
-	 /* Tooltip for Help menu entry */
+	{"HelpManual", GTK_STOCK_HELP, N_("_Help"), "<control>H",
 	 N_("Show the manual"), help_manual_cb}
 #endif
 };
 
 /* Toggle items */
 static GtkToggleActionEntry toggle_entries[] = {
-	{"ShowHideToolbar", NULL,
-	 /* Menu entry */
-	 N_("_Toolbar"), NULL,
-	 /* Tooltip for Toolbar menu entry */
+	{"ShowHideToolbar", NULL, N_("_Toolbar"), NULL,
 	 N_("Show or hide the toolbar"), showhide_toolbar_cb, TRUE}
 };
 
@@ -450,7 +367,7 @@ void gui_set_vp_target_value(gint vp)
 	gchar *vp_text;
 
 	/* Victory points target in statusbar */
-	vp_text = g_strdup_printf(_("Points needed to win: %i"), vp);
+	vp_text = g_strdup_printf(_("Points Needed to Win: %i"), vp);
 
 	gtk_label_set_text(GTK_LABEL(vp_target_status), vp_text);
 	g_free(vp_text);

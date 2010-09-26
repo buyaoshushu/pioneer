@@ -36,10 +36,6 @@ console_cflags = \
 	-DPIONEERS_CLIENT_GTK_PATH=\""$(bindir)/pioneers"\" \
 	-DPIONEERS_AI_PATH=\""$(bindir)/pioneersai"\"
 
-avahi_cflags = \
-	$(AVAHI_CLIENT_CFLAGS) \
-	$(AVAHI_GLIB_CFLAGS)
-
 gtk_cflags = \
 	$(console_cflags) \
 	-I$(top_srcdir)/common/gtk \
@@ -52,10 +48,6 @@ console_libs = \
 	libpioneers.a \
 	$(top_builddir)/common/libpioneers_a-driver.o \
 	$(GLIB2_LIBS)
-
-avahi_libs = \
-	$(AVAHI_CLIENT_LIBS) \
-	$(AVAHI_GLIB_LIBS)
 
 gtk_libs = \
 	$(console_libs) \
@@ -196,7 +188,6 @@ distuninstallcheck_listfiles = find . -type f -print | grep -v '^\./var/scrollke
 
 # Reformat the code.
 reindent:
-	find . -name '*.[ch]' -exec indent -kr -i8 '{}' ';'
 	find . -name '*.[ch]' -exec indent -kr -i8 '{}' ';'
 
 restorepo:

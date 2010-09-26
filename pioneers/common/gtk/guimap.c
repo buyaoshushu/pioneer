@@ -40,6 +40,12 @@ typedef struct {
 	gint old_highlight;
 } HighlightInfo;
 
+enum MapElementType {
+	MAP_EDGE,
+	MAP_NODE,
+	MAP_HEX
+};
+
 /* Local function prototypes */
 static void calc_edge_poly(const GuiMap * gmap, const Edge * edge,
 			   const Polygon * shape, Polygon * poly);
@@ -146,7 +152,7 @@ static gint expose_map_cb(GtkWidget * area, GdkEventExpose * event,
 	}
 
 	gdk_draw_drawable(area->window,
-			  area->style->fg_gc[GTK_STATE_NORMAL],
+			  area->style->fg_gc[GTK_WIDGET_STATE(area)],
 			  gmap->pixmap,
 			  event->area.x, event->area.y,
 			  event->area.x, event->area.y,
@@ -1258,7 +1264,7 @@ static void build_node_regions(GuiMap * gmap)
 	}
 }
 
-Node *guimap_find_node(GuiMap * gmap, gint x, gint y)
+static void find_node(GuiMap * gmap, gint x, gint y, MapElement * element)
 {
 	gint y_hex;
 	gint x_hex;
@@ -1266,26 +1272,22 @@ Node *guimap_find_node(GuiMap * gmap, gint x, gint y)
 	build_node_regions(gmap);
 	for (x_hex = 0; x_hex < gmap->map->x_size; x_hex++)
 		for (y_hex = 0; y_hex < gmap->map->y_size; y_hex++) {
-			Hex *hex;
-			Node *node;
+			const Hex *hex;
+			const Node *node;
 
 			hex = gmap->map->grid[y_hex][x_hex];
 			if (hex != NULL) {
 				node = find_hex_node(gmap, hex, x, y);
 				if (node != NULL) {
-					return node;
+					element->node = node;
+					return;
 				}
 			}
 		}
-	return NULL;
+	element->pointer = NULL;
 }
 
-static void find_node(GuiMap * gmap, gint x, gint y, MapElement * element)
-{
-	element->node = guimap_find_node(gmap, x, y);
-}
-
-Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y)
+static Hex *find_hex_internal(GuiMap * gmap, gint x, gint y)
 {
 	gint y_hex;
 	gint x_hex;
@@ -1313,7 +1315,7 @@ Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y)
 
 static void find_hex(GuiMap * gmap, gint x, gint y, MapElement * element)
 {
-	element->hex = guimap_find_hex(gmap, x, y);
+	element->hex = find_hex_internal(gmap, x, y);
 }
 
 void guimap_draw_edge(GuiMap * gmap, const Edge * edge)
@@ -1638,6 +1640,11 @@ void guimap_draw_hex(GuiMap * gmap, const Hex * hex)
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
 
+Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y)
+{
+	return find_hex_internal(gmap, x, y);
+}
+
 typedef struct {
 	void (*find) (GuiMap * gmap, gint x, gint y, MapElement * element);
 	void (*erase_cursor) (GuiMap * gmap);
@@ -1671,9 +1678,9 @@ CancelFunc shipMoveC;
  *  @param cursor_y Y position of the cursor
  *  @return The square of the distance
  */
-gint guimap_distance_cursor(const GuiMap * gmap,
+static gint distance_cursor(const GuiMap * gmap,
 			    const MapElement * element,
-			    MapElementType type, gint cursor_x,
+			    enum MapElementType type, gint cursor_x,
 			    gint cursor_y)
 {
 	static GdkPoint single_point = { 0, 0 };
@@ -1747,11 +1754,11 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 				hex1.hex = element->edge->hexes[0];
 				hex2.hex = element->edge->hexes[1];
 				distance1 =
-				    guimap_distance_cursor(gmap, &hex1,
-							   MAP_HEX, x, y);
+				    distance_cursor(gmap, &hex1, MAP_HEX,
+						    x, y);
 				distance2 =
-				    guimap_distance_cursor(gmap, &hex2,
-							   MAP_HEX, x, y);
+				    distance_cursor(gmap, &hex2, MAP_HEX,
+						    x, y);
 				if (distance1 == distance2)
 					can_build_ship = FALSE;
 				else {
@@ -1778,15 +1785,13 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 				node1.node = element->edge->nodes[0];
 				node2.node = element->edge->nodes[1];
 				distanceNode =
-				    MIN(guimap_distance_cursor
+				    MIN(distance_cursor
 					(gmap, &node1, MAP_NODE, x, y),
-					guimap_distance_cursor(gmap,
-							       &node2,
-							       MAP_NODE, x,
-							       y));
+					distance_cursor(gmap, &node2,
+							MAP_NODE, x, y));
 				distanceEdge =
-				    guimap_distance_cursor(gmap, element,
-							   MAP_EDGE, x, y);
+				    distance_cursor(gmap, element,
+						    MAP_EDGE, x, y);
 				if (distanceNode < distanceEdge)
 					can_build_ship = FALSE;
 				else
@@ -1797,8 +1802,8 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 			    || can_build_bridge || can_move_ship;
 			if (can_build_edge)
 				distance_edge =
-				    guimap_distance_cursor(gmap, element,
-							   MAP_EDGE, x, y);
+				    distance_cursor(gmap, element,
+						    MAP_EDGE, x, y);
 		}
 
 		find_node(gmap, x, y, element);
@@ -1821,8 +1826,8 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 			    || can_build_city || can_build_city_wall;
 			if (can_build_node)
 				distance_node =
-				    guimap_distance_cursor(gmap, element,
-							   MAP_NODE, x, y);
+				    distance_cursor(gmap, element,
+						    MAP_NODE, x, y);
 		}
 
 		/* When both edge and node can be built,

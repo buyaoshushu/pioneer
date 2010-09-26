@@ -203,7 +203,7 @@ void player_change_name(gint player_num, const gchar * name)
 			viewers = g_list_prepend(viewers, viewer);
 			viewer->num = player_num;
 			viewer->name = NULL;
-			viewer->style = g_strdup(default_player_style);
+			viewer->style = g_strdup("square");
 			old_name = NULL;
 		} else {
 			old_name = viewer->name;
@@ -264,8 +264,8 @@ void player_has_quit(gint player_num)
 	}
 	callbacks.player_quit(player_num);
 	player = player_get(player_num);
-	log_message(MSG_INFO, _("%s has quit.\n"), player_name(player_num,
-							       TRUE));
+	log_message(MSG_INFO, _("%s has quit\n"), player_name(player_num,
+							      TRUE));
 }
 
 void player_largest_army(gint player_num)
@@ -670,7 +670,7 @@ void player_build_move(gint player_num, gint sx, gint sy, gint spos,
 	callbacks.draw_edge(to);
 	if (isundo)
 		log_message(MSG_BUILD,
-			    _("%s has canceled a ship's movement.\n"),
+			    _("%s has cancelled a ship's movement.\n"),
 			    player_name(player_num, TRUE));
 	else
 		log_message(MSG_BUILD, _("%s moved a ship.\n"),
@@ -776,7 +776,7 @@ const gchar *player_get_style(gint player_num)
 		Player *player = player_get(player_num);
 		style = player->style;
 	}
-	return style == NULL ? default_player_style : style;
+	return style == NULL ? "square" : style;
 }
 
 gint current_player(void)

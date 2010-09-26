@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-27 20:34+0100\n"
-"PO-Revision-Date: 2010-03-18 08:55+0100\n"
-"Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
+"POT-Creation-Date: 2009-11-04 11:30+0100\n"
+"PO-Revision-Date: 2008-03-27 07:53+0100\n"
+"Last-Translator: Roland Clobus <rclobus@bigfoot.com>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@bigfoot."
 "com>\n"
 "MIME-Version: 1.0\n"
@@ -274,7 +274,7 @@ msgid ""
 "Hello, welcome to the lobby. I am a simple robot. Type '/help' in the chat "
 "to see the list of commands I know."
 msgstr ""
-"Hallo, welkom in de ontvangstruimte. Ik ben een eenvoudige robot. Typ '/"
+"Hallo, welkom in the ontvangstruimte. Ik ben een eenvoudige robot. Typ '/"
 "help' in de chat om de lijst van commando's te zien."
 
 #. Translators: don't translate '/help'
@@ -317,7 +317,7 @@ msgstr "Het spel begint. Ik ben niet meer nodig. Tot ziens."
 
 #: ../client/common/client.c:102
 msgid "Waiting"
-msgstr "Wachten op reactie van de server."
+msgstr "Wachten op reaktie van de server."
 
 #: ../client/common/client.c:104 ../client/common/client.c:1312
 msgid "Idle"
@@ -722,7 +722,7 @@ msgstr "%s heeft een brug weggehaald.\n"
 
 #: ../client/common/player.c:673
 #, c-format
-msgid "%s has canceled a ship's movement.\n"
+msgid "%s has cancelled a ship's movement.\n"
 msgstr "%s laat het schip toch maar niet varen.\n"
 
 #: ../client/common/player.c:676
@@ -1690,7 +1690,7 @@ msgid "Development Card"
 msgstr "Ontwikkelingskaart"
 
 #: ../client/gtk/monopoly.c:104
-msgid "Select the resource you wish to monopolize."
+msgid "Select the resource you wish to monopolise."
 msgstr "Kies de grondstof waar je een monopolie op wilt."
 
 #: ../client/gtk/name.c:123
@@ -1799,7 +1799,7 @@ msgstr "Ontwikkelingskaarten"
 #. Caption for the overview of the points and card of other players
 #: ../client/gtk/player.c:551
 msgid "<b>Player Summary</b>"
-msgstr "<b>Spelersoverzicht</b>"
+msgstr "<b>Speleroverzicht</b>"
 
 #: ../client/gtk/plenty.c:86
 msgid "Please choose one resource from the bank"
@@ -2079,17 +2079,17 @@ msgstr "<b>Ik geef</b>"
 #. Button text, trade: call for quotes from other players
 #: ../client/gtk/trade.c:495
 msgid "_Call for Quotes"
-msgstr "_Vraag om voorstellen"
+msgstr "Vraag om voorstellen"
 
 #. Button text: Trade page, accept selected quote
 #: ../client/gtk/trade.c:523
 msgid "_Accept Quote"
-msgstr "_Accepteer voorstel"
+msgstr "Accepteer voorstel"
 
 #. Button text: Trade page, finish trading
 #: ../client/gtk/trade.c:529
 msgid "_Finish Trading"
-msgstr "_Beëindig handelsfase"
+msgstr "Beëindig handelsfase"
 
 #: ../common/game.c:604 ../common/game.c:635
 msgid "This game cannot be won."
@@ -2687,7 +2687,7 @@ msgstr "_Verander titel"
 
 #: ../editor/gtk/editor.c:1010
 msgid "Change game title"
-msgstr "Verander de titel van het spel"
+msgstr "Verander de title van het spel"
 
 #: ../editor/gtk/editor.c:1011 ../server/gtk/main.c:98
 msgid "_Check Victory Point Target"
@@ -2722,7 +2722,7 @@ msgstr "bestandsnaam"
 
 #: ../editor/gtk/editor.c:1096
 msgid "- Editor for games of Pioneers"
-msgstr "- Editor voor spellen Pioniers"
+msgstr "- Editor for spellen Pioniers"
 
 #: ../editor/gtk/editor.c:1137 ../server/gtk/main.c:1032
 #, c-format
@@ -2931,7 +2931,7 @@ msgstr "Start Pioniers"
 
 #: ../server/gtk/main.c:822
 msgid "Computer Players"
-msgstr "Computerspelers"
+msgstr "Computer spelers"
 
 #: ../server/gtk/main.c:831
 msgid "Enable Chat"
@@ -2939,7 +2939,7 @@ msgstr "Chat mogelijk"
 
 #: ../server/gtk/main.c:837
 msgid "Enable chat messages"
-msgstr "De computerspeler mag chat-boodschappen versturen"
+msgstr "De computer speler mag chat boodschappen versturen"
 
 #: ../server/gtk/main.c:844
 msgid "Add Computer Player"
@@ -2972,7 +2972,7 @@ msgstr "Het spel is afgelopen.\n"
 #. Long description in the commandline for server-console: help
 #: ../server/gtk/main.c:991 ../server/main.c:175
 msgid "- Host a game of Pioneers"
-msgstr "- Creëer een spel Pioniers"
+msgstr "- Creeer een spel Pioniers"
 
 #. Name in the titlebar of the server
 #: ../server/gtk/main.c:1013 ../server/gtk/pioneers-server.desktop.in.h:2
@@ -2981,7 +2981,7 @@ msgstr "Pioniers Server"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:1
 msgid "Host a game of Pioneers"
-msgstr "Creëer een spel Pioniers"
+msgstr "Creeer een spel Pioniers"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:75
@@ -3092,7 +3092,7 @@ msgstr "Diverse opties"
 #: ../server/main.c:224
 #, c-format
 msgid "Cannot set game title and filename at the same time\n"
-msgstr "Kan niet én de titel én de bestandsnaam tegelijkertijd instellen\n"
+msgstr "Kan niet èn de titel èn de bestandsnaam tegelijkertijd instellen\n"
 
 #. server-console commandline error
 #: ../server/main.c:241
@@ -3131,11 +3131,11 @@ msgstr "onbekende extensie genegeerd"
 
 #: ../server/player.c:210 ../server/player.c:247
 msgid "The last player left, the tournament timer is reset."
-msgstr "De laatste speler is vertrokken, de teller wordt opnieuw ingesteld."
+msgstr "De laatste speler is vertrokken, de teller wordt opgenieuw ingesteld."
 
 #: ../server/player.c:217
 msgid "Game starts, adding computer players."
-msgstr "Het spel gaat beginnen, computerspelers worden toegevoegd."
+msgstr "Het spel gaat beginnen, computer spelers worden toegevoegd."
 
 #: ../server/player.c:260
 #, c-format

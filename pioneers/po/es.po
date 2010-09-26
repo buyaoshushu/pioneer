@@ -7,17 +7,15 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.12.3\n"
+"Project-Id-Version: Pioneers 0.10.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-27 20:34+0100\n"
-"PO-Revision-Date: 2009-11-23 22:19+0000\n"
-"Last-Translator: DiegoJ <diegojromerolopez@gmail.com>\n"
+"POT-Creation-Date: 2009-11-04 11:30+0100\n"
+"PO-Revision-Date: 2008-04-27 21:10+0000\n"
+"Last-Translator: Kiba-Kun <kibafang@gmail.com>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-03-11 19:48+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
 
 #. Commandline pioneersai: server
 #. Commandline option of client: hostname of the server
@@ -35,8 +33,9 @@ msgstr "Puerto"
 
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:71
+#, fuzzy
 msgid "Computer name (mandatory)"
-msgstr "Nombre de equipo (requerido)"
+msgstr "Nombre del ordenador (dejar vacío para nombre aleatorio)"
 
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:74
@@ -89,7 +88,7 @@ msgstr "Versión de Pioneers:"
 #: ../client/ai/ai.c:127
 #, c-format
 msgid "A name must be provided.\n"
-msgstr "Debes de proveer un nombre.\n"
+msgstr ""
 
 #: ../client/ai/ai.c:141
 #, c-format
@@ -674,9 +673,9 @@ msgid "%s built a city.\n"
 msgstr "%s edifica una ciudad.\n"
 
 #: ../client/common/player.c:533
-#, c-format
+#, fuzzy, c-format
 msgid "%s built a city wall.\n"
-msgstr "%s hizo amurallar una ciudad.\n"
+msgstr "%s edifica una ciudad.\n"
 
 #: ../client/common/player.c:543
 #, c-format
@@ -709,9 +708,9 @@ msgid "%s removed a city.\n"
 msgstr "%s quita una ciudad.\n"
 
 #: ../client/common/player.c:624
-#, c-format
+#, fuzzy, c-format
 msgid "%s removed a city wall.\n"
-msgstr "%s quitó el muro a una ciudad.\n"
+msgstr "%s quita una ciudad.\n"
 
 #: ../client/common/player.c:633
 #, c-format
@@ -725,7 +724,7 @@ msgstr "%s quita un puente.\n"
 
 #: ../client/common/player.c:673
 #, c-format
-msgid "%s has canceled a ship's movement.\n"
+msgid "%s has cancelled a ship's movement.\n"
 msgstr "%s cancela un movimiento de barco.\n"
 
 #: ../client/common/player.c:676
@@ -885,9 +884,9 @@ msgid "%s, %s"
 msgstr "%s, %s"
 
 #: ../client/common/robber.c:62
-#, c-format
+#, fuzzy, c-format
 msgid "%s has undone the robber movement.\n"
-msgstr "%s ha deshecho el movimiento de los ladrones.\n"
+msgstr "%s debe mover el ladrón.\n"
 
 #: ../client/common/robber.c:65
 #, c-format
@@ -895,9 +894,9 @@ msgid "%s moved the robber.\n"
 msgstr "%s mueve el ladrón.\n"
 
 #: ../client/common/robber.c:75
-#, c-format
+#, fuzzy, c-format
 msgid "%s has undone the pirate movement.\n"
-msgstr "%s ha deshecho el movimiento pirata.\n"
+msgstr "%s cancela un movimiento de barco.\n"
 
 #: ../client/common/robber.c:78
 #, c-format
@@ -1328,8 +1327,9 @@ msgid "Change your player name"
 msgstr "Cambiar tu nombre de jugador"
 
 #: ../client/gtk/gui.c:226
+#, fuzzy
 msgid "L_egend"
-msgstr "L_eyenda"
+msgstr "Leyenda"
 
 #: ../client/gtk/gui.c:227
 msgid "Terrain legend and building costs"
@@ -1448,12 +1448,14 @@ msgstr "Comprar una carta de desarrollo"
 
 #: ../client/gtk/gui.c:256 ../client/gtk/legend.c:239
 #: ../client/gtk/player.c:55 ../editor/gtk/game-buildings.c:11
+#, fuzzy
 msgid "City Wall"
-msgstr "Muralla"
+msgstr "Ciudad"
 
 #: ../client/gtk/gui.c:257
+#, fuzzy
 msgid "Build a city wall"
-msgstr "Construir un muro de ciudad"
+msgstr "Construir una ciudad"
 
 #: ../client/gtk/gui.c:259
 msgid "_Settings"
@@ -1589,13 +1591,14 @@ msgstr "Mostrar accesos directos de teclado en barra de herramientas"
 
 #. Label for the option to disable all sounds
 #: ../client/gtk/gui.c:1036
+#, fuzzy
 msgid "Silent mode"
-msgstr "Modo silencioso"
+msgstr "Nombre de archivo"
 
 #. Tooltip for the option to disable all sounds
 #: ../client/gtk/gui.c:1042
 msgid "In silent mode no sounds are made"
-msgstr "En modo de silencio, no se reproducen sonidos."
+msgstr ""
 
 #. Label for the option to announce when players/viewers enter
 #: ../client/gtk/gui.c:1048
@@ -1610,12 +1613,12 @@ msgstr "Hacer sonido cuando un nuevo jugador o visor entre al juego"
 #. Label for the option to use the 16:9 layout.
 #: ../client/gtk/gui.c:1069
 msgid "Use 16:9 layout"
-msgstr "Usa un tema de 16:9"
+msgstr ""
 
 #. Tooltip for 16:9 option.
 #: ../client/gtk/gui.c:1079
 msgid "Use a 16:9 friendly layout for the window"
-msgstr "Usar una disposición para la ventana de 16:9"
+msgstr ""
 
 #: ../client/gtk/gui.c:1090
 msgid "The Pioneers Game"
@@ -1692,7 +1695,7 @@ msgid "Development Card"
 msgstr "Carta de desarrollo"
 
 #: ../client/gtk/monopoly.c:104
-msgid "Select the resource you wish to monopolize."
+msgid "Select the resource you wish to monopolise."
 msgstr "Escoge el recurso que quieres monopolizar."
 
 #: ../client/gtk/name.c:123
@@ -1735,8 +1738,9 @@ msgid "- Play a game of Pioneers"
 msgstr "- Jugar un juego de Pioneers"
 
 #: ../client/gtk/pioneers.desktop.in.h:2
+#, fuzzy
 msgid "Play a game of Pioneers"
-msgstr "Jugar al juego de los pioneros"
+msgstr "- Jugar un juego de Pioneers"
 
 #: ../client/gtk/player.c:53
 msgid "Settlements"
@@ -1953,8 +1957,9 @@ msgid "Trading allowed only before build/buy?"
 msgstr "¿Comercio permitido solo antes de construir/comprar?"
 
 #: ../client/gtk/settingscreen.c:170
+#, fuzzy
 msgid "Check Victory Only At End Of Turn?"
-msgstr "¿Comprobar victoria sólo al final de turno?"
+msgstr "Punto de victoria"
 
 #: ../client/gtk/settingscreen.c:175
 msgid "Amount of Each Resource:"
@@ -1970,7 +1975,7 @@ msgstr "Use Pirata:"
 
 #: ../client/gtk/settingscreen.c:223
 msgid "Island Discovery Bonuses:"
-msgstr "Bonificaciones por descubrimiento de islas:"
+msgstr ""
 
 #: ../client/gtk/settingscreen.c:239
 msgid "<b>Building Quotas</b>"
@@ -2094,22 +2099,22 @@ msgid "_Finish Trading"
 msgstr "Terminar negocio"
 
 #: ../common/game.c:604 ../common/game.c:635
+#, fuzzy
 msgid "This game cannot be won."
-msgstr "Este juego no se puede ganar."
+msgstr "Este juego comenzará pronto"
 
 #: ../common/game.c:605
+#, fuzzy
 msgid "There is no land."
-msgstr "No hay tierra"
+msgstr "No hay un camino más largo."
 
 #: ../common/game.c:639
 msgid "It is possible that this game cannot be won."
-msgstr "Es posible que este juego no pueda ser ganado."
+msgstr ""
 
 #: ../common/game.c:645
 msgid "This game can be won by only building all settlements and cities."
 msgstr ""
-"Este juego puede ser ganado con solo construir todos los asentamientos y "
-"ciudades."
 
 #: ../common/game.c:651
 #, c-format
@@ -2121,12 +2126,6 @@ msgid ""
 "Maximum island discovery bonus: %d\n"
 "Total: %d"
 msgstr ""
-"Puntos de victoria necesarios: %d\n"
-"Puntos obtenidos por construcciones: %d\n"
-"Puntos al desarrollar cartas: %d\n"
-"Carretera más larga/Ejército más grande: %d+%d\n"
-"Bonificación máxima por descubrimiento de islas: %d\n"
-"Total: %d"
 
 #: ../common/gtk/aboutbox.c:75
 msgid ""
@@ -2137,16 +2136,19 @@ msgstr ""
 "juego de mesa 'Los fundadores de Catán'.\n"
 
 #: ../common/gtk/aboutbox.c:78
+#, fuzzy
 msgid "Version:"
-msgstr "Versión:"
+msgstr "Versión"
 
 #: ../common/gtk/aboutbox.c:84
+#, fuzzy
 msgid "Homepage:"
-msgstr "Página principal:"
+msgstr "Pagina principal"
 
 #: ../common/gtk/aboutbox.c:89
+#, fuzzy
 msgid "Authors:"
-msgstr "Autores:"
+msgstr "Autores"
 
 #. Translators: add your name here. Keep the list alphabetically,
 #. * do not remove any names, and add \n after your name (except the last name).
@@ -2156,17 +2158,13 @@ msgid "translator_credits"
 msgstr ""
 "Marco Antonio Giraldo\n"
 "Launchpad Contributions:\n"
-"  DiegoJ https://launchpad.net/~diegojromerolopez\n"
-"  Eduardo Ruiz https://launchpad.net/~eduardo-ruizcarrillo\n"
-"  José A. Fuentes Santiago https://launchpad.net/~joanfusan\n"
-"  Kiibakun https://launchpad.net/~kiba\n"
-"  Marco Antonio Giraldo https://launchpad.net/~m-a-giraldo\n"
+"  Kiba-Kun https://launchpad.net/~kiba-kun\n"
 "  skarevoluti https://launchpad.net/~garciamanu49"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
 msgid "Pioneers is translated to <your language here> by:\n"
-msgstr "Pioneers es traducido al español por:\n"
+msgstr ""
 
 #. Tooltip for sevens rule normal
 #: ../common/gtk/game-rules.c:93
@@ -2184,12 +2182,14 @@ msgid "All sevens are rerolled"
 msgstr "Todos los 7 se tiran de nuevo"
 
 #: ../common/gtk/game-rules.c:112
+#, fuzzy
 msgid "Randomize Terrain"
-msgstr "Hacer aleatorio el terreno"
+msgstr "¿Terreno Aleatorio?"
 
 #: ../common/gtk/game-rules.c:112
+#, fuzzy
 msgid "Randomize the terrain"
-msgstr "Hacer aleatorio el terreno"
+msgstr "¿Terreno Aleatorio?"
 
 #: ../common/gtk/game-rules.c:114
 msgid "Use Pirate"
@@ -2197,15 +2197,16 @@ msgstr "Use Pirata"
 
 #: ../common/gtk/game-rules.c:114
 msgid "Use the pirate to block ships"
-msgstr "Usa al pirata para bloquear barcos"
+msgstr ""
 
 #: ../common/gtk/game-rules.c:116
 msgid "Strict Trade"
 msgstr "Negocio riguroso"
 
 #: ../common/gtk/game-rules.c:117
+#, fuzzy
 msgid "Allow trade only before building or buying"
-msgstr "Permitir comerciar sólo antes de construir o comprar"
+msgstr "¿Comercio permitido solo antes de construir/comprar?"
 
 #: ../common/gtk/game-rules.c:119
 msgid "Domestic Trade"
@@ -2217,11 +2218,11 @@ msgstr "Permitir comerciar entre jugadores"
 
 #: ../common/gtk/game-rules.c:121
 msgid "Victory At End Of Turn"
-msgstr "Victoria al terminar el turno"
+msgstr ""
 
 #: ../common/gtk/game-rules.c:122
 msgid "Check for victory only at end of turn"
-msgstr "Revisa la victoria únicamente al terminar el turno"
+msgstr ""
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
@@ -2245,8 +2246,9 @@ msgstr "Puntos necesarios para ganar el juego"
 
 #. Tooltip for the check button
 #: ../common/gtk/game-settings.c:161
+#, fuzzy
 msgid "Is it possible to win this game?"
-msgstr "¿Se puede ganar este juego?"
+msgstr "Puntos necesarios para ganar el juego"
 
 #. Port indicator for a resource: trade 2 for 1
 #: ../common/gtk/guimap.c:767
@@ -2286,8 +2288,9 @@ msgstr "Ma"
 
 #. Tooltip for the list of meta servers
 #: ../common/gtk/metaserver.c:86
+#, fuzzy
 msgid "Select a meta server"
-msgstr "Seleccionar un meta-servidor"
+msgstr "Comience el servidor"
 
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:103
@@ -2697,12 +2700,13 @@ msgid "Change game title"
 msgstr "Cambiar titulo del juego"
 
 #: ../editor/gtk/editor.c:1011 ../server/gtk/main.c:98
+#, fuzzy
 msgid "_Check Victory Point Target"
-msgstr "_Comprueba el objetivo de puntos de victoria"
+msgstr "Punto de victoria"
 
 #: ../editor/gtk/editor.c:1013 ../server/gtk/main.c:100
 msgid "Check whether the game can be won"
-msgstr "Comprueba cuando puede ganarse el juego"
+msgstr ""
 
 #: ../editor/gtk/editor.c:1015
 msgid "Quit"
@@ -2745,23 +2749,26 @@ msgid "Resource Count"
 msgstr "Cuenta de Recursos"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:1
+#, fuzzy
 msgid "Create your own game for Pioneers"
-msgstr "Crea tu propio juego para Pioneers"
+msgstr "- Editor para juegos de Pioneers"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1056
+#, fuzzy
 msgid "Daemonize the meta-server on start"
-msgstr "Daemonizar el metaservidor al iniciar"
+msgstr "Registro con Meta-servidor en %s, puerto %s\n"
 
 #. Commandline meta-server: pidfile
 #: ../meta-server/main.c:1059
 msgid "Pidfile to create when daemonizing (implies -d)"
-msgstr "Archivo PID a crear al daemonizar (implica -d)"
+msgstr ""
 
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1064
+#, fuzzy
 msgid "Redirect clients to another meta-server"
-msgstr "Redirigir clientes a otro metaservidor"
+msgstr "Opciones para el Meta-servidor"
 
 #. Commandline meta-server: server
 #: ../meta-server/main.c:1067
@@ -2775,28 +2782,29 @@ msgstr "nombre de servidor"
 
 #. Commandline meta-server: port-range
 #: ../meta-server/main.c:1072
+#, fuzzy
 msgid "Use this port range when creating new games"
-msgstr "Usa este rango de puertos cuando estés creando nuevos juegos"
+msgstr "Usar este rango de puertos al crear nuevas partidas"
 
 #. Commandline meta-server: port-range argument
 #: ../meta-server/main.c:1074
 msgid "from-to"
-msgstr "de-para"
+msgstr ""
 
 #. Commandline option of meta server: syslog-debug
 #: ../meta-server/main.c:1080
 msgid "Debug syslog messages"
-msgstr "Depurar mensajes del log de sistema"
+msgstr ""
 
 #. Long description in the commandline for server-console: help
 #: ../meta-server/main.c:1101
 msgid "- Meta server for Pioneers"
-msgstr "- Meta Servidor para Pioneers"
+msgstr ""
 
 #: ../meta-server/main.c:1116
-#, c-format
+#, fuzzy, c-format
 msgid "meta-server protocol:"
-msgstr "protocolo del metaservidor:"
+msgstr "Meta-servidor del anfitrion"
 
 #: ../server/gtk/main.c:103
 msgid "_About Pioneers Server"
@@ -2807,12 +2815,14 @@ msgid "Information about Pioneers Server"
 msgstr "Información del Servidor Pioneers"
 
 #: ../server/gtk/main.c:221
+#, fuzzy
 msgid "Stop Server"
 msgstr "Parar servidor"
 
 #: ../server/gtk/main.c:222
+#, fuzzy
 msgid "Start Server"
-msgstr "Iniciar servidor"
+msgstr "Comience el servidor"
 
 #: ../server/gtk/main.c:224
 msgid "Stop the server"
@@ -2929,12 +2939,14 @@ msgid "Player of viewer"
 msgstr "Jugador de visor"
 
 #: ../server/gtk/main.c:813
+#, fuzzy
 msgid "Launch Pioneers Client"
-msgstr "Lanzar cliente de Pioneers"
+msgstr "El Juego de Pioneers"
 
 #: ../server/gtk/main.c:820
+#, fuzzy
 msgid "Launch the Pioneers Client"
-msgstr "Lanzar el cliente de Pioneers"
+msgstr "El Juego de Pioneers"
 
 #: ../server/gtk/main.c:822
 msgid "Computer Players"
@@ -2987,8 +2999,9 @@ msgid "Pioneers Server"
 msgstr "Servidor de Pioneers"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:1
+#, fuzzy
 msgid "Host a game of Pioneers"
-msgstr "Hospedar una partida de Pioneers"
+msgstr "- Organice un juego de Pioneers"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:75
@@ -3102,22 +3115,18 @@ msgstr "Opciones variadas"
 #, c-format
 msgid "Cannot set game title and filename at the same time\n"
 msgstr ""
-"No se puede establecer un titulo al juego y un nombre al archivo al mismo "
-"tiempo\n"
 
 #. server-console commandline error
 #: ../server/main.c:241
-#, c-format
+#, fuzzy, c-format
 msgid "Cannot load the parameters for the game\n"
-msgstr "No se pueden cargar los parámetros de la partida\n"
+msgstr "Puerto del anfitrion del juego\n"
 
 #. server-console commandline error
 #: ../server/main.c:276
 #, c-format
 msgid "Admin port is not set, cannot disable game start too\n"
 msgstr ""
-"El puerto de administración no está asignado, no se puede desactivar el "
-"inicio de juego también\n"
 
 #: ../server/meta.c:192
 #, c-format
@@ -3142,11 +3151,12 @@ msgstr "ignorar extension desconocida"
 
 #: ../server/player.c:210 ../server/player.c:247
 msgid "The last player left, the tournament timer is reset."
-msgstr "El ultimo jugador salió, el contador del torne es restablecido."
+msgstr ""
 
 #: ../server/player.c:217
+#, fuzzy
 msgid "Game starts, adding computer players."
-msgstr "La partida empieza, añadiendo jugadores no-humanos."
+msgstr "El juego comienza, añadir un adversario electrónico"
 
 #: ../server/player.c:260
 #, c-format
@@ -3195,7 +3205,7 @@ msgstr "Este juego comenzará pronto"
 
 #: ../server/server.c:43
 msgid "Was hanging around for too long without players... bye.\n"
-msgstr "Ha estado esperando demasiado tiempo sin jugadores... Adiós.\n"
+msgstr ""
 
 #. Server: preparing game #.....
 #: ../server/server.c:236
@@ -3205,20 +3215,20 @@ msgstr "Preparando juego"
 #: ../server/server.c:380 ../server/server.c:469
 #, c-format
 msgid "Looking for games in '%s'\n"
-msgstr "Buscando juegos en '%s'\n"
+msgstr ""
 
 #: ../server/server.c:382 ../server/server.c:471
 #, c-format
 msgid "Game directory '%s' not found\n"
-msgstr "Directorio de juegos '%s' no encontrado\n"
+msgstr ""
 
 #: ../server/turn.c:253
 msgid "Island Discovery Bonus"
-msgstr "Bonificación por descubrimiento de islas"
+msgstr ""
 
 #: ../server/turn.c:254
 msgid "Additional Island Bonus"
-msgstr "Bonificación por islas adicionales"
+msgstr ""
 
 #: ../server/turn.c:385
 msgid "Tried to assign resources to NULL player.\n"
@@ -3227,7 +3237,7 @@ msgstr "Tried to assign resources to NULL player.\n"
 #. Cheat mode has been activated
 #: ../server/turn.c:495
 msgid "The dice roll has been determined by the administrator."
-msgstr "El rol del dado ha sido determinado por el administrador."
+msgstr ""
 
 #~ msgid "_Legend"
 #~ msgstr "_Leyenda"

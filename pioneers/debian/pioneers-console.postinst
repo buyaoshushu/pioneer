@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-CONFIG_FILE=/etc/default/pioneers-meta-server
+CONFIG_FILE=/etc/default/pioneers-console
 
 . /usr/share/debconf/confmodule
 
@@ -10,9 +10,9 @@ if test -e "$CONFIG_FILE" ; then
 else
 	cat > "$CONFIG_FILE" << EOF
 # This file contains the settings for the pioneers meta-server.
-# It is used by /etc/init.d/pioneers-meta-server, for starting and stopping
+# It is used by /etc/init.d/pioneers-console, for starting and stopping
 #  the meta-server.
-# See /etc/init.d/pioneers-meta-server for possible variables to assign.
+# See /etc/init.d/pioneers-console for possible variables to assign.
 # If no value is given here, the default from that file is used.
 #
 # This file is sourced as a shell script, so no spaces are allowed
@@ -31,20 +31,19 @@ conffile_edit ()
 	# Do nothing if the value hasn't changed.
 	test "$RET" != "`eval 'echo $'"$variable"`" || return 0
 
-	if grep -q "^$variable=" "$CONFIG_FILE" ; then
-		# Edit the conffile to contain the new setting.
-		sed -i "s/^\($variable=\).*\$/\\1'$RET'/" "$CONFIG_FILE"
-	else
-		# Or if the setting isn't in the conffile yet, add it.
+	# If the setting isn't in the conffile yet, add it.
+	if [ ! -r "$CONFIG_FILE" ] || ! grep -q "^$variable=" "$CONFIG_FILE" ; then
 		echo "$variable='$RET'" >> "$CONFIG_FILE"
+		return 0
 	fi
-	return 0
+
+	# Otherwise, edit the conffile to contain the new setting.
+	sed -i "s/^\($variable=\).*\$/\\1'$RET'/" "$CONFIG_FILE"
 }
 
-conffile_edit PORT_RANGE pioneers-meta-server/ports
-conffile_edit META_SERVER_NAME pioneers-meta-server/name
-conffile_edit META_SERVER_ARGS pioneers-meta-server/arguments
+conffile_edit RUN_META_SERVER pioneers-console/run-meta-server
+conffile_edit PORT_RANGE pioneers-console/meta-server-ports
+conffile_edit META_SERVER_NAME pioneers-console/meta-server-name
+conffile_edit META_SERVER_ARGS pioneers-console/meta-server-args
 
 #DEBHELPER#
-
-exit 0

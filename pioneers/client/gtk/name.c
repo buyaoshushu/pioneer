@@ -88,7 +88,7 @@ static void change_style_cb(G_GNUC_UNUSED GtkWidget * widget,
 		dialog->current_style =
 		    playericon_create_human_style(&c1, variant, &c2);
 	} else {
-		dialog->current_style = g_strdup(default_player_style);
+		dialog->current_style = g_strdup("square");
 	}
 	icon = create_icon(dialog->image, dialog->current_style);
 	gtk_image_set_from_pixbuf(GTK_IMAGE(dialog->image), icon);
@@ -120,7 +120,7 @@ void name_create_dlg(void)
 	};
 
 	name_dialog.dlg =
-	    gtk_dialog_new_with_buttons(_("Change Player Name"),
+	    gtk_dialog_new_with_buttons(_("Change player name"),
 					GTK_WINDOW(app_window),
 					GTK_DIALOG_DESTROY_WITH_PARENT,
 					GTK_STOCK_CANCEL,
@@ -143,7 +143,7 @@ void name_create_dlg(void)
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), hbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(hbox), 5);
 
-	lbl = gtk_label_new(_("Player name:"));
+	lbl = gtk_label_new(_("Player Name:"));
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(hbox), lbl, FALSE, TRUE, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);

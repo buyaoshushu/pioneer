@@ -4,7 +4,12 @@
 # Uncomment this to turn on verbose mode. 
 #export DH_VERBOSE=1
 
-CFLAGS += -Wall
+export AUTOMAKE = automake-1.10
+export ACLOCAL = aclocal-1.10
+
+LIBFLAGS = GNOME2_LIBS=-lgnome-2 GTK2_LIBS=-lgtk-x11-2.0 GLIB2_LIBS=-lglib-2.0
+
+CFLAGS = -Wall -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0

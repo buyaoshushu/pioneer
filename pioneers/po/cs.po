@@ -1,18 +1,16 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.12.3\n"
+"Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-27 20:34+0100\n"
-"PO-Revision-Date: 2010-03-28 01:29+0000\n"
-"Last-Translator: Ladislav Dobias <Unknown>\n"
+"POT-Creation-Date: 2009-11-04 11:30+0100\n"
+"PO-Revision-Date: 2008-02-02 16:45+0100\n"
+"Last-Translator: Ladislav Dobias <lada-preklad@dobias.info>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-06 06:08+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
 
 #. Commandline pioneersai: server
 #. Commandline option of client: hostname of the server
@@ -30,8 +28,9 @@ msgstr "Port serveru"
 
 #. Commandline pioneersai: name
 #: ../client/ai/ai.c:71
+#, fuzzy
 msgid "Computer name (mandatory)"
-msgstr ""
+msgstr "Jméno počítače (necháte-li prázdné, zvolí se náhodně)"
 
 #. Commandline pioneersai: time
 #: ../client/ai/ai.c:74
@@ -84,7 +83,7 @@ msgstr "Verze Pioneers:"
 #: ../client/ai/ai.c:127
 #, c-format
 msgid "A name must be provided.\n"
-msgstr "Jméno musí být vyplněno.\n"
+msgstr ""
 
 #: ../client/ai/ai.c:141
 #, c-format
@@ -718,7 +717,7 @@ msgstr "%s odstranil most.\n"
 
 #: ../client/common/player.c:673
 #, c-format
-msgid "%s has canceled a ship's movement.\n"
+msgid "%s has cancelled a ship's movement.\n"
 msgstr "%s zrušil pohyb lodi.\n"
 
 #: ../client/common/player.c:676
@@ -1321,8 +1320,9 @@ msgid "Change your player name"
 msgstr "Změnit jméno vašeho hráče"
 
 #: ../client/gtk/gui.c:226
+#, fuzzy
 msgid "L_egend"
-msgstr "_Legenda"
+msgstr "Legenda"
 
 #: ../client/gtk/gui.c:227
 msgid "Terrain legend and building costs"
@@ -1563,7 +1563,7 @@ msgstr "Obarví hlášky hráče podle jeho barvy"
 #. Label for the option to display the summary with colors
 #: ../client/gtk/gui.c:1004
 msgid "Summary with color"
-msgstr "Barevné shrnutí"
+msgstr "Barevné shrnutí "
 
 #. Tooltip for the option to display the summary with colors
 #: ../client/gtk/gui.c:1015
@@ -1583,12 +1583,12 @@ msgstr "Ukázat klávesové zkratky v nástrojové liště"
 #. Label for the option to disable all sounds
 #: ../client/gtk/gui.c:1036
 msgid "Silent mode"
-msgstr "Tichý mód"
+msgstr ""
 
 #. Tooltip for the option to disable all sounds
 #: ../client/gtk/gui.c:1042
 msgid "In silent mode no sounds are made"
-msgstr "V tichém módu jsou všechny zvuky vypnuty"
+msgstr ""
 
 #. Label for the option to announce when players/viewers enter
 #: ../client/gtk/gui.c:1048
@@ -1685,7 +1685,7 @@ msgid "Development Card"
 msgstr "Akční karta"
 
 #: ../client/gtk/monopoly.c:104
-msgid "Select the resource you wish to monopolize."
+msgid "Select the resource you wish to monopolise."
 msgstr "Zvolte surovinu, kterou chcete monopolizovat"
 
 #: ../client/gtk/name.c:123
@@ -1728,8 +1728,9 @@ msgid "- Play a game of Pioneers"
 msgstr "- Hrát hru Pioneers"
 
 #: ../client/gtk/pioneers.desktop.in.h:2
+#, fuzzy
 msgid "Play a game of Pioneers"
-msgstr "Zahrát si Pioneers hru"
+msgstr "- Hrát hru Pioneers"
 
 #: ../client/gtk/player.c:53
 msgid "Settlements"
@@ -1946,8 +1947,9 @@ msgid "Trading allowed only before build/buy?"
 msgstr "Dovolit obchod pouze před stavěním/obchodem?"
 
 #: ../client/gtk/settingscreen.c:170
+#, fuzzy
 msgid "Check Victory Only At End Of Turn?"
-msgstr "Kontrolovat vítězství až na konci tahu?"
+msgstr "Zkontrolovat počet bodů pro vítěztví"
 
 #: ../client/gtk/settingscreen.c:175
 msgid "Amount of Each Resource:"
@@ -2145,14 +2147,11 @@ msgstr "Autoři:"
 #: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
 msgid "translator_credits"
 msgstr ""
-"Launchpad Contributions:\n"
-"  Jakub Žáček https://launchpad.net/~dawon\n"
-"  Ladislav Dobias https://launchpad.net/~lada-preklad"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
 msgid "Pioneers is translated to <your language here> by:\n"
-msgstr "Pioneers je přeloženo do <your language here> :\n"
+msgstr ""
 
 #. Tooltip for sevens rule normal
 #: ../common/gtk/game-rules.c:93
@@ -2203,11 +2202,11 @@ msgstr "Dovolit obchodování mezi hráči"
 
 #: ../common/gtk/game-rules.c:121
 msgid "Victory At End Of Turn"
-msgstr "Vítězství na konci tahu"
+msgstr ""
 
 #: ../common/gtk/game-rules.c:122
 msgid "Check for victory only at end of turn"
-msgstr "Kontrolovat vítězství až na konci tahu"
+msgstr ""
 
 #. Label text for customising a game
 #: ../common/gtk/game-settings.c:106
@@ -2248,32 +2247,34 @@ msgstr "3:1"
 #. Port indicator for brick
 #: ../common/gtk/guimap.c:775
 msgid "Brick port|B"
-msgstr "C"
+msgstr ""
 
 #. Port indicator for grain
 #: ../common/gtk/guimap.c:779
 msgid "Grain port|G"
-msgstr "T"
+msgstr ""
 
 #. Port indicator for ore
 #: ../common/gtk/guimap.c:783
 msgid "Ore port|O"
-msgstr "R"
+msgstr ""
 
 #. Port indicator for wool
 #: ../common/gtk/guimap.c:787
 msgid "Wool port|W"
-msgstr "V"
+msgstr ""
 
 #. Port indicator for lumber
 #: ../common/gtk/guimap.c:791
+#, fuzzy
 msgid "Lumber port|L"
-msgstr "D"
+msgstr "Dřevo"
 
 #. Tooltip for the list of meta servers
 #: ../common/gtk/metaserver.c:86
+#, fuzzy
 msgid "Select a meta server"
-msgstr ""
+msgstr "Spustit server"
 
 #. Tooltip for the list of games
 #: ../common/gtk/select-game.c:103
@@ -2555,32 +2556,32 @@ msgstr "Co_koliv (3:1)"
 #. East
 #: ../editor/gtk/editor.c:111
 msgid "East|E"
-msgstr "V"
+msgstr "Východ|V"
 
 #. North east
 #: ../editor/gtk/editor.c:113
 msgid "North East|NE"
-msgstr "SV"
+msgstr "Severovýchod|SV"
 
 #. North west
 #: ../editor/gtk/editor.c:115
 msgid "North West|NW"
-msgstr "SZ"
+msgstr "Severozápad|SZ"
 
 #. West
 #: ../editor/gtk/editor.c:117
 msgid "West|W"
-msgstr "Z"
+msgstr "Západ|Z"
 
 #. South west
 #: ../editor/gtk/editor.c:119
 msgid "South West|SW"
-msgstr "JZ"
+msgstr "Jihozápad|JZ"
 
 #. South east
 #: ../editor/gtk/editor.c:121
 msgid "South East|SE"
-msgstr "JV"
+msgstr "Jihovýchod|JV"
 
 #: ../editor/gtk/editor.c:561
 msgid "Shuffle"
@@ -2733,13 +2734,15 @@ msgid "Resource Count"
 msgstr "Počet surovin"
 
 #: ../editor/gtk/pioneers-editor.desktop.in.h:1
+#, fuzzy
 msgid "Create your own game for Pioneers"
-msgstr "Založte vaši vlastní hru Pionýři"
+msgstr "- Editor pro hry Pioneers"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1056
+#, fuzzy
 msgid "Daemonize the meta-server on start"
-msgstr ""
+msgstr "Pustit metaserver jako daemona - na pozadí"
 
 #. Commandline meta-server: pidfile
 #: ../meta-server/main.c:1059
@@ -2748,8 +2751,9 @@ msgstr ""
 
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1064
+#, fuzzy
 msgid "Redirect clients to another meta-server"
-msgstr ""
+msgstr "Přesměrovat klienty na jiný meta server"
 
 #. Commandline meta-server: server
 #: ../meta-server/main.c:1067
@@ -2763,8 +2767,9 @@ msgstr "jméno počítače"
 
 #. Commandline meta-server: port-range
 #: ../meta-server/main.c:1072
+#, fuzzy
 msgid "Use this port range when creating new games"
-msgstr "Použít tento rozsah portů při vytváření nových her"
+msgstr "Používat tento rozsah portů při vytváření nových her"
 
 #. Commandline meta-server: port-range argument
 #: ../meta-server/main.c:1074
@@ -2782,9 +2787,9 @@ msgid "- Meta server for Pioneers"
 msgstr "- Pioneers Meta server"
 
 #: ../meta-server/main.c:1116
-#, c-format
+#, fuzzy, c-format
 msgid "meta-server protocol:"
-msgstr ""
+msgstr "protokol meta serveru:"
 
 #: ../server/gtk/main.c:103
 msgid "_About Pioneers Server"
@@ -2795,10 +2800,12 @@ msgid "Information about Pioneers Server"
 msgstr "Informace o Pioneers Serveru"
 
 #: ../server/gtk/main.c:221
+#, fuzzy
 msgid "Stop Server"
 msgstr "Zastavit server"
 
 #: ../server/gtk/main.c:222
+#, fuzzy
 msgid "Start Server"
 msgstr "Spustit server"
 
@@ -2974,8 +2981,9 @@ msgid "Pioneers Server"
 msgstr "Server Pioneers"
 
 #: ../server/gtk/pioneers-server.desktop.in.h:1
+#, fuzzy
 msgid "Host a game of Pioneers"
-msgstr "Hostovat hru Pioneers"
+msgstr "- Hostovat hru Pioneers"
 
 #. Commandline server-console: game-title
 #: ../server/main.c:75
@@ -3090,9 +3098,9 @@ msgstr ""
 
 #. server-console commandline error
 #: ../server/main.c:241
-#, c-format
+#, fuzzy, c-format
 msgid "Cannot load the parameters for the game\n"
-msgstr "Nelze načíst parametry hry\n"
+msgstr "Port na počítači s hrou"
 
 #. server-console commandline error
 #: ../server/main.c:276
@@ -3126,8 +3134,9 @@ msgid "The last player left, the tournament timer is reset."
 msgstr ""
 
 #: ../server/player.c:217
+#, fuzzy
 msgid "Game starts, adding computer players."
-msgstr "Hra začíná, přidávání počíačových hráčů."
+msgstr "Hra začíná, přidávám strojové hráče"
 
 #: ../server/player.c:260
 #, c-format

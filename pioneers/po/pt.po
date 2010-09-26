@@ -4,17 +4,15 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Pioneers 0.12.3\n"
+"Project-Id-Version: Pioneers 0.11.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-27 20:34+0100\n"
-"PO-Revision-Date: 2010-03-28 01:27+0000\n"
+"POT-Creation-Date: 2009-11-04 11:30+0100\n"
+"PO-Revision-Date: 2007-11-11 08:34+0000\n"
 "Last-Translator: Filipe Roque <flip.roque@gmail.com>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-06 06:08+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
 
 #. Commandline pioneersai: server
 #. Commandline option of client: hostname of the server
@@ -722,7 +720,7 @@ msgstr "%s removeu uma ponte.\n"
 
 #: ../client/common/player.c:673
 #, c-format
-msgid "%s has canceled a ship's movement.\n"
+msgid "%s has cancelled a ship's movement.\n"
 msgstr "%s cancela um movimento de barco.\n"
 
 #: ../client/common/player.c:676
@@ -1325,8 +1323,9 @@ msgid "Change your player name"
 msgstr "Escolhe o teu nome de jogador"
 
 #: ../client/gtk/gui.c:226
+#, fuzzy
 msgid "L_egend"
-msgstr "L_egenda"
+msgstr "Legenda"
 
 #: ../client/gtk/gui.c:227
 msgid "Terrain legend and building costs"
@@ -1689,7 +1688,7 @@ msgid "Development Card"
 msgstr "Carta de desenvolvimento"
 
 #: ../client/gtk/monopoly.c:104
-msgid "Select the resource you wish to monopolize."
+msgid "Select the resource you wish to monopolise."
 msgstr "Escolhe um recurso que queres monopolizar."
 
 #: ../client/gtk/name.c:123
@@ -2148,12 +2147,7 @@ msgstr "Autores:"
 #.
 #: ../common/gtk/aboutbox.c:103 ../common/gtk/aboutbox.c:114
 msgid "translator_credits"
-msgstr ""
-"Filipe Roque\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Filipe Roque https://launchpad.net/~flip-roque\n"
-"  Proxess https://launchpad.net/~yuusouoribeira"
+msgstr "Filipe Roque"
 
 #. Header for the translator_credits. Use your own language name
 #: ../common/gtk/aboutbox.c:109
@@ -2742,18 +2736,20 @@ msgstr "Crie o seu jogo de Pioneers"
 
 #. Commandline meta-server: daemon
 #: ../meta-server/main.c:1056
+#, fuzzy
 msgid "Daemonize the meta-server on start"
-msgstr "Processificar o meta-servidor ao arrancar"
+msgstr "Colocar o Meta-servidor como deamon ao ínicio"
 
 #. Commandline meta-server: pidfile
 #: ../meta-server/main.c:1059
 msgid "Pidfile to create when daemonizing (implies -d)"
-msgstr "Pidfile a criar quando processificando (implica -d)"
+msgstr ""
 
 #. Commandline meta-server: redirect
 #: ../meta-server/main.c:1064
+#, fuzzy
 msgid "Redirect clients to another meta-server"
-msgstr "Redirecionar clientes para outro meta-servidor"
+msgstr "Redireccionar clientes para outro Meta-servidor"
 
 #. Commandline meta-server: server
 #: ../meta-server/main.c:1067
@@ -2786,9 +2782,9 @@ msgid "- Meta server for Pioneers"
 msgstr "- Meta server para Pioneers"
 
 #: ../meta-server/main.c:1116
-#, c-format
+#, fuzzy, c-format
 msgid "meta-server protocol:"
-msgstr "protocolo meta-servidor:"
+msgstr "protocolo Meta-servidor :"
 
 #: ../server/gtk/main.c:103
 msgid "_About Pioneers Server"
@@ -3197,12 +3193,12 @@ msgstr "Preparando jogo"
 #: ../server/server.c:380 ../server/server.c:469
 #, c-format
 msgid "Looking for games in '%s'\n"
-msgstr "Procurando jogos em '%s'\n"
+msgstr ""
 
 #: ../server/server.c:382 ../server/server.c:471
 #, c-format
 msgid "Game directory '%s' not found\n"
-msgstr "Directório de jogos '%s' não encontrado\n"
+msgstr ""
 
 #: ../server/turn.c:253
 msgid "Island Discovery Bonus"
