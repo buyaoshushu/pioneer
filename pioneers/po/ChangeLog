@@ -11,6 +11,8 @@
         * de.po: Improvement suggested by Jochen Kemnade on Launchpad
         * nl.po: Fixed a translation and removed a few wrong word separations
 	* LINGUAS: Added en_GB and gl
+	* af.po: Updated from Launchpad.net
+	* pt.po: Updated from Launchpad.net
 
 2009-11-04 Roland Clobus <rclobus@bigfoot.com>
 	* all: Final line number update for 0.12.3
