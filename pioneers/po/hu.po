@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-26 10:18+0200\n"
+"POT-Creation-Date: 2010-09-27 08:02+0200\n"
 "PO-Revision-Date: 2008-04-05 15:37+0200\n"
 "Last-Translator: Ferenc Bánhidi <bferike@mailbox.hu>\n"
 "Language-Team: Hungarian <bferike@mailbox.hu>\n"
@@ -730,7 +730,7 @@ msgstr "%s megszüntet egy hidat.\n"
 
 #: ../client/common/player.c:673
 #, c-format
-msgid "%s has cancelled a ship's movement.\n"
+msgid "%s has canceled a ship's movement.\n"
 msgstr "%s törölte a hajók mozgását.\n"
 
 #: ../client/common/player.c:676
@@ -1702,7 +1702,7 @@ msgid "Development Card"
 msgstr "Fejlesztés kártya"
 
 #: ../client/gtk/monopoly.c:104
-msgid "Select the resource you wish to monopolise."
+msgid "Select the resource you wish to monopolize."
 msgstr "Válassz monopól nyersanyagot"
 
 #: ../client/gtk/name.c:123

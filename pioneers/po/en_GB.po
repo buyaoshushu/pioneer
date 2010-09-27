@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 0.12.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-26 10:18+0200\n"
+"POT-Creation-Date: 2010-09-27 08:02+0200\n"
 "PO-Revision-Date: 2010-01-03 06:28+0000\n"
 "Last-Translator: Philipp Kleinhenz <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
@@ -723,7 +723,7 @@ msgstr "%s removed a bridge.\n"
 
 #: ../client/common/player.c:673
 #, c-format
-msgid "%s has cancelled a ship's movement.\n"
+msgid "%s has canceled a ship's movement.\n"
 msgstr "%s has cancelled a ship's movement.\n"
 
 #: ../client/common/player.c:676
@@ -1690,7 +1690,7 @@ msgid "Development Card"
 msgstr "Development Card"
 
 #: ../client/gtk/monopoly.c:104
-msgid "Select the resource you wish to monopolise."
+msgid "Select the resource you wish to monopolize."
 msgstr "Select the resource you wish to monopolise."
 
 #: ../client/gtk/name.c:123
