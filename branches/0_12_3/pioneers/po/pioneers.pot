@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-26 11:00+0200\n"
+"POT-Creation-Date: 2010-09-27 08:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -714,7 +714,7 @@ msgstr ""
 
 #: ../client/common/player.c:673
 #, c-format
-msgid "%s has cancelled a ship's movement.\n"
+msgid "%s has canceled a ship's movement.\n"
 msgstr ""
 
 #: ../client/common/player.c:676
@@ -1678,7 +1678,7 @@ msgid "Development Card"
 msgstr ""
 
 #: ../client/gtk/monopoly.c:104
-msgid "Select the resource you wish to monopolise."
+msgid "Select the resource you wish to monopolize."
 msgstr ""
 
 #: ../client/gtk/name.c:123
