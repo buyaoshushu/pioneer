@@ -3,6 +3,8 @@
 	* common/gtk/gtkbugs.c, common/gtk/guimap.c, client/gtk/histogram.c:
 	Build with Gtk+-2.20
 	* client/gtk/monopoly.c, client/common/player.c: Use en_US
+	* client/gtk/data/themes/Wesnoth-like/theme.cfg,
+	client/gtk/data/themes/Freeciv-like/theme.cfg: Fix themes
 	* Released 0.12.3.1 (Translation update)
 
 2009-11-04  Roland Clobus <rclobus@bigfoot.com>
