@@ -1,59 +1,20 @@
-pioneers (0.12.4~unreleased1) unstable; urgency=low
+pioneers (0.12.2-6unreleased1) unstable; urgency=low
 
-  * Local build
-  * Added Avahi support
+  * Use the configured hostname. (closes: 546643)
+  * Updated build dependencies
+ 
+ -- Roland Clobus <rclobus@bigfoot.com>  Wed, 4 Nov 2009 11:33:00 +0200
 
- -- Roland Clobus <rclobus@rclobus.nl>  Tue, 25 May 2010 18:23:50 +0200
+pioneers (0.12.2-6unreleased) unstable; urgency=low
 
-pioneers (0.12.3-2) unstable; urgency=low
-
-  [ Roland Clobus ]
-  * Update release-checklist for svn repository.
-  * Refer to pioneers-meta-server instead of pioneers-console in the init
-    scripts.
-  * Fix meta-server pidfile issue again. (closes: #567994) 
-  * Fix bug number in changelog 'Link to all gtk libraries'. (closes: #556063)
-    Bug already closed by an e-mail to 556063-done@bugs.debian.org
-  * Fix lintian error init.d-script-missing-dependency-on_remote_fs.
-  * Fixed typo in Dutch translation.
-  * Added British translation.
-  * Recoded German translation to UTF-8.
-
-  [ Bas Wijnen ]
-  * Reinserted previously lost changelog entry for NMU 0.11.2-2+lenny1.
-  * Add conflicts to old pioneers-console to make upgrade work.
-    (closes: #567314)
-  * Remove old init.d symlinks. (closes: #567180)
-  * Updated standards version to 0.8.4. (No changes needed.)
-  * Switch to dpkg-source 3.0 (quilt) format.
-
- -- Bas Wijnen <wijnen@debian.org>  Sat, 03 Apr 2010 00:02:59 +0200
-
-pioneers (0.12.3-1) unstable; urgency=low
-
-  [ Roland Clobus ]
-
-  * Use the configured hostname. (closes: #546643)
-  * Updated build dependencies.
+  * Fix watch file to use the directory structure on SF.net.
   * Add Italian translation. (closes: #544160)
   * Add Finnish translation. (closes: #535213)
   * Add Spanish translation. (closes: #520210)
   * Add Swedish translation. (closes: #506597)
-  * Fixed a typo in the About dialog for the Frech translation.
-    (closes: #510611)
+  * Fixed a typo in the About dialog for the Frech translation (closes: 510611)
 
-  [ Bas Wijnen ]
-
-  * New upstream release.
-  * Remove Roman Hodek from Uploaders. (closes: #507403)
-  * Split meta-server back into its own package. (closes: #540695)
-  * Fix meta-server pidfile issue. (closes: #534634)
-  * Add japanese translation. (closes: #547205)
-  * Make clients try all socket types when connecting. (closes: #530032)
-  * Link to all gtk libraries. (closes: #556063)
-  * Update standards version (no changes needed).
-
- -- Bas Wijnen <wijnen@debian.org>  Wed, 25 Nov 2009 13:41:40 +0100
+ -- Roland Clobus <rclobus@bigfoot.com>  Thu, 27 Aug 2009 18:50:00 +0200
 
 pioneers (0.12.2-5) unstable; urgency=low
 
@@ -124,18 +85,6 @@ pioneers (0.11.3-1) unstable; urgency=low
   * Fix bashism in init script (Closes: #447379).
 
  -- Bas Wijnen <wijnen@debian.org>  Mon, 12 Nov 2007 08:23:14 +0100
-
-pioneers (0.11.2-2+lenny1) testing-security; urgency=high
-
-  * Non-maintainer upload by testing-security team.
-  * The following security issues are addressed with this upload:
-    - CVE-2007-5933: remote denial of service triggered by an
-      early disconnect (Closes: #449541).
-    - CVE-2007-6010: remote denial of service triggered by
-      a broken pipe.
-
- -- Nico Golde <nion@debian.org>  Tue, 27 Nov 2007 22:39:28 +0000
-
 
 pioneers (0.11.2-2) unstable; urgency=low
 

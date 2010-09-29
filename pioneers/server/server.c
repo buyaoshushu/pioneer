@@ -238,10 +238,7 @@ Game *server_start(const GameParams * params, const gchar * hostname,
 	game = game_new(params);
 	g_assert(game->server_port == NULL);
 	game->server_port = g_strdup(port);
-	g_assert(game->hostname == NULL);
-	if (hostname && strlen(hostname) > 0) {
-		game->hostname = g_strdup(hostname);
-	}
+	game->hostname = g_strdup(hostname);
 	game->random_order = random_order;
 	if (!game_server_start(game, register_server, meta_server_name)) {
 		game_free(game);

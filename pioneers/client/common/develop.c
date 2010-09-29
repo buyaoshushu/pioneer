@@ -35,7 +35,21 @@
 static gboolean played_develop;	/* already played a non-victory card? */
 static gboolean bought_develop;	/* have we bought a development card? */
 
-static gboolean is_unique[NUM_DEVEL_TYPES];	/* is each card unique? */
+static struct {
+	const gchar *name;
+	gboolean is_unique;
+} devel_cards[] = {
+	{
+	N_("Road Building"), FALSE}, {
+	N_("Monopoly"), FALSE}, {
+	N_("Year of Plenty"), FALSE}, {
+	N_("Chapel"), TRUE}, {
+	N_("Pioneer University"), TRUE}, {
+	N_("Governor's House"), TRUE}, {
+	N_("Library"), TRUE}, {
+	N_("Market"), TRUE}, {
+	N_("Soldier"), FALSE}
+};
 
 static DevelDeck *develop_deck;	/* our deck of development cards */
 
@@ -45,8 +59,9 @@ void develop_init(void)
 	if (develop_deck != NULL)
 		deck_free(develop_deck);
 	develop_deck = deck_new(game_params);
-	for (idx = 0; idx < NUM_DEVEL_TYPES; idx++)
-		is_unique[idx] = game_params->num_develop_type[idx] == 1;
+	for (idx = 0; idx < G_N_ELEMENTS(devel_cards); idx++)
+		devel_cards[idx].is_unique =
+		    game_params->num_develop_type[idx] == 1;
 }
 
 void develop_bought_card_turn(DevelType type, gint turnbought)
@@ -60,18 +75,18 @@ void develop_bought_card_turn(DevelType type, gint turnbought)
 		/* Only log if the cards is bought in the current turn.
 		 * This function is also called during reconnect
 		 */
-		if (is_unique[type])
+		if (devel_cards[type].is_unique)
 			log_message(MSG_DEVCARD,
 				    /* This development card is unique */
 				    _(""
 				      "You bought the %s development card.\n"),
-				    get_devel_name(type));
+				    gettext(devel_cards[type].name));
 		else
 			log_message(MSG_DEVCARD,
 				    /* This development card is not unique */
 				    _(""
 				      "You bought a %s development card.\n"),
-				    get_devel_name(type));
+				    gettext(devel_cards[type].name));
 	};
 	player_modify_statistic(my_player_num(), STAT_DEVELOPMENT, 1);
 	stock_use_develop();
@@ -109,16 +124,16 @@ void develop_played(gint player_num, gint card_idx, DevelType type)
 	}
 	callbacks.played_develop(player_num, card_idx, type);
 
-	if (is_unique[type])
+	if (devel_cards[type].is_unique)
 		log_message(MSG_DEVCARD,
 			    _("%s played the %s development card.\n"),
 			    player_name(player_num, TRUE),
-			    get_devel_name(type));
+			    gettext(devel_cards[type].name));
 	else
 		log_message(MSG_DEVCARD,
 			    _("%s played a %s development card.\n"),
 			    player_name(player_num, TRUE),
-			    get_devel_name(type));
+			    gettext(devel_cards[type].name));
 
 	player_modify_statistic(player_num, STAT_DEVELOPMENT, -1);
 	switch (type) {
@@ -233,4 +248,9 @@ gboolean have_bought_develop(void)
 const DevelDeck *get_devel_deck(void)
 {
 	return develop_deck;
+}
+
+const gchar *get_devel_name(DevelType type)
+{
+	return gettext(devel_cards[type].name);
 }

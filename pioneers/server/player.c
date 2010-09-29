@@ -102,8 +102,7 @@ static gboolean mode_global(Player * player, gint event)
 		if (player->devel != NULL)
 			deck_free(player->devel);
 		if (player->num >= 0
-		    && !player_is_viewer(game, player->num)
-		    && !player->disconnected) {
+		    && !player_is_viewer(game, player->num)) {
 			game->num_players--;
 			meta_report_num_players(game->num_players);
 		}
@@ -198,11 +197,6 @@ static gboolean tournament_start_cb(gpointer data)
 {
 	int i;
 	Game *game = (Game *) data;
-	GList *player;
-	gboolean human_player_present;
-
-	g_source_remove(game->tournament_timer);
-	game->tournament_timer = 0;
 
 	/* if game already started */
 	if (game->num_players == game->params->num_players)
@@ -216,45 +210,12 @@ static gboolean tournament_start_cb(gpointer data)
 				 ("The last player left, the "
 				  "tournament timer is reset."));
 		game->tournament_countdown = game->params->tournament_time;
-		return FALSE;
-	}
-
-	/* remove all disconnected players */
-	playerlist_inc_use_count(game);
-	for (player = game->player_list; player != NULL;
-	     player = g_list_next(player)) {
-		Player *p = player->data;
-		if (p->disconnected && !p->sm->use_cache) {
-			player_free(p);
-		}
-	}
-	playerlist_dec_use_count(game);
-
-	/* if no human players are present, quit */
-	playerlist_inc_use_count(game);
-	human_player_present = FALSE;
-	for (player = game->player_list;
-	     player != NULL && !human_player_present;
-	     player = g_list_next(player)) {
-		Player *p = player->data;
-		if (!player_is_viewer(game, p->num)
-		    && determine_player_type(p->style) == PLAYER_HUMAN) {
-			human_player_present = TRUE;
-		}
-	}
-	playerlist_dec_use_count(game);
-	if (!human_player_present) {
-		player_broadcast(player_none(game), PB_SILENT,
-				 FIRST_VERSION, LATEST_VERSION,
-				 "NOTE %s\n",
-				 N_("No human players present. Bye."));
-		request_server_stop(game);
-		return FALSE;
 	}
 
 	player_broadcast(player_none(game), PB_SILENT, FIRST_VERSION,
 			 LATEST_VERSION, "NOTE %s\n",
 			 N_("Game starts, adding computer players."));
+	game->tournament_timer = 0;
 
 	/* add computer players to start game */
 	for (i = game->num_players; i < game->params->num_players; i++) {
@@ -376,10 +337,8 @@ gchar *player_new_computer_player(Game * game)
 	Player *player;
 	gchar *name;
 
-	/* Reserve the name, so the names of the computer players will
-	   be unique */
 	name = generate_name_for_computer_player(game);
-	player = player_new(game, name);
+	player = player_new(game, name, "square");
 	player->disconnected = TRUE;
 	sm_goto(player->sm, (StateFunc) mode_idle);
 	return name;
@@ -388,7 +347,7 @@ gchar *player_new_computer_player(Game * game)
 /** Allocate a new Player struct.
  *  The StateMachine is not initialized.
  *   */
-Player *player_new(Game * game, const gchar * name)
+Player *player_new(Game * game, const gchar * name, const gchar * style)
 {
 	Player *player;
 	StateMachine *sm;
@@ -412,7 +371,7 @@ Player *player_new(Game * game, const gchar * name)
 	player->islands_discovered = 0;
 	player->disconnected = FALSE;
 	player->name = g_strdup(name);
-	player->style = NULL;
+	player->style = g_strdup(style);
 	player->special_points = NULL;
 	player->special_points_next_id = 0;
 
@@ -462,7 +421,7 @@ Player *player_new_connection(Game * game, int fd, const gchar * location)
 		return NULL;
 	}
 
-	player = player_new(game, name);
+	player = player_new(game, name, "square");
 	sm = player->sm;
 	sm_use_fd(sm, fd, TRUE);
 	g_free(player->location);
@@ -961,9 +920,7 @@ static void start_tournament_mode(Player * player)
 			g_timeout_add(1000, &talk_about_tournament_cb,
 				      game);
 		} else {
-			if (game->tournament_timer != 0
-			    && game->num_players !=
-			    game->params->num_players) {
+			if (game->tournament_timer != 0) {
 				player_send(player, FIRST_VERSION,
 					    LATEST_VERSION, "NOTE %s\n",
 					    N_

@@ -47,10 +47,10 @@ static gboolean show_version = FALSE;
 
 static GOptionEntry commandline_entries[] = {
 	/* Commandline option of client: hostname of the server */
-	{"server", 's', 0, G_OPTION_ARG_STRING, &server, N_("Server host"),
+	{"server", 's', 0, G_OPTION_ARG_STRING, &server, N_("Server Host"),
 	 PIONEERS_DEFAULT_GAME_HOST},
 	/* Commandline option of client: port of the server */
-	{"port", 'p', 0, G_OPTION_ARG_STRING, &port, N_("Server port"),
+	{"port", 'p', 0, G_OPTION_ARG_STRING, &port, N_("Server Port"),
 	 PIONEERS_DEFAULT_GAME_PORT},
 	/* Commandline option of client: name of the player */
 	{"name", 'n', 0, G_OPTION_ARG_STRING, &name, N_("Player name"),
@@ -74,7 +74,6 @@ static void frontend_offline_start_connect_cb(void)
 {
 	connect_create_dlg();
 	have_dlg = TRUE;
-	gui_set_instructions(_("Select a game to join."));
 	frontend_gui_update();
 }
 
@@ -104,7 +103,6 @@ static void frontend_offline_gui(GuiEvent event)
 		break;
 	case GUI_CONNECT_CANCEL:
 		have_dlg = FALSE;
-		gui_set_instructions(_("Welcome to Pioneers!"));
 		frontend_gui_update();
 		break;
 	default:
@@ -229,7 +227,7 @@ void frontend_init(int argc, char **argv)
 	}
 	style = config_get_string("connect/style", &default_returned);
 	if (default_returned) {
-		style = g_strdup(default_player_style);
+		style = g_strdup("square");
 	}
 
 	connect_set_name(name);

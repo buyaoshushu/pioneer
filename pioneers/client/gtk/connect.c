@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2004,2010 Roland Clobus <rclobus@rclobus.nl>
+ * Copyright (C) 2004 Roland Clobus <rclobus@bigfoot.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,8 +34,6 @@
 #include "game-settings.h"
 #include "game-rules.h"
 #include "metaserver.h"
-#include "avahi.h"
-#include "avahi-browser.h"
 
 const int PRIVATE_GAME_HISTORY_SIZE = 10;
 
@@ -65,7 +63,6 @@ enum {
 enum {				/* The columns of the meta_games_model */
 	C_META_HOST,
 	C_META_PORT,
-	C_META_HOST_SORTABLE,	/* Invisible, used for sorting */
 	C_META_VERSION,
 	C_META_MAX,
 	C_META_CUR,
@@ -430,16 +427,13 @@ static void server_end(void)
 		gtk_list_store_set(meta_games_model, &iter,
 				   C_META_HOST, server_host,
 				   C_META_PORT, server_port,
-				   C_META_HOST_SORTABLE,
-				   g_strdup_printf("%s:%s", server_host,
-						   server_port),
 				   C_META_VERSION, server_version,
-				   C_META_MAX, server_max, C_META_CUR,
-				   server_curr, C_META_TERRAIN,
-				   server_terrain, C_META_VICTORY,
-				   server_vpoints, C_META_SEVENS,
-				   server_sevenrule, C_META_MAP,
-				   server_title, -1);
+				   C_META_MAX, server_max,
+				   C_META_CUR, server_curr,
+				   C_META_TERRAIN, server_terrain,
+				   C_META_VICTORY, server_vpoints,
+				   C_META_SEVENS, server_sevenrule,
+				   C_META_MAP, server_title, -1);
 	}
 }
 
@@ -729,7 +723,7 @@ static GtkWidget *build_create_interface(void)
 			 G_CALLBACK(player_change_cb), NULL);
 
 	row = GTK_TABLE(game_settings)->nrows;
-	label = gtk_label_new(_("Number of computer players"));
+	label = gtk_label_new(_("Number of AI Players"));
 	gtk_widget_show(label);
 	gtk_table_attach(GTK_TABLE(game_settings), label, 0, 1, row,
 			 row + 1, GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
@@ -748,7 +742,7 @@ static GtkWidget *build_create_interface(void)
 			 1, 2, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_tooltip_text(aiplayers_spin,
-				    _("The number of computer players"));
+				    _("The number of AI players"));
 
 	game_rules = game_rules_new_metaserver();
 	gtk_widget_show(game_rules);
@@ -955,12 +949,12 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 		return;
 	}
 
-	meta_dlg = gtk_dialog_new_with_buttons(_("Join a Public Game"),
+	meta_dlg = gtk_dialog_new_with_buttons(_("Join a public game"),
 					       GTK_WINDOW(parent),
 					       0,
 					       GTK_STOCK_REFRESH,
 					       META_RESPONSE_REFRESH,
-					       _("_New Remote Game"),
+					       _("_New remote game"),
 					       META_RESPONSE_NEW,
 					       GTK_STOCK_CANCEL,
 					       GTK_RESPONSE_CANCEL,
@@ -1011,7 +1005,6 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 					      G_TYPE_STRING, G_TYPE_STRING,
 					      G_TYPE_STRING, G_TYPE_STRING,
 					      G_TYPE_STRING, G_TYPE_STRING,
-					      G_TYPE_STRING,
 					      G_TYPE_STRING);
 
 	meta_games_view =
@@ -1039,7 +1032,6 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tree_view_column_set_sort_column_id(column, C_META_CUR);
 	gtk_widget_set_tooltip_text(column->button,
 				    _("Number of players in the game"));
 
@@ -1051,7 +1043,6 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tree_view_column_set_sort_column_id(column, C_META_MAX);
 	gtk_widget_set_tooltip_text(column->button,
 				    _("Maximum players for the game"));
 
@@ -1062,7 +1053,6 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_TERRAIN, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tree_view_column_set_sort_column_id(column, C_META_TERRAIN);
 	gtk_widget_set_tooltip_text(column->button,
 				    _("Random of default terrain"));
 
@@ -1074,7 +1064,6 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_VICTORY, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tree_view_column_set_sort_column_id(column, C_META_VICTORY);
 	gtk_widget_set_tooltip_text(column->button,
 				    _("Points needed to win"));
 
@@ -1085,7 +1074,6 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_SEVENS, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tree_view_column_set_sort_column_id(column, C_META_SEVENS);
 	gtk_widget_set_tooltip_text(column->button, _("Sevens rule"));
 
 	column =
@@ -1095,8 +1083,7 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_HOST, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tree_view_column_set_sort_column_id(column,
-						C_META_HOST_SORTABLE);
+	gtk_tree_view_column_set_sort_column_id(column, C_META_HOST);
 	gtk_widget_set_tooltip_text(column->button, _("Host of the game"));
 
 	renderer = gtk_cell_renderer_text_new();
@@ -1107,8 +1094,6 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tree_view_column_set_sort_column_id(column,
-						C_META_HOST_SORTABLE);
 	gtk_widget_set_tooltip_text(column->button,
 				    _("Port of the the game"));
 
@@ -1119,13 +1104,8 @@ static void create_meta_dlg(G_GNUC_UNUSED GtkWidget * widget,
 						     C_META_VERSION, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(meta_games_view),
 				    column);
-	gtk_tree_view_column_set_sort_column_id(column, C_META_VERSION);
 	gtk_widget_set_tooltip_text(column->button,
 				    _("Version of the host"));
-	gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE
-					     (meta_games_model),
-					     C_META_HOST_SORTABLE,
-					     GTK_SORT_ASCENDING);
 
 	/* Register double-click */
 	g_signal_connect(G_OBJECT(meta_games_view), "button_press_event",
@@ -1162,26 +1142,6 @@ static void connect_dlg_cb(G_GNUC_UNUSED GtkDialog * dlg,
 	connect_close_all(FALSE, FALSE);
 }
 
-#ifdef HAVE_AVAHI
-static void connect_avahi_cb(G_GNUC_UNUSED GtkWidget * widget,
-			     GtkWidget * avahibrowser_entry)
-{
-	gchar *server =
-	    avahibrowser_get_server(AVAHIBROWSER(avahibrowser_entry));
-	gchar *port =
-	    avahibrowser_get_port(AVAHIBROWSER(avahibrowser_entry));
-
-	connect_set_field(&connect_server, server);
-	connect_set_field(&connect_port, port);
-
-	g_free(server);
-	g_free(port);
-
-	// connect
-	connect_close_all(TRUE, TRUE);
-}
-#endif
-
 void connect_create_dlg(void)
 {
 	GtkWidget *dlg_vbox;
@@ -1190,18 +1150,14 @@ void connect_create_dlg(void)
 	GtkWidget *hbox;
 	GtkWidget *btn;
 	GtkWidget *sep;
-#ifdef HAVE_AVAHI
-	GtkWidget *avahibrowser_entry;
-#endif				// HAVE_AVAHI
 	gchar *fullname;
-	gint row;
 
 	if (connect_dlg) {
 		gtk_window_present(GTK_WINDOW(connect_dlg));
 		return;
 	}
 
-	connect_dlg = gtk_dialog_new_with_buttons(_("Start a New Game"),
+	connect_dlg = gtk_dialog_new_with_buttons(_("Start a new game"),
 						  GTK_WINDOW(app_window),
 						  0,
 						  GTK_STOCK_CANCEL,
@@ -1220,16 +1176,15 @@ void connect_create_dlg(void)
 	gtk_widget_show(dlg_vbox);
 
 	table = gtk_table_new(4, 3, FALSE);
-	row = 0;
 	gtk_widget_show(table);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), table, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
-	lbl = gtk_label_new(_("Player name"));
+	lbl = gtk_label_new(_("Player Name"));
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, row, row + 1,
+	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 0, 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
@@ -1238,7 +1193,7 @@ void connect_create_dlg(void)
 	gtk_widget_show(name_entry);
 	gtk_entry_set_text(GTK_ENTRY(name_entry), connect_name);
 
-	gtk_table_attach(GTK_TABLE(table), name_entry, 1, 2, row, row + 1,
+	gtk_table_attach(GTK_TABLE(table), name_entry, 1, 2, 0, 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_tooltip_text(name_entry, _("Enter your name"));
 
@@ -1247,76 +1202,37 @@ void connect_create_dlg(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(viewer_toggle),
 				     connect_viewer);
 
-	gtk_table_attach(GTK_TABLE(table), viewer_toggle, 2, 3, row,
-			 row + 1, 0, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_table_attach(GTK_TABLE(table), viewer_toggle, 2, 3, 0, 1, 0,
+			 GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_widget_set_tooltip_text(viewer_toggle,
 				    _("Do you want to be a viewer?"));
-	row++;
 
 	sep = gtk_hseparator_new();
 	gtk_widget_show(sep);
-	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, row, row + 1,
+	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, 1, 2,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 6);
-	row++;
 
-#ifdef HAVE_AVAHI
-	lbl = gtk_label_new(_("Avahi"));
+	lbl = gtk_label_new(_("Meta Server"));
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
-
-	btn = gtk_button_new_with_label(_("Join"));
-	gtk_widget_show(btn);
-	gtk_widget_set_tooltip_text(btn,
-				    _
-				    ("Join an automatically discovered game"));
-	gtk_table_attach(GTK_TABLE(table), btn, 2, 3, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-
-	avahibrowser_entry = avahibrowser_new(btn);
-	gtk_widget_show(avahibrowser_entry);
-	gtk_table_attach(GTK_TABLE(table), avahibrowser_entry, 1, 2, row,
-			 row + 1, GTK_EXPAND | GTK_FILL,
-			 GTK_EXPAND | GTK_FILL, 0, 0);
-	row++;
-
-	g_signal_connect(G_OBJECT(btn), "clicked",
-			 G_CALLBACK(connect_avahi_cb), avahibrowser_entry);
-
-	// enable avahi
-	// storing the pointer to this widget for later use
-	avahi_register(AVAHIBROWSER(avahibrowser_entry));
-
-	sep = gtk_hseparator_new();
-	gtk_widget_show(sep);
-	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 6);
-	row++;
-#endif				// HAVE_AVAHI
-
-	lbl = gtk_label_new(_("Meta server"));
-	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 2, 3,
+			 (GtkAttachOptions) GTK_FILL,
+			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
 	meta_server_entry = metaserver_new();
 	gtk_widget_show(meta_server_entry);
-	gtk_table_attach(GTK_TABLE(table), meta_server_entry, 1, 3, row,
-			 row + 1, GTK_EXPAND | GTK_FILL,
-			 GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_table_attach(GTK_TABLE(table), meta_server_entry, 1, 3, 2, 3,
+			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL,
+			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL, 0, 0);
 	metaserver_add(METASERVER(meta_server_entry),
 		       metaserver_info.server);
-	row++;
 
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_widget_show(hbox);
-	gtk_table_attach(GTK_TABLE(table), hbox, 0, 3, row, row + 1,
+	gtk_table_attach(GTK_TABLE(table), hbox, 0, 3, 3, 4,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 3);
-	row++;
 
-	btn = gtk_button_new_with_label(_("Join Public Game"));
+	btn = gtk_button_new_with_label(_("Join public game"));
 	gtk_widget_show(btn);
 	gtk_box_pack_start(GTK_BOX(hbox), btn, TRUE, TRUE, 0);
 	g_signal_connect(G_OBJECT(btn), "clicked",
@@ -1325,7 +1241,7 @@ void connect_create_dlg(void)
 	GTK_WIDGET_SET_FLAGS(btn, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(btn);
 
-	btn = gtk_button_new_with_label(_("Create Game"));
+	btn = gtk_button_new_with_label(_("Create game"));
 	gtk_widget_show(btn);
 	gtk_box_pack_start(GTK_BOX(hbox), btn, TRUE, TRUE, 0);
 	gtk_widget_set_tooltip_text(btn, _("Create a game"));
@@ -1338,7 +1254,7 @@ void connect_create_dlg(void)
 		gtk_widget_set_sensitive(GTK_WIDGET(btn), FALSE);
 	}
 
-	btn = gtk_button_new_with_label(_("Join Private Game"));
+	btn = gtk_button_new_with_label(_("Join private game"));
 	gtk_widget_show(btn);
 	gtk_box_pack_start(GTK_BOX(hbox), btn, TRUE, TRUE, 0);
 	gtk_widget_set_tooltip_text(btn, _("Join a private game"));
@@ -1513,7 +1429,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
 	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
 
-	lbl = gtk_label_new(_("Server host"));
+	lbl = gtk_label_new(_("Server Host"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 0, 1,
 			 GTK_FILL, GTK_EXPAND, 0, 0);
@@ -1529,7 +1445,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 				    _("Name of the host of the game"));
 	connect_set_field(&connect_server, connect_server);
 
-	lbl = gtk_label_new(_("Server port"));
+	lbl = gtk_label_new(_("Server Port"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 1, 2,
 			 GTK_FILL, GTK_EXPAND, 0, 0);
@@ -1587,7 +1503,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 			 GTK_FILL, GTK_FILL, 0, 0);
 	gtk_widget_set_tooltip_text(host_list, _("Recent games"));
 
-	lbl = gtk_label_new(_("Recent games"));
+	lbl = gtk_label_new(_("Recent Games"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 2, 3,
 			 GTK_FILL, GTK_EXPAND, 0, 0);

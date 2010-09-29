@@ -33,7 +33,7 @@ ADMIN_GTK_FILES_ACTIVE =
 ADMIN_GTK_FILES_INACTIVE = client/gtk/admin-gtk.c
 endif
 
-pioneers_CPPFLAGS = -I$(top_srcdir)/client $(gtk_cflags) $(ADMIN_GTK) $(avahi_cflags)
+pioneers_CPPFLAGS = -I$(top_srcdir)/client $(gtk_cflags) $(ADMIN_GTK)
 
 EXTRA_pioneers_SOURCES = $(ADMIN_GTK_FILES_INACTIVE)
 
@@ -41,14 +41,10 @@ pioneers_SOURCES = \
 	$(ADMIN_GTK_FILES_ACTIVE) \
 	client/callback.h \
 	client/gtk/audio.h \
-	client/gtk/avahi.h \
-	client/gtk/avahi-browser.h \
 	client/gtk/frontend.h \
 	client/gtk/gui.h \
 	client/gtk/histogram.h \
 	client/gtk/audio.c \
-	client/gtk/avahi.c \
-	client/gtk/avahi-browser.c \
 	client/gtk/callbacks.c \
 	client/gtk/chat.c \
 	client/gtk/connect.c \
@@ -77,7 +73,7 @@ pioneers_SOURCES = \
 	client/gtk/state.c \
 	client/gtk/trade.c
 
-pioneers_LDADD = libpioneersclient.a $(gtk_libs) $(avahi_libs)
+pioneers_LDADD = libpioneersclient.a $(gtk_libs)
 
 # Include the data here, not at the top,
 # it can add extra resources to the executable

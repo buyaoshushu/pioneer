@@ -308,7 +308,6 @@ static void write_ready(Session * ses)
 				    _(""
 				      "Error connecting to host '%s': %s\n"),
 				    ses->host, net_errormsg_nr(error));
-			notify(ses, NET_CONNECT_FAIL, NULL);
 			net_close(ses);
 		} else {
 			ses->connect_in_progress = FALSE;
@@ -615,9 +614,9 @@ static void net_attempt_to_connect(Session * ses)
 #ifdef HAVE_GETADDRINFO_ET_AL
 	if (connect(ses->fd, aip->ai_addr, aip->ai_addrlen) < 0) {
 #else				/* HAVE_GETADDRINFO_ET_AL */
-	he = gethostbyname(ses->host);
+	he = gethostbyname(host);
 	addr.sin_family = AF_INET;
-	addr.sin_port = htons(atoi(ses->port));
+	addr.sin_port = htons(atoi(port));
 	addr.sin_addr = *((struct in_addr *) he->h_addr);
 	memset(&addr.sin_zero, 0, 8);
 	if (connect(ses->fd, (struct sockaddr *) &addr,
