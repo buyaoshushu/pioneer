@@ -132,9 +132,9 @@ void log_message_string_console(gint msg_type, const gchar * text)
 		/* Log prefix */
 		prefix = _("Player 8: ");
 		break;
-	case MSG_SPECTATOR_CHAT:
+	case MSG_VIEWER_CHAT:
 		/* Log prefix */
-		prefix = _("Spectator: ");
+		prefix = _("Viewer: ");
 		break;
 	default:
 		/* Log prefix */
@@ -190,8 +190,8 @@ static const char *debug_type(int type)
 		return "PLAYER7";
 	case MSG_PLAYER8:
 		return "PLAYER8";
-	case MSG_SPECTATOR_CHAT:
-		return "SPECTATOR_CHAT";
+	case MSG_VIEWER_CHAT:
+		return "VIEWER_CHAT";
 	default:
 		return "*UNKNOWN MESSAGE TYPE*";
 	}

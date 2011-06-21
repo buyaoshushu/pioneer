@@ -33,7 +33,6 @@
 #include "callback.h"
 #include "buildrec.h"
 #include "quoteinfo.h"
-#include "notifying-string.h"
 
 static enum callback_mode previous_mode;
 GameParams *game_params;
@@ -49,10 +48,6 @@ static struct recovery_info_t {
 	GList *build_list;
 	gboolean ship_moved;
 } recovery_info;
-
-NotifyingString *requested_name = NULL;
-NotifyingString *requested_style = NULL;
-gboolean requested_spectator;
 
 static gboolean global_unhandled(StateMachine * sm, gint event);
 static gboolean global_filter(StateMachine * sm, gint event);
@@ -112,12 +107,7 @@ static void waiting_for_network(gboolean is_waiting)
 }
 
 /* Dummy callback functions. They do nothing */
-static void dummy_init_glib_et_al(G_GNUC_UNUSED int argc,
-				  G_GNUC_UNUSED char **argv)
-{;
-}
-
-static void dummy_init(void)
+static void dummy_init(G_GNUC_UNUSED int argc, G_GNUC_UNUSED char **argv)
 {;
 }
 
@@ -373,8 +363,8 @@ static void dummy_new_points(G_GNUC_UNUSED gint player_num,
 {
 }
 
-static void dummy_spectator_name(G_GNUC_UNUSED gint spectator_num,
-				 G_GNUC_UNUSED const gchar * name)
+static void dummy_viewer_name(G_GNUC_UNUSED gint viewer_num,
+			      G_GNUC_UNUSED const gchar * name)
 {;
 }
 
@@ -392,7 +382,7 @@ static void dummy_player_quit(G_GNUC_UNUSED gint player_num)
 {;
 }
 
-static void dummy_spectator_quit(G_GNUC_UNUSED gint player_num)
+static void dummy_viewer_quit(G_GNUC_UNUSED gint player_num)
 {;
 }
 
@@ -427,7 +417,6 @@ void client_init(void)
 	 * someone forgets to update this when adding a new callback */
 	memset(&callbacks, 0, sizeof(callbacks));
 	/* set all callbacks to their default value: doing nothing */
-	callbacks.init_glib_et_al = &dummy_init_glib_et_al;
 	callbacks.init = &dummy_init;
 	callbacks.network_status = &dummy_network_status;
 	callbacks.instructions = &dummy_instructions;
@@ -482,11 +471,11 @@ void client_init(void)
 	callbacks.get_rolled_resources = &dummy_get_rolled_resources;
 	callbacks.new_statistics = &dummy_new_statistics;
 	callbacks.new_points = &dummy_new_points;
-	callbacks.spectator_name = &dummy_spectator_name;
+	callbacks.viewer_name = &dummy_viewer_name;
 	callbacks.player_name = &dummy_player_name;
 	callbacks.player_style = &dummy_player_style;
 	callbacks.player_quit = &dummy_player_quit;
-	callbacks.spectator_quit = &dummy_spectator_quit;
+	callbacks.viewer_quit = &dummy_viewer_quit;
 	callbacks.incoming_chat = &dummy_incoming_chat;
 	callbacks.new_bank = &dummy_new_bank;
 	callbacks.error = &dummy_error;
@@ -498,12 +487,7 @@ void client_init(void)
 
 void client_start(int argc, char **argv)
 {
-	callbacks.init_glib_et_al(argc, argv);
-
-	requested_name = NOTIFYING_STRING(notifying_string_new());
-	requested_style = NOTIFYING_STRING(notifying_string_new());
-
-	callbacks.init();
+	callbacks.init(argc, argv);
 	sm_goto(SM(), mode_offline);
 }
 
@@ -948,34 +932,32 @@ gboolean mode_start(StateMachine * sm, gint event)
 		return TRUE;
 	}
 	if (sm_recv(sm, "status report")) {
-		gchar *name = notifying_string_get(requested_name);
-		if (requested_spectator) {
-			if (name && name[0] != '\0') {
-				sm_send(sm, "status viewer %s\n", name);
+		if (requested_viewer) {
+			if (requested_name[0] != '\0') {
+				sm_send(sm, "status viewer %s\n",
+					requested_name);
 			} else {
 				sm_send(sm, "status newviewer\n");
 			}
 		} else {
-			if (name && name[0] != '\0') {
-				sm_send(sm, "status reconnect %s\n", name);
+			if (requested_name[0] != '\0') {
+				sm_send(sm, "status reconnect %s\n",
+					requested_name);
 			} else {
 				sm_send(sm, "status newplayer\n");
 			}
 		}
-		g_free(name);
 		return TRUE;
 	}
 	if (sm_recv(sm, "player %d of %d, welcome to pioneers server %S",
 		    &player_num, &total_num, &version)) {
-		gchar *style = notifying_string_get(requested_style);
-
 		g_free(version);
 		player_set_my_num(player_num);
 		player_set_total_num(total_num);
-		sm_send(sm, "style %s\n", style);
+		sm_send(sm, "style %s\n", requested_style);
 		sm_send(sm, "players\n");
 		sm_goto(sm, mode_players);
-		g_free(style);
+
 		return TRUE;
 	}
 	if (sm_recv(sm, "ERR sorry, version conflict")) {
@@ -1507,7 +1489,7 @@ static gboolean mode_idle(StateMachine * sm, gint event)
 	switch (event) {
 	case SM_ENTER:
 		callback_mode = MODE_WAIT_TURN;
-		if (player_is_spectator(my_player_num()))
+		if (player_is_viewer(my_player_num()))
 			callbacks.instructions("");
 		else
 			callbacks.instructions(_

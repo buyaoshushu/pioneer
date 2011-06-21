@@ -3,7 +3,6 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2011 Roland Clobus <rclobus@rclobus.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +23,6 @@
 #include "version.h"
 #include "game.h"
 #include "ai.h"
-#include "client.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -41,13 +39,13 @@ static gboolean enable_debug = FALSE;
 static gboolean show_version = FALSE;
 static Map *map = NULL;
 
-static void logbot_init(void);
+static void logbot_init(G_GNUC_UNUSED int argc, G_GNUC_UNUSED char **argv);
 
 static const struct algorithm_info {
 	/** Name of the algorithm (for commandline) */
 	const gchar *name;
 	/** Init function */
-	void (*init_func) (void);
+	void (*init_func) (int argc, char **argv);
 	/** Request to be a player? */
 	gboolean request_player;
 	/** Quit if request not honoured */
@@ -92,7 +90,7 @@ static GOptionEntry commandline_entries[] = {
 	{NULL, '\0', 0, 0, NULL, NULL, NULL}
 };
 
-static void ai_init_glib_et_al(int argc, char **argv)
+static void ai_init(int argc, char **argv)
 {
 	GOptionContext *context;
 	GError *error = NULL;
@@ -103,8 +101,6 @@ static void ai_init_glib_et_al(int argc, char **argv)
 	g_option_context_add_main_entries(context, commandline_entries,
 					  PACKAGE);
 	g_option_context_parse(context, &argc, &argv, &error);
-	g_option_context_free(context);
-
 	if (error != NULL) {
 		g_print("%s\n", error->message);
 		g_error_free(error);
@@ -118,13 +114,6 @@ static void ai_init_glib_et_al(int argc, char **argv)
 		exit(0);
 	}
 
-	g_type_init();
-	set_ui_driver(&Glib_Driver);
-	log_set_func_default();
-}
-
-static void ai_init(void)
-{
 	set_enable_debug(enable_debug);
 
 	if (server == NULL)
@@ -142,6 +131,9 @@ static void ai_init(void)
 		exit(0);
 	}
 
+	set_ui_driver(&Glib_Driver);
+	log_set_func_default();
+
 	if (ai != NULL) {
 		gint i;
 		for (i = 0; i < G_N_ELEMENTS(algorithms); i++) {
@@ -151,7 +143,7 @@ static void ai_init(void)
 	}
 	log_message(MSG_INFO, _("Type of computer player: %s\n"),
 		    algorithms[active_algorithm].name);
-	algorithms[active_algorithm].init_func();
+	algorithms[active_algorithm].init_func(argc, argv);
 }
 
 void ai_panic(const char *message)
@@ -165,12 +157,10 @@ static void ai_offline(void)
 	gchar *style;
 
 	callbacks.offline = callbacks.quit;
-	notifying_string_set(requested_name, name);
 	style =
 	    g_strdup_printf("ai %s", algorithms[active_algorithm].name);
-	notifying_string_set(requested_style, style);
-	cb_connect(server, port,
-		   !algorithms[active_algorithm].request_player);
+	cb_connect(server, port, name,
+		   !algorithms[active_algorithm].request_player, style);
 	g_free(style);
 	g_free(name);
 }
@@ -178,7 +168,7 @@ static void ai_offline(void)
 static void ai_start_game(void)
 {
 	if (algorithms[active_algorithm].request_player ==
-	    my_player_spectator()
+	    my_player_viewer()
 	    && algorithms[active_algorithm].quit_if_not_request) {
 		ai_panic(N_("The game is already full. I'm leaving."));
 	}
@@ -207,7 +197,6 @@ static void ai_set_map(Map * new_map)
 
 void frontend_set_callbacks(void)
 {
-	callbacks.init_glib_et_al = &ai_init_glib_et_al;
 	callbacks.init = &ai_init;
 	callbacks.offline = &ai_offline;
 	callbacks.start_game = &ai_start_game;
@@ -215,9 +204,9 @@ void frontend_set_callbacks(void)
 	callbacks.set_map = &ai_set_map;
 }
 
-/* The logbot is intended to be used as a spectator in a game, and to collect
+/* The logbot is intended to be used as a viewer in a game, and to collect
  * a transcript of the game in human readable form, which can be analysed
  * using external tools. */
-void logbot_init(void)
+void logbot_init(G_GNUC_UNUSED int argc, G_GNUC_UNUSED char **argv)
 {
 }

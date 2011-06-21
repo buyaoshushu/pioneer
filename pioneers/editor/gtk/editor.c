@@ -63,22 +63,8 @@ static GtkWidget *roll_numbers[12 + 1];
 static GtkCheckMenuItem *shuffle_tile;
 static GtkWidget *port_menu;
 static GtkWidget *port_directions[6];
-static GtkWidget *hresize_buttons[4];
-static GtkWidget *vresize_buttons[4];
-typedef enum {
-	RESIZE_INSERT_LEFT,
-	RESIZE_REMOVE_LEFT,
-	RESIZE_INSERT_RIGHT,
-	RESIZE_REMOVE_RIGHT
-} hresize_type;
-/* order of vresize must match order of hresize */
-typedef enum {
-	RESIZE_INSERT_TOP,
-	RESIZE_REMOVE_TOP,
-	RESIZE_INSERT_BOTTOM,
-	RESIZE_REMOVE_BOTTOM
-} vresize_type;
-
+static GtkWidget *hresize_buttons[2];
+static GtkWidget *vresize_buttons[2];
 static GuiMap *gmap;
 static Hex *current_hex;
 
@@ -157,24 +143,27 @@ static void error_dialog(const char *fmt, ...)
 	gtk_widget_destroy(dialog);
 }
 
+static void clear_hex(Hex * hex)
+{
+	g_return_if_fail(hex != NULL);
+	hex->terrain = LAST_TERRAIN;
+	hex->resource = NO_RESOURCE;
+	hex->chit_pos = -1;
+	hex->roll = 0;
+	hex->shuffle = TRUE;
+}
+
 static void fill_map(Map * map)
 {
 	gint x, y;
 
 	for (y = 0; y < map->y_size; y++) {
 		for (x = 0; x < map->x_size; x++) {
-			if (x == 0 && y % 2 == 0 && map->shrink_left) {
+			if (x == map->x_size - 1 && y % 2 == 1)
 				continue;
-			}
-			if (x == map->x_size - 1 && y % 2 == 1
-			    && map->shrink_right) {
+			if (map->grid[y][x] != NULL)
 				continue;
-			}
-			if (map->grid[y][x] != NULL) {
-				continue;
-			}
-			/* Add a default hex on the empty spot */
-			map_reset_hex(map, x, y);
+			clear_hex(map_add_hex(map, x, y));
 		}
 	}
 }
@@ -215,55 +204,34 @@ static gboolean terrain_has_chit(Terrain terrain)
 	return FALSE;
 }
 
-static void build_map_resize(GtkWidget * table, gint col, gint row,
+static void build_map_resize(GtkWidget * table, gint row, gint col,
 			     GtkOrientation dir, GtkWidget ** buttons,
 			     GCallback resize_callback)
 {
-	/* symbols[] must match order of hresize_type and vresize_type; */
-	static const gchar *symbols[] =
-	    { GTK_STOCK_ADD, GTK_STOCK_REMOVE, GTK_STOCK_ADD,
-		GTK_STOCK_REMOVE
-	};
-	/* The order must match hresize_type and vresize_type, and also depends on the orientation */
-	static const gchar *tooltip[] = {
-		N_("Insert a row"),
-		N_("Delete a row"),
-		N_("Insert a column"),
-		N_("Delete a column")
-	};
-
+	static const char *symbols[] = { "+", "--" };
+	static gint values[] = { +1, -1 };
 	GtkWidget *box;
 	gint i;
 
-	if (dir == GTK_ORIENTATION_VERTICAL) {
+	if (dir == GTK_ORIENTATION_VERTICAL)
 		box = gtk_vbox_new(FALSE, 0);
-	} else {
+	else
 		box = gtk_hbox_new(FALSE, 0);
-	}
 
-	for (i = 0; i < 4; i++) {
-		buttons[i] =
-		    GTK_WIDGET(gtk_tool_button_new_from_stock(symbols[i]));
-		gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(buttons[i]),
-					       _(tooltip
-						 [i % 2 +
-						  (dir ==
-						   GTK_ORIENTATION_VERTICAL
-						   ? 0 : 2)]));
-
-		if (i < 2) {
-			gtk_box_pack_start(GTK_BOX(box), buttons[i],
-					   FALSE, TRUE, 0);
-		} else {
-			gtk_box_pack_end(GTK_BOX(box), buttons[i],
-					 FALSE, TRUE, 0);
-		}
-		g_signal_connect(G_OBJECT(buttons[i]), "clicked",
-				 resize_callback, GINT_TO_POINTER(i));
-	}
 	gtk_box_pack_start(GTK_BOX(box), gtk_fixed_new(), TRUE, TRUE, 0);
 
-	gtk_table_attach(GTK_TABLE(table), box, col, col + 1, row, row + 1,
+	for (i = 0; i < 2; i++) {
+		buttons[i] = gtk_button_new_with_label(symbols[i]);
+		gtk_box_pack_start(GTK_BOX(box), buttons[i], FALSE, TRUE,
+				   0);
+		g_signal_connect(G_OBJECT(buttons[i]), "clicked",
+				 resize_callback,
+				 GINT_TO_POINTER(values[i]));
+	}
+
+	gtk_box_pack_start(GTK_BOX(box), gtk_fixed_new(), TRUE, TRUE, 0);
+
+	gtk_table_attach(GTK_TABLE(table), box, row, row + 1, col, col + 1,
 			 GTK_FILL, GTK_FILL, 0, 0);
 }
 
@@ -287,9 +255,6 @@ static gint button_press_map_cb(GtkWidget * area, GdkEventButton * event,
 
 	if (area->window == NULL || gmap->map == NULL)
 		return FALSE;
-
-	if (event->button != 1)
-		return TRUE;
 
 	current_hex = guimap_find_hex(gmap, event->x, event->y);
 	if (current_hex == NULL)
@@ -416,36 +381,12 @@ static gint key_press_map_cb(GtkWidget * area, GdkEventKey * event,
 	return TRUE;
 }
 
-static void update_resize_buttons(void)
+static void post_change(gint * size, GtkWidget ** buttons, gint amt)
 {
-	gtk_widget_set_sensitive(hresize_buttons[RESIZE_REMOVE_LEFT],
-				 gmap->map->x_size > 1 ||
-				 !(gmap->map->shrink_right ||
-				   gmap->map->shrink_left));
-	gtk_widget_set_sensitive(hresize_buttons[RESIZE_REMOVE_RIGHT],
-				 gmap->map->x_size > 1 ||
-				 !(gmap->map->shrink_right ||
-				   gmap->map->shrink_left));
-	gtk_widget_set_sensitive(hresize_buttons[RESIZE_INSERT_LEFT],
-				 gmap->map->x_size < MAP_SIZE ||
-				 gmap->map->shrink_left);
-	gtk_widget_set_sensitive(hresize_buttons[RESIZE_INSERT_RIGHT],
-				 gmap->map->x_size < MAP_SIZE ||
-				 gmap->map->shrink_right);
-
-	gtk_widget_set_sensitive(vresize_buttons[RESIZE_REMOVE_TOP],
-				 gmap->map->y_size > 1 &&
-				 (gmap->map->x_size < MAP_SIZE ||
-				  gmap->map->shrink_left));
-	gtk_widget_set_sensitive(vresize_buttons[RESIZE_REMOVE_BOTTOM],
-				 gmap->map->y_size > 1);
-	gtk_widget_set_sensitive(vresize_buttons[RESIZE_INSERT_TOP],
-				 gmap->map->y_size < MAP_SIZE
-				 && (gmap->map->x_size < MAP_SIZE
-				     || gmap->map->shrink_left));
-	gtk_widget_set_sensitive(vresize_buttons[RESIZE_INSERT_BOTTOM],
-				 gmap->map->y_size < MAP_SIZE);
-
+	*size += amt;
+	gtk_widget_set_sensitive(buttons[0], *size < MAP_SIZE);
+	gtk_widget_set_sensitive(buttons[1], *size > 1);
+	fill_map(gmap->map);
 	scale_map(gmap);
 	guimap_display(gmap);
 }
@@ -453,50 +394,31 @@ static void update_resize_buttons(void)
 static void change_height(G_GNUC_UNUSED GtkWidget * menu,
 			  gpointer user_data)
 {
-	switch (GPOINTER_TO_INT(user_data)) {
-	case RESIZE_REMOVE_BOTTOM:
-		map_modify_row_count(gmap->map, MAP_MODIFY_REMOVE,
-				     MAP_MODIFY_ROW_BOTTOM);
-		break;
-	case RESIZE_INSERT_BOTTOM:
-		map_modify_row_count(gmap->map, MAP_MODIFY_INSERT,
-				     MAP_MODIFY_ROW_BOTTOM);
-		break;
-	case RESIZE_REMOVE_TOP:
-		map_modify_row_count(gmap->map, MAP_MODIFY_REMOVE,
-				     MAP_MODIFY_ROW_TOP);
-		break;
-	case RESIZE_INSERT_TOP:
-		map_modify_row_count(gmap->map, MAP_MODIFY_INSERT,
-				     MAP_MODIFY_ROW_TOP);
-		break;
+	if (GPOINTER_TO_INT(user_data) < 0) {
+		gint x;
+		for (x = 0; x < gmap->map->x_size; x++)
+			clear_hex(gmap->map->
+				  grid[gmap->map->y_size - 1][x]);
 	}
-	update_resize_buttons();
+	post_change(&gmap->map->y_size, vresize_buttons,
+		    GPOINTER_TO_INT(user_data));
 }
 
 static void change_width(G_GNUC_UNUSED GtkWidget * menu,
 			 gpointer user_data)
 {
-	switch (GPOINTER_TO_INT(user_data)) {
-	case RESIZE_REMOVE_RIGHT:
-		map_modify_column_count(gmap->map, MAP_MODIFY_REMOVE,
-					MAP_MODIFY_COLUMN_RIGHT);
-		break;
-	case RESIZE_INSERT_RIGHT:
-		map_modify_column_count(gmap->map, MAP_MODIFY_INSERT,
-					MAP_MODIFY_COLUMN_RIGHT);
-		break;
-	case RESIZE_REMOVE_LEFT:
-		map_modify_column_count(gmap->map, MAP_MODIFY_REMOVE,
-					MAP_MODIFY_COLUMN_LEFT);
-		break;
-	case RESIZE_INSERT_LEFT:
-		map_modify_column_count(gmap->map, MAP_MODIFY_INSERT,
-					MAP_MODIFY_COLUMN_LEFT);
-		break;
+	if (GPOINTER_TO_INT(user_data) < 0) {
+		gint x, y;
+		for (y = 0; y < gmap->map->y_size; y++) {
+			if (y % 2 == 0)
+				x = gmap->map->x_size - 1;
+			else
+				x = gmap->map->x_size - 2;
+			clear_hex(gmap->map->grid[y][x]);
+		}
 	}
-	update_resize_buttons();
-
+	post_change(&gmap->map->x_size, hresize_buttons,
+		    GPOINTER_TO_INT(user_data));
 }
 
 static GtkWidget *build_map(void)
@@ -504,13 +426,13 @@ static GtkWidget *build_map(void)
 	GtkWidget *table;
 	GtkWidget *area;
 
-	table = gtk_table_new(4, 2, FALSE);
+	table = gtk_table_new(2, 2, FALSE);
 
 	gmap = guimap_new();
 	guimap_set_show_no_setup_nodes(gmap, TRUE);
 	area = guimap_build_drawingarea(gmap, MAP_WIDTH, MAP_HEIGHT);
 
-	gtk_widget_set_can_focus(area, TRUE);
+	GTK_WIDGET_SET_FLAGS(area, GTK_CAN_FOCUS);
 	gtk_widget_add_events(gmap->area, GDK_ENTER_NOTIFY_MASK
 			      | GDK_BUTTON_PRESS_MASK
 			      | GDK_KEY_PRESS_MASK);
@@ -520,13 +442,13 @@ static GtkWidget *build_map(void)
 			 G_CALLBACK(button_press_map_cb), gmap);
 	g_signal_connect(G_OBJECT(gmap->area), "key_press_event",
 			 G_CALLBACK(key_press_map_cb), gmap);
-	gtk_table_attach(GTK_TABLE(table), gmap->area, 0, 1, 2, 3,
+	gtk_table_attach(GTK_TABLE(table), gmap->area, 0, 1, 0, 1,
 			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
 			 0);
 
-	build_map_resize(table, 1, 2, GTK_ORIENTATION_VERTICAL,
+	build_map_resize(table, 0, 1, GTK_ORIENTATION_HORIZONTAL,
 			 vresize_buttons, G_CALLBACK(change_height));
-	build_map_resize(table, 0, 3, GTK_ORIENTATION_HORIZONTAL,
+	build_map_resize(table, 1, 0, GTK_ORIENTATION_VERTICAL,
 			 hresize_buttons, G_CALLBACK(change_width));
 
 	return table;
@@ -913,7 +835,6 @@ static void load_game(const gchar * file, gboolean is_reload)
 	const gchar *gamefile;
 	GameParams *new_params;
 	gchar *new_filename;
-	gint i;
 
 	if (file == NULL)
 		gamefile = default_game;
@@ -931,16 +852,8 @@ static void load_game(const gchar * file, gboolean is_reload)
 		new_params->title = g_strdup("Untitled");
 		map_free(new_params->map);
 		new_params->map = map_new();
-		for (i = 0; i < 6; i++) {
-			map_modify_row_count(new_params->map,
-					     MAP_MODIFY_INSERT,
-					     MAP_MODIFY_ROW_BOTTOM);
-		}
-		for (i = 0; i < 11; i++) {
-			map_modify_column_count(new_params->map,
-						MAP_MODIFY_INSERT,
-						MAP_MODIFY_COLUMN_RIGHT);
-		}
+		new_params->map->x_size = 6;
+		new_params->map->y_size = 6;
 		new_params->map->chits =
 		    g_array_new(FALSE, FALSE, sizeof(gint));
 		new_filename = NULL;
@@ -963,7 +876,6 @@ static void load_game(const gchar * file, gboolean is_reload)
 		scale_map(gmap);
 		guimap_display(gmap);
 	}
-	update_resize_buttons();
 }
 
 static void save_game(const gchar * file)
@@ -1137,23 +1049,10 @@ static void about_menu_cb(void)
 	aboutbox_display(_("About Pioneers Game Editor"), authors);
 }
 
-static void zoom_normal_cb(void)
-{
-	guimap_zoom_normal(gmap);
-}
-
-static void zoom_center_map_cb(void)
-{
-	guimap_zoom_center_map(gmap);
-}
-
 static GtkActionEntry entries[] = {
 	{"FileMenu", NULL,
 	 /* Menu entry */
 	 N_("_File"), NULL, NULL, NULL},
-	{"ViewMenu", NULL,
-	 /* Menu entry */
-	 N_("_View"), NULL, NULL, NULL},
 	{"HelpMenu", NULL,
 	 /* Menu entry */
 	 N_("_Help"), NULL, NULL, NULL},
@@ -1195,18 +1094,6 @@ static GtkActionEntry entries[] = {
 	 /* Tooltip for Quit menu entry */
 	 N_("Quit"), exit_cb},
 
-	{"Full", GTK_STOCK_ZOOM_FIT,
-	 /* Menu entry */
-	 N_("_Reset"),
-	 "<control>0",
-	 /* Tooltip for Reset menu entry */
-	 N_("View the full map"), zoom_normal_cb},
-	{"Center", NULL,
-	 /* Menu entry */
-	 N_("_Center"), NULL,
-	 /* Tooltip for Center menu entry */
-	 N_("Center the map"), zoom_center_map_cb},
-
 #ifdef HAVE_HELP
 	/* Disable this item, until the help is written
 	   {"Contents", GTK_STOCK_HELP, N_("_Contents"), "F1",
@@ -1217,7 +1104,7 @@ static GtkActionEntry entries[] = {
 	 /* Menu entry */
 	 N_("_About Pioneers Editor"), NULL,
 	 /* Tooltip for About Pioneers Editor menu entry */
-	 N_("Information about Pioneers Editor"), about_menu_cb},
+	 N_("Information about Pioneers Editor"), about_menu_cb}
 };
 
 /* *INDENT-OFF* */
@@ -1234,10 +1121,6 @@ static const char *ui_description =
 "      <menuitem action='ChangeTitle'/>"
 "      <separator/>"
 "      <menuitem action='Quit'/>"
-"    </menu>"
-"    <menu action='ViewMenu'>"
-"      <menuitem action='Full'/>"
-"      <menuitem action='Center'/>"
 "    </menu>"
 "    <menu action='HelpMenu'>"
 #ifdef HAVE_HELP

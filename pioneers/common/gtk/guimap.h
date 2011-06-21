@@ -65,7 +65,10 @@ typedef struct _Mode Mode;
 typedef struct {
 	GtkWidget *area;	   /**< render map in this drawing area */
 	GdkPixmap *pixmap;	   /**< off screen pixmap for drawing */
-	cairo_t *cr;		   /**< cairo for map drawing */
+	GdkGC *gc;		   /**< gc for map drawing */
+	GdkRegion *hex_region;	   /**< region for filling hex */
+	GdkRegion *node_region[6]; /**< region for filling node */
+	GdkRegion *edge_region[6]; /**< regions for locating edges */
 	PangoLayout *layout;	   /**< layout object for rendering text */
 	gint initial_font_size;	   /**< initial font size */
 
@@ -87,7 +90,6 @@ typedef struct {
 	gint x_point;		   /**< x offset of node 0 from centre */
 	gint y_point;		   /**< y offset of node 0 from centre */
 
-	gboolean is_custom_view;   /**< false if all hexes are shown and centered */
 	gint x_margin;		   /**< margin to leave empty */
 	gint y_margin;		   /**< margin to leave empty */
 	gint width;		   /**< pixel width of map */
@@ -100,6 +102,7 @@ void guimap_delete(GuiMap * gmap);
 void guimap_reset(GuiMap * gmap);
 GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width,
 				    gint height);
+GdkPixmap *guimap_terrain(Terrain terrain);
 
 void guimap_road_polygon(const GuiMap * gmap, const Edge * edge,
 			 Polygon * poly);
@@ -115,15 +118,13 @@ void guimap_city_wall_polygon(const GuiMap * gmap, const Node * node,
 			      Polygon * poly);
 
 gint guimap_get_chit_radius(PangoLayout * layout, gboolean show_dots);
-void draw_dice_roll(PangoLayout * layout, cairo_t * cr, gdouble x_offset,
-		    gdouble y_offset, gdouble radius, gint n, gint terrain,
-		    gboolean highlight);
+void draw_dice_roll(PangoLayout * layout, GdkPixmap * pixmap, GdkGC * gc,
+		    gint x_offset, gint y_offset, gint radius,
+		    gint n, gint terrain, gboolean highlight);
 
 void guimap_scale_with_radius(GuiMap * gmap, gint radius);
 void guimap_scale_to_size(GuiMap * gmap, gint width, gint height);
 void guimap_display(GuiMap * gmap);
-void guimap_zoom_normal(GuiMap * gmap);
-void guimap_zoom_center_map(GuiMap * gmap);
 
 void guimap_highlight_chits(GuiMap * gmap, gint roll);
 void guimap_draw_edge(GuiMap * gmap, const Edge * edge);

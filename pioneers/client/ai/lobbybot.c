@@ -154,7 +154,7 @@ static void lobbybot_start_game(void)
 	chatting = TRUE;
 }
 
-void lobbybot_init(void)
+void lobbybot_init(G_GNUC_UNUSED int argc, G_GNUC_UNUSED char **argv)
 {
 	g_assert(players == NULL);
 	players =
@@ -163,9 +163,9 @@ void lobbybot_init(void)
 	/* Don't chat before the rules are known */
 	chatting = FALSE;
 
-	callbacks.spectator_name = &lobbybot_player_name_changed;
+	callbacks.viewer_name = &lobbybot_player_name_changed;
 	callbacks.player_name = &lobbybot_player_name_changed;
-	callbacks.spectator_quit = &lobbybot_player_quit;
+	callbacks.viewer_quit = &lobbybot_player_quit;
 	callbacks.player_quit = &lobbybot_player_quit;
 	callbacks.incoming_chat = &lobbybot_chat_parser;
 	callbacks.player_turn = &lobbybot_turn;

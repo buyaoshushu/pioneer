@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2004-2011 Roland Clobus <rclobus@bigfoot.com>
+ * Copyright (C) 2004-2007 Roland Clobus <rclobus@bigfoot.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,8 +33,6 @@
 #include "log.h"
 #include "theme.h"
 
-#define ZOOM_AMOUNT 3
-
 static gboolean single_click_build_active = FALSE;
 
 typedef struct {
@@ -59,6 +57,11 @@ static gint sqr(gint a)
 	return a * a;
 }
 
+GdkPixmap *guimap_terrain(Terrain terrain)
+{
+	return theme_get_current()->terrain_tiles[terrain];
+}
+
 GuiMap *guimap_new(void)
 {
 	GuiMap *gmap;
@@ -72,6 +75,8 @@ GuiMap *guimap_new(void)
 
 void guimap_delete(GuiMap * gmap)
 {
+	gint idx;
+
 	if (gmap->area != NULL) {
 		g_object_unref(gmap->area);
 		gmap->area = NULL;
@@ -80,9 +85,23 @@ void guimap_delete(GuiMap * gmap)
 		g_object_unref(gmap->pixmap);
 		gmap->pixmap = NULL;
 	}
-	if (gmap->cr != NULL) {
-		cairo_destroy(gmap->cr);
-		gmap->cr = NULL;
+	if (gmap->gc != NULL) {
+		g_object_unref(gmap->gc);
+		gmap->gc = NULL;
+	}
+	if (gmap->hex_region != NULL) {
+		gdk_region_destroy(gmap->hex_region);
+		gmap->hex_region = NULL;
+	}
+	for (idx = 0; idx < 6; idx++) {
+		if (gmap->edge_region[idx] != NULL) {
+			gdk_region_destroy(gmap->edge_region[idx]);
+			gmap->edge_region[idx] = NULL;
+		}
+		if (gmap->node_region[idx] != NULL) {
+			gdk_region_destroy(gmap->node_region[idx]);
+			gmap->node_region[idx] = NULL;
+		}
 	}
 	if (gmap->layout) {
 		/* Restore the font size */
@@ -115,7 +134,6 @@ static gint expose_map_cb(GtkWidget * area, GdkEventExpose * event,
 			  gpointer user_data)
 {
 	GuiMap *gmap = user_data;
-	cairo_t *cr;
 
 	if (area->window == NULL || gmap->map == NULL)
 		return FALSE;
@@ -127,11 +145,12 @@ static gint expose_map_cb(GtkWidget * area, GdkEventExpose * event,
 		guimap_display(gmap);
 	}
 
-	cr = gdk_cairo_create(area->window);
-	gdk_cairo_set_source_pixmap(cr, gmap->pixmap, 0, 0);
-	gdk_cairo_rectangle(cr, &event->area);
-	cairo_fill(cr);
-	cairo_destroy(cr);
+	gdk_draw_drawable(area->window,
+			  area->style->fg_gc[GTK_STATE_NORMAL],
+			  gmap->pixmap,
+			  event->area.x, event->area.y,
+			  event->area.x, event->area.y,
+			  event->area.width, event->area.height);
 	return FALSE;
 }
 
@@ -156,15 +175,12 @@ static gint configure_map_cb(GtkWidget * area,
 	return FALSE;
 }
 
-static gboolean motion_notify_map_cb(GtkWidget * area,
-				     GdkEventMotion * event,
-				     gpointer user_data)
+static gint motion_notify_map_cb(GtkWidget * area, GdkEventMotion * event,
+				 gpointer user_data)
 {
 	GuiMap *gmap = user_data;
 	gint x;
 	gint y;
-	static gint last_x;
-	static gint last_y;
 	GdkModifierType state;
 	MapElement dummyElement;
 	g_assert(area != NULL);
@@ -180,62 +196,10 @@ static gboolean motion_notify_map_cb(GtkWidget * area,
 		state = event->state;
 	}
 
-	if (state & GDK_BUTTON2_MASK) {
-		gmap->is_custom_view = TRUE;
-		gmap->x_margin += x - last_x;
-		gmap->y_margin += y - last_y;
-
-		guimap_display(gmap);
-		gtk_widget_queue_draw(gmap->area);
-	}
-	last_x = x;
-	last_y = y;
-
 	dummyElement.pointer = NULL;
 	guimap_cursor_move(gmap, x, y, &dummyElement);
 
-	return FALSE;
-}
-
-static gboolean zoom_map_cb(GtkWidget * area, GdkEventScroll * event,
-			    gpointer user_data)
-{
-	GuiMap *gmap = user_data;
-
-	if (area->window == NULL || gmap->map == NULL)
-		return FALSE;
-
-	gint radius = gmap->hex_radius;
-	gmap->is_custom_view = TRUE;
-
-	if (event->direction == GDK_SCROLL_UP) {
-		radius += ZOOM_AMOUNT;
-
-		gmap->x_margin -= (event->x - gmap->x_margin) *
-		    ZOOM_AMOUNT / radius;
-		gmap->y_margin -= (event->y - gmap->y_margin) *
-		    ZOOM_AMOUNT / radius;
-
-	} else if (event->direction == GDK_SCROLL_DOWN) {
-		gint old_radius = radius;
-		radius -= ZOOM_AMOUNT;
-		if (radius < MIN_HEX_RADIUS)
-			radius = MIN_HEX_RADIUS;
-
-		gmap->x_margin += (event->x - gmap->x_margin) *
-		    (old_radius - radius) / radius;
-		gmap->y_margin += (event->y - gmap->y_margin) *
-		    (old_radius - radius) / radius;
-
-	}
-	gmap->hex_radius = radius;
-	guimap_scale_to_size(gmap,
-			     gmap->area->allocation.width,
-			     gmap->area->allocation.height);
-
-	guimap_display(gmap);
-	gtk_widget_queue_draw(gmap->area);
-	return FALSE;
+	return TRUE;
 }
 
 GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width, gint height)
@@ -255,8 +219,6 @@ GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width, gint height)
 
 	g_signal_connect(G_OBJECT(gmap->area), "motion_notify_event",
 			 G_CALLBACK(motion_notify_map_cb), gmap);
-	g_signal_connect(G_OBJECT(gmap->area), "scroll_event",
-			 G_CALLBACK(zoom_map_cb), gmap);
 
 	gtk_widget_show(gmap->area);
 
@@ -400,57 +362,6 @@ static gint chances[13] = {
 	0, 0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1
 };
 
-static void reverse_calc_hex_pos(const GuiMap * gmap,
-				 gint x_coor, gint y_coor, gint * hex_x,
-				 gint * hex_y)
-{
-	y_coor -= gmap->y_margin + gmap->hex_radius;
-	y_coor += gmap->hex_radius;
-	*hex_y = y_coor / (gmap->hex_radius + gmap->y_point);
-
-	x_coor -=
-	    gmap->x_margin + gmap->x_point +
-	    ((*hex_y % 2) ? gmap->x_point : 0);
-	if (gmap->map->shrink_left)
-		x_coor += gmap->x_point;
-	x_coor += gmap->x_point;
-	*hex_x = x_coor / (gmap->x_point * 2);
-
-	/* The (0,0) will be on the upper left corner of the hex,
-	 * outside the hex */
-	gint relx;
-	gint rely;
-	relx = x_coor - *hex_x * (gmap->x_point * 2);
-	rely = y_coor - *hex_y * (gmap->hex_radius + gmap->y_point);
-
-	/* Choice between various hexes possible */
-	if (rely < gmap->y_point) {
-		if (relx < gmap->x_point) {
-			/* At the left side of the hex */
-			/* If point (relx, rely)) above the line from
-			 * (0, y_point) to (x_point, 0) then it is the
-			 * hex to NW, else it is the current hex
-			 */
-			if (-relx * (gdouble) gmap->y_point /
-			    gmap->x_point + gmap->y_point > rely) {
-				map_move_in_direction(HEX_DIR_NW, hex_x,
-						      hex_y);
-			}
-		} else {
-			/* At the right side of the hex */
-			/* If point (relx, rely)) above the line from
-			 * (x_point, 0) to (2*x_point, y_point) then
-			 * it is the hex to NE, else it is the current hex
-			 */
-			if (relx * (gdouble) gmap->y_point /
-			    gmap->x_point - gmap->y_point > rely) {
-				map_move_in_direction(HEX_DIR_NE, hex_x,
-						      hex_y);
-			}
-		}
-	}
-}
-
 static void calc_hex_pos(const GuiMap * gmap,
 			 gint x, gint y, gint * x_offset, gint * y_offset)
 {
@@ -463,7 +374,8 @@ static void calc_hex_pos(const GuiMap * gmap,
 	    + gmap->hex_radius + y * (gmap->hex_radius + gmap->y_point);
 }
 
-static void get_hex_polygon(const GuiMap * gmap, Polygon * poly)
+static void get_hex_polygon(const GuiMap * gmap, Polygon * poly,
+			    gboolean draw)
 {
 	GdkPoint *points;
 
@@ -471,7 +383,7 @@ static void get_hex_polygon(const GuiMap * gmap, Polygon * poly)
 
 	poly->num_points = 6;
 	points = poly->points;
-	points[0].x = gmap->x_point;
+	points[0].x = gmap->x_point - draw;
 	points[0].y = -gmap->y_point;
 	points[1].x = 0;
 	points[1].y = -gmap->hex_radius;
@@ -481,7 +393,7 @@ static void get_hex_polygon(const GuiMap * gmap, Polygon * poly)
 	points[3].y = gmap->y_point;
 	points[4].x = 0;
 	points[4].y = gmap->hex_radius;
-	points[5].x = gmap->x_point;
+	points[5].x = gmap->x_point - draw;
 	points[5].y = gmap->y_point;
 }
 
@@ -661,15 +573,14 @@ static void guimap_pirate_polygon(const GuiMap * gmap, const Hex * hex,
 	calc_hex_poly(gmap, hex, &pirate_poly, poly, 80.0, 0);
 }
 
-void draw_dice_roll(PangoLayout * layout, cairo_t * cr,
-		    gdouble x_offset, gdouble y_offset, gdouble radius,
+void draw_dice_roll(PangoLayout * layout, GdkPixmap * pixmap, GdkGC * gc,
+		    gint x_offset, gint y_offset, gint radius,
 		    gint n, gint terrain, gboolean highlight)
 {
 	gchar num[10];
 	gint height;
 	gint width;
-	gdouble x;
-	gdouble y;
+	gint x, y;
 	gint idx;
 	MapTheme *theme = theme_get_current();
 	THEME_COLOR col;
@@ -681,21 +592,21 @@ void draw_dice_roll(PangoLayout * layout, cairo_t * cr,
 	 &(theme->ovr_colors[ter][cno]) :									\
 	 &(theme->colors[cno]))
 
-	cairo_set_line_width(cr, 1.0);
+	gdk_gc_set_fill(gc, GDK_SOLID);
 	col = highlight ? TC_CHIP_H_BG : TC_CHIP_BG;
 	tcol = col_or_ovr(terrain, col);
 	if (!tcol->transparent) {
-		gdk_cairo_set_source_color(cr, &(tcol->color));
-		cairo_move_to(cr, x_offset + radius, y_offset);
-		cairo_arc(cr, x_offset, y_offset, radius, 0.0, 2 * M_PI);
-		cairo_fill(cr);
+		gdk_gc_set_foreground(gc, &(tcol->color));
+		gdk_draw_arc(pixmap, gc, TRUE,
+			     x_offset - radius, y_offset - radius,
+			     2 * radius, 2 * radius, 0, 360 * 64);
 	}
 	tcol = col_or_ovr(terrain, TC_CHIP_BD);
 	if (!tcol->transparent) {
-		gdk_cairo_set_source_color(cr, &(tcol->color));
-		cairo_move_to(cr, x_offset + radius, y_offset);
-		cairo_arc(cr, x_offset, y_offset, radius, 0.0, 2 * M_PI);
-		cairo_stroke(cr);
+		gdk_gc_set_foreground(gc, &(tcol->color));
+		gdk_draw_arc(pixmap, gc, FALSE,
+			     x_offset - radius, y_offset - radius,
+			     2 * radius, 2 * radius, 0, 360 * 64);
 	}
 	col = (n == 6 || n == 8) ? TC_CHIP_H_FG : TC_CHIP_FG;
 	tcol = col_or_ovr(terrain, col);
@@ -703,20 +614,19 @@ void draw_dice_roll(PangoLayout * layout, cairo_t * cr,
 		sprintf(num, "<b>%d</b>", n);
 		pango_layout_set_markup(layout, num, -1);
 		pango_layout_get_pixel_size(layout, &width, &height);
-		gdk_cairo_set_source_color(cr, &(tcol->color));
-		cairo_move_to(cr, x_offset - width / 2,
-			      y_offset - height / 2);
-		pango_cairo_show_layout(cr, layout);
+		gdk_gc_set_foreground(gc, &(tcol->color));
+		gdk_draw_layout(pixmap, gc,
+				x_offset - width / 2,
+				y_offset - height / 2, layout);
 
 		width_sqr = sqr(radius) - sqr(height / 2);
 		if (width_sqr >= sqr(6 * 2)) {
 			/* Enough space available for the dots */
-			x = x_offset - chances[n] * 4 / 2.0;
-			y = y_offset - 1 + height / 2.0;
+			x = x_offset - chances[n] * 4 / 2;
+			y = y_offset - 1 + height / 2;
 			for (idx = 0; idx < chances[n]; idx++) {
-				cairo_arc(cr, x + 2, y + 2, 1.0, 0.0,
-					  2 * M_PI);
-				cairo_fill(cr);
+				gdk_draw_arc(pixmap, gc, TRUE,
+					     x, y, 3, 3, 0, 360 * 64);
 				x += 4;
 			}
 		}
@@ -733,35 +643,42 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 	const GuiMap *gmap = closure;
 
 	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
-	cairo_set_line_width(gmap->cr, 1.0);
 
 	/* Fill the hex with the nice pattern */
-	poly.points = points;
-	poly.num_points = G_N_ELEMENTS(points);
-	get_hex_polygon(gmap, &poly);
-	poly_offset(&poly, x_offset, y_offset);
-
-	/* Draw the hex */
-	gdk_cairo_set_source_pixmap(gmap->cr,
-				    theme->terrain_tiles[hex->terrain],
-				    x_offset - gmap->x_point,
-				    y_offset - gmap->hex_radius);
-	cairo_pattern_set_extend(cairo_get_source(gmap->cr),
-				 CAIRO_EXTEND_REPEAT);
-	poly_draw(gmap->cr, TRUE, &poly);
+	gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
+				   GDK_CAP_BUTT, GDK_JOIN_MITER);
+	gdk_region_offset(gmap->hex_region, x_offset, y_offset);
+	gdk_gc_set_clip_region(gmap->gc, gmap->hex_region);
+	gdk_gc_set_fill(gmap->gc, GDK_TILED);
+	gdk_gc_set_tile(gmap->gc, theme->terrain_tiles[hex->terrain]);
+	gdk_gc_set_ts_origin(gmap->gc,
+			     x_offset - gmap->x_point,
+			     y_offset - gmap->hex_radius);
+	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
+			   x_offset - gmap->hex_radius,
+			   y_offset - gmap->hex_radius,
+			   gmap->hex_radius * 2, gmap->hex_radius * 2);
+	gdk_region_offset(gmap->hex_region, -x_offset, -y_offset);
+	gdk_gc_set_clip_region(gmap->gc, NULL);
 
 	/* Draw border around hex */
+	poly.points = points;
+	poly.num_points = G_N_ELEMENTS(points);
+	get_hex_polygon(gmap, &poly, TRUE);
+	poly_offset(&poly, x_offset, y_offset);
+
+	gdk_gc_set_fill(gmap->gc, GDK_SOLID);
 	if (!theme->colors[TC_HEX_BD].transparent) {
-		gdk_cairo_set_source_color(gmap->cr,
-					   &theme->
-					   colors[TC_HEX_BD].color);
-		poly_draw(gmap->cr, FALSE, &poly);
+		gdk_gc_set_foreground(gmap->gc,
+				      &theme->colors[TC_HEX_BD].color);
+		if (hex->terrain != SEA_TERRAIN)
+			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
 	}
 
 	/* Draw the dice roll */
 	if (hex->roll > 0 && gmap->chit_radius > 0) {
 		g_assert(gmap->layout);
-		draw_dice_roll(gmap->layout, gmap->cr,
+		draw_dice_roll(gmap->layout, gmap->pixmap, gmap->gc,
 			       x_offset, y_offset, gmap->chit_radius,
 			       hex->roll, hex->terrain,
 			       !hex->robber
@@ -778,39 +695,35 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 		gboolean typeind;
 
 		/* Draw lines from port to shore */
-		gdk_cairo_set_source_color(gmap->cr, &white);
-		const double dashes[] = { 4.0 };
-		cairo_set_dash(gmap->cr, dashes, G_N_ELEMENTS(dashes),
-			       0.0);
-		cairo_move_to(gmap->cr, x_offset, y_offset);
-		cairo_line_to(gmap->cr, points[(hex->facing + 5) % 6].x,
+		gdk_gc_set_foreground(gmap->gc, &white);
+		gdk_gc_set_line_attributes(gmap->gc, 1,
+					   GDK_LINE_ON_OFF_DASH,
+					   GDK_CAP_BUTT, GDK_JOIN_MITER);
+		gdk_draw_line(gmap->pixmap, gmap->gc, x_offset, y_offset,
+			      points[(hex->facing + 5) % 6].x,
 			      points[(hex->facing + 5) % 6].y);
-		cairo_move_to(gmap->cr, x_offset, y_offset);
-		cairo_line_to(gmap->cr, points[hex->facing].x,
+		gdk_draw_line(gmap->pixmap, gmap->gc, x_offset, y_offset,
+			      points[hex->facing].x,
 			      points[hex->facing].y);
-		cairo_stroke(gmap->cr);
-		cairo_set_dash(gmap->cr, NULL, 0, 0.0);
-
 		/* Fill/tile port indicator */
 		if (theme->port_tiles[tileno]) {
-			gdk_cairo_set_source_pixmap(gmap->cr,
-						    theme->port_tiles
-						    [tileno],
-						    x_offset -
-						    theme->port_tiles_width
-						    [tileno] / 2,
-						    y_offset -
-						    theme->port_tiles_height
-						    [tileno] / 2);
-			cairo_pattern_set_extend(cairo_get_source
-						 (gmap->cr),
-						 CAIRO_EXTEND_REPEAT);
+			gdk_gc_set_fill(gmap->gc, GDK_TILED);
+			gdk_gc_set_tile(gmap->gc,
+					theme->port_tiles[tileno]);
+			gdk_gc_set_ts_origin(gmap->gc,
+					     x_offset -
+					     theme->port_tiles_width
+					     [tileno] / 2,
+					     y_offset -
+					     theme->port_tiles_height
+					     [tileno] / 2);
 			typeind = TRUE;
 			drawit = TRUE;
 		} else if (!theme->colors[TC_PORT_BG].transparent) {
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_PORT_BG].color);
+			gdk_gc_set_fill(gmap->gc, GDK_SOLID);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_PORT_BG].
+					      color);
 			typeind = FALSE;
 			drawit = TRUE;
 		} else {
@@ -818,19 +731,27 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 			drawit = FALSE;
 		}
 		if (drawit) {
-			cairo_arc(gmap->cr, x_offset, y_offset,
-				  gmap->chit_radius, 0.0, 2 * M_PI);
-			cairo_fill(gmap->cr);
+			gdk_draw_arc(gmap->pixmap, gmap->gc, TRUE,
+				     x_offset - gmap->chit_radius,
+				     y_offset - gmap->chit_radius,
+				     2 * gmap->chit_radius,
+				     2 * gmap->chit_radius, 0, 360 * 64);
 		}
-
+		gdk_gc_set_fill(gmap->gc, GDK_SOLID);
 		/* Outline port indicator */
 		if (!theme->colors[TC_PORT_BD].transparent) {
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_PORT_BD].color);
-			cairo_arc(gmap->cr, x_offset, y_offset,
-				  gmap->chit_radius, 0.0, 2 * M_PI);
-			cairo_stroke(gmap->cr);
+			gdk_gc_set_line_attributes(gmap->gc, 1,
+						   GDK_LINE_SOLID,
+						   GDK_CAP_BUTT,
+						   GDK_JOIN_MITER);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_PORT_BD].
+					      color);
+			gdk_draw_arc(gmap->pixmap, gmap->gc, FALSE,
+				     x_offset - gmap->chit_radius,
+				     y_offset - gmap->chit_radius,
+				     2 * gmap->chit_radius,
+				     2 * gmap->chit_radius, 0, 360 * 64);
 		}
 		/* Print trading ratio */
 		if (!theme->colors[TC_PORT_FG].transparent) {
@@ -872,16 +793,18 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 			pango_layout_set_markup(gmap->layout, str, -1);
 			pango_layout_get_pixel_size(gmap->layout, &width,
 						    &height);
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_PORT_FG].color);
-			cairo_move_to(gmap->cr, x_offset - width / 2,
-				      y_offset - height / 2);
-			pango_cairo_show_layout(gmap->cr, gmap->layout);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_PORT_FG].
+					      color);
+			gdk_draw_layout(gmap->pixmap, gmap->gc,
+					x_offset - width / 2,
+					y_offset - height / 2,
+					gmap->layout);
 		}
 	}
 
-	cairo_set_line_width(gmap->cr, 1.0);
+	gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
+				   GDK_CAP_BUTT, GDK_JOIN_MITER);
 	/* Draw all roads and ships */
 	for (idx = 0; idx < G_N_ELEMENTS(hex->edges); idx++) {
 		const Edge *edge = hex->edges[idx];
@@ -903,9 +826,9 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 			g_assert_not_reached();
 			break;
 		}
-		gdk_cairo_set_source_color(gmap->cr,
-					   colors_get_player(edge->owner));
-		poly_draw_with_border(gmap->cr, &black, &poly);
+		poly_draw_with_border(gmap->pixmap, gmap->gc,
+				      colors_get_player(edge->owner),
+				      &black, &poly);
 	}
 
 	/* Draw all buildings */
@@ -930,10 +853,9 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 				poly.num_points = G_N_ELEMENTS(points);
 				guimap_city_wall_polygon(gmap, node,
 							 &poly);
-				gdk_cairo_set_source_color(gmap->cr,
-							   color);
-				poly_draw_with_border(gmap->cr, &black,
-						      &poly);
+				poly_draw_with_border(gmap->pixmap,
+						      gmap->gc, color,
+						      &black, &poly);
 			}
 			/* Draw the building */
 			color = colors_get_player(node->owner);
@@ -944,26 +866,28 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 				guimap_settlement_polygon(gmap, node,
 							  &poly);
 		}
-		gdk_cairo_set_source_color(gmap->cr, color);
-		poly_draw_with_border(gmap->cr, &black, &poly);
+
+		poly_draw_with_border(gmap->pixmap, gmap->gc, color,
+				      &black, &poly);
 	}
 
 	/* Draw the robber */
 	if (hex->robber) {
 		poly.num_points = G_N_ELEMENTS(points);
 		guimap_robber_polygon(gmap, hex, &poly);
-		cairo_set_line_width(gmap->cr, 1.0);
+		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
+					   GDK_CAP_BUTT, GDK_JOIN_MITER);
 		if (!theme->colors[TC_ROBBER_FG].transparent) {
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_ROBBER_FG].color);
-			poly_draw(gmap->cr, TRUE, &poly);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_ROBBER_FG].
+					      color);
+			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 		}
 		if (!theme->colors[TC_ROBBER_BD].transparent) {
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_ROBBER_BD].color);
-			poly_draw(gmap->cr, FALSE, &poly);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_ROBBER_BD].
+					      color);
+			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
 		}
 	}
 
@@ -971,18 +895,19 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 	if (hex == hex->map->pirate_hex) {
 		poly.num_points = G_N_ELEMENTS(points);
 		guimap_pirate_polygon(gmap, hex, &poly);
-		cairo_set_line_width(gmap->cr, 1.0);
+		gdk_gc_set_line_attributes(gmap->gc, 1, GDK_LINE_SOLID,
+					   GDK_CAP_BUTT, GDK_JOIN_MITER);
 		if (!theme->colors[TC_ROBBER_FG].transparent) {
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_ROBBER_FG].color);
-			poly_draw(gmap->cr, TRUE, &poly);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_ROBBER_FG].
+					      color);
+			poly_draw(gmap->pixmap, gmap->gc, TRUE, &poly);
 		}
 		if (!theme->colors[TC_ROBBER_BD].transparent) {
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_ROBBER_BD].color);
-			poly_draw(gmap->cr, FALSE, &poly);
+			gdk_gc_set_foreground(gmap->gc,
+					      &theme->colors[TC_ROBBER_BD].
+					      color);
+			poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
 		}
 	}
 
@@ -991,6 +916,8 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 
 void guimap_scale_with_radius(GuiMap * gmap, gint radius)
 {
+	int idx;
+
 	if (radius < MIN_HEX_RADIUS)
 		radius = MIN_HEX_RADIUS;
 
@@ -1014,9 +941,23 @@ void guimap_scale_with_radius(GuiMap * gmap, gint radius)
 	if (gmap->map->shrink_right)
 		gmap->width -= gmap->x_point;
 
-	if (gmap->cr != NULL) {
-		cairo_destroy(gmap->cr);
-		gmap->cr = NULL;
+	if (gmap->gc != NULL) {
+		g_object_unref(gmap->gc);
+		gmap->gc = NULL;
+	}
+	if (gmap->hex_region != NULL) {
+		gdk_region_destroy(gmap->hex_region);
+		gmap->hex_region = NULL;
+	}
+	for (idx = 0; idx < 6; idx++) {
+		if (gmap->edge_region[idx] != NULL) {
+			gdk_region_destroy(gmap->edge_region[idx]);
+			gmap->edge_region[idx] = NULL;
+		}
+		if (gmap->node_region[idx] != NULL) {
+			gdk_region_destroy(gmap->node_region[idx]);
+			gmap->node_region[idx] = NULL;
+		}
 	}
 
 	gmap->chit_radius = 15;
@@ -1026,21 +967,10 @@ void guimap_scale_with_radius(GuiMap * gmap, gint radius)
 
 void guimap_scale_to_size(GuiMap * gmap, gint width, gint height)
 {
-	if (gmap->is_custom_view) {
-		gint x_margin = gmap->x_margin;
-		gint y_margin = gmap->y_margin;
-		guimap_scale_with_radius(gmap, gmap->hex_radius);
-		gmap->x_margin = x_margin;
-		gmap->y_margin = y_margin;
-		gmap->width = width;
-		gmap->height = height;
-		return;
-	}
 	const gint reserved_width = 0;
 	const gint reserved_height = 0;
 	gint width_radius;
 	gint height_radius;
-
 	width_radius = (width - reserved_width)
 	    / ((gmap->map->x_size * 2 + 1
 		- gmap->map->shrink_left
@@ -1059,6 +989,21 @@ void guimap_scale_to_size(GuiMap * gmap, gint width, gint height)
 
 	gmap->width = width;
 	gmap->height = height;
+}
+
+static void build_hex_region(GuiMap * gmap)
+{
+	GdkPoint points[6];
+	Polygon poly;
+
+	if (gmap->hex_region != NULL)
+		return;
+
+	poly.points = points;
+	poly.num_points = G_N_ELEMENTS(points);
+	get_hex_polygon(gmap, &poly, FALSE);
+	gmap->hex_region = gdk_region_polygon(points, G_N_ELEMENTS(points),
+					      GDK_EVEN_ODD_RULE);
 }
 
 /** @return The radius of the chit for the current font size */
@@ -1099,19 +1044,19 @@ void guimap_display(GuiMap * gmap)
 	if (gmap->pixmap == NULL)
 		return;
 
-	if (gmap->cr != NULL) {
-		cairo_destroy(gmap->cr);
+	if (gmap->gc != NULL) {
+		/* Unref old gc */
+		g_object_unref(gmap->gc);
 	}
 
-	gmap->cr = gdk_cairo_create(gmap->pixmap);
+	gmap->gc = gdk_gc_new(gmap->pixmap);
+	build_hex_region(gmap);
 
-	gdk_cairo_set_source_pixmap(gmap->cr,
-				    theme_get_current()->terrain_tiles
-				    [BOARD_TILE], 0, 0);
-	cairo_pattern_set_extend(cairo_get_source(gmap->cr),
-				 CAIRO_EXTEND_REPEAT);
-	cairo_rectangle(gmap->cr, 0, 0, gmap->width, gmap->height);
-	cairo_fill(gmap->cr);
+	gdk_gc_set_fill(gmap->gc, GDK_TILED);
+	gdk_gc_set_tile(gmap->gc,
+			theme_get_current()->terrain_tiles[BOARD_TILE]);
+	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE, 0, 0,
+			   gmap->width, gmap->height);
 
 	if (gmap->layout != NULL)
 		g_object_unref(gmap->layout);
@@ -1158,67 +1103,180 @@ void guimap_display(GuiMap * gmap)
 	map_traverse_const(gmap->map, display_hex, gmap);
 }
 
-void guimap_zoom_normal(GuiMap * gmap)
+static const Edge *find_hex_edge(GuiMap * gmap, const Hex * hex, gint x,
+				 gint y)
 {
-	gmap->is_custom_view = FALSE;
-	guimap_scale_to_size(gmap,
-			     gmap->area->allocation.width,
-			     gmap->area->allocation.height);
-	guimap_display(gmap);
-	gtk_widget_queue_draw(gmap->area);
+	gint x_offset, y_offset;
+	int idx;
+
+	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
+	x -= x_offset;
+	y -= y_offset;
+	for (idx = 0; idx < 6; idx++)
+		if (gdk_region_point_in(gmap->edge_region[idx], x, y))
+			return hex->edges[idx];
+	return NULL;
 }
 
-void guimap_zoom_center_map(GuiMap * gmap)
+static void build_edge_regions(GuiMap * gmap)
 {
-	if (!gmap->is_custom_view)
+	int idx;
+	GdkPoint points[6];
+	Polygon poly;
+
+	if (gmap->edge_region[0] != NULL)
 		return;
-	gint width = gmap->map->x_size * 2 * gmap->x_point + gmap->x_point;
-	if (gmap->map->shrink_left)
-		width -= gmap->x_point;
-	if (gmap->map->shrink_right)
-		width -= gmap->x_point;
 
-	gmap->x_margin = gmap->area->allocation.width / 2 - width / 2;
+	poly.points = points;
+	poly.num_points = G_N_ELEMENTS(points);
+	get_hex_polygon(gmap, &poly, FALSE);
+	for (idx = 0; idx < 6; idx++) {
+		GdkPoint edge[4];
 
-	gint height = (gmap->map->y_size - 1) *
-	    (gmap->hex_radius + gmap->y_point)
-	    + 2 * gmap->hex_radius;
-
-	gmap->y_margin = gmap->area->allocation.height / 2 - height / 2;
-
-	guimap_display(gmap);
-	gtk_widget_queue_draw(gmap->area);
+		edge[0].x = edge[0].y = 0;
+		edge[1] = points[idx];
+		edge[3] = points[(idx + 5) % 6];
+		switch (idx) {
+		case 0:
+			edge[2].x = 2 * gmap->x_point;
+			edge[2].y = 0;
+			break;
+		case 1:
+			edge[2].x = gmap->x_point;
+			edge[2].y = -gmap->hex_radius - gmap->y_point;
+			break;
+		case 2:
+			edge[2].x = -gmap->x_point;
+			edge[2].y = -gmap->hex_radius - gmap->y_point;
+			break;
+		case 3:
+			edge[2].x = -2 * gmap->x_point;
+			edge[2].y = 0;
+			break;
+		case 4:
+			edge[2].x = -gmap->x_point;
+			edge[2].y = gmap->hex_radius + gmap->y_point;
+			break;
+		case 5:
+			edge[2].x = gmap->x_point;
+			edge[2].y = gmap->hex_radius + gmap->y_point;
+			break;
+		}
+		gmap->edge_region[idx]
+		    = gdk_region_polygon(edge, 4, GDK_EVEN_ODD_RULE);
+	}
 }
 
 static void find_edge(GuiMap * gmap, gint x, gint y, MapElement * element)
 {
-	Hex *hex = guimap_find_hex(gmap, x, y);
-	if (hex) {
-		gint center_x;
-		gint center_y;
-		calc_hex_pos(gmap, hex->x, hex->y, &center_x, &center_y);
+	gint y_hex;
+	gint x_hex;
 
-		gdouble angle = atan2(y - center_y, x - center_x);
-		gint idx =
-		    (gint) (floor(-angle / 2.0 / M_PI * 6 + 0.5) + 6) % 6;
-		element->edge = hex->edges[idx];
-	} else {
-		element->edge = NULL;
+	build_edge_regions(gmap);
+	for (x_hex = 0; x_hex < gmap->map->x_size; x_hex++)
+		for (y_hex = 0; y_hex < gmap->map->y_size; y_hex++) {
+			const Hex *hex;
+			const Edge *edge;
+
+			hex = gmap->map->grid[y_hex][x_hex];
+			if (hex != NULL) {
+				edge = find_hex_edge(gmap, hex, x, y);
+				if (edge != NULL) {
+					element->edge = edge;
+					return;
+				}
+			}
+		}
+	element->pointer = NULL;
+}
+
+static Node *find_hex_node(GuiMap * gmap, const Hex * hex, gint x, gint y)
+{
+	gint x_offset, y_offset;
+	int idx;
+
+	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
+	x -= x_offset;
+	y -= y_offset;
+	for (idx = 0; idx < 6; idx++)
+		if (gdk_region_point_in(gmap->node_region[idx], x, y))
+			return hex->nodes[idx];
+	return NULL;
+}
+
+static void build_node_regions(GuiMap * gmap)
+{
+	int idx;
+
+	if (gmap->node_region[0] != NULL)
+		return;
+
+	for (idx = 0; idx < 6; idx++) {
+		GdkPoint node[3];
+
+		node[0].x = node[0].y = 0;
+		switch (idx) {
+		case 0:
+			node[1].x = 2 * gmap->x_point;
+			node[1].y = 0;
+			node[2].x = gmap->x_point;
+			node[2].y = -gmap->hex_radius - gmap->y_point;
+			break;
+		case 1:
+			node[1].x = gmap->x_point;
+			node[1].y = -gmap->hex_radius - gmap->y_point;
+			node[2].x = -gmap->x_point;
+			node[2].y = -gmap->hex_radius - gmap->y_point;
+			break;
+		case 2:
+			node[1].x = -gmap->x_point;
+			node[1].y = -gmap->hex_radius - gmap->y_point;
+			node[2].x = -2 * gmap->x_point;
+			node[2].y = 0;
+			break;
+		case 3:
+			node[1].x = -2 * gmap->x_point;
+			node[1].y = 0;
+			node[2].x = -gmap->x_point;
+			node[2].y = gmap->hex_radius + gmap->y_point;
+			break;
+		case 4:
+			node[1].x = -gmap->x_point;
+			node[1].y = gmap->hex_radius + gmap->y_point;
+			node[2].x = gmap->x_point;
+			node[2].y = gmap->hex_radius + gmap->y_point;
+			break;
+		case 5:
+			node[1].x = gmap->x_point;
+			node[1].y = gmap->hex_radius + gmap->y_point;
+			node[2].x = 2 * gmap->x_point;
+			node[2].y = 0;
+			break;
+		}
+		gmap->node_region[idx] = gdk_region_polygon(node, 3,
+							    GDK_EVEN_ODD_RULE);
 	}
 }
 
 Node *guimap_find_node(GuiMap * gmap, gint x, gint y)
 {
-	Hex *hex = guimap_find_hex(gmap, x, y);
-	if (hex) {
-		gint center_x;
-		gint center_y;
-		calc_hex_pos(gmap, hex->x, hex->y, &center_x, &center_y);
+	gint y_hex;
+	gint x_hex;
 
-		gdouble angle = atan2(y - center_y, x - center_x);
-		gint idx = (gint) (floor(-angle / 2.0 / M_PI * 6) + 6) % 6;
-		return hex->nodes[idx];
-	}
+	build_node_regions(gmap);
+	for (x_hex = 0; x_hex < gmap->map->x_size; x_hex++)
+		for (y_hex = 0; y_hex < gmap->map->y_size; y_hex++) {
+			Hex *hex;
+			Node *node;
+
+			hex = gmap->map->grid[y_hex][x_hex];
+			if (hex != NULL) {
+				node = find_hex_node(gmap, hex, x, y);
+				if (node != NULL) {
+					return node;
+				}
+			}
+		}
 	return NULL;
 }
 
@@ -1229,11 +1287,28 @@ static void find_node(GuiMap * gmap, gint x, gint y, MapElement * element)
 
 Hex *guimap_find_hex(GuiMap * gmap, gint x, gint y)
 {
-	gint x_hex;
 	gint y_hex;
+	gint x_hex;
 
-	reverse_calc_hex_pos(gmap, x, y, &x_hex, &y_hex);
-	return map_hex(gmap->map, x_hex, y_hex);
+	for (x_hex = 0; x_hex < gmap->map->x_size; x_hex++)
+		for (y_hex = 0; y_hex < gmap->map->y_size; y_hex++) {
+			Hex *hex;
+			gint x_offset, y_offset;
+
+			hex = gmap->map->grid[y_hex][x_hex];
+			if (hex == NULL)
+				continue;
+
+			calc_hex_pos(gmap, x_hex, y_hex,
+				     &x_offset, &y_offset);
+			x -= x_offset;
+			y -= y_offset;
+			if (gdk_region_point_in(gmap->hex_region, x, y))
+				return hex;
+			x += x_offset;
+			y += y_offset;
+		}
+	return NULL;
 }
 
 static void find_hex(GuiMap * gmap, gint x, gint y, MapElement * element)
@@ -1255,14 +1330,11 @@ void guimap_draw_edge(GuiMap * gmap, const Edge * edge)
 	poly.points = points;
 	calc_edge_poly(gmap, edge, &largest_edge_poly, &poly);
 	poly_bound_rect(&poly, 1, &rect);
-
-	gdk_cairo_set_source_pixmap(gmap->cr,
-				    theme_get_current()->terrain_tiles
-				    [BOARD_TILE], 0, 0);
-	cairo_pattern_set_extend(cairo_get_source(gmap->cr),
-				 CAIRO_EXTEND_REPEAT);
-	cairo_rectangle(gmap->cr, rect.x, rect.y, rect.width, rect.height);
-	cairo_fill(gmap->cr);
+	gdk_gc_set_fill(gmap->gc, GDK_TILED);
+	gdk_gc_set_tile(gmap->gc,
+			theme_get_current()->terrain_tiles[BOARD_TILE]);
+	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
+			   rect.x, rect.y, rect.width, rect.height);
 
 	for (idx = 0; idx < G_N_ELEMENTS(edge->hexes); idx++)
 		if (edge->hexes[idx] != NULL)
@@ -1277,9 +1349,11 @@ static void draw_cursor(GuiMap * gmap, gint owner, const Polygon * poly)
 
 	g_return_if_fail(gmap->cursor.pointer != NULL);
 
-	cairo_set_line_width(gmap->cr, 3.0);
-	gdk_cairo_set_source_color(gmap->cr, colors_get_player(owner));
-	poly_draw_with_border(gmap->cr, &green, poly);
+	gdk_gc_set_line_attributes(gmap->gc, 2, GDK_LINE_SOLID,
+				   GDK_CAP_BUTT, GDK_JOIN_MITER);
+	gdk_gc_set_fill(gmap->gc, GDK_SOLID);
+	poly_draw_with_border(gmap->pixmap, gmap->gc,
+			      colors_get_player(owner), &green, poly);
 
 	poly_bound_rect(poly, 1, &rect);
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
@@ -1344,15 +1418,11 @@ void guimap_draw_node(GuiMap * gmap, const Node * node)
 	poly.points = points;
 	calc_node_poly(gmap, node, &largest_node_poly, &poly);
 	poly_bound_rect(&poly, 1, &rect);
-
-	gdk_cairo_set_source_pixmap(gmap->cr,
-				    theme_get_current()->terrain_tiles
-				    [BOARD_TILE], 0, 0);
-	cairo_pattern_set_extend(cairo_get_source(gmap->cr),
-				 CAIRO_EXTEND_REPEAT);
-	cairo_rectangle(gmap->cr, rect.x, rect.y, rect.width, rect.height);
-	cairo_fill(gmap->cr);
-
+	gdk_gc_set_fill(gmap->gc, GDK_TILED);
+	gdk_gc_set_tile(gmap->gc,
+			theme_get_current()->terrain_tiles[BOARD_TILE]);
+	gdk_draw_rectangle(gmap->pixmap, gmap->gc, TRUE,
+			   rect.x, rect.y, rect.width, rect.height);
 	for (idx = 0; idx < G_N_ELEMENTS(node->hexes); idx++)
 		if (node->hexes[idx] != NULL)
 			display_hex(node->hexes[idx], gmap);
@@ -1499,9 +1569,10 @@ static void draw_robber_cursor(GuiMap * gmap)
 		guimap_robber_polygon(gmap, hex, &poly);
 	poly_bound_rect(&poly, 1, &rect);
 
-	cairo_set_line_width(gmap->cr, 2.0);
-	gdk_cairo_set_source_color(gmap->cr, &green);
-	poly_draw(gmap->cr, FALSE, &poly);
+	gdk_gc_set_line_attributes(gmap->gc, 2, GDK_LINE_SOLID,
+				   GDK_CAP_BUTT, GDK_JOIN_MITER);
+	gdk_gc_set_foreground(gmap->gc, &green);
+	poly_draw(gmap->pixmap, gmap->gc, FALSE, &poly);
 
 	gdk_window_invalidate_rect(gmap->area->window, &rect, FALSE);
 }
@@ -1523,7 +1594,7 @@ static gboolean highlight_chits(const Hex * hex, gpointer closure)
 
 	poly.points = points;
 	poly.num_points = G_N_ELEMENTS(points);
-	get_hex_polygon(gmap, &poly);
+	get_hex_polygon(gmap, &poly, FALSE);
 	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
 	poly_offset(&poly, x_offset, y_offset);
 	poly_bound_rect(&poly, 1, &rect);
@@ -1559,7 +1630,7 @@ void guimap_draw_hex(GuiMap * gmap, const Hex * hex)
 
 	poly.points = points;
 	poly.num_points = G_N_ELEMENTS(points);
-	get_hex_polygon(gmap, &poly);
+	get_hex_polygon(gmap, &poly, FALSE);
 	calc_hex_pos(gmap, hex->x, hex->y, &x_offset, &y_offset);
 	poly_offset(&poly, x_offset, y_offset);
 	poly_bound_rect(&poly, 1, &rect);
@@ -1759,14 +1830,10 @@ void guimap_cursor_move(GuiMap * gmap, gint x, gint y,
 		 * When equidistant, prefer the node.
 		 */
 		if (can_build_edge && can_build_node) {
-			if (can_build_bridge) {
-				/* Prefer bridge over node */
-				can_build_node = FALSE;
-			} else if (distance_node <= distance_edge) {
+			if (distance_node <= distance_edge)
 				can_build_edge = FALSE;
-			} else {
+			else
 				can_build_node = FALSE;
-			}
 		}
 
 		/* Prefer the most special road segment, if possible */

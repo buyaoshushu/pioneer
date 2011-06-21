@@ -89,7 +89,7 @@ enum {
 	PLAYER_COLUMN_NAME,
 	PLAYER_COLUMN_LOCATION,
 	PLAYER_COLUMN_NUMBER,
-	PLAYER_COLUMN_ISSPECTATOR,
+	PLAYER_COLUMN_ISVIEWER,
 	PLAYER_COLUMN_LAST
 };
 
@@ -192,9 +192,6 @@ static void update_game_settings(const GameParams * params)
 	game_rules_set_victory_at_end_of_turn(GAMERULES(game_rules),
 					      params->
 					      check_victory_at_end_of_turn);
-	game_rules_set_use_cities_and_knights_rules(GAMERULES(game_rules),
-						    params->
-						    use_cities_and_knights_rules);
 	game_rules_set_random_terrain(GAMERULES(game_rules),
 				      params->random_terrain);
 	game_rules_set_sevens_rule(GAMERULES(game_rules),
@@ -274,9 +271,6 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 		params->check_victory_at_end_of_turn =
 		    game_rules_get_victory_at_end_of_turn(GAMERULES
 							  (game_rules));
-		params->use_cities_and_knights_rules =
-		    game_rules_get_use_cities_and_knights_rules(GAMERULES
-								(game_rules));
 		cfg_set_sevens_rule(params,
 				    game_rules_get_sevens_rule(GAMERULES
 							       (game_rules)));
@@ -323,9 +317,6 @@ static void start_clicked_cb(G_GNUC_UNUSED GtkButton * start_btn,
 			config_set_int("game/check-victory-at-end-of-turn",
 				       params->
 				       check_victory_at_end_of_turn);
-			config_set_int("game/use-cities-and-knights-rules",
-				       params->
-				       use_cities_and_knights_rules);
 			config_set_int("game/sevens-rule",
 				       params->sevens_rule);
 			config_set_int("game/use-pirate",
@@ -425,10 +416,10 @@ static void gui_player_change(void *data)
 	     current = g_list_next(current)) {
 		GtkTreeIter iter;
 		Player *p = current->data;
-		gboolean isSpectator;
+		gboolean isViewer;
 
-		isSpectator = player_is_spectator(p->game, p->num);
-		if (!isSpectator && !p->disconnected)
+		isViewer = player_is_viewer(p->game, p->num);
+		if (!isViewer && !p->disconnected)
 			number_of_players++;
 
 		gtk_list_store_append(store, &iter);
@@ -438,8 +429,7 @@ static void gui_player_change(void *data)
 				   PLAYER_COLUMN_NUMBER, p->num,
 				   PLAYER_COLUMN_CONNECTED,
 				   !p->disconnected,
-				   PLAYER_COLUMN_ISSPECTATOR, isSpectator,
-				   -1);
+				   PLAYER_COLUMN_ISVIEWER, isViewer, -1);
 	}
 	playerlist_dec_use_count(game);
 	if (number_of_players == 0 && game->is_game_over) {
@@ -522,10 +512,10 @@ static GtkWidget *build_game_rules(GtkWidget * parent)
 }
 
 static void
-my_cell_player_spectator_to_text(G_GNUC_UNUSED GtkTreeViewColumn *
-				 tree_column, GtkCellRenderer * cell,
-				 GtkTreeModel * tree_model,
-				 GtkTreeIter * iter, gpointer data)
+my_cell_player_viewer_to_text(G_GNUC_UNUSED GtkTreeViewColumn *
+			      tree_column, GtkCellRenderer * cell,
+			      GtkTreeModel * tree_model,
+			      GtkTreeIter * iter, gpointer data)
 {
 	gboolean b;
 
@@ -533,8 +523,8 @@ my_cell_player_spectator_to_text(G_GNUC_UNUSED GtkTreeViewColumn *
 	gtk_tree_model_get(tree_model, iter, GPOINTER_TO_INT(data), &b,
 			   -1);
 	g_object_set(cell, "text", b ?
-		     /* Role of the player: spectator */
-		     _("Spectator") :
+		     /* Role of the player: viewer */
+		     _("Viewer") :
 		     /* Role of the player: player */
 		     _("Player"), NULL);
 }
@@ -612,11 +602,6 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 			   &default_returned);
 	if (!default_returned)
 		params->check_victory_at_end_of_turn = temp;
-	temp =
-	    config_get_int("game/use-cities-and-knights-rules",
-			   &default_returned);
-	if (!default_returned)
-		params->use_cities_and_knights_rules = temp;
 	temp = config_get_int("game/sevens-rule", &default_returned);
 	if (!default_returned)
 		cfg_set_sevens_rule(params, temp);
@@ -800,7 +785,7 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 	gtk_widget_set_tooltip_text(label,
 				    /* Tooltip for server connection overview */
 				    _(""
-				      "Shows all players and spectators connected to the server"));
+				      "Shows all players and viewers connected to the server"));
 
 	/* Now create columns */
 	column =
@@ -852,13 +837,12 @@ static GtkWidget *build_interface(GtkWindow * main_window)
 						     NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(label), column);
 	/* Tooltip for column Role */
-	gtk_widget_set_tooltip_text(column->button,
-				    _("Player or spectator"));
+	gtk_widget_set_tooltip_text(column->button, _("Player or viewer"));
 
 	gtk_tree_view_column_set_cell_data_func(column, renderer,
-						my_cell_player_spectator_to_text,
+						my_cell_player_viewer_to_text,
 						GINT_TO_POINTER
-						(PLAYER_COLUMN_ISSPECTATOR),
+						(PLAYER_COLUMN_ISVIEWER),
 						NULL);
 
 	gtk_widget_show(label);
@@ -964,15 +948,12 @@ static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
 			       (GAMESETTINGS(game_settings)));
 	params->check_victory_at_end_of_turn =
 	    game_rules_get_victory_at_end_of_turn(GAMERULES(game_rules));
-	params->use_cities_and_knights_rules =
-	    game_rules_get_use_cities_and_knights_rules(GAMERULES
-							(game_rules));
 	cfg_set_sevens_rule(params,
-			    game_rules_get_sevens_rule(GAMERULES
-						       (game_rules)));
+			    game_rules_get_sevens_rule
+			    (GAMERULES(game_rules)));
 	cfg_set_terrain_type(params,
-			     game_rules_get_random_terrain(GAMERULES
-							   (game_rules)));
+			     game_rules_get_random_terrain
+			     (GAMERULES(game_rules)));
 	params->strict_trade =
 	    game_rules_get_strict_trade(GAMERULES(game_rules));
 	params->use_pirate =

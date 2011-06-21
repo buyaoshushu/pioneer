@@ -174,11 +174,10 @@ void resource_format_type_image(GtkImage * image, const gint * resources,
 
 	GdkPixmap *p, *pdest;
 	GdkBitmap *b, *bdest;
+	GdkGC *gcp, *gcb;
 	gchar *data;
 	gint size, step;
 	gint width;
-	cairo_t *cr;
-	GdkRectangle r;
 
 	num_res = tot_res = 0;
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
@@ -218,28 +217,16 @@ void resource_format_type_image(GtkImage * image, const gint * resources,
 								 num_res),
 					size);
 	g_free(data);
-
-	r.x = 0;
-	r.y = 0;
-	r.width = width;
-	r.height = width;
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		if (!resources[idx])
 			continue;
-		gui_get_resource_pixmap(idx, &p, &b);
+		gui_get_resource_pixmap(idx, &p, &b, &gcp, &gcb);
 		for (i = 0; i < resources[idx]; i++) {
-			cr = gdk_cairo_create(pdest);
-			gdk_cairo_set_source_pixmap(cr, p, pos, 0);
-			gdk_cairo_rectangle(cr, &r);
-			cairo_fill(cr);
-			cairo_destroy(cr);
-
-			cr = gdk_cairo_create(bdest);
-			gdk_cairo_set_source_pixmap(cr, b, pos, 0);
-			gdk_cairo_rectangle(cr, &r);
-			cairo_fill(cr);
-			cairo_destroy(cr);
-
+			gdk_gc_set_clip_origin(gcp, pos, 0);
+			gdk_draw_drawable(pdest, gcp, p, 0, 0, pos, 0, -1,
+					  -1);
+			gdk_draw_drawable(bdest, gcb, b, 0, 0, pos, 0, -1,
+					  -1);
 			pos += step;
 		}
 		pos += size - step;

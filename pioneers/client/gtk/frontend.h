@@ -100,16 +100,15 @@ void frontend_gui_register(GtkWidget * widget, GuiEvent id,
 void frontend_gui_route_event(GuiEvent event);
 
 /* callbacks */
-void frontend_init_gtk_et_al(int argc, char **argv);
-void frontend_init(void);
+void frontend_init(int argc, char **argv);
 void frontend_new_statistics(gint player_num, StatisticType type,
 			     gint num);
 void frontend_new_points(gint player_num, Points * points, gboolean added);
-void frontend_spectator_name(gint spectator_num, const gchar * name);
+void frontend_viewer_name(gint viewer_num, const gchar * name);
 void frontend_player_name(gint player_num, const gchar * name);
 void frontend_player_style(gint player_num, const gchar * style);
 void frontend_player_quit(gint player_num);
-void frontend_spectator_quit(gint player_num);
+void frontend_viewer_quit(gint player_num);
 void frontend_disconnect(void);
 void frontend_offline(void);
 void frontend_discard(void);
@@ -157,10 +156,10 @@ void frontend_set_map(Map * map);
 /* connect.c */
 const gchar *connect_get_server(void);
 const gchar *connect_get_port(void);
-gboolean connect_get_spectator(void);
+gboolean connect_get_viewer(void);
 void connect_set_server(const gchar * server);
 void connect_set_port(const gchar * port);
-void connect_set_spectator(gboolean spectator);
+void connect_set_viewer(gboolean viewer);
 void connect_set_meta_server(const gchar * meta_server);
 void connect_create_dlg(void);
 
@@ -260,8 +259,8 @@ GtkWidget *player_build_summary(void);
 GtkWidget *player_build_turn_area(void);
 void player_clear_summary(void);
 void player_init(void);
-/** The colour of the player, or spectator */
-GdkColor *player_or_spectator_color(gint player_num);
+/** The colour of the player, or viewer */
+GdkColor *player_or_viewer_color(gint player_num);
 /** The colour of the player */
 GdkColor *player_color(gint player_num);
 /** Create an icon of the player, suitable for display on widget,
@@ -280,22 +279,35 @@ GtkWidget *chat_build_panel(void);
 void chat_set_grab_focus_on_update(gboolean grab);
 /** Set the focus to the chat widget */
 void chat_set_focus(void);
-/** A player/spectator has changed his name */
+/** A player/viewer has changed his name */
 void chat_player_name(gint player_num, const gchar * name);
-/** A player/spectator has changed his style */
+/** A player/viewer has changed his style */
 void chat_player_style(gint player_num);
 /** A player has quit */
 void chat_player_quit(gint player_num);
-/** A spectator has quit */
-void chat_spectator_quit(gint spectator_num);
+/** A viewer has quit */
+void chat_viewer_quit(gint viewer_num);
 /** Clear all names */
 void chat_clear_names(void);
 /** Parse the chat for commands */
 void chat_parser(gint player_num, const gchar * chat_str);
 
 /* name.c */
+void name_init(void);
 /** Create a dialog to change the name */
 void name_create_dlg(void);
+/** Get the name */
+gchar *name_get_name(void);
+/** Set the name */
+void name_set_name(const gchar * name);
+/** Add callback when the name changes */
+void name_add_callback_for_name(GCallback callback);
+/** Get the style */
+gchar *name_get_style(void);
+/** Set the style */
+void name_set_style(const gchar * style);
+/** Add callback when the style changes */
+void name_add_callback_for_style(GCallback callback);
 
 /* settingscreen.c */
 void settings_init(void);

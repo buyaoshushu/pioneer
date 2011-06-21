@@ -3,7 +3,7 @@
 #
 # Copyright (C) 1999 Dave Cole
 # Copyright (C) 2003-2007 Bas Wijnen <shevek@fmf.nl>
-# Copyright (C) 2004-2011 Roland Clobus <rclobus@bigfoot.com>
+# Copyright (C) 2004-2008 Roland Clobus <rclobus@bigfoot.com>
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 AC_PREREQ(2.61)
-AC_INIT([pioneers],[0.12.5],[pio-develop@lists.sourceforge.net])
+AC_INIT([pioneers],[0.12.4],[pio-develop@lists.sourceforge.net])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_CONFIG_SRCDIR([client])
@@ -35,8 +35,10 @@ PIONEERS_DEFAULT_META_PORT=5557
 PIONEERS_DEFAULT_META_SERVER=pioneers.debian.net
 
 GLIB_REQUIRED_VERSION=2.16
-GTK_REQUIRED_VERSION=2.20
-GTK_OPTIMAL_VERSION=2.24
+GTK_REQUIRED_VERSION=2.12
+
+AC_SUBST(GLIB_REQUIRED_VERSION)
+AC_SUBST(GTK_REQUIRED_VERSION)
 
 AM_MAINTAINER_MODE
 
@@ -201,7 +203,6 @@ fi
 
 # glib is always needed
 PKG_CHECK_MODULES(GLIB2, glib-2.0 >= $GLIB_REQUIRED_VERSION)
-PKG_CHECK_MODULES(GOBJECT2, gobject-2.0 >= $GLIB_REQUIRED_VERSION)
 
 # Gtk+ support
 if test x$with_gtk = xno; then
@@ -216,12 +217,6 @@ else
 	])
 fi
 AM_CONDITIONAL(HAVE_GTK2, [test "$have_gtk2" = "yes"])
-if test "$have_gtk2" = "yes"; then
-	PKG_CHECK_MODULES(GTK_OPTIMAL_VERSION, gtk+-2.0 >= $GTK_OPTIMAL_VERSION,
-		[],
-		AC_DEFINE(HAVE_OLD_GTK, [1],
-			[Defined if an older version of GTK is available]))
-fi
 
 # Gtk ScrollKeeper -> Test     Build
 #                     libgnome Help

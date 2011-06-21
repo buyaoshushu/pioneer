@@ -31,7 +31,7 @@
 #include "callback.h"
 
 static Player players[MAX_PLAYERS];
-static GList *spectators;
+static GList *viewers;
 
 static gint turn_player = -1;	/* whose turn is it */
 static gint my_player_id = -1;	/* what is my player number */
@@ -43,12 +43,12 @@ void player_reset(void)
 {
 	gint i, idx;
 
-	/* remove all spectators */
-	while (spectators != NULL) {
-		Spectator *spectator = spectators->data;
-		g_free(spectator->name);
-		g_free(spectator->style);
-		spectators = g_list_remove(spectators, spectator);
+	/* remove all viewers */
+	while (viewers != NULL) {
+		Viewer *viewer = viewers->data;
+		g_free(viewer->name);
+		g_free(viewer->style);
+		viewers = g_list_remove(viewers, viewer);
 	}
 	/* free player's memory */
 	for (i = 0; i < MAX_PLAYERS; ++i) {
@@ -78,17 +78,17 @@ Player *player_get(gint num)
 	return &players[num];
 }
 
-gboolean player_is_spectator(gint num)
+gboolean player_is_viewer(gint num)
 {
 	return num < 0 || num >= num_total_players;
 }
 
-Spectator *spectator_get(gint num)
+Viewer *viewer_get(gint num)
 {
 	GList *list;
-	for (list = spectators; list != NULL; list = g_list_next(list)) {
-		Spectator *spectator = list->data;
-		if (spectator->num == num)
+	for (list = viewers; list != NULL; list = g_list_next(list)) {
+		Viewer *viewer = list->data;
+		if (viewer->num == num)
 			break;
 	}
 	if (list)
@@ -96,17 +96,17 @@ Spectator *spectator_get(gint num)
 	return NULL;
 }
 
-/** Find a spectator with the given name.
+/** Find a viewer with the given name.
  *  @param name The name to find
  *  @return -1 if the name is not found
  */
-gint find_spectator_by_name(const gchar * name)
+gint find_viewer_by_name(const gchar * name)
 {
 	GList *list;
-	for (list = spectators; list != NULL; list = g_list_next(list)) {
-		Spectator *spectator = list->data;
-		if (!strcmp(spectator->name, name))
-			return spectator->num;
+	for (list = viewers; list != NULL; list = g_list_next(list)) {
+		Viewer *viewer = list->data;
+		if (!strcmp(viewer->name, name))
+			return viewer->num;
 	}
 	return -1;
 }
@@ -115,17 +115,15 @@ const gchar *player_name(gint player_num, gboolean word_caps)
 {
 	static gchar buff[256];
 	if (player_num >= num_total_players) {
-		/* this is about a spectator */
-		Spectator *spectator = spectator_get(player_num);
-		if (spectator != NULL)
-			return spectator->name;
+		/* this is about a viewer */
+		Viewer *viewer = viewer_get(player_num);
+		if (viewer != NULL)
+			return viewer->name;
 		else {
 			if (word_caps)
-				sprintf(buff, _("Spectator %d"),
-					player_num);
+				sprintf(buff, _("Viewer %d"), player_num);
 			else
-				sprintf(buff, _("spectator %d"),
-					player_num);
+				sprintf(buff, _("viewer %d"), player_num);
 			return buff;
 		}
 	} else if (player_num >= 0) {
@@ -197,29 +195,29 @@ void player_change_name(gint player_num, const gchar * name)
 	if (player_num < 0)
 		return;
 	if (player_num >= num_total_players) {
-		/* this is about a spectator */
-		Spectator *spectator = spectator_get(player_num);
-		if (spectator == NULL) {
-			/* there is a new spectator */
-			spectator = g_malloc0(sizeof(*spectator));
-			spectators = g_list_prepend(spectators, spectator);
-			spectator->num = player_num;
-			spectator->name = NULL;
-			spectator->style = g_strdup(default_player_style);
+		/* this is about a viewer */
+		Viewer *viewer = viewer_get(player_num);
+		if (viewer == NULL) {
+			/* there is a new viewer */
+			viewer = g_malloc0(sizeof(*viewer));
+			viewers = g_list_prepend(viewers, viewer);
+			viewer->num = player_num;
+			viewer->name = NULL;
+			viewer->style = g_strdup(default_player_style);
 			old_name = NULL;
 		} else {
-			old_name = spectator->name;
+			old_name = viewer->name;
 		}
 		if (old_name == NULL)
-			log_message(MSG_INFO, _("New spectator: %s.\n"),
+			log_message(MSG_INFO, _("New viewer: %s.\n"),
 				    name);
 		else
 			log_message(MSG_INFO, _("%s is now %s.\n"),
 				    old_name, name);
-		spectator->name = g_strdup(name);
+		viewer->name = g_strdup(name);
 		if (old_name != NULL)
 			g_free(old_name);
-		callbacks.spectator_name(player_num, name);
+		callbacks.viewer_name(player_num, name);
 		return;
 	}
 
@@ -245,25 +243,27 @@ void player_change_style(gint player_num, const gchar * style)
 
 void player_has_quit(gint player_num)
 {
-	Spectator *spectator;
+	Player *player;
+	Viewer *viewer;
 
 	if (player_num < 0)
 		return;
 
 	/* usually callbacks are called after the event has been handled.
 	 * Here it is called before, so the frontend can access the
-	 * information about the quitting player/spectator */
+	 * information about the quitting player/viewer */
 
 	if (player_num >= num_total_players) {
-		/* a spectator has quit */
-		callbacks.spectator_quit(player_num);
-		spectator = spectator_get(player_num);
-		g_free(spectator->name);
-		g_free(spectator->style);
-		spectators = g_list_remove(spectators, spectator);
+		/* a viewer has quit */
+		callbacks.viewer_quit(player_num);
+		viewer = viewer_get(player_num);
+		g_free(viewer->name);
+		g_free(viewer->style);
+		viewers = g_list_remove(viewers, viewer);
 		return;
 	}
 	callbacks.player_quit(player_num);
+	player = player_get(player_num);
 	log_message(MSG_INFO, _("%s has quit.\n"), player_name(player_num,
 							       TRUE));
 }
@@ -700,8 +700,7 @@ void player_get_point(gint player_num, gint id, const gchar * str,
 	Points *point = points_new(id, str, num);
 	player_modify_points(player_num, point, TRUE);
 	/* tell the user that someone got something */
-	log_message(MSG_INFO, _("%s received %s.\n"), player->name,
-		    _(str));
+	log_message(MSG_INFO, _("%s received %s.\n"), player->name, str);
 }
 
 /* lose a point: noone gets it */
@@ -726,7 +725,7 @@ void player_lose_point(gint player_num, gint id)
 	player_modify_points(player_num, point, FALSE);
 	/* tell the user the point is lost */
 	log_message(MSG_INFO, _("%s lost %s.\n"), player->name,
-		    _(point->name));
+		    point->name);
 	/* free the memory */
 	points_free(point);
 	g_free(point);
@@ -756,16 +755,16 @@ void player_take_point(gint player_num, gint id, gint old_owner)
 	player->points = g_list_append(player->points, point);
 	/* tell the user someone (1) lost something (2) to someone else (3) */
 	log_message(MSG_INFO, _("%s lost %s to %s.\n"), victim->name,
-		    _(point->name), player->name);
+		    point->name, player->name);
 }
 
 void player_set_style(gint player_num, const gchar * style)
 {
 	if (player_num >= num_total_players) {
-		Spectator *spectator = spectator_get(player_num);
-		if (spectator->style)
-			g_free(spectator->style);
-		spectator->style = g_strdup(style);
+		Viewer *viewer = viewer_get(player_num);
+		if (viewer->style)
+			g_free(viewer->style);
+		viewer->style = g_strdup(style);
 	} else if (player_num >= 0) {
 		Player *player = player_get(player_num);
 		if (player->style)
@@ -778,8 +777,8 @@ const gchar *player_get_style(gint player_num)
 {
 	const gchar *style = NULL;
 	if (player_num >= num_total_players) {
-		Spectator *spectator = spectator_get(player_num);
-		style = spectator->style;
+		Viewer *viewer = viewer_get(player_num);
+		style = viewer->style;
 	} else if (player_num >= 0) {
 		Player *player = player_get(player_num);
 		style = player->style;
@@ -797,9 +796,9 @@ const gchar *my_player_name(void)
 	return player_name(my_player_num(), TRUE);
 }
 
-gboolean my_player_spectator(void)
+gboolean my_player_viewer(void)
 {
-	return player_is_spectator(my_player_num());
+	return player_is_viewer(my_player_num());
 }
 
 const gchar *my_player_style(void)
@@ -818,10 +817,10 @@ gint find_player_by_name(const gchar * name)
 			return i;
 	}
 
-	for (list = spectators; list != NULL; list = g_list_next(list)) {
-		Spectator *spectator = list->data;
-		if (!strcmp(spectator->name, name))
-			return spectator->num;
+	for (list = viewers; list != NULL; list = g_list_next(list)) {
+		Viewer *viewer = list->data;
+		if (!strcmp(viewer->name, name))
+			return viewer->num;
 	}
 	return -1;
 }

@@ -3,8 +3,6 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * Copyright (C) 2011 Micah Bunting <Amnykon@gmail.com>
- * Copyright (C) 2011 Roland Clobus <rclobus@rclobus.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,218 +26,6 @@
 
 #include "game.h"
 #include "map.h"
-
-/* The numbering of the hexes, nodes and edges:
- *
- *                   /\       /\
- *               /1\/0 \     / 0\/1\
- *              /   \1 0\   /0 1/   \
- *             /2   1\ 1/\ /\1 /2   1\
- *            /       \/1 0 0\/       \
- *           /2       0\1 2 2/2       0\
- *          |           |---|           |
- *          |           | 0 |           |
- *          |3         0|1 0|3         0|
- *          |           | 1 |           |
- *          |           |---|           |
- *           \3       5/1 0 0\3       5/
- *           /\       /\1 2 2/\       /
- *       /1\/0 \4   5/ 0\/1\/0 \4   5/
- *      /   \1 0\   /0 1/   \1 0\   /
- *     /2   1\ 1/\4/\1 /2   1\ 1/\4/
- *    /       \/1 0 0\/       \/
- *   /2       0\1 2 2/2       0\
- *  |           |---|           |
- *  |           | 0 |           |
- *  |3         0|1 0|3         0|
- *  |           | 1 |           |
- *  |           |---|           |
- *   \3       5/1 0 0\3       5/
- *    \       /\1 2 2/\       /
- *     \4   5/ 0\/ \/0 \4   5/
- *      \   /1 0/   \1 0\   /
- *       \4/\1 /     \ 1/\4/
- *           \/       \/
- */
-
-/* The accessor functions:
- 
- *              /\               *
- *             /  \              *
- *            /    \             *
- *           /      \            *
- *          /        \           *
- *         |          |          *
- *         |          |          *
- *         |    cc_   |          *
- *         |    hex   |          *
- *         |          |          *
- *          \         /          *
- *          /\       /\          *
- *         /  \     /  \         *
- *      /\/ cc_\   /op_ \/\      *      /\      /\/\      /\
- *     /  \edge/\4/\edge/  \     *     /  \    /    \    /  \
- *    /   1\ 5/2 1 0\3 /    \    *    /    \  /  cc_ \  /    \
- *   /      \/ node  \/      \   *   /      \/  node  \/      \
- *  /        \3  4  5/        \  *  /        \    4   /        \
- * |         0|-----|2         | * |         0|------|          |
- * |   hex    |  1  |    cw_   | * |   hex    |   1  |    op_   |
- * |         0| cw_ |    hex   | * |         0|3edge0|3   hex   |
- * |          | edge|          | * |          |   4  |          |
- * |          |-----|          | * |         5|------|          |
- *  \        /       \        /  *  \        /   1    \        /
- *   \      /         \      /   *   \      /\   cw_  /\      /
- *    \    /           \    /    *    \    /  \ node /  \    /
- *     \  /             \  /     *     \  /    \    /    \  /
- *      \/               \/      *      \/      \/\/      \/
- *
- */
-
-/* Function of shrink_left and shrink_right:
- *
- *  / \ / \       / \ / \         / \           / \
- * | A | B |     | A | B |       | B |         | B |
- *  \ / \ / \     \ / \ /       / \ / \       / \ /
- *   | C | D |     | C |       | C | D |     | C |
- *    \ / \ /       \ /         \ / \ /       \ /
- * 2 2 F F         2 2 F T     2 2 T F       2 2 T T
- *
- * The numbers below the map are:
- *  x_size, y_size, shrink_left, shrink_right
- */
-static Hex *move_hex(Hex * hex, HexDirection direction);
-
-static Node *get_node(Hex * hex, int dir)
-{
-	g_assert(hex != NULL && dir < 6 && dir >= 0);
-	return hex->nodes[dir];
-}
-
-static void set_node(Hex * hex, int dir, Node * node)
-{
-	g_assert(hex != NULL && dir < 6 && dir >= 0);
-	hex->nodes[dir] = node;
-}
-
-static Hex *get_cc_hex(Hex * hex, int dir)
-{
-	g_assert(hex != NULL && dir < 6 && dir >= 0);
-	return hex_in_direction(hex, (dir + 1) % 6);
-}
-
-static Node *get_cc_hex_node(Hex * hex, int dir)
-{
-	g_assert(get_cc_hex(hex, dir) != NULL);
-	return get_cc_hex(hex, dir)->nodes[(dir + 4) % 6];
-}
-
-static Hex *get_cw_hex(Hex * hex, int dir)
-{
-	g_assert(hex != NULL && dir < 6 && dir >= 0);
-	return hex_in_direction(hex, dir);
-}
-
-static Node *get_cw_hex_node(Hex * hex, int dir)
-{
-	g_assert(get_cw_hex(hex, dir) != NULL);
-	return get_cw_hex(hex, dir)->nodes[(dir + 2) % 6];
-}
-
-static void set_node_hex(Hex * hex, int dir, Hex * new_hex)
-{
-	g_assert(get_node(hex, dir) != NULL);
-	get_node(hex, dir)->hexes[(dir + 3) / 2 % 3] = new_hex;
-}
-
-static void set_node_cc_edge(Hex * hex, int dir, Edge * edge)
-{
-	g_assert(get_node(hex, dir) != NULL);
-	get_node(hex, dir)->edges[(dir + 2) / 2 % 3] = edge;
-}
-
-static void set_node_cw_edge(Hex * hex, int dir, Edge * edge)
-{
-	g_assert(get_node(hex, dir) != NULL);
-	get_node(hex, dir)->edges[(dir + 4) / 2 % 3] = edge;
-}
-
-static Edge *get_cc_edge(Hex * hex, int dir)
-{
-	g_assert(hex != NULL && dir < 6 && dir >= 0);
-	return hex->edges[(dir + 1) % 6];
-}
-
-static Edge *get_cw_edge(Hex * hex, int dir)
-{
-	g_assert(hex != NULL && dir < 6 && dir >= 0);
-	return hex->edges[dir];
-}
-
-static Edge *get_edge(Hex * hex, int dir)
-{
-	g_assert(hex != NULL && dir < 6 && dir >= 0);
-	return hex->edges[dir];
-}
-
-static void set_edge(Hex * hex, int dir, Edge * edge)
-{
-	g_assert(hex != NULL && dir < 6 && dir >= 0);
-	hex->edges[dir] = edge;
-}
-
-static Hex *get_op_hex(Hex * hex, int dir)
-{
-	g_assert(hex != NULL && dir < 6 && dir >= 0);
-	return hex_in_direction(hex, dir);
-}
-
-static Edge *get_op_hex_edge(Hex * hex, int dir)
-{
-	g_assert(get_op_hex(hex, dir) != NULL);
-	return get_op_hex(hex, dir)->edges[(dir + 3) % 6];
-}
-
-static Node *get_cc_node(Hex * hex, int dir)
-{
-	g_assert(hex != NULL && dir < 6 && dir >= 0);
-	return hex->nodes[dir];
-}
-
-static void set_cc_node_edge(Hex * hex, int dir, Edge * edge)
-{
-	g_assert(get_cc_node(hex, dir) != NULL);
-	get_cc_node(hex, dir)->edges[(dir + 4) / 2 % 3] = edge;
-}
-
-static Node *get_cw_node(Hex * hex, int dir)
-{
-	g_assert(hex != NULL && dir < 6 && dir >= 0);
-	return hex->nodes[(dir + 5) % 6];
-}
-
-static void set_cw_node_edge(Hex * hex, int dir, Edge * edge)
-{
-	g_assert(get_cw_node(hex, dir) != NULL);
-	get_cw_node(hex, dir)->edges[(dir + 1) / 2 % 3] = edge;
-}
-
-static void set_edge_cc_node(Hex * hex, int dir, Node * node)
-{
-	g_assert(get_edge(hex, dir) != NULL);
-	get_edge(hex, dir)->nodes[(dir + 1) / 3 % 2] = node;
-}
-
-static void set_edge_cw_node(Hex * hex, int dir, Node * node)
-{
-	g_assert(get_edge(hex, dir) != NULL);
-	get_edge(hex, dir)->nodes[(dir + 4) / 3 % 2] = node;
-}
-
-static void set_edge_hex(Hex * hex, int dir, Hex * new_hex)
-{
-	g_assert(get_edge(hex, dir) != NULL);
-	get_edge(hex, dir)->hexes[(dir + 3) / 3 % 2] = new_hex;
-}
 
 GRand *g_rand_ctx = NULL;
 
@@ -266,46 +52,35 @@ Hex *hex_in_direction(const Hex * hex, HexDirection direction)
 	gint x = hex->x;
 	gint y = hex->y;
 
-	map_move_in_direction(direction, &x, &y);
-
-	return map_hex(hex->map, x, y);
-}
-
-/** Move the hex coordinate in the given direction.
- * @param direction Move in this direction
- * @retval x x-coordinate of the hex to move
- * @retval y y-coordinate of the hex to move
-*/
-void map_move_in_direction(HexDirection direction, gint * x, gint * y)
-{
 	switch (direction) {
 	case HEX_DIR_E:
-		(*x)++;
+		x++;
 		break;
 	case HEX_DIR_NE:
-		if (*y % 2 == 1)
-			(*x)++;
-		(*y)--;
+		if (y % 2 == 1)
+			x++;
+		y--;
 		break;
 	case HEX_DIR_NW:
-		if (*y % 2 == 0)
-			(*x)--;
-		(*y)--;
+		if (y % 2 == 0)
+			x--;
+		y--;
 		break;
 	case HEX_DIR_W:
-		(*x)--;
+		x--;
 		break;
 	case HEX_DIR_SW:
-		if (*y % 2 == 0)
-			(*x)--;
-		(*y)++;
+		if (y % 2 == 0)
+			x--;
+		y++;
 		break;
 	case HEX_DIR_SE:
-		if (*y % 2 == 1)
-			(*x)++;
-		(*y)++;
+		if (y % 2 == 1)
+			x++;
+		y++;
 		break;
 	}
+	return map_hex(hex->map, x, y);
 }
 
 Node *map_node(Map * map, gint x, gint y, gint pos)
@@ -414,6 +189,65 @@ gboolean map_traverse_const(const Map * map, ConstHexFunc func,
 	return FALSE;
 }
 
+/* The x.y grid of hexes are joined into a network, with adjacent
+ * hexes are numbered 0 to 5.  The x and y coordinate offsets to each
+ * adjacent hex depend on whether the current hex is at an even or odd
+ * y grid position.
+ *
+ * Nodes are numbered 0 to 5 starting at 0 radians. Edges are numbered
+ * identically to adjacent hexes.
+ */
+
+/* x and y offsets from a hex to find the adjacent hexes.
+ */
+typedef struct {
+	gint x_offset;
+	gint y_offset;
+} HexOffset;
+static HexOffset even_offsets[6] = {
+	{1, 0},			/* 0 */
+	{0, -1},		/* 1 */
+	{-1, -1},		/* 2 */
+	{-1, 0},		/* 3 */
+	{-1, 1},		/* 4 */
+	{0, 1}			/* 5 */
+};
+
+static HexOffset odd_offsets[6] = {
+	{1, 0},			/* 0 */
+	{1, -1},		/* 1 */
+	{0, -1},		/* 2 */
+	{-1, 0},		/* 3 */
+	{0, 1},			/* 4 */
+	{1, 1}			/* 5 */
+};
+
+/* Build an array of adjacent hexes
+ */
+static void calc_adjacent(Map * map, gint x, gint y, Hex * adjacent[6])
+{
+	HexOffset *offset;
+	gint idx;
+
+	offset = (y % 2) ? odd_offsets : even_offsets;
+	for (idx = 0; idx < 6; idx++, offset++) {
+		gint x_hex = x + offset->x_offset;
+		gint y_hex = y + offset->y_offset;
+
+		if (x_hex >= 0
+		    && y_hex >= 0
+		    && x_hex < map->x_size && y_hex < map->y_size)
+			adjacent[idx] = map->grid[y_hex][x_hex];
+		else
+			adjacent[idx] = NULL;
+	}
+}
+
+static gint opposite(gint idx)
+{
+	return (idx + 3) % 6;
+}
+
 /* To expand the grid to a network, we build a chain of nodes and
  * edges around the current node.  Before allocating a new node or
  * edge, we must check if the node or edge has already been created by
@@ -426,22 +260,44 @@ gboolean map_traverse_const(const Map * map, ConstHexFunc func,
  *
  * Each edge has only two adjacent hexes, so we check the other hex to
  * see if the edge exists before creating it.
+ *
+ * To see how the nodes, edges and hexes are arranged, look at map.gif
  */
+typedef struct {
+	gint hex0_pos;		/* position of node in adjacent hex */
+	gint hex1_pos;		/* position of node in other adjacent hex */
+	gint node_pos;		/* node position to connect this hex to */
+
+	gint edge_pos;		/* edge position to connect this hex to */
+} ChainPart;
+static ChainPart node_chain[] = {
+	{2, 4, 1, 1},		/* 0 */
+	{3, 5, 2, 1},		/* 1 */
+	{4, 0, 2, 0},		/* 2 */
+	{5, 1, 0, 0},		/* 3 */
+	{0, 2, 0, 0},		/* 4 */
+	{1, 3, 1, 1}		/* 5 */
+};
 
 /* Build ring of nodes and edges around the current hex
  */
 static gboolean build_network(Hex * hex, G_GNUC_UNUSED gpointer closure)
 {
+	Hex *adjacent[6];
 	gint idx;
+	ChainPart *part;
 
-	for (idx = 0; idx < 6; idx++) {
+	calc_adjacent(hex->map, hex->x, hex->y, adjacent);
+
+	for (idx = 0, part = node_chain; idx < 6; idx++, part++) {
 		Node *node = NULL;
 		Edge *edge = NULL;
 
-		if (get_cc_hex(hex, idx) != NULL)
-			node = get_cc_hex_node(hex, idx);
-		if (node == NULL && get_cw_hex(hex, idx) != NULL)
-			node = get_cw_hex_node(hex, idx);
+		if (adjacent[idx] != NULL)
+			node = adjacent[idx]->nodes[part->hex0_pos];
+		if (node == NULL && adjacent[(idx + 1) % 6] != NULL)
+			node =
+			    adjacent[(idx + 1) % 6]->nodes[part->hex1_pos];
 		if (node == NULL) {
 			node = g_malloc0(sizeof(*node));
 			node->map = hex->map;
@@ -450,11 +306,11 @@ static gboolean build_network(Hex * hex, G_GNUC_UNUSED gpointer closure)
 			node->y = hex->y;
 			node->pos = idx;
 		}
-		set_node(hex, idx, node);
-		set_node_hex(hex, idx, hex);
+		hex->nodes[idx] = node;
+		node->hexes[part->node_pos] = hex;
 
-		if (get_op_hex(hex, idx) != NULL)
-			edge = get_op_hex_edge(hex, idx);
+		if (adjacent[idx] != NULL)
+			edge = adjacent[idx]->edges[opposite(idx)];
 		if (edge == NULL) {
 			edge = g_malloc0(sizeof(*edge));
 			edge->map = hex->map;
@@ -463,8 +319,8 @@ static gboolean build_network(Hex * hex, G_GNUC_UNUSED gpointer closure)
 			edge->y = hex->y;
 			edge->pos = idx;
 		}
-		set_edge(hex, idx, edge);
-		set_edge_hex(hex, idx, hex);
+		hex->edges[idx] = edge;
+		edge->hexes[part->edge_pos] = hex;
 	}
 
 	return FALSE;
@@ -477,19 +333,47 @@ static gboolean build_network(Hex * hex, G_GNUC_UNUSED gpointer closure)
  * has been processed, all nodes (which require them) will have three
  * edges.
  */
+typedef struct {
+	gint node0_pos;		/* node 0 connect position in edge */
+	gint node1_pos;		/* node 1 connect position in edge */
+	gint edge0_pos;		/* edge 0 connect position in node */
+	gint edge1_pos;		/* edge 1 connect position in node */
+} ChainConnect;
+static ChainConnect node_connect[] = {
+	{0, 1, 2, 1},		/* 0 */
+	{0, 1, 2, 1},		/* 1 */
+	{0, 1, 0, 2},		/* 2 */
+	{0, 1, 0, 2},		/* 3 */
+	{0, 1, 1, 0},		/* 4 */
+	{0, 1, 1, 0}		/* 5 */
+};
 
 /* Connect the the ring of nodes and edges to each other
  */
 static gboolean connect_network(Hex * hex, G_GNUC_UNUSED gpointer closure)
 {
+	Hex *adjacent[6];
 	gint idx;
-	for (idx = 0; idx < 6; idx++) {
-		/* Connect current edge to adjacent nodes */
-		set_edge_cc_node(hex, idx, get_cc_node(hex, idx));
-		set_edge_cw_node(hex, idx, get_cw_node(hex, idx));
-		/* Connect current node to adjacent edges */
-		set_node_cc_edge(hex, idx, get_cc_edge(hex, idx));
-		set_node_cw_edge(hex, idx, get_cw_edge(hex, idx));
+	ChainConnect *connect;
+
+	calc_adjacent(hex->map, hex->x, hex->y, adjacent);
+
+	for (idx = 0, connect = node_connect; idx < 6; idx++, connect++) {
+		Node *node;
+		Edge *edge;
+
+		/* Connect current edge to adjacent nodes
+		 */
+		edge = hex->edges[idx];
+		edge->nodes[connect->node0_pos] =
+		    hex->nodes[(idx + 5) % 6];
+		edge->nodes[connect->node1_pos] = hex->nodes[idx];
+		/* Connect current node to adjacent edges
+		 */
+		node = hex->nodes[idx];
+		node->edges[connect->edge0_pos] = hex->edges[idx];
+		node->edges[connect->edge1_pos] =
+		    hex->edges[(idx + 1) % 6];
 	}
 
 	return FALSE;
@@ -709,28 +593,6 @@ Map *map_new(void)
 	return g_malloc0(sizeof(Map));
 }
 
-static Hex *hex_new(Map * map, gint x, gint y)
-{
-	Hex *hex;
-
-	g_assert(map != NULL);
-	g_assert(x >= 0);
-	g_assert(x < map->x_size);
-	g_assert(y >= 0);
-	g_assert(y < map->y_size);
-	g_assert(map->grid[y][x] == NULL);
-
-	hex = g_malloc0(sizeof(*hex));
-	map->grid[y][x] = hex;
-
-	hex->map = map;
-	hex->x = x;
-	hex->y = y;
-	build_network(hex, NULL);
-	connect_network(hex, NULL);
-	return hex;
-}
-
 /** Copy a hex.
  * @param map The new owner
  * @param hex The original hex
@@ -947,10 +809,10 @@ gboolean map_parse_line(Map * map, const gchar * line)
 		case '\t':
 			continue;
 		}
+		--line;
 
 		if (x >= MAP_SIZE || map->y >= MAP_SIZE)
 			continue;
-		--line;
 
 		hex = g_malloc0(sizeof(*hex));
 		hex->map = map;
@@ -1091,65 +953,42 @@ gboolean map_parse_finish(Map * map)
 	return success;
 }
 
-/** Free a hex.
- * Disconnect the hex from the grid.
+/** Disconnect a hex from all nodes and edges that it does not "own"
  */
-static void hex_free(Hex * hex)
+static gboolean disconnect_hex(Hex * hex, G_GNUC_UNUSED gpointer closure)
 {
-	g_assert(hex != NULL);
 	gint idx;
-	/* Transfer ownership of edges to adjacent hexes. */
-	for (idx = 0; idx < 6; idx++) {
-		Edge *edge = get_edge(hex, idx);
-		g_assert(edge != NULL);
 
-		if (edge->pos == idx) {	/* if edge owned by hex */
-			if (get_op_hex(hex, idx) != NULL) {
-				/* change owner */
-				edge->x = get_op_hex(hex, idx)->x;
-				edge->y = get_op_hex(hex, idx)->y;
-				edge->pos = (edge->pos + 3) % 6;
-			} else {
-				set_cc_node_edge(hex, idx, NULL);
-				set_cw_node_edge(hex, idx, NULL);
-				g_free(edge);
-				continue;
-			}
-		}
-		set_edge_hex(hex, idx, NULL);
-	}
-	/* Transfer ownership of nodes to adjacent hexes. */
 	for (idx = 0; idx < 6; idx++) {
-		Node *node = get_node(hex, idx);
-		g_assert(node != NULL);
-		if (node->pos == idx) {
-			if (get_cc_hex(hex, idx) != NULL) {
-				/* change owner */
-				node->x = get_cc_hex(hex, idx)->x;
-				node->y = get_cc_hex(hex, idx)->y;
-				node->pos = (node->pos + 4) % 6;
-			} else if (get_cw_hex(hex, idx) != NULL) {
-				/* change owner */
-				node->x = get_cw_hex(hex, idx)->x;
-				node->y = get_cw_hex(hex, idx)->y;
-				node->pos = (node->pos + 2) % 6;
-			} else {
-				g_free(node);
-				continue;
-			}
-		}
-		set_node_hex(hex, idx, NULL);
+		Node *node = hex->nodes[idx];
+		Edge *edge = hex->edges[idx];
+
+		if (node && (node->x != hex->x || node->y != hex->y))
+			hex->nodes[idx] = NULL;
+		if (edge && (edge->x != hex->x || edge->y != hex->y))
+			hex->edges[idx] = NULL;
 	}
-	/* Remove from the grid */
-	if (hex->map->grid[hex->y][hex->x] == hex)
-		hex->map->grid[hex->y][hex->x] = NULL;
-	g_free(hex);
+
+	return FALSE;
 }
 
-
+/** Free a node and all of the hexes and nodes that it is connected to.
+ */
 static gboolean free_hex(Hex * hex, G_GNUC_UNUSED gpointer closure)
 {
-	hex_free(hex);
+	gint idx;
+
+	for (idx = 0; idx < 6; idx++) {
+		Node *node = hex->nodes[idx];
+		Edge *edge = hex->edges[idx];
+
+		if (node != NULL)
+			g_free(node);
+		if (edge != NULL)
+			g_free(edge);
+	}
+	g_free(hex);
+
 	return FALSE;
 }
 
@@ -1157,323 +996,24 @@ static gboolean free_hex(Hex * hex, G_GNUC_UNUSED gpointer closure)
  */
 void map_free(Map * map)
 {
+	map_traverse(map, disconnect_hex, NULL);
 	map_traverse(map, free_hex, NULL);
 	g_array_free(map->chits, TRUE);
 	g_free(map);
 }
 
-void map_reset_hex(Map * map, gint x, gint y)
+Hex *map_add_hex(Map * map, gint x, gint y)
 {
 	Hex *hex;
-	Hex *adjacent;
-	int i;
 
-	if (x < 0 || x >= map->x_size || y < 0 || y >= map->y_size) {
-		g_assert_not_reached();
-		return;
-	}
-	hex = map_hex(map, x, y);
-	if (!hex) {
-		/* Create a new hex on the previously empty place */
-		hex = hex_new(map, x, y);
-	}
-
-	g_return_if_fail(hex != NULL);
-	hex->terrain = LAST_TERRAIN;
-	hex->resource = NO_RESOURCE;
-	hex->chit_pos = -1;
-	hex->roll = 0;
-	hex->shuffle = TRUE;
-
-	/* Clear any ports that face this hex */
-	for (i = 0; i < 6; i++) {
-		adjacent = hex_in_direction(hex, i);
-		if (adjacent != NULL
-		    && adjacent->terrain == SEA_TERRAIN
-		    && adjacent->resource != NO_RESOURCE
-		    && adjacent->facing == (i + 3) % 6) {
-			adjacent->resource = NO_RESOURCE;
-			adjacent->facing = 0;
-		};
-	};
-}
-
-void map_modify_row_count(Map * map, MapModify type,
-			  MapModifyRowLocation location)
-{
-	gint x;
-	gint y;
-	gint max;
-	gint min;
-	Hex *shift_hex;
-
-	if (type == MAP_MODIFY_INSERT && location == MAP_MODIFY_ROW_TOP) {
-		/* Shift the map to the right, if needed */
-		map->shrink_left = !map->shrink_left;
-		if (map->shrink_left) {
-			map->x_size++;
-			for (y = 0; y < map->y_size; y++) {
-				shift_hex = map->grid[y][0];
-				while (shift_hex != NULL) {
-					shift_hex =
-					    move_hex(shift_hex, HEX_DIR_E);
-				};
-			};
-		};
-		map->y_size++;
-		/* Move all except the top row */
-		min = map->shrink_right ? 2 : 1;
-		for (y = min; y < map->y_size - 1; y += 2) {
-			shift_hex = map->grid[y][map->x_size - 1];
-			while (shift_hex != NULL) {
-				shift_hex =
-				    move_hex(shift_hex, HEX_DIR_SW);
-			};
-		};
-		/* Move the top row */
-		min = 1;
-		max = map->x_size;
-		for (x = min; x < max; x++) {
-			shift_hex = map->grid[0][x];
-			while (shift_hex != NULL) {
-				shift_hex =
-				    move_hex(shift_hex, HEX_DIR_SW);
-			};
-		};
-		/* Remove column, if needed */
-		if (map->shrink_right) {
-			map->x_size--;
-		}
-		map->shrink_right = !map->shrink_right;
-		/* Create the new hexes */
-		min = map->shrink_left ? 1 : 0;
-		max = map->x_size;
-		for (x = min; x < max; x++) {
-			map_reset_hex(map, x, 0);
-		};
-	} else if (type == MAP_MODIFY_INSERT
-		   && location == MAP_MODIFY_ROW_BOTTOM) {
-		map->y_size++;
-		if (map->y_size % 2 == 0) {
-			min = 0;
-			max =
-			    map->shrink_right ? map->x_size -
-			    1 : map->x_size;
-		} else {
-			min = map->shrink_left ? 1 : 0;
-			max = map->x_size;
-		};
-		for (x = min; x < max; x++) {
-			map_reset_hex(map, x, map->y_size - 1);
-		};
-	} else if (type == MAP_MODIFY_REMOVE
-		   && location == MAP_MODIFY_ROW_TOP) {
-		/* Remove the top row */
-		min = map->shrink_left ? 1 : 0;
-		max = map->x_size;
-		for (x = min; x < max; x++) {
-			map_reset_hex(map, x, 0);
-			hex_free(map->grid[0][x]);
-		};
-		/* Shift the map to the right, if needed */
-		map->shrink_left = !map->shrink_left;
-		if (map->shrink_left) {
-			map->x_size++;
-			for (y = 1; y < map->y_size; y++) {
-				shift_hex = map->grid[y][0];
-				while (shift_hex != NULL) {
-					shift_hex =
-					    move_hex(shift_hex, HEX_DIR_E);
-				};
-			};
-		};
-		/* Move all except the bottom row */
-		min = map->shrink_right ? 2 : 1;
-		for (y = min; y < map->y_size - 1; y += 2) {
-			shift_hex = map->grid[y][map->x_size - 1];
-			while (shift_hex != NULL) {
-				shift_hex =
-				    move_hex(shift_hex, HEX_DIR_NW);
-			};
-		};
-		/* Move the bottom row */
-		if (map->y_size % 2 == 0) {
-			min = 0;
-			max =
-			    map->shrink_right ? map->x_size -
-			    1 : map->x_size;
-		} else {
-			min = map->shrink_left ? 1 : 0;
-			max = map->x_size;
-		};
-		for (x = min; x < max; x++) {
-			shift_hex = map->grid[map->y_size - 1][x];
-			while (shift_hex != NULL) {
-				shift_hex =
-				    move_hex(shift_hex, HEX_DIR_NW);
-			};
-		};
-
-		/* Remove column, if needed */
-		if (map->shrink_right) {
-			map->x_size--;
-		};
-		map->shrink_right = !map->shrink_right;
-
-		map->y_size--;
-	} else {
-		if (map->y_size % 2 == 0) {
-			min = 0;
-			max =
-			    map->shrink_right ? map->x_size -
-			    1 : map->x_size;
-		} else {
-			min = map->shrink_left ? 1 : 0;
-			max = map->x_size;
-		};
-		for (x = min; x < max; x++) {
-			map_reset_hex(map, x, map->y_size - 1);
-			hex_free(map->grid[map->y_size - 1][x]);
-		};
-		map->y_size--;
-	}
-}
-
-void map_modify_column_count(Map * map, MapModify type,
-			     MapModifyColumnLocation location)
-{
-	gint x;
-	gint y;
-	Hex *shift_hex;
-
-	if (type == MAP_MODIFY_INSERT
-	    && location == MAP_MODIFY_COLUMN_LEFT) {
-		map->shrink_left = !map->shrink_left;
-		if (map->shrink_left) {
-			map->x_size++;
-			for (y = 0; y < map->y_size; y++) {
-				shift_hex = map->grid[y][0];
-				while (shift_hex != NULL) {
-					shift_hex =
-					    move_hex(shift_hex, HEX_DIR_E);
-				};
-			};
-		};
-		for (y = map->shrink_left ? 1 : 0; y < map->y_size; y += 2) {
-			map_reset_hex(map, 0, y);
-		};
-	} else if (type == MAP_MODIFY_INSERT
-		   && location == MAP_MODIFY_COLUMN_RIGHT) {
-		if (map->shrink_right) {
-			y = 1;
-		} else {
-			y = 0;
-			map->x_size++;
-		};
-		x = map->x_size - 1;
-
-		while (y < map->y_size) {
-			map_reset_hex(map, x, y);
-			y += 2;
-		};
-		map->shrink_right = !map->shrink_right;
-	} else if (type == MAP_MODIFY_REMOVE
-		   && location == MAP_MODIFY_COLUMN_LEFT) {
-		/* Clear the hexes */
-		for (y = map->shrink_left ? 1 : 0; y < map->y_size; y += 2) {
-			map_reset_hex(map, 0, y);
-			hex_free(map->grid[y][0]);
-		};
-		if (map->shrink_left) {
-			/* The map was already shrunk, so move all to the left */
-			for (y = 0; y < map->y_size; y++) {
-				x = (map->shrink_right
-				     && y % 2 ==
-				     1) ? map->x_size - 2 : map->x_size -
-				    1;
-				shift_hex = map->grid[y][x];
-				while (shift_hex != NULL) {
-					shift_hex =
-					    move_hex(shift_hex, HEX_DIR_W);
-				};
-			};
-			map->x_size--;
-		};
-		map->shrink_left = !map->shrink_left;
-	} else {
-		x = map->x_size - 1;
-		for (y = map->shrink_right ? 0 : 1; y < map->y_size;
-		     y += 2) {
-			map_reset_hex(map, x, y);
-			hex_free(map->grid[y][x]);
-		};
-		if (map->shrink_right) {
-			map->x_size--;
-		};
-		map->shrink_right = !map->shrink_right;
-	}
-}
-
-/** Move a hex in the given direction.
- *  This function must be called for all hexes on the grid,
- *  it cannot be use for single hexes.
- *  All related edges and nodes are moved too.
- *  @param hex Hex to move.
- *  @param direction Direction to move the hex to.
- *  @return The hex that was at the pointed position.
- */
-static Hex *move_hex(Hex * hex, HexDirection direction)
-{
-	if (hex->map->grid[hex->y][hex->x] == hex) {
-		hex->map->grid[hex->y][hex->x] = NULL;
-	};
-	switch (direction) {
-	case HEX_DIR_E:
-		hex->x++;
-		break;
-	case HEX_DIR_NE:
-		if (hex->y % 2 == 1) {
-			hex->x++;
-		};
-		hex->y--;
-		break;
-	case HEX_DIR_NW:
-		if (hex->y % 2 == 0) {
-			hex->x--;
-		};
-		hex->y--;
-		break;
-	case HEX_DIR_W:
-		hex->x--;
-		break;
-	case HEX_DIR_SW:
-		if (hex->y % 2 == 0) {
-			hex->x--;
-		};
-		hex->y++;
-		break;
-	case HEX_DIR_SE:
-		if (hex->y % 2 == 1) {
-			hex->x++;
-		};
-		hex->y++;
-		break;
-	}
-	Hex *ret_hex = map_hex(hex->map, hex->x, hex->y);
-
-	hex->map->grid[hex->y][hex->x] = hex;
-	int idx;
-	for (idx = 0; idx < 6; idx++) {
-		Edge *edge = hex->edges[idx];
-		if (edge != NULL && edge->pos == idx) {
-			edge->x = hex->x;
-			edge->y = hex->y;
-		};
-		Node *node = hex->nodes[idx];
-		if (node != NULL && node->pos == idx) {
-			node->x = hex->x;
-			node->y = hex->y;
-		};
-	};
-	return ret_hex;
+	g_assert(x < map->x_size);
+	g_assert(y < map->y_size);
+	hex = g_malloc0(sizeof(*hex));
+	hex->map = map;
+	hex->y = y;
+	hex->x = x;
+	map->grid[y][x] = hex;
+	build_network(hex, NULL);
+	connect_network(hex, NULL);
+	return hex;
 }

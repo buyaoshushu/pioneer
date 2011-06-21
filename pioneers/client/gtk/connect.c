@@ -36,20 +36,19 @@
 #include "metaserver.h"
 #include "avahi.h"
 #include "avahi-browser.h"
-#include "client.h"
-#include "gtkcompat.h"
 
 const int PRIVATE_GAME_HISTORY_SIZE = 10;
 
-static gboolean connect_spectator;	/* Prefer to be a spectator */
-static gboolean connect_spectator_allowed;	/* Spectator allowed */
+static gboolean connect_viewer;	/* Prefer to be a viewer */
+static gboolean connect_viewer_allowed;	/* Viewer allowed */
 static gchar *connect_server;	/* Name of the server */
 static gchar *connect_port;	/* Port of the server */
 
 static GtkWidget *connect_dlg;	/* Dialog for starting a new game */
 static GtkWidget *name_entry;	/* Name of the player */
-static GtkWidget *spectator_toggle;	/* Prefer to be a spectator */
+static GtkWidget *viewer_toggle;	/* Prefer to be a viewer */
 static GtkWidget *meta_server_entry;	/* Name of the metaserver */
+
 
 static GtkWidget *meta_dlg;	/* Dialog for joining a public game */
 static GtkWidget *server_status;	/* Description of the current metaserver */
@@ -151,7 +150,7 @@ static void close_waiting_box(void);
 
 static void connect_set_field(gchar ** field, const gchar * value);
 static void connect_close_all(gboolean user_pressed_ok,
-			      gboolean can_be_spectator);
+			      gboolean can_be_viewer);
 static void set_meta_serverinfo(void);
 static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 				   GtkWindow * parent);
@@ -165,38 +164,28 @@ static void connect_set_field(gchar ** field, const gchar * value)
 	g_free(temp);
 }
 
-/* Reset all pointers to the destroyed children of the dialog */
-static void connect_dlg_destroyed(GtkWidget * widget,
-				  GtkWidget ** widget_pointer)
-{
-	name_entry = NULL;
-	spectator_toggle = NULL;
-	meta_server_entry = NULL;
-	gtk_widget_destroyed(widget, widget_pointer);
-}
-
 static void connect_name_change_cb(G_GNUC_UNUSED gpointer ns)
 {
-	gchar *name = notifying_string_get(requested_name);
+	gchar *name = name_get_name();
 	if (name_entry != NULL)
 		gtk_entry_set_text(GTK_ENTRY(name_entry), name);
 	g_free(name);
 }
 
 /* Public functions */
-gboolean connect_get_spectator(void)
+gboolean connect_get_viewer(void)
 {
-	return connect_spectator && connect_spectator_allowed;
+	return connect_viewer && connect_viewer_allowed;
 }
 
-void connect_set_spectator(gboolean spectator)
+void connect_set_viewer(gboolean viewer)
 {
-	connect_spectator = spectator;
-	connect_spectator_allowed = TRUE;
-	if (spectator_toggle != NULL)
+	connect_viewer = viewer;
+	connect_viewer_allowed = TRUE;
+	if (viewer_toggle != NULL)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-					     (spectator_toggle),
-					     connect_spectator);
+					     (viewer_toggle),
+					     connect_viewer);
 }
 
 const gchar *connect_get_server(void)
@@ -235,18 +224,16 @@ void connect_set_port(const gchar * port)
 }
 
 static void connect_close_all(gboolean user_pressed_ok,
-			      gboolean can_be_spectator)
+			      gboolean can_be_viewer)
 {
-	connect_spectator_allowed = can_be_spectator;
+	connect_viewer_allowed = can_be_viewer;
 	if (user_pressed_ok) {
 		gchar *meta_server;
 
-		notifying_string_set(requested_name,
-				     gtk_entry_get_text(GTK_ENTRY
-							(name_entry)));
-		connect_spectator =
+		name_set_name(gtk_entry_get_text(GTK_ENTRY(name_entry)));
+		connect_viewer =
 		    gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON
-						 (spectator_toggle));
+						 (viewer_toggle));
 		/* Save connect dialogue entries */
 		meta_server = connect_get_meta_server();
 		config_set_string("connect/meta-server", meta_server);
@@ -1222,8 +1209,7 @@ void connect_create_dlg(void)
 		return;
 	}
 
-	g_signal_connect(requested_name, "changed",
-			 G_CALLBACK(connect_name_change_cb), NULL);
+	name_add_callback_for_name(G_CALLBACK(connect_name_change_cb));
 
 	/* Dialog caption */
 	connect_dlg = gtk_dialog_new_with_buttons(_("Start a New Game"),
@@ -1235,7 +1221,7 @@ void connect_create_dlg(void)
 	g_signal_connect(G_OBJECT(connect_dlg), "response",
 			 G_CALLBACK(connect_dlg_cb), NULL);
 	g_signal_connect(G_OBJECT(connect_dlg), "destroy",
-			 G_CALLBACK(connect_dlg_destroyed), &connect_dlg);
+			 G_CALLBACK(gtk_widget_destroyed), &connect_dlg);
 
 	gtk_widget_realize(connect_dlg);
 	gdk_window_set_functions(connect_dlg->window,
@@ -1259,12 +1245,14 @@ void connect_create_dlg(void)
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
-	name = notifying_string_get(requested_name);
+	name = name_get_name();
 	name_entry = gtk_entry_new();
 	gtk_entry_set_max_length(GTK_ENTRY(name_entry), MAX_NAME_LENGTH);
 	gtk_widget_show(name_entry);
 	gtk_entry_set_text(GTK_ENTRY(name_entry), name);
 	g_free(name);
+	g_signal_connect(G_OBJECT(name_entry), "destroy",
+			 G_CALLBACK(gtk_widget_destroyed), &name_entry);
 
 	gtk_table_attach(GTK_TABLE(table), name_entry, 1, 2, row, row + 1,
 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
@@ -1272,17 +1260,16 @@ void connect_create_dlg(void)
 	gtk_widget_set_tooltip_text(name_entry, _("Enter your name"));
 
 	/* Check button */
-	spectator_toggle = gtk_check_button_new_with_label(_("Spectator"));
-	gtk_widget_show(spectator_toggle);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(spectator_toggle),
-				     connect_spectator);
+	viewer_toggle = gtk_check_button_new_with_label(_("Viewer"));
+	gtk_widget_show(viewer_toggle);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(viewer_toggle),
+				     connect_viewer);
 
-	gtk_table_attach(GTK_TABLE(table), spectator_toggle, 2, 3, row,
+	gtk_table_attach(GTK_TABLE(table), viewer_toggle, 2, 3, row,
 			 row + 1, 0, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_widget_set_tooltip_text(spectator_toggle,
-				    /* Tooltip for checkbox Spectator */
-				    _
-				    ("Check if you want to be a spectator"));
+	gtk_widget_set_tooltip_text(viewer_toggle,
+				    /* Tooltip for checkbox Viewer */
+				    _("Check if you want to be a viewer"));
 	row++;
 
 	sep = gtk_hseparator_new();
@@ -1360,7 +1347,7 @@ void connect_create_dlg(void)
 			 G_CALLBACK(create_meta_dlg), app_window);
 	/* Tooltip */
 	gtk_widget_set_tooltip_text(btn, _("Join a public game"));
-	gtk_widget_set_can_default(btn, TRUE);
+	GTK_WIDGET_SET_FLAGS(btn, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(btn);
 
 	/* Button */
@@ -1600,7 +1587,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 				    _("Port of the host of the game"));
 	connect_set_field(&connect_port, connect_port);
 
-	host_list = gtk_combo_box_text_new();
+	host_list = gtk_combo_box_new_text();
 	host_entries = g_ptr_array_new();
 
 	gtk_widget_show(host_list);
@@ -1627,9 +1614,8 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 		g_free(host_port);
 
 		g_ptr_array_add(host_entries, host_name_port);
-		gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT
-					       (host_list),
-					       host_name_port);
+		gtk_combo_box_append_text(GTK_COMBO_BOX(host_list),
+					  host_name_port);
 	}
 	if (i > 0)
 		gtk_combo_box_set_active(GTK_COMBO_BOX(host_list), 0);

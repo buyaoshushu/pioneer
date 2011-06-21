@@ -39,7 +39,6 @@
 #include "config-gnome.h"
 #include "gtkbugs.h"
 #include "audio.h"
-#include "gtkcompat.h"
 
 static GtkWidget *preferences_dlg;
 GtkWidget *app_window;		/* main application window */
@@ -113,6 +112,7 @@ static const gchar *resources_pixmaps[] = {
 static struct {
 	GdkPixmap *p;
 	GdkBitmap *b;
+	GdkGC *gcp, *gcb;
 } resource_pixmap[NO_RESOURCE];
 static gint resource_pixmap_res = 0;
 
@@ -209,16 +209,6 @@ static void game_settings_cb(void);
 #ifdef HAVE_HELP
 static void help_manual_cb(void);
 #endif
-
-static void zoom_normal_cb(void)
-{
-	guimap_zoom_normal(gmap);
-}
-
-static void zoom_center_map_cb(void)
-{
-	guimap_zoom_center_map(gmap);
-}
 
 /* Normal items */
 static GtkActionEntry entries[] = {
@@ -342,21 +332,6 @@ static GtkActionEntry entries[] = {
 	 /* Tooltip for Preferences menu entry */
 	 N_("Configure the application"), preferences_cb},
 
-	{"ViewMenu", NULL,
-	 /* Menu entry */
-	 N_("_View"), NULL, NULL, NULL},
-	{"Full", GTK_STOCK_ZOOM_FIT,
-	 /* Menu entry */
-	 N_("_Reset"),
-	 "<control>0",
-	 /* Tooltip for Reset menu entry */
-	 N_("View the full map"), zoom_normal_cb},
-	{"Center", NULL,
-	 /* Menu entry */
-	 N_("_Center"), NULL,
-	 /* Tooltip for Center menu entry */
-	 N_("Center the map"), zoom_center_map_cb},
-
 	{"HelpMenu", NULL,
 	 /* Menu entry */
 	 N_("_Help"), NULL, NULL, NULL},
@@ -421,10 +396,6 @@ static const char *ui_description =
 "      <menuitem action='ShowHideToolbar'/>"
 "      <menuitem action='Preferences'/>"
 "    </menu>"
-"    <menu action='ViewMenu'>"
-"      <menuitem action='Full'/>"
-"      <menuitem action='Center'/>"
-"    </menu>"
 "    <menu action='HelpMenu'>"
 "      <menuitem action='HelpAbout'/>"
 #ifdef HAVE_HELP
@@ -456,13 +427,10 @@ GtkWidget *gui_get_dialog_button(GtkDialog * dlg, gint button)
 	g_return_val_if_fail(dlg != NULL, NULL);
 	g_assert(dlg->action_area != NULL);
 
-	list =
-	    gtk_container_get_children(GTK_CONTAINER
-				       (gtk_dialog_get_action_area(dlg)));
-	list = g_list_nth(list, button);
+	list = g_list_nth(GTK_BOX(dlg->action_area)->children, button);
 	if (list != NULL) {
 		g_assert(list->data != NULL);
-		return GTK_WIDGET(list->data);
+		return ((GtkBoxChild *) list->data)->widget;
 	}
 	return NULL;
 }
@@ -1052,7 +1020,7 @@ static void preferences_cb(void)
 
 	row = 0;
 
-	theme_list = gtk_combo_box_text_new();
+	theme_list = gtk_combo_box_new_text();
 	/* Label for changing the theme, in the preferences dialog */
 	theme_label = gtk_label_new(_("Theme:"));
 	gtk_misc_set_alignment(GTK_MISC(theme_label), 0, 0.5);
@@ -1062,8 +1030,8 @@ static void preferences_cb(void)
 	for (i = 0, theme_elt = theme_get_list();
 	     theme_elt != NULL; ++i, theme_elt = g_list_next(theme_elt)) {
 		MapTheme *theme = theme_elt->data;
-		gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT
-					       (theme_list), theme->name);
+		gtk_combo_box_append_text(GTK_COMBO_BOX(theme_list),
+					  theme->name);
 		if (theme == theme_get_current())
 			gtk_combo_box_set_active(GTK_COMBO_BOX(theme_list),
 						 i);
@@ -1170,7 +1138,7 @@ static void preferences_cb(void)
 	row++;
 
 	widget =
-	    /* Label for the option to announce when players/spectators enter */
+	    /* Label for the option to announce when players/viewers enter */
 	    gtk_check_button_new_with_label(_("Announce new players"));
 	gtk_widget_show(widget);
 	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
@@ -1180,9 +1148,9 @@ static void preferences_cb(void)
 	g_signal_connect(G_OBJECT(widget), "toggled",
 			 G_CALLBACK(announce_player_cb), NULL);
 	gtk_widget_set_tooltip_text(widget,
-				    /* Tooltip for the option to use sound when players/spectators enter */
+				    /* Tooltip for the option to use sound when players/viewers enter */
 				    _(""
-				      "Make a sound when a new player or spectator enters the game"));
+				      "Make a sound when a new player or viewer enters the game"));
 	row++;
 
 	/* Silent mode widget is connected an initialized after the announce button */
@@ -1597,6 +1565,16 @@ static void register_pixmaps(void)
 								  &resource_pixmap
 								  [idx].b,
 								  128);
+				resource_pixmap[idx].gcb =
+				    gdk_gc_new(resource_pixmap[idx].b);
+				gdk_gc_set_function(resource_pixmap
+						    [idx].gcb, GDK_OR);
+				resource_pixmap[idx].gcp =
+				    gdk_gc_new(resource_pixmap[idx].p);
+				gdk_gc_set_clip_mask(resource_pixmap
+						     [idx].gcp,
+						     resource_pixmap
+						     [idx].b);
 				if (!resource_pixmap_res)
 					resource_pixmap_res =
 					    gdk_pixbuf_get_width(pixbuf);
@@ -1755,11 +1733,16 @@ GtkWidget *gui_build_interface(void)
 	return app_window;
 }
 
-void gui_get_resource_pixmap(gint idx, GdkPixmap ** p, GdkBitmap ** b)
+void gui_get_resource_pixmap(gint idx, GdkPixmap ** p, GdkBitmap ** b,
+			     GdkGC ** gcp, GdkGC ** gcb)
 {
 	g_assert(idx < NO_RESOURCE);
 	*p = resource_pixmap[idx].p;
 	*b = resource_pixmap[idx].b;
+	if (gcp)
+		*gcp = resource_pixmap[idx].gcp;
+	if (gcb)
+		*gcb = resource_pixmap[idx].gcb;
 }
 
 gint gui_get_resource_pixmap_res()

@@ -54,7 +54,7 @@ static void frontend_start_game(void)
 	gui_set_game_params(get_game_params());
 	set_num_players(num_players());
 	identity_reset();
-	gui_set_show_no_setup_nodes(!player_is_spectator(my_player_num()));
+	gui_set_show_no_setup_nodes(!player_is_viewer(my_player_num()));
 	frontend_gui_update();
 }
 
@@ -109,7 +109,6 @@ static void frontend_new_bank(G_GNUC_UNUSED const gint * new_bank)
 /* set all the callbacks. */
 void frontend_set_callbacks(void)
 {
-	callbacks.init_glib_et_al = &frontend_init_gtk_et_al;
 	callbacks.init = &frontend_init;
 	callbacks.network_status = &frontend_network_status;
 	callbacks.instructions = &frontend_instructions;
@@ -162,11 +161,11 @@ void frontend_set_callbacks(void)
 	callbacks.robber_done = &frontend_robber_done;
 	callbacks.new_statistics = &frontend_new_statistics;
 	callbacks.new_points = &frontend_new_points;
-	callbacks.spectator_name = &frontend_spectator_name;
+	callbacks.viewer_name = &frontend_viewer_name;
 	callbacks.player_name = &frontend_player_name;
 	callbacks.player_style = &frontend_player_style;
 	callbacks.player_quit = &frontend_player_quit;
-	callbacks.spectator_quit = &frontend_spectator_quit;
+	callbacks.viewer_quit = &frontend_viewer_quit;
 	callbacks.incoming_chat = &chat_parser;
 	callbacks.new_bank = &frontend_new_bank;
 	callbacks.get_map = &frontend_get_map;

@@ -130,7 +130,7 @@ static void replace_colors(GdkPixbuf * pixbuf,
 }
 
 GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
-				  GdkColor * color, gboolean spectator,
+				  GdkColor * color, gboolean viewer,
 				  gboolean connected, gboolean double_size)
 {
 	gint width, height;
@@ -183,9 +183,9 @@ GdkPixbuf *playericon_create_icon(GtkWidget * widget, const gchar * style,
 			    gdk_pixmap_new(widget->window, width, height,
 					   gdk_visual_get_system()->depth);
 			gc = gdk_gc_new(pixmap);
-			if (spectator) {
+			if (viewer) {
 				GdkPixbuf *tmp;
-				/* Spectators have a transparent icon */
+				/* Viewers have a transparent icon */
 				gdk_gc_set_foreground(gc, &black);
 				gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0,
 						   width, height);
@@ -316,7 +316,7 @@ gboolean playericon_parse_human_style(const gchar * style,
 	gchar **style_parts;
 	gboolean parse_ok;
 
-	/* Determine the style for the player/spectator */
+	/* Determine the style for the player/viewer */
 	style_parts = g_strsplit(style, " ", 0);
 	parse_ok = FALSE;
 	if (!strcmp(style_parts[0], "human")) {

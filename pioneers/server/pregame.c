@@ -254,7 +254,9 @@ void next_setup_player(Game * game)
 	} else {
 		/* First setup phase
 		 */
+		Player *player;
 		game->setup_player = player_next_real(game->setup_player);
+		player = game->setup_player->data;
 		/* Last player gets double setup
 		 */
 		game->double_setup
@@ -511,7 +513,7 @@ gboolean mode_pre_game(Player * player, gint event)
 		/* Tell the player that he exists.  This is not done in
 		 * player_set_name, because at that point the client doesn't
 		 * know how many players are in the game, and therefore if
-		 * he is a player or a spectator. */
+		 * he is a player or a viewer. */
 		/* Tell the other players about this player */
 		player_broadcast(player, PB_OTHERS, FIRST_VERSION,
 				 LATEST_VERSION, "is %s\n", player->name);
@@ -674,7 +676,7 @@ gboolean mode_pre_game(Player * player, gint event)
 			   # bridges, # ships, # settles, # cities,
 			   # soldiers, road len, dev points,
 			   who has longest road/army,
-			   spectators will receive an empty list */
+			   viewers will receive an empty list */
 			player_send_uncached(player, FIRST_VERSION,
 					     LATEST_VERSION,
 					     "playerinfo: resources: %R\n",
@@ -911,17 +913,16 @@ gboolean mode_pre_game(Player * player, gint event)
 				if (!sm_is_connected(sm))
 					/* This happens when the connection is
 					 * dropped when the cache is sent */
-					sm_goto(sm, (StateFunc)
-						mode_spectator);
+					sm_goto(sm,
+						(StateFunc) mode_viewer);
 				else
 					sm_pop(sm);
 			} else {
-				if (!player_is_spectator
-				    (game, player->num))
+				if (!player_is_viewer(game, player->num))
 					sm_goto(sm, (StateFunc) mode_idle);
 				else
-					sm_goto(sm, (StateFunc)
-						mode_spectator);
+					sm_goto(sm,
+						(StateFunc) mode_viewer);
 			}
 			try_start_game(game);
 			return TRUE;
