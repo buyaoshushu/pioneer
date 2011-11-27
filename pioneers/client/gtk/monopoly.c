@@ -90,10 +90,10 @@ void monopoly_create_dlg(void)
 			 G_CALLBACK(gtk_widget_destroyed), &monop_dlg);
 	gtk_widget_realize(monop_dlg);
 	/* Disable close */
-	gdk_window_set_functions(gtk_widget_get_window(monop_dlg),
+	gdk_window_set_functions(monop_dlg->window,
 				 GDK_FUNC_ALL | GDK_FUNC_CLOSE);
 
-	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(monop_dlg));
+	dlg_vbox = GTK_DIALOG(monop_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
 	vbox = gtk_vbox_new(FALSE, 0);

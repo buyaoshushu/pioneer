@@ -95,19 +95,17 @@ static gboolean expose_histogram_cb(GtkWidget * area,
 	gint CHIT_RADIUS;
 	GdkPixmap *pixmap;
 	cairo_t *histogram_cr;
-	GtkAllocation allocation;
 
-	if (gtk_widget_get_window(area) == NULL)
+	if (area->window == NULL)
 		return TRUE;
 
 	pixmap = theme_get_terrain_pixmap(GPOINTER_TO_INT(terrain));
 
-	histogram_cr = gdk_cairo_create(gtk_widget_get_window(area));
+	histogram_cr = gdk_cairo_create(area->window);
 	cairo_set_line_width(histogram_cr, 1.0);
 
-	gtk_widget_get_allocation(area, &allocation);
-	w = allocation.width;
-	h = allocation.height;
+	w = area->allocation.width;
+	h = area->allocation.height;
 
 	/* Calculate the highest dice throw */
 	max = 0;
@@ -268,7 +266,7 @@ GtkWidget *histogram_create_dlg(void)
 	gtk_window_set_default_size(GTK_WINDOW(histogram_dlg),
 				    DIALOG_WIDTH, DIALOG_HEIGHT);
 
-	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(histogram_dlg));
+	dlg_vbox = GTK_DIALOG(histogram_dlg)->vbox;
 
 	histogram_area = gtk_drawing_area_new();
 	g_signal_connect(G_OBJECT(histogram_area), "expose_event",

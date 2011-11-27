@@ -13,7 +13,6 @@
 #include <string.h>
 #include "guimap.h"
 #include "gtkbugs.h"
-#include "gtkcompat.h"
 
 #include "select-game.h"
 
@@ -160,9 +159,8 @@ void select_game_add_with_map(SelectGame * sg, const gchar * game_title,
 
 	gmap = guimap_new();
 	gmap->pixmap =
-	    gdk_pixmap_new(gtk_widget_get_window(sg->combo_box), width,
-			   height,
-			   gdk_visual_get_depth(gdk_visual_get_system()));
+	    gdk_pixmap_new(sg->combo_box->window, width, height,
+			   gdk_visual_get_system()->depth);
 	gmap->width = width;
 	gmap->height = height;
 	gmap->area = sg->combo_box;

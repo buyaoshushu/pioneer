@@ -153,7 +153,9 @@ if BUILD_CLIENT
 include client/Makefile.am
 endif
 
+#if BUILD_SERVER
 include server/Makefile.am
+#endif
 
 if BUILD_META_SERVER
 include meta-server/Makefile.am

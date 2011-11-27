@@ -362,8 +362,7 @@ static void settings_rules_changed(void)
 		GtkWidget *dlg_vbox;
 		GList *list;
 
-		dlg_vbox =
-		    gtk_dialog_get_content_area(GTK_DIALOG(settings_dlg));
+		dlg_vbox = GTK_DIALOG(settings_dlg)->vbox;
 		list = gtk_container_get_children(GTK_CONTAINER(dlg_vbox));
 
 		if (g_list_length(list) > 0)
@@ -397,7 +396,7 @@ GtkWidget *settings_create_dlg(void)
 	g_signal_connect(GTK_OBJECT(settings_dlg), "destroy",
 			 G_CALLBACK(gtk_widget_destroyed), &settings_dlg);
 
-	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(settings_dlg));
+	dlg_vbox = GTK_DIALOG(settings_dlg)->vbox;
 	gtk_widget_show(dlg_vbox);
 
 	vbox = settings_create_content();
