@@ -24,8 +24,14 @@ Prepare the build environment
   - ./configure --prefix=/mingw
   - make
   - make install
-  
-* In MSYS shell:
+* Download and install the NSIS installer from
+  http://sourceforge.net/projects/nsis/
+* Download and install TortoiseSVN from
+  http://tortoisesvn.net/downloads.html
+  - Enable the command line tools during the installation
+* In the MSYS shell:
+  - mount C:\MinGW /MinGW
+    Only needed if the installer did not already mount it
   - vim /MinGW/bin/intltool-*
     - Adjust all first lines to point to /bin/perl instead of
       /opt/perl/bin/perl
@@ -48,7 +54,6 @@ Build and install Pioneers
      ./configure
      make
      make install
-     make install-MinGW
 
 Start Pioneers
 ==============
@@ -68,4 +73,4 @@ Known limitations
 * The metaserver is not built. It is recommended to use the existing metaservers
 
 Roland Clobus
-2014-03-07 Pioneers-15.2
+2014-11-02 Pioneers-15.3
