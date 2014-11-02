@@ -71,6 +71,8 @@ Known limitations
 =================
 * The online help is not built
 * The metaserver is not built. It is recommended to use the existing metaservers
+* When building from a Subversion checkout the generated PNG-files look bad,
+  because of missing fonts.
 
 Roland Clobus
 2014-11-02 Pioneers-15.3
