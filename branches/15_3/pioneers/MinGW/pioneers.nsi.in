@@ -1,5 +1,5 @@
 ; Script generated with the aid of the HM NIS Edit Script Wizard.
-; Adapted for Pioneers by Roland Clobus <rclobus@bigfoot.com>
+; Adapted for Pioneers by Roland Clobus <rclobus@rclobus.nl>
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Pioneers"
@@ -335,6 +335,7 @@ Section /o "Additional programs" SEC02
   CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Pioneers Editor.lnk" "$INSTDIR\pioneers-editor.exe"
   CreateShortCut "$DESKTOP\Pioneers Editor.lnk" "$INSTDIR\pioneers-editor.exe"
   CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Pioneers Server.lnk" "$INSTDIR\pioneers-server-gtk.exe"
+  CreateShortCut "$DESKTOP\Pioneers Server.lnk" "$INSTDIR\pioneers-server-gtk.exe"
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -572,6 +573,7 @@ Section Uninstall
   Delete "$SMPROGRAMS\$ICONS_GROUP\Website.lnk"
   Delete "$DESKTOP\Pioneers.lnk"
   Delete "$DESKTOP\Pioneers Editor.lnk"
+  Delete "$DESKTOP\Pioneers Server.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Pioneers.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Pioneers Editor.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Pioneers Server.lnk"
