@@ -1,3 +1,11 @@
+pioneers (14.1-2.1) UNRELEASED; urgency=medium
+
+  * Updated copyright which clarifies the license for the images.
+    (closes: #765319)
+  * Applied license patch from the upstream repository.
+
+ -- Roland Clobus <rclobus@rclobus.nl>  Thu, 25 Nov 2014 08:00:00 +0100
+
 pioneers (14.1-2) unstable; urgency=low
 
   * Debian-only i18n-release during freeze.
