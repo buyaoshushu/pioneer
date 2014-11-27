@@ -9,12 +9,11 @@ Index: pioneers-14.1/editor/gtk/pioneers-editor.svg
 ===================================================================
 --- pioneers-14.1.orig/editor/gtk/pioneers-editor.svg
 +++ pioneers-14.1/editor/gtk/pioneers-editor.svg
-@@ -5,13 +5,29 @@
+@@ -5,13 +5,28 @@
  <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
 +   xmlns:dc="http://purl.org/dc/elements/1.1/"
-+   xmlns:xlink="http://www.w3.org/1999/xlink"
 +   xmlns:cc="http://creativecommons.org/ns#"
 +   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     version="1.0"
