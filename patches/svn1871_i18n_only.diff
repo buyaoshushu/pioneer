@@ -1,0 +1,559 @@
+Description: Fixed variants of the spelling of meta[- _]server to metaserver
+ Only the user visible string changes from svn commit 1871 have been taken.
+Author: Roland Clobus <rclobus@rclobus.nl>
+Origin: upstream
+Forwarded: not-needed
+Applied-Upstream: This is a fragment of commit 1871
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+Index: pioneers-14.1/client/gtk/connect.c
+===================================================================
+--- pioneers-14.1.orig/client/gtk/connect.c
++++ pioneers-14.1/client/gtk/connect.c
+@@ -274,7 +274,7 @@ static void show_waiting_box(const gchar
+ 			     const gchar * port)
+ {
+ 	if (meta_dlg) {
+-		gchar *s = g_strdup_printf(_("Meta-server at %s, port %s"),
++		gchar *s = g_strdup_printf(_("Metaserver at %s, port %s"),
+ 					   server, port);
+ 		gtk_label_set_text(GTK_LABEL(server_status), s);
+ 		g_free(s);
+@@ -301,7 +301,7 @@ static void meta_gametype_notify(NetEven
+ 	case NET_CLOSE:
+ 		if (gametype_mode == GAMETYPE_MODE_SIGNON)
+ 			log_message(MSG_ERROR,
+-				    _("Meta-server kicked us off\n"));
++				    _("Metaserver kicked us off\n"));
+ 		net_free(&gametype_ses);
+ 		close_waiting_box();
+ 		break;
+@@ -326,7 +326,7 @@ static void meta_gametype_notify(NetEven
+ 
+ static void get_meta_server_games_types(gchar * server, gchar * port)
+ {
+-	show_waiting_box(_("Receiving game names from the meta server.\n"),
++	show_waiting_box(_("Receiving game names from the metaserver.\n"),
+ 			 server, port);
+ 	gametype_ses = net_new(meta_gametype_notify, NULL);
+ 	if (net_connect(gametype_ses, server, port))
+@@ -351,7 +351,7 @@ static void meta_create_notify(NetEvent
+ 	case NET_CLOSE:
+ 		if (create_mode == CREATE_MODE_SIGNON)
+ 			log_message(MSG_ERROR,
+-				    _("Meta-server kicked us off\n"));
++				    _("Metaserver kicked us off\n"));
+ 		net_free(&create_ses);
+ 		break;
+ 	case NET_READ:
+@@ -451,7 +451,7 @@ static void meta_notify(NetEvent event,
+ 	case NET_CLOSE:
+ 		if (meta_mode == MODE_SIGNON)
+ 			log_message(MSG_ERROR,
+-				    _("Meta-server kicked us off\n"));
++				    _("Metaserver kicked us off\n"));
+ 		close_waiting_box();
+ 		net_free(&ses);
+ 		break;
+@@ -467,7 +467,7 @@ static void meta_notify(NetEvent event,
+ 				if (metaserver_info.num_redirects++ == 10) {
+ 					log_message(MSG_INFO,
+ 						    _(""
+-						      "Too many meta-server redirects\n"));
++						      "Too many metaserver redirects\n"));
+ 					return;
+ 				}
+ 				split_result = g_strsplit(line, " ", 0);
+@@ -520,7 +520,7 @@ static void meta_notify(NetEvent event,
+ 			if (metaserver_info.version_major < 1) {
+ 				log_message(MSG_INFO,
+ 					    _(""
+-					      "Meta server too old to create "
++					      "The metaserver is too old to create "
+ 					      "servers (version %d.%d)\n"),
+ 					    metaserver_info.version_major,
+ 					    metaserver_info.version_minor);
+@@ -648,10 +648,10 @@ static void query_meta_server(const gcha
+ 	if (metaserver_info.num_redirects > 0)
+ 		log_message(MSG_INFO,
+ 			    _(""
+-			      "Redirected to meta-server at %s, port %s\n"),
++			      "Redirected to metaserver at %s, port %s\n"),
+ 			    server, port);
+ 	show_waiting_box(_(""
+-			   "Receiving a list of Pioneers servers from the meta server.\n"),
++			   "Receiving a list of Pioneers servers from the metaserver.\n"),
+ 			 server, port);
+ 
+ 	ses = net_new(meta_notify, NULL);
+@@ -977,7 +977,7 @@ static void create_meta_dlg(G_GNUC_UNUSE
+ 				    (GTK_DIALOG(meta_dlg), 1),
+ 				    /* Tooltip */
+ 				    _(""
+-				      "Create a new public game at the meta server"));
++				      "Create a new public game at the metaserver"));
+ 	gtk_widget_set_tooltip_text(gui_get_dialog_button
+ 				    (GTK_DIALOG(meta_dlg), 2),
+ 				    /* Tooltip */
+@@ -1326,7 +1326,7 @@ void connect_create_dlg(void)
+ #endif				// HAVE_AVAHI
+ 
+ 	/* Label */
+-	lbl = gtk_label_new(_("Meta server"));
++	lbl = gtk_label_new(_("Metaserver"));
+ 	gtk_widget_show(lbl);
+ 	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, row, row + 1,
+ 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+Index: pioneers-14.1/client/gtk/offline.c
+===================================================================
+--- pioneers-14.1.orig/client/gtk/offline.c
++++ pioneers-14.1/client/gtk/offline.c
+@@ -62,7 +62,7 @@ static GOptionEntry commandline_entries[
+ 	 N_("Connect as a spectator"), NULL},
+ 	/* Commandline option of client: hostname of the meta-server */
+ 	{"meta-server", 'm', 0, G_OPTION_ARG_STRING, &meta_server,
+-	 N_("Meta-server Host"), PIONEERS_DEFAULT_META_SERVER},
++	 N_("Metaserver Host"), PIONEERS_DEFAULT_META_SERVER},
+ 	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
+ 	 /* Commandline option of client: enable debug logging */
+ 	 N_("Enable debug messages"), NULL},
+Index: pioneers-14.1/client/help/C/pioneers.xml
+===================================================================
+--- pioneers-14.1.orig/client/help/C/pioneers.xml
++++ pioneers-14.1/client/help/C/pioneers.xml
+@@ -644,7 +644,7 @@
+ 
+ 	<para>The dialog displays a list of Pioneers games
+           that are currently running on the Internet. The default
+-	  meta server is <symbol>pioneers.debian.net</symbol></para>
++	  metaserver is <symbol>pioneers.debian.net</symbol></para>
+ 
+ 	<figure id="pioneers-FIG-servers-dialog">
+ 	  <title>The Join a public game dialog</title>
+@@ -661,7 +661,7 @@
+           one player will start the server with the game you've agreed
+           upon.</para>
+ 
+-	<para>Some meta servers also allow you to start new games
++	<para>Some metaservers also allow you to start new games
+ 	  on their host (e.g. <symbol>pioneers.game-host.org</symbol>).
+           If this is possible, the New remote game button will be active
+           and will bring you to the Create a public game dialog.</para>
+@@ -673,7 +673,7 @@
+ 
+ 	<para>In this dialog, you can select various parameters for
+ 	  the new game: board name (available types will be retrieved
+-	  from the meta-server), the number of players, victory points
++	  from the metaserver), the number of players, victory points
+ 	  to reach, how many computer players should join the game,
+           which sevens rule to apply and whether the terrain should be
+           randomized.</para>
+@@ -688,7 +688,7 @@
+       <para>Once you're satisfied with your choices, press the OK
+         button. The game will be started once enough players have
+ 	entered the game. The new game will of course be 
+-        registered to the meta server it was started from. Other players
++        registered to the metaserver it was started from. Other players
+ 	can see it in the list if they press the Join public game button,
+ 	or refresh the list of public games.</para>
+ 
+@@ -697,7 +697,7 @@
+         more than 20 minutes without any connected players. Please
+         also note that adding computer players will silently fail if the
+         <application>pioneersai</application> program is not installed
+-        on the meta server.</para>
++        on the metaserver.</para>
+ 
+       </sect2>
+ 
+@@ -1408,7 +1408,7 @@
+ 	    can find the game
+           </para></listitem>
+           <listitem><para>
+-            Select a <guilabel>Meta Server</guilabel>
++            Select a <guilabel>Metaserver</guilabel>
+           </para></listitem>
+           <listitem><para>
+             Leave <guilabel>Reported hostname</guilabel> empty
+@@ -1611,7 +1611,7 @@
+ 	      <row>
+ 	        <entry>-m</entry>
+ 		<entry>--meta-server</entry>
+-		<entry>Meta-server host</entry>
++		<entry>Metaserver host</entry>
+ 	      </row>
+ 	    </tbody>
+ 	  </tgroup>
+@@ -1653,7 +1653,7 @@
+ 	        <entry>connect</entry>
+ 	        <entry>meta-server</entry>
+ 		<entry>string</entry>
+-		<entry>Address of the meta server</entry>
++		<entry>Address of the metaserver</entry>
+ 	      </row>
+ 	      <row>
+ 	        <entry>connect</entry>
+@@ -1730,7 +1730,7 @@
+ 	    <tbody>
+ 	      <row>
+ 	        <entry>PIONEERS_META_SERVER</entry>
+-		<entry>The host name of the meta server</entry>
++		<entry>The host name of the metaserver</entry>
+ 	      </row>
+ 	    </tbody>
+ 	  </tgroup>
+@@ -1769,21 +1769,21 @@
+ 	        <entry>-r</entry>
+ 	        <entry>--register</entry>
+ 		<entry/>
+-		<entry>Register with meta-server</entry>
++		<entry>Register with metaserver</entry>
+               </row>
+ 	      <row>
+                 <entry/>
+ 	        <entry>-m</entry>
+-	        <entry>--meta-server</entry>
++	        <entry>--metaserver</entry>
+ 		<entry>string</entry>
+-		<entry>Register at meta-server name (implies -r)</entry>
++		<entry>Register at metaserver name (implies -r)</entry>
+               </row>
+ 	      <row>
+                 <entry/>
+ 	        <entry>-n</entry>
+ 	        <entry>--hostname</entry>
+ 		<entry>string</entry>
+-		<entry>Use this hostname when registering at the meta-server</entry>
++		<entry>Use this hostname when registering at the metaserver</entry>
+               </row>
+ 	      <row>
+                 <entry>*</entry>
+@@ -1902,7 +1902,7 @@
+           </tgroup>
+         </table>
+         <para>
+-          The column 'M' shows whether the switch is used by the meta-server
++          The column 'M' shows whether the switch is used by the metaserver
+         </para>
+ 	<table id="configuration-server-console-environment">
+ 	  <title><application>pioneers-server-console</application>
+@@ -1921,7 +1921,7 @@
+               </row>
+ 	      <row>
+ 	        <entry>PIONEERS_META_SERVER</entry>
+-		<entry>The host name of the meta server</entry>
++		<entry>The host name of the metaserver</entry>
+ 	      </row>
+ 	    </tbody>
+ 	  </tgroup>
+Index: pioneers-14.1/configure.ac
+===================================================================
+--- pioneers-14.1.orig/configure.ac
++++ pioneers-14.1/configure.ac
+@@ -410,7 +410,7 @@ TYPE_SOCKLEN_T
+ AC_DEFINE_UNQUOTED(PROTOCOL_VERSION, "$PROTOCOL_VERSION",
+ 		   [Protocol version used by the program])
+ AC_DEFINE_UNQUOTED(META_PROTOCOL_VERSION, "$META_PROTOCOL_VERSION",
+-		   [Protocol version used by the meta server])
++		   [Protocol version used by the metaserver])
+ AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_GAME_PORT, "$PIONEERS_DEFAULT_GAME_PORT",
+ 		   [The default port for a new game])
+ AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_GAME_HOST, "$PIONEERS_DEFAULT_GAME_HOST",
+@@ -418,9 +418,9 @@ AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_GAME
+ AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_ADMIN_PORT, "$PIONEERS_DEFAULT_ADMIN_PORT",
+ 		   [The default port for the admin interface])
+ AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_META_PORT, "$PIONEERS_DEFAULT_META_PORT",
+-		   [The port for the meta server])
++		   [The port for the metaserver])
+ AC_DEFINE_UNQUOTED(PIONEERS_DEFAULT_META_SERVER, 
+-		   "$PIONEERS_DEFAULT_META_SERVER", [The default meta server])
++		   "$PIONEERS_DEFAULT_META_SERVER", [The default metaserver])
+ 
+ ## internationalization support
+ IT_PROG_INTLTOOL([0.35])
+Index: pioneers-14.1/docs/pioneers-meta-server.6
+===================================================================
+--- pioneers-14.1.orig/docs/pioneers-meta-server.6
++++ pioneers-14.1/docs/pioneers-meta-server.6
+@@ -1,6 +1,6 @@
+-.TH pioneers-meta-server 6 "January 8, 2012" "pioneers"
++.TH pioneers-meta-server 6 "February 24, 2013" "pioneers"
+ .SH NAME
+-pioneers-meta-server \- meta game server for Pioneers
++pioneers-meta-server \- metaserver for Pioneers
+ 
+ .SH SYNOPSIS
+ .B pioneers-meta-server
+@@ -30,7 +30,7 @@ Run in daemon mode.
+ 
+ .TP
+ .BI "\-r, \-\-redirect" " location"
+-.RI "Redirect to another meta-server running at " location "."
++.RI "Redirect to another metaserver running at " location "."
+ 
+ .TP
+ .BI "\-s, \-\-servername" " hostname"
+@@ -40,7 +40,7 @@ Run in daemon mode.
+ .BI "\-p, \-\-port\-range" " from" \- "to"
+ .RI "Use ports in the range " from "-" to " (inclusive) to start servers."
+ It is advised not to include port 5557 in the range.  (See BUGS below.)
+-When this range is not specified, the meta-server will not be able to create
++When this range is not specified, the metaserver will not be able to create
+ new games.
+ 
+ .TP
+@@ -56,11 +56,11 @@ Duplicate the messages of the syslog to
+ Show version information.
+ 
+ .SH ENVIRONMENT
+-The default settings of the meta-server can be influenced with the
++The default settings of the metaserver can be influenced with the
+ following three environment variables:
+ .TP 
+ .B PIONEERS_META_SERVER
+-The hostname the meta-server will use when creating new games. This should
++The hostname the metaserver will use when creating new games. This should
+ be a hostname that can be resolved by all clients that will connect.
+ .TP 
+ .B PIONEERS_SERVER_CONSOLE
+@@ -80,13 +80,13 @@ Game definitions
+ .SH SIGNALS
+ .B USR1
+ .RS
+-Shutdown the meta-server gracefully (can be used to check for memory leaks)
++Shutdown the metaserver gracefully (can be used to check for memory leaks)
+ .RE
+ 
+ .SH BUGS
+ Do not include port 5557 in the
+ .I \-\-port\-range
+-argument because the meta-server uses this port.
++argument because the metaserver uses this port.
+ 
+ .SH AUTHOR
+ This manual page was written by Jeff Breidenbach <jab@debian.org>,
+Index: pioneers-14.1/docs/pioneers-server-console.6
+===================================================================
+--- pioneers-14.1.orig/docs/pioneers-server-console.6
++++ pioneers-14.1/docs/pioneers-server-console.6
+@@ -1,4 +1,4 @@
+-.TH pioneers-server-console 6 "January 8, 2012" "pioneers"
++.TH pioneers-server-console 6 "February 24, 2013" "pioneers"
+ .SH NAME
+ pioneers-server-console \- command-line game server for Pioneers
+ 
+@@ -53,13 +53,13 @@ Start up \fInum\fP computer players.
+ .BI "\-\-version"
+ Show version information.
+ 
+-.SS Meta-server options
++.SS Metaserver options
+ .TP
+ .BI "\-r,\-\-register"
+-Register with a meta server.  The meta server to use can be overridden
++Register with a metaserver.  The metaserver to use can be overridden
+ with the
+ .B \-m
+-option. Default meta sever: pioneers.debian.net
++option. Default metaserver: pioneers.debian.net
+ .TP
+ .BI "\-m,\-\-meta\-server" " metaserver"
+ Register this server with the metaserver at the specified address. 
+@@ -98,7 +98,7 @@ The default settings of the server can b
+ following three environment variables:
+ .TP 
+ .B PIONEERS_META_SERVER
+-The hostname of the meta-server when no meta-server is specified on the
++The hostname of the metaserver when no metaserver is specified on the
+ command-line.
+ .TP
+ .B PIONEERS_SERVER_NAME
+Index: pioneers-14.1/docs/pioneers-server-gtk.6
+===================================================================
+--- pioneers-14.1.orig/docs/pioneers-server-gtk.6
++++ pioneers-14.1/docs/pioneers-server-gtk.6
+@@ -28,7 +28,7 @@ The default settings of the server can b
+ following three environment variables:
+ .TP 
+ .B PIONEERS_META_SERVER
+-The hostname of the meta-server when no meta-server is specified in the
++The hostname of the metaserver when no metaserver is specified in the
+ user interface. (The settings file takes precedence)
+ .TP
+ .B PIONEERS_SERVER_NAME
+Index: pioneers-14.1/docs/pioneers.6
+===================================================================
+--- pioneers-14.1.orig/docs/pioneers.6
++++ pioneers-14.1/docs/pioneers.6
+@@ -1,4 +1,4 @@
+-.TH pioneers 6 "January 8, 2012" "pioneers"
++.TH pioneers 6 "Februari 24, 2013" "pioneers"
+ .SH NAME
+ pioneers \- network implementation of Settlers of Catan
+ 
+@@ -41,8 +41,8 @@ Use this name for the player instead of
+ .BI "\-v, \-\-spectator"
+ Connect as spectator instead of as a player
+ .TP
+-.BI "\-m, \-\-meta\-server" " meta-server"
+-Connect to this meta-server instead of the meta-server in the settings file
++.BI "\-m, \-\-meta\-server" " metaserver"
++Connect to this metaserver instead of the metaserver in the settings file
+ .TP
+ .BI "\-\-debug"
+ Turn on debugging mode
+@@ -59,8 +59,8 @@ The default settings can be influenced w
+ following environment variable:
+ .TP 
+ .B PIONEERS_META_SERVER
+-The hostname of the meta-server.
+-If it is not set, the default meta-server will be used.
++The hostname of the metaserver.
++If it is not set, the default metaserver will be used.
+ 
+ .SH FILES
+ .B /usr/share/games/pioneers/themes/*
+Index: pioneers-14.1/server/gtk/main.c
+===================================================================
+--- pioneers-14.1.orig/server/gtk/main.c
++++ pioneers-14.1/server/gtk/main.c
+@@ -561,12 +561,12 @@ static GtkWidget *build_server_frame(voi
+ 			 G_CALLBACK(register_toggle_cb), NULL);
+ 	gtk_widget_set_tooltip_text(toggle,
+ 				    _(""
+-				      "Register this game at the meta server"));
++				      "Register this game at the metaserver"));
+ 	register_server =
+ 	    config_get_int_with_default("server/register", TRUE);
+ 
+ 	/* meta server label */
+-	label = gtk_label_new(_("Meta server"));
++	label = gtk_label_new(_("Metaserver"));
+ 	gtk_widget_show(label);
+ 	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3,
+ 			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+Index: pioneers-14.1/server/main.c
+===================================================================
+--- pioneers-14.1.orig/server/main.c
++++ pioneers-14.1/server/main.c
+@@ -104,10 +104,10 @@ static GOptionEntry commandline_game_ent
+ static GOptionEntry commandline_meta_entries[] = {
+ 	{"register", 'r', 0, G_OPTION_ARG_NONE, &register_server,
+ 	 /* Commandline server-console: register */
+-	 N_("Register server with meta-server"), NULL},
++	 N_("Register server with metaserver"), NULL},
+ 	{"meta-server", 'm', 0, G_OPTION_ARG_STRING, &meta_server_name,
+ 	 /* Commandline server-console: meta-server */
+-	 N_("Register at meta-server name (implies -r)"),
++	 N_("Register at metaserver name (implies -r)"),
+ 	 PIONEERS_DEFAULT_META_SERVER},
+ 	{"hostname", 'n', 0, G_OPTION_ARG_STRING, &hostname,
+ 	 /* Commandline server-console: hostname */
+@@ -179,10 +179,10 @@ int main(int argc, char *argv[])
+ 					  PACKAGE);
+ 	context_group = g_option_group_new("meta",
+ 					   /* Commandline server-console: Short description of meta group */
+-					   _("Meta-server Options"),
++					   _("Metaserver Options"),
+ 					   /* Commandline server-console: Long description of meta group */
+ 					   _(""
+-					     "Options for the meta-server"),
++					     "Options for the metaserver"),
+ 					   NULL, NULL);
+ 	g_option_group_set_translation_domain(context_group, PACKAGE);
+ 	g_option_group_add_entries(context_group,
+Index: pioneers-14.1/server/meta.c
+===================================================================
+--- pioneers-14.1.orig/server/meta.c
++++ pioneers-14.1/server/meta.c
+@@ -117,7 +117,7 @@ static void meta_event(NetEvent event, G
+ 				if (num_redirects++ == 10) {
+ 					log_message(MSG_INFO,
+ 						    _(""
+-						      "Too many meta-server redirects\n"));
++						      "Too many metaserver redirects\n"));
+ 					return;
+ 				}
+ 				split_result = g_strsplit(line, " ", 0);
+@@ -166,7 +166,7 @@ static void meta_event(NetEvent event, G
+ 		}
+ 		break;
+ 	case NET_CLOSE:
+-		log_message(MSG_ERROR, _("Meta-server kicked us off\n"));
++		log_message(MSG_ERROR, _("Metaserver kicked us off\n"));
+ 		net_free(&ses);
+ 		break;
+ 	case NET_CONNECT:
+@@ -180,12 +180,12 @@ void meta_register(const gchar * server,
+ 	if (num_redirects > 0)
+ 		log_message(MSG_INFO,
+ 			    _(""
+-			      "Redirected to meta-server at %s, port %s\n"),
++			      "Redirected to metaserver at %s, port %s\n"),
+ 			    server, port);
+ 	else
+ 		log_message(MSG_INFO,
+ 			    _(""
+-			      "Register with meta-server at %s, port %s\n"),
++			      "Register with metaserver at %s, port %s\n"),
+ 			    server, port);
+ 
+ 	if (ses != NULL)
+@@ -202,7 +202,7 @@ void meta_register(const gchar * server,
+ void meta_unregister(void)
+ {
+ 	if (ses != NULL) {
+-		log_message(MSG_INFO, _("Unregister from meta-server\n"));
++		log_message(MSG_INFO, _("Unregister from metaserver\n"));
+ 		net_free(&ses);
+ 	}
+ }
+Index: pioneers-14.1/meta-server/main.c
+===================================================================
+--- pioneers-14.1.orig/meta-server/main.c
++++ pioneers-14.1/meta-server/main.c
+@@ -1066,7 +1066,7 @@ static void convert_to_daemon(void)
+ static GOptionEntry commandline_entries[] = {
+ 	{"daemon", 'd', 0, G_OPTION_ARG_NONE, &make_daemon,
+ 	 /* Commandline meta-server: daemon */
+-	 N_("Daemonize the meta-server on start"), NULL},
++	 N_("Daemonize the metaserver on start"), NULL},
+ 	{"pidfile", 'P', 0, G_OPTION_ARG_STRING, &pidfile,
+ 	 /* Commandline meta-server: pidfile */
+ 	 N_("Pidfile to create when daemonizing (implies -d)"),
+@@ -1074,7 +1074,7 @@ static GOptionEntry commandline_entries[
+ 	 N_("filename")},
+ 	{"redirect", 'r', 0, G_OPTION_ARG_STRING, &redirect_location,
+ 	 /* Commandline meta-server: redirect */
+-	 N_("Redirect clients to another meta-server"), NULL},
++	 N_("Redirect clients to another metaserver"), NULL},
+ 	{"servername", 's', 0, G_OPTION_ARG_STRING, &myhostname,
+ 	 /* Commandline meta-server: server */
+ 	 N_("Use this hostname when creating new games"),
+@@ -1116,7 +1116,7 @@ int main(int argc, char *argv[])
+ 	bind_textdomain_codeset(PACKAGE, "UTF-8");
+ 
+ 	/* Long description in the commandline for server-console: help */
+-	context = g_option_context_new(_("- Meta server for Pioneers"));
++	context = g_option_context_new(_("- Metaserver for Pioneers"));
+ 	g_option_context_add_main_entries(context,
+ 					  commandline_entries, PACKAGE);
+ 	g_option_context_parse(context, &argc, &argv, &error);
+@@ -1132,7 +1132,7 @@ int main(int argc, char *argv[])
+ 		g_print(" ");
+ 		g_print(FULL_VERSION);
+ 		g_print(", ");
+-		g_print(_("meta-server protocol:"));
++		g_print(_("metaserver protocol:"));
+ 		g_print(" ");
+ 		g_print(META_PROTOCOL_VERSION);
+ 		g_print("\n");
+@@ -1186,7 +1186,7 @@ int main(int argc, char *argv[])
+ 	sigemptyset(&myusr1action.sa_mask);
+ 	sigaction(SIGUSR1, &myusr1action, &oldusr1action);
+ 
+-	my_syslog(LOG_INFO, "Pioneers meta server started.");
++	my_syslog(LOG_INFO, "Pioneers metaserver started.");
+ 	select_loop();
+ 
+ 	sigaction(SIGUSR1, &oldusr1action, NULL);

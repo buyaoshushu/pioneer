@@ -11,9 +11,9 @@ if test -e "$CONFIG_FILE" ; then
 	. "$CONFIG_FILE"
 else
 	cat > "$CONFIG_FILE" << EOF
-# This file contains the settings for the pioneers meta-server.
+# This file contains the settings for the pioneers metaserver.
 # It is used by /etc/init.d/pioneers-meta-server, for starting and stopping
-#  the meta-server.
+#  the metaserver.
 # See /etc/init.d/pioneers-meta-server for possible variables to assign.
 # If no value is given here, the default from that file is used.
 #

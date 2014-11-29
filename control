@@ -20,7 +20,7 @@ Description: Settlers of Catan board game
  It can be played over the internet.
  .
  The game includes a server, a client, a computer player, an editor and
- (in a separate package) a meta-server (for locating running servers).
+ (in a separate package) a metaserver (for locating running servers).
 
 Package: pioneers-console
 Architecture: any
@@ -41,8 +41,8 @@ Description: Settlers of Catan board game - meta-server
  Pioneers is a computer implementation of the Settlers of Catan board game.
  It can be played over the internet.
  .
- This package contains a meta-server, which can be used to locate running
- servers. Most people will use a central meta-server, and do not need this
+ This package contains a metaserver, which can be used to locate running
+ servers. Most people will use a central metaserver, and do not need this
  package.
 
 Package: pioneers-data
