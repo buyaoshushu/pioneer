@@ -557,3 +557,16 @@ Index: pioneers-14.1/meta-server/main.c
  	select_loop();
  
  	sigaction(SIGUSR1, &oldusr1action, NULL);
+Index: pioneers-14.1/common/gtk/metaserver.c
+===================================================================
+--- pioneers-14.1.orig/common/gtk/metaserver.c
++++ pioneers-14.1/common/gtk/metaserver.c
+@@ -83,7 +83,7 @@ static void metaserver_init(MetaServer *
+ 	gtk_widget_show(ms->combo_box);
+ 	gtk_widget_set_tooltip_text(ms->combo_box,
+ 				    /* Tooltip for the list of meta servers */
+-				    _("Select a meta server"));
++				    _("Select a metaserver"));
+ 	gtk_table_resize(GTK_TABLE(ms), 1, 1);
+ 	gtk_table_attach_defaults(GTK_TABLE(ms), ms->combo_box,
+ 				  0, 1, 0, 1);
