@@ -1,3 +1,16 @@
+Description: Translation file updates.
+ This patch was created without the '--show-c-function' in QUILT_DIFF_OPTS,
+ because that will lead to an invalid UTF-8 encoded patch file.
+.
+ The latest translations were copied, and then 'intltool-update -r' was
+ applied. Finally the patches were minimized by hand.
+ Occasionally a period at the end of a sentence was introduced, to match the
+ new string.
+Author: Roland Clobus <rclobus@rclobus.nl>
+Origin: upstream
+Applied-Upstream: 1860-2091
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 diff -u --label pioneers-14.1.orig/po/LINGUAS --label pioneers-14.1/po/LINGUAS 	     .pc/svn1860-2091_po.diff/po/LINGUAS po/LINGUAS
 Index: pioneers-14.1/po/LINGUAS
 ===================================================================
