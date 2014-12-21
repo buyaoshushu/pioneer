@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pioneers 0.12.2-1\n"
 "Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
-"POT-Creation-Date: 2014-12-21 01:02+0100\n"
+"POT-Creation-Date: 2014-12-21 01:28+0100\n"
 "PO-Revision-Date: 2008-06-03 21:56+0400\n"
 "Last-Translator: Yuri Kozlov <kozlov.y@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
@@ -21,20 +21,12 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:1001
-#, fuzzy
-#| msgid "Port range for creating new games on the meta-server:"
 msgid "Port range for creating new games on the metaserver:"
 msgstr "Диапазон портов для создания новых игр на мета-сервере:"
 
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:1001
-#, fuzzy
-#| msgid ""
-#| "The meta-server can create new games, so players don't need to install "
-#| "and run the pioneers server. The ports which are used for these games can "
-#| "be specified. If this field is left empty, the meta-server will disable "
-#| "its game creation functionality."
 msgid ""
 "The metaserver can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
@@ -65,11 +57,6 @@ msgstr "Имя сервера для создаваемых игр:"
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:2001
-#, fuzzy
-#| msgid ""
-#| "In some cases, the name the meta-server uses for itself when creating new "
-#| "games is incorrect. If this field is not left empty, it is used to "
-#| "override the detected hostname."
 msgid ""
 "In some cases, the name the metaserver uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
@@ -82,24 +69,16 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:3001
-#, fuzzy
-#| msgid "Extra arguments to pass to the meta-server:"
 msgid "Extra arguments to pass to the metaserver:"
 msgstr "Дополнительные параметры для передачи мета-серверу:"
 
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:3001
-#, fuzzy
-#| msgid ""
-#| "These arguments are passed to the meta-server. There are only two "
-#| "sensible arguments:\n"
-#| " * --syslog-debug: Send debugging output to syslog\n"
-#| " * --redirect: Redirect clients to another meta-server"
 msgid ""
 "These arguments are passed to the metaserver. There are only two sensible "
 "arguments:\n"
-" * --debug: Send debugging output to a logfile\n"
+" * --syslog-debug: Send debugging output to syslog\n"
 " * --redirect: Redirect clients to another metaserver"
 msgstr ""
 "Мета-сервер принимает некоторые параметры. Вот два полезных параметра:\n"
