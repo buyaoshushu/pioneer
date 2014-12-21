@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pioneers-eu\n"
 "Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
-"POT-Creation-Date: 2014-12-21 01:02+0100\n"
+"POT-Creation-Date: 2014-12-21 01:28+0100\n"
 "PO-Revision-Date: 2008-05-13 10:09+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -20,20 +20,12 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:1001
-#, fuzzy
-#| msgid "Port range for creating new games on the meta-server:"
 msgid "Port range for creating new games on the metaserver:"
 msgstr "Meta-zerbitzarian joko berriak sortzeko ataka bitartea:"
 
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:1001
-#, fuzzy
-#| msgid ""
-#| "The meta-server can create new games, so players don't need to install "
-#| "and run the pioneers server. The ports which are used for these games can "
-#| "be specified. If this field is left empty, the meta-server will disable "
-#| "its game creation functionality."
 msgid ""
 "The metaserver can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
@@ -64,11 +56,6 @@ msgstr "Sorturiko jokoen zerbitzari izena:"
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:2001
-#, fuzzy
-#| msgid ""
-#| "In some cases, the name the meta-server uses for itself when creating new "
-#| "games is incorrect. If this field is not left empty, it is used to "
-#| "override the detected hostname."
 msgid ""
 "In some cases, the name the metaserver uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
@@ -81,8 +68,6 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:3001
-#, fuzzy
-#| msgid "Extra arguments to pass to the meta-server:"
 msgid "Extra arguments to pass to the metaserver:"
 msgstr "Meta-zerbitzarira bidaltzeko argumentu gehigarriak:"
 
@@ -98,7 +83,7 @@ msgstr "Meta-zerbitzarira bidaltzeko argumentu gehigarriak:"
 msgid ""
 "These arguments are passed to the metaserver. There are only two sensible "
 "arguments:\n"
-" * --debug: Send debugging output to a logfile\n"
+" * --syslog-debug: Send debugging output to syslog\n"
 " * --redirect: Redirect clients to another metaserver"
 msgstr ""
 "Argumentu hauek meta-zerbitzarira bidaliko dira. Bi argumentu erabilgarri "
