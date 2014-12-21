@@ -18,8 +18,6 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:1001
-#, fuzzy
-#| msgid "Port range for creating new games on the meta-server:"
 msgid "Port range for creating new games on the metaserver:"
 msgstr ""
 "Poorten om te gebruiken voor het starten van nieuwe spellen door de meta-"
@@ -28,12 +26,6 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:1001
-#, fuzzy
-#| msgid ""
-#| "The meta-server can create new games, so players don't need to install "
-#| "and run the pioneers server. The ports which are used for these games can "
-#| "be specified. If this field is left empty, the meta-server will disable "
-#| "its game creation functionality."
 msgid ""
 "The metaserver can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
@@ -64,11 +56,6 @@ msgstr "Servernaam voor opgestarte spellen:"
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:2001
-#, fuzzy
-#| msgid ""
-#| "In some cases, the name the meta-server uses for itself when creating new "
-#| "games is incorrect. If this field is not left empty, it is used to "
-#| "override the detected hostname."
 msgid ""
 "In some cases, the name the metaserver uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
@@ -81,20 +68,12 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:3001
-#, fuzzy
-#| msgid "Extra arguments to pass to the meta-server:"
 msgid "Extra arguments to pass to the metaserver:"
 msgstr "Extra argumenten voor de meta-server:"
 
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:3001
-#, fuzzy
-#| msgid ""
-#| "These arguments are passed to the meta-server. There are only two "
-#| "sensible arguments:\n"
-#| " * --syslog-debug: Send debugging output to syslog\n"
-#| " * --redirect: Redirect clients to another meta-server"
 msgid ""
 "These arguments are passed to the metaserver. There are only two sensible "
 "arguments:\n"
@@ -103,7 +82,7 @@ msgid ""
 msgstr ""
 "Deze argumenten worden meegegeven aan de meta-server. Er zijn twee zinnige "
 "argumenten:\n"
-" * --syslog-debug: Stuur debug-uitvoer naar het systeemlogboek.\n"
+" * --debug: Stuur debug-uitvoer naar een bestand.\n"
 " * --redirect: Verwijs clients naar een andere meta-server."
 
 #~ msgid "Run the pioneers meta-server?"
