@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pioneers 0.12.2-1\n"
 "Report-Msgid-Bugs-To: pioneers@packages.debian.org\n"
-"POT-Creation-Date: 2009-11-25 13:11+0100\n"
+"POT-Creation-Date: 2014-12-21 01:02+0100\n"
 "PO-Revision-Date: 2008-05-22 22:42+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
@@ -18,17 +18,25 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:1001
-msgid "Port range for creating new games on the meta-server:"
+#, fuzzy
+#| msgid "Port range for creating new games on the meta-server:"
+msgid "Port range for creating new games on the metaserver:"
 msgstr "Port-Bereich, um neue Spiele auf dem Meta-Server zu erstellen:"
 
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:1001
+#, fuzzy
+#| msgid ""
+#| "The meta-server can create new games, so players don't need to install "
+#| "and run the pioneers server. The ports which are used for these games can "
+#| "be specified. If this field is left empty, the meta-server will disable "
+#| "its game creation functionality."
 msgid ""
-"The meta-server can create new games, so players don't need to install and "
+"The metaserver can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
-"specified. If this field is left empty, the meta-server will disable its "
-"game creation functionality."
+"specified. If this field is left empty, the metaserver will disable its game "
+"creation functionality."
 msgstr ""
 "Der Meta-Server kann neue Spiele erstellen, daher müssen die Spieler den "
 "Pioneers-Server nicht installieren und ausführen. Die für diese Spiele zu "
@@ -55,8 +63,13 @@ msgstr "Servername für erstellte Spiele:"
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:2001
+#, fuzzy
+#| msgid ""
+#| "In some cases, the name the meta-server uses for itself when creating new "
+#| "games is incorrect. If this field is not left empty, it is used to "
+#| "override the detected hostname."
 msgid ""
-"In some cases, the name the meta-server uses for itself when creating new "
+"In some cases, the name the metaserver uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
 "the detected hostname."
 msgstr ""
@@ -67,17 +80,25 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:3001
-msgid "Extra arguments to pass to the meta-server:"
+#, fuzzy
+#| msgid "Extra arguments to pass to the meta-server:"
+msgid "Extra arguments to pass to the metaserver:"
 msgstr "Zusätzliche Argumente, die an den Meta-Server übergeben werden sollen:"
 
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:3001
+#, fuzzy
+#| msgid ""
+#| "These arguments are passed to the meta-server. There are only two "
+#| "sensible arguments:\n"
+#| " * --syslog-debug: Send debugging output to syslog\n"
+#| " * --redirect: Redirect clients to another meta-server"
 msgid ""
-"These arguments are passed to the meta-server. There are only two sensible "
+"These arguments are passed to the metaserver. There are only two sensible "
 "arguments:\n"
-" * --syslog-debug: Send debugging output to syslog\n"
-" * --redirect: Redirect clients to another meta-server"
+" * --debug: Send debugging output to a logfile\n"
+" * --redirect: Redirect clients to another metaserver"
 msgstr ""
 "Diese Argumente werden an den Meta-Server übergeben. Es gibt nur zwei "
 "sinnvolle Argumente:\n"
