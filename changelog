@@ -3,9 +3,9 @@ pioneers (14.1-3) unstable; urgency=medium
   * Updated copyright which clarifies the license for the images.
     (closes: #765319)
   * Applied license patch from the upstream repository.
-  * Updated translations
+  * Updated translations, as mentioned in #768176.
 
- -- Roland Clobus <rclobus@rclobus.nl>  Sun, 28 Dec 2014 01:00:00 +0100
+ -- Roland Clobus <rclobus@rclobus.nl>  Sun, 28 Dec 2014 02:00:00 +0100
 
 pioneers (14.1-2) unstable; urgency=low
 
