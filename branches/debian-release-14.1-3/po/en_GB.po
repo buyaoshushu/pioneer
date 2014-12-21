@@ -21,29 +21,21 @@ msgstr ""
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:1001
-#, fuzzy
-#| msgid "Port range for creating new games on the meta-server:"
 msgid "Port range for creating new games on the metaserver:"
-msgstr "Port range for creating new games on the meta-server:"
+msgstr "Port range for creating new games on the metaserver:"
 
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:1001
-#, fuzzy
-#| msgid ""
-#| "The meta-server can create new games, so players don't need to install "
-#| "and run the pioneers server. The ports which are used for these games can "
-#| "be specified. If this field is left empty, the meta-server will disable "
-#| "its game creation functionality."
 msgid ""
 "The metaserver can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
 "specified. If this field is left empty, the metaserver will disable its game "
 "creation functionality."
 msgstr ""
-"The meta-server can create new games, so players don't need to install and "
+"The metaserver can create new games, so players don't need to install and "
 "run the pioneers server. The ports which are used for these games can be "
-"specified. If this field is left empty, the meta-server will disable its "
+"specified. If this field is left empty, the metaserver will disable its "
 "game creation functionality."
 
 #. Type: string
@@ -65,44 +57,31 @@ msgstr "Server name for created games:"
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:2001
-#, fuzzy
-#| msgid ""
-#| "In some cases, the name the meta-server uses for itself when creating new "
-#| "games is incorrect. If this field is not left empty, it is used to "
-#| "override the detected hostname."
 msgid ""
 "In some cases, the name the metaserver uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
 "the detected hostname."
 msgstr ""
-"In some cases, the name the meta-server uses for itself when creating new "
+"In some cases, the name the metaserver uses for itself when creating new "
 "games is incorrect. If this field is not left empty, it is used to override "
 "the detected hostname."
 
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:3001
-#, fuzzy
-#| msgid "Extra arguments to pass to the meta-server:"
 msgid "Extra arguments to pass to the metaserver:"
-msgstr "Extra arguments to pass to the meta-server:"
+msgstr "Extra arguments to pass to the metaserver:"
 
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:3001
-#, fuzzy
-#| msgid ""
-#| "These arguments are passed to the meta-server. There are only two "
-#| "sensible arguments:\n"
-#| " * --syslog-debug: Send debugging output to syslog\n"
-#| " * --redirect: Redirect clients to another meta-server"
 msgid ""
 "These arguments are passed to the metaserver. There are only two sensible "
 "arguments:\n"
 " * --debug: Send debugging output to a logfile\n"
 " * --redirect: Redirect clients to another metaserver"
 msgstr ""
-"These arguments are passed to the meta-server. There are only two sensible "
+"These arguments are passed to the metaserver. There are only two sensible "
 "arguments:\n"
-" * --syslog-debug: Send debugging output to syslog\n"
+" * --debug: Send debugging output to a logfile\n"
 " * --redirect: Redirect clients to another meta-server"
