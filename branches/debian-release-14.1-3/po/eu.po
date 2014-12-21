@@ -74,12 +74,6 @@ msgstr "Meta-zerbitzarira bidaltzeko argumentu gehigarriak:"
 #. Type: string
 #. Description
 #: ../pioneers-meta-server.templates:3001
-#, fuzzy
-#| msgid ""
-#| "These arguments are passed to the meta-server. There are only two "
-#| "sensible arguments:\n"
-#| " * --syslog-debug: Send debugging output to syslog\n"
-#| " * --redirect: Redirect clients to another meta-server"
 msgid ""
 "These arguments are passed to the metaserver. There are only two sensible "
 "arguments:\n"
