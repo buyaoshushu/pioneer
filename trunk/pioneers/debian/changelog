@@ -1,6 +1,5 @@
 pioneers (15.5-1~local1) UNRELEASED; urgency=medium
 
-  * pioneers-builddep updated.
   * Waiting for new upstream release.
 
  -- Roland Clobus <rclobus@rclobus.nl>  Thu, 15 Sep 2016 22:01:01 +0200
