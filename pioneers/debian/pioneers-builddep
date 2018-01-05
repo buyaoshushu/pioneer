@@ -11,10 +11,10 @@ Priority: optional
 Homepage: http://pio.sourceforge.net/
 Vcs-Svn: svn://svn.code.sf.net/p/pio/code/trunk/pioneers
 Vcs-Browser: https://sourceforge.net/p/pio/code/HEAD/tree/trunk/pioneers/
-Standards-Version: 4.1.3
+Standards-Version: 3.9.8
 
 Package: pioneers-builddep
-Version: 15.5-1~local1
+Version: 15.4-1~local1
 Maintainer: Roland Clobus <rclobus@rclobus.nl>
 # Provides: <comma-separated list of packages>
 # Replaces: <comma-separated list of packages>
@@ -48,7 +48,7 @@ Recommends: libgnome2-dev,
             netpbm,
             scrollkeeper,
             xfonts-scalable
-Suggests: debhelper (>= 11),
+Suggests: debhelper (>= 9),
           debian-policy,
           devscripts,
           doc-debian,
@@ -56,24 +56,25 @@ Suggests: debhelper (>= 11),
           equivs,
           exuberant-ctags,
           gawk,
+          hardening-wrapper,
           imagemagick,
           imagemagick-doc,
           indent,
           inkscape,
           libc6-dbg,
-          libcairo2-dbgsym,
+          libcairo2-dbg,
           libcairo2-doc,
-          libgdk-pixbuf2.0-0-dbgsym,
+          libgdk-pixbuf2.0-0-dbg,
           libgdk-pixbuf2.0-doc,
-          libglib2.0-0-dbgsym,
+          libglib2.0-0-dbg,
           libgnome2-doc,
-          libgtk-3-0-dbgsym,
+          libgnomeui-0-dbg,
+          libgtk-3-0-dbg,
           libgtk-3-doc,
           libnotify-doc,
-          libpango-1.0-0-dbgsym,
-          libpixman-1-0-dbgsym,
-          librsvg2-2-dbgsym,
-          librsvg2-common-dbgsym,
+          libpango1.0-0-dbg,
+          libpixman-1-0-dbg,
+          librsvg2-dbg,
           netcat-openbsd,
           nmap,
           patchutils,
