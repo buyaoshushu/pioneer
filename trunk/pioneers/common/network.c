@@ -25,8 +25,6 @@
 #include <stdlib.h>
 #include <gio/gio.h>
 
-#include "game.h"
-#include "map.h"
 #include "network.h"
 #include "log.h"
 

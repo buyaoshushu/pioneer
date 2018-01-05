@@ -1,3 +1,6 @@
+2017-01-05  Roland Clobus <rclobus@rclobus.nl>
+	* common/network.c: Reduced includes, as found by iwyu.
+	
 2016-09-15  Roland Clobus <rclobus@rclobus.nl>
 	* MinGW/Makefile.am: Added README.txt to the tarball.
 
