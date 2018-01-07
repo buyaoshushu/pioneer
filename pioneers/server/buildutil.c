@@ -314,8 +314,8 @@ gboolean perform_undo(Player * player)
 		hex->nodes[rec->pos]->type = BUILD_SETTLEMENT;
 		if (rec->prev_status == BUILD_SETTLEMENT)
 			break;
-		/* Fall through and remove the settlement too
-		 */
+		/* Remove the settlement too */
+		/* Fall through */
 	case BUILD_SETTLEMENT:
 		player->num_settlements--;
 
