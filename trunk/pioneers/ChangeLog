@@ -1,3 +1,6 @@
+2017-01-07  Roland CLobus <rclobus@rclobus.nl>
+	* server/buildutil.c: Fixed compiler warning about fall through.
+	
 2017-01-05  Roland Clobus <rclobus@rclobus.nl>
 	* common/network.c: Reduced includes, as found by iwyu.
 	
