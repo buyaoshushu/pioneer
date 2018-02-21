@@ -1,3 +1,7 @@
+2017-02-21  Roland Clobus <rclobus@rclobus.nl>
+	* client/common/client.c: Removed dead (duplicated) code, fixes a
+	compiler warning (-Wimplicit-fallthrough)
+	
 2017-01-07  Roland CLobus <rclobus@rclobus.nl>
 	* server/buildutil.c: Fixed compiler warning about fall through.
 	
