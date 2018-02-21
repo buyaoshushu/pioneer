@@ -1952,12 +1952,6 @@ gboolean mode_roll_response(StateMachine * sm, gint event)
 	case SM_ENTER:
 		waiting_for_network(TRUE);
 		break;
-		if (sm_recv(sm, "shuffled-dice-deck")) {
-			log_message(MSG_DICE,
-				    _("%s shuffled the dice deck.\n"),
-				    player_name(my_player_num(), TRUE));
-			return TRUE;
-		}
 	case SM_RECV:
 		if (sm_recv(sm, "rolled %d %d", &die1, &die2)) {
 			turn_rolled_dice(my_player_num(), die1, die2);
