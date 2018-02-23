@@ -23,9 +23,6 @@
 #include "config.h"
 #include <stdlib.h>
 #include "frontend.h"
-#ifdef HAVE_LIBGNOME
-#include <libgnome/libgnome.h>
-#endif
 #include "common_gtk.h"
 #include "config-gnome.h"
 #include "theme.h"
@@ -202,12 +199,6 @@ void frontend_init_gtk_et_al(int argc, char **argv)
 		g_print("\n");
 		exit(0);
 	}
-#if defined(HAVE_HELP) && defined(HAVE_LIBGNOME)
-	gnome_program_init(PACKAGE, FULL_VERSION,
-			   LIBGNOME_MODULE, argc, argv,
-			   GNOME_PARAM_APP_DATADIR, DATADIR, NULL);
-#endif				/* HAVE_HELP && HAVE_LIBGNOME */
-
 #if ENABLE_NLS
 	/* Gtk+ handles the locale, we must bind the translations */
 	bindtextdomain(PACKAGE, LOCALEDIR);

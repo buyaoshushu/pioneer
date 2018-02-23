@@ -21,7 +21,7 @@
 
 noinst_LIBRARIES += libpioneers.a
 
-if HAVE_GNOME
+if HAVE_GTK
 include common/gtk/Makefile.am
 endif
 

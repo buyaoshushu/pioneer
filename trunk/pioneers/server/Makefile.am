@@ -20,7 +20,7 @@
 
 if BUILD_SERVER
 
-if HAVE_GNOME
+if HAVE_GTK
 include server/gtk/Makefile.am
 endif
 

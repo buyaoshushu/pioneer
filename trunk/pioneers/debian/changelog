@@ -1,6 +1,7 @@
 pioneers (15.5-1~local1) UNRELEASED; urgency=medium
 
   * pioneers-builddep updated.
+  * Removed dependency on libgnome (closes: #890465)
   * Waiting for new upstream release.
 
  -- Roland Clobus <rclobus@rclobus.nl>  Thu, 15 Sep 2016 22:01:01 +0200

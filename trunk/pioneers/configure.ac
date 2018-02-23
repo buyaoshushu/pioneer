@@ -36,8 +36,8 @@ PIONEERS_DEFAULT_METASERVER=pioneers.debian.net
 
 GLIB_REQUIRED_VERSION=2.26
 GIO_REQUIRED_VERSION=2.28
-GTK_REQUIRED_VERSION=3.4
-GTK_OPTIMAL_VERSION=3.4
+GTK_REQUIRED_VERSION=3.22
+GTK_OPTIMAL_VERSION=3.22
 LIBNOTIFY_REQUIRED_VERSION=0.7.4
 
 AC_SUBST(GLIB_REQUIRED_VERSION)
@@ -256,7 +256,6 @@ if test "$pioneers_deprecationChecks" = yes; then
 	AC_SUBST(GLIB_DEPRECATION, "$GLIB_DEPRECATION -DG_DISABLE_SINGLE_INCLUDES")
 	AC_SUBST(GTK_DEPRECATION, "-DGDK_DISABLE_DEPRECATED")
 	AC_SUBST(GTK_DEPRECATION, "$GTK_DEPRECATION -DGTK_DISABLE_DEPRECATED")
-	AC_SUBST(GTK_DEPRECATION, "$GTK_DEPRECATION -DGNOME_DISABLE_DEPRECATED")
 	AC_SUBST(GTK_DEPRECATION, "$GTK_DEPRECATION -DGDK_DISABLE_SINGLE_INCLUDES")
 	AC_SUBST(GTK_DEPRECATION, "$GTK_DEPRECATION -DGTK_DISABLE_SINGLE_INCLUDES")
 	AC_SUBST(GTK_DEPRECATION, "$GTK_DEPRECATION -DGSEAL_ENABLE")
@@ -324,35 +323,8 @@ if test "$have_gtk" = "yes"; then
 			[Defined if an older version of GTK+ is available]))
 fi
 
-# GTK ScrollKeeper -> Test     Build
-#                     libgnome Help
-#  N       X           N        N
-#  Y       N           N        N
-#  Y       Y           Y        if have libgnome
-# libgnome is only needed for help
-if test "$have_gtk" = "yes"; then
-	test_libgnome=$have_scrollkeeper;
-else
-	test_libgnome=no;
-fi
-
 have_graphical=$have_gtk;
-if test "$test_libgnome" = "yes"; then
-	# libgnome-2.0 support
-	PKG_CHECK_MODULES(GNOME2, libgnome-2.0,
-		[have_gnome="yes"],
-		[have_gnome="no, libgnome-2.0 not installed"
-		AC_MSG_RESULT($have_gnome)])
-	if test "$have_gnome" = "yes"; then
-		AC_DEFINE(HAVE_LIBGNOME, 1,
-			[Defined if libgnome is present and needed])
-	fi
-	if test "$have_scrollkeeper" = "yes"; then
-		# Turn off the help if libgnome not installed
-		have_scrollkeeper=$have_gnome;
-	fi
-fi
-AM_CONDITIONAL(HAVE_GNOME, [test "$have_graphical" = "yes"])
+AM_CONDITIONAL(HAVE_GTK, [test "$have_graphical" = "yes"])
 
 AM_CONDITIONAL(HAVE_SCROLLKEEPER, [test "$have_scrollkeeper" = "yes"])
 
