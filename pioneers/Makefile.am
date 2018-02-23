@@ -44,7 +44,6 @@ avahi_cflags = \
 gtk_cflags = \
 	$(console_cflags) \
 	-I$(top_srcdir)/common/gtk \
-	$(GNOME2_CFLAGS) \
 	$(GTK_CFLAGS) \
 	$(GTK_DEPRECATION)
 
@@ -62,7 +61,6 @@ avahi_libs = \
 gtk_libs = \
 	$(console_libs) \
 	libpioneers_gtk.a \
-	$(GNOME2_LIBS) \
 	$(GTK_LIBS)
 
 configdir = $(datadir)/games/pioneers

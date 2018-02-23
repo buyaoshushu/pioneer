@@ -23,6 +23,6 @@ if HAVE_SCROLLKEEPER
 include client/help/Makefile.am
 endif
 
-if HAVE_GNOME
+if HAVE_GTK
 include client/gtk/Makefile.am
 endif
