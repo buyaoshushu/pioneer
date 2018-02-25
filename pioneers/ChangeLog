@@ -1,3 +1,7 @@
+2017-02-25  Roland Clobus <rclobus@rclobus.nl>
+	* common/map.c: Fixed potential memory leak in error path.
+	Found by scan-build-6.0
+	
 2017-02-23  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am, client/Makefile.am, client/gtk/gui.c,
 	client/gtk/offline.c, common/Makefile.am, configure.ac,

@@ -591,6 +591,7 @@ static gboolean layout_chits(Map * map)
 			if (hexes[hex->chit_pos] != NULL) {
 				g_warning("Sequence number %d used again",
 					  hex->chit_pos);
+				g_free(hexes);
 				return FALSE;
 			}
 			hexes[hex->chit_pos] = hex;
@@ -600,6 +601,7 @@ static gboolean layout_chits(Map * map)
 	if (num_chits < map->chits->len + num_deserts) {
 		g_warning("More chits (%u + %u) than available tiles (%u)",
 			  map->chits->len, num_deserts, num_chits);
+		g_free(hexes);
 		return FALSE;
 	}
 	/* If less chits are defined than tiles that need chits,
@@ -1094,6 +1096,7 @@ gboolean map_parse_line(Map * map, const gchar * line)
 		if (hex->chit_pos < 0 && hex->terrain != SEA_TERRAIN) {
 			g_warning
 			    ("Land tile without chit sequence number");
+			g_free(hex);
 			return FALSE;
 		}
 
