@@ -265,22 +265,18 @@ AC_SUBST(GTK_DEPRECATION)
 
 if test "$enable_help" = no; then
 	pioneers_help="no, disabled in configure"
-	have_scrollkeeper=no
 else
-	## Scrollkeeper dependency test taken from gnome-games 2.6.2
-	## Begin tests for scrollkeeper
-	# SCROLLKEEPER_REQUIRED is never used?
-	SCROLLKEEPER_REQUIRED=0.3.8
-	AC_SUBST(SCROLLKEEPER_REQUIRED)
-
-	AC_PATH_PROG(SCROLLKEEPER_CONFIG, scrollkeeper-config,no)
-	if test x$SCROLLKEEPER_CONFIG = xno; then 
-		have_scrollkeeper=no
-		pioneers_help="no, scrollkeeper not found"
-	else
-		have_scrollkeeper=yes
+	if test "$pioneers_is_windows_port" = "no"; then
 		pioneers_help="yes"
+	else
+		pioneers_help="no, disabled for MS Windows"
 	fi
+fi
+AM_CONDITIONAL(BUILD_HELP, [test "$pioneers_help" = "yes"])
+
+if test "$pioneers_help" = "yes"; then
+	AC_DEFINE(HAVE_HELP, 1,
+		[Defined when online help is present])
 fi
 
 # glib is always needed
@@ -325,8 +321,6 @@ fi
 
 have_graphical=$have_gtk;
 AM_CONDITIONAL(HAVE_GTK, [test "$have_graphical" = "yes"])
-
-AM_CONDITIONAL(HAVE_SCROLLKEEPER, [test "$have_scrollkeeper" = "yes"])
 
 # Avahi support
 if test $with_avahi = no; then
@@ -473,12 +467,6 @@ AM_CONDITIONAL(BUILD_EDITOR, [test "$pioneers_build_editor" = "yes"])
 AM_CONDITIONAL(BUILD_SERVER, [test "$pioneers_build_server_gtk" = "yes" -o "$pioneers_build_server_console" = "yes"])
 AM_CONDITIONAL(BUILD_METASERVER, [test "$pioneers_build_metaserver" = "yes"])
 AM_CONDITIONAL(IS_MINGW_PORT, [test "$pioneers_is_mingw_port" = "yes"])
-
-if test "$have_scrollkeeper" = "yes"; then
-	AC_DEFINE(HAVE_HELP, 1,
-		[Defined when online help is present])
-	pioneers_help="yes, scrollkeeper";
-fi
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([pioneers.spec])

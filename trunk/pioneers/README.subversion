@@ -16,7 +16,7 @@ You'll need at least gcc, intltool, libtool, autoconf, automake-1.9, make,
 pkgconfig and the development packages for glib and gettext.
 
 To build the graphical applications, you'll also need the gtk+-2.0 development
-packages, scrollkeeper, gnome-common, rsvg or ImageMagick, the base package for
+packages, gnome-common, rsvg or ImageMagick, the base package for
 ghostscript, and netpbm.
 Netpbm 10.30 does not work correctly, use version 10.29 instead.
 (This has been confirmed for Cygwin and Gentoo)
@@ -108,8 +108,7 @@ Interesting options are:
     Turn off the building of the (graphical) executables that depend on Gtk+.
     Even when the library is present, those executables will not be built.
 --without-help
-    Turn off the building of the online help. This removes the dependency on
-    scrollkeeper and libgnome.
+    Turn off the building of the online help.
 
 Some musings
 ============
@@ -129,7 +128,7 @@ The icons can be rebuilt with netpbm. However, version 10.30 has a (known) bug
 that makes it useless for building Pioneers. Downgrade to 10.29 (or use the
 Debian variant)
 
-For the inclusion of help in pioneers, you need scrollkeeper and libgnome.
+For the inclusion of help in pioneers, you need yelp.
 Alternatively you need xmlto, and go to the client/help/C directory and run
 'make html', to get the help rendered in html format.
 
