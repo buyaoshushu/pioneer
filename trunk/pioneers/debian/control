@@ -16,7 +16,6 @@ Build-Depends: autoconf,
                libtool,
                netpbm,
                po-debconf,
-               scrollkeeper,
                xfonts-scalable
 Standards-Version: 3.9.8
 Homepage: http://pio.sourceforge.net/
