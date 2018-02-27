@@ -19,7 +19,7 @@
 
 include client/common/Makefile.am
 include client/ai/Makefile.am
-if HAVE_SCROLLKEEPER
+if BUILD_HELP
 include client/help/Makefile.am
 endif
 
