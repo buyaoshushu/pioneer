@@ -267,7 +267,14 @@ if test "$enable_help" = no; then
 	pioneers_help="no, disabled in configure"
 else
 	if test "$pioneers_is_windows_port" = "no"; then
-		pioneers_help="yes"
+		# The help system is optional, it comes from yelp-tools
+		m4_ifndef([YELP_HELP_INIT], enable_help=no)
+		if test "$enable_help" = no; then
+			pioneers_help="no, yelp-tools is not installed"
+		else
+			pioneers_help="yes"
+			YELP_HELP_INIT
+		fi
 	else
 		pioneers_help="no, disabled for MS Windows"
 	fi
@@ -473,7 +480,7 @@ AC_CONFIG_FILES([pioneers.spec])
 AC_CONFIG_FILES([Doxyfile])
 AC_CONFIG_FILES([MinGW/pioneers.nsi])
 AC_CONFIG_FILES([po/Makefile.in])
-AC_CONFIG_FILES([client/help/C/Makefile])
+AC_CONFIG_FILES([client/help/Makefile])
 
 AC_OUTPUT
 

@@ -86,7 +86,7 @@ desktop_in_files =
 CLEANFILES =
 DISTCLEANFILES =
 MAINTAINERCLEANFILES =
-EXTRA_DIST = autogen.sh pioneers.spec xmldocs.make omf.make README.Cygwin README.MinGW Doxyfile
+EXTRA_DIST = autogen.sh pioneers.spec README.Cygwin README.MinGW Doxyfile
 BUILT_SOURCES =
 icons = 
 
@@ -120,6 +120,11 @@ endif
 
 if BUILD_EDITOR
 include editor/Makefile.am
+endif
+
+if BUILD_HELP
+# yelp-tools doesn't use automake, but creates its own Makefile
+SUBDIRS += client/help
 endif
 
 include MinGW/Makefile.am

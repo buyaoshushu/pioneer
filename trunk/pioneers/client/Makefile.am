@@ -19,9 +19,6 @@
 
 include client/common/Makefile.am
 include client/ai/Makefile.am
-if BUILD_HELP
-include client/help/Makefile.am
-endif
 
 if HAVE_GTK
 include client/gtk/Makefile.am
