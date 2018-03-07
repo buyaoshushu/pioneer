@@ -1252,7 +1252,7 @@ static void game_settings_cb(void)
 static void help_manual_cb(void)
 {
 	GError *error = NULL;
-	gtk_show_uri_on_window(GTK_WINDOW(app_window), "ghelp:pioneers",
+	gtk_show_uri_on_window(GTK_WINDOW(app_window), "help:pioneers",
 			       GDK_CURRENT_TIME, &error);
 	if (error) {
 		log_message(MSG_ERROR, "%s: %s\n", _("Show the manual"),
