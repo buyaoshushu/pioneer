@@ -55,7 +55,7 @@ metaserver/main.c
 server/admin.c
 server/avahi.c
 server/gtk/main.c
-server/gtk/pioneers-server.desktop.in
+server/gtk/pioneers-server-gtk.desktop.in
 server/main.c
 server/meta.c
 server/player.c

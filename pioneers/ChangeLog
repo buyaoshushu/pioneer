@@ -2,6 +2,9 @@
 	* Makefile.am, client/Makefile.am, client/gtk/gui.c,
 	client/help/Makefile.am, client/help/C/*, omf.make,
 	xmldocs.make: Use yelp-tools for the help system.
+	* po/POTFILES.in, server/gtk/Makefile.am,
+	server/gtk/pioneers-server.desktop.in: Fix missing icon when using
+	Alt-Tab in GNOME.
 
 2017-02-27  Roland Clobus <rclobus@rclobus.nl>
 	* README.subversion, client/Makefile.am, configure.ac:
