@@ -10,6 +10,7 @@ pioneers (15.5-1~local1) UNRELEASED; urgency=medium
   * Removed menu file, FreeDesktop desktop entries are provided.
   * Changed compat level to 11.
   * Use secure URL for the source code and copyright file.
+  * Upgrade standards version to 4.1.3.
   * Waiting for new upstream release.
 
  -- Roland Clobus <rclobus@rclobus.nl>  Thu, 15 Sep 2016 22:01:01 +0200
