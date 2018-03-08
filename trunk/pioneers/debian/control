@@ -18,7 +18,7 @@ Build-Depends: autoconf,
                po-debconf,
                xfonts-scalable,
                yelp-tools
-Standards-Version: 3.9.8
+Standards-Version: 4.1.3
 Homepage: http://pio.sourceforge.net/
 Vcs-Svn: https://svn.code.sf.net/p/pio/code/trunk/pioneers
 Vcs-Browser: https://sourceforge.net/p/pio/code/HEAD/tree/trunk/pioneers/
