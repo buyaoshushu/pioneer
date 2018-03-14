@@ -5,7 +5,7 @@
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2004-2014 Roland Clobus <rclobus@rclobus.nl>
  * Copyright (C) 2013 Micah Bunting <Amnykon@gmail.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -1780,7 +1780,7 @@ void guimap_cursor_move(GuiMap * gmap, MapElement * element)
 
 			/* When both a ship and a bridge can be built,
 			 * divide the edge in four segments.
-			 * The two segments near the nodes are for the 
+			 * The two segments near the nodes are for the
 			 * bridge (the pillars).
 			 * The two segments in the middle are for the
 			 * ship (open sea).

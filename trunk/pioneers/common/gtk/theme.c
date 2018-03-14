@@ -77,7 +77,7 @@
   (~ 1.1547) times the width of the image.) Two other available modes are
   'only-downscale' and 'only-upscale' to make images only smaller or larger,
   resp. (in case it's needed sometimes...)
-  
+
 */
 
 #define TCOL_INIT(r,g,b)	{ TRUE, FALSE, { 0, r, g, b } }

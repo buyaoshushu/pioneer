@@ -82,7 +82,7 @@ static void select_game_finalize(GObject * object)
 }
 
 /* Register the signals.
- * SelectGame will emit one signal: 'activate' with the text of the 
+ * SelectGame will emit one signal: 'activate' with the text of the
  *    active game in user_data
  */
 static void select_game_class_init(SelectGameClass * klass)

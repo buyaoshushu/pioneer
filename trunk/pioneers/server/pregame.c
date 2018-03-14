@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003-2005 Bas Wijnen <shevek@fmf.nl>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -643,7 +643,7 @@ gboolean mode_pre_game(Player * player, gint event)
 					prevstate = "RSETUP";
 				else
 					prevstate = "SETUP";
-				/* If player is selecting gold, the state 
+				/* If player is selecting gold, the state
 				 * should be IDLE instead */
 				if (stack_offset != 1)
 					prevstate = "IDLE";
@@ -654,7 +654,7 @@ gboolean mode_pre_game(Player * player, gint event)
 					     LATEST_VERSION, "state %s\n",
 					     prevstate);
 
-			/* Send the bank, so the client can count remaining 
+			/* Send the bank, so the client can count remaining
 			 * resources
 			 */
 			player_send_uncached(player, FIRST_VERSION,

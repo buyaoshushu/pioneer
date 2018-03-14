@@ -1,6 +1,6 @@
 /* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
- 
+
  * Copyright (C) 2004-2010 Avahi http://avahi.org
  * Copyright (C) 2010 Andreas Steinel <lnxbil@users.sourceforge.net>
  * Copyright (C) 2010 Roland Clobus <rclobus@rclobus.nl>
@@ -8,7 +8,7 @@
  * This file is originally based on client-publish-service.c last committed on
  * 2006-01-27 20:34:22Z by lennart.
  * It got adapted to glib instead from pure avahi
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or

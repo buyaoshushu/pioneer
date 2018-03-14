@@ -987,7 +987,7 @@ static void create_server_dlg_cb(GtkDialog * dlg, gint arg1,
 		gtk_widget_destroy(GTK_WIDGET(dlg));
 		if (metaserver_info.session != NULL) {
 			net_close(metaserver_info.session);
-			/* Canceled retrieving information 
+			/* Canceled retrieving information
 			 * from the metaserver */
 			log_message(MSG_INFO, _("Canceled.\n"));
 		}
@@ -1128,7 +1128,7 @@ static void meta_dlg_cb(GtkDialog * dlg, gint arg1,
 		gtk_widget_destroy(GTK_WIDGET(dlg));
 		if (metaserver_info.session != NULL) {
 			net_close(metaserver_info.session);
-			/* Canceled retrieving information 
+			/* Canceled retrieving information
 			 * from the metaserver */
 			log_message(MSG_INFO, _("Canceled.\n"));
 		}

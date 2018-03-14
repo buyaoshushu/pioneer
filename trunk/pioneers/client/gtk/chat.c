@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -26,7 +26,7 @@
 
 static GtkWidget *chat_entry;	/* messages text widget */
 static GtkListStore *chat_completion_model = NULL;
-static gboolean chat_grab_focus_on_update = FALSE; /**< Flag to indicate 
+static gboolean chat_grab_focus_on_update = FALSE; /**< Flag to indicate
  * whether the chat widget should grab the focus whenever a GUI_UPDATE is sent */
 
 enum {

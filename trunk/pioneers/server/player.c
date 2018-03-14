@@ -204,7 +204,7 @@ static gboolean mode_unhandled(Player * player, gint event)
 
 /* Called to start the game (if it hasn't been yet). Add computer
  * players to fill any empty spots
- * 
+ *
  */
 static gboolean tournament_start_cb(gpointer data)
 {
@@ -489,7 +489,7 @@ Player *player_new_connection(Game * game, Session * ses)
 	g_free(player->location);
 	player->location = g_strdup(location);
 
-	/* Cache messages of the game in progress until all initial 
+	/* Cache messages of the game in progress until all initial
 	 * messages have been sent
 	 */
 	sm_set_use_cache(sm, TRUE);

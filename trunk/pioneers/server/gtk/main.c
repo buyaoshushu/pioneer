@@ -4,7 +4,7 @@
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2004-2007 Roland Clobus <rclobus@bigfoot.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -121,7 +121,7 @@ static const char *ui_description =
 "    </menu>"
 "    <menu action='HelpMenu'>"
 "      <menuitem action='HelpAbout' />"
-"    </menu>" 
+"    </menu>"
 "  </menubar>"
 "</ui>";
 /* *INDENT-ON* */
@@ -162,9 +162,9 @@ static void chat_toggle_cb(GtkToggleButton * toggle,
 
 /* The server does not need to respond to changed game settings directly
  * RC: Leaving this code here, for when the admin-interface will be built
-static void game_settings_change_cb(GameSettings *gs, G_GNUC_UNUSED gpointer user_data) 
+static void game_settings_change_cb(GameSettings *gs, G_GNUC_UNUSED gpointer user_data)
 {
-	printf("Settings: %d %d %d %d\n", 
+	printf("Settings: %d %d %d %d\n",
 			game_settings_get_terrain(gs),
 			game_settings_get_players(gs),
 			game_settings_get_victory_points(gs),

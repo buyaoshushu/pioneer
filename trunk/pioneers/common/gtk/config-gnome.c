@@ -5,7 +5,7 @@
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2005 Roland Clobus <rclobus@bigfoot.com>
  * Copyright (C) 2005 Ferenc Bánhidi <banhidi@inf.elte.hu>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -49,7 +49,7 @@ configuration sets be synchronous.  This is what most people expect, anyway.
 	Also, all the paths used for getting/setting items will be made
 relative, and a config prefix will be pushed on the stack by config_init().
 
-	The API is essentially mimics a subset of the gnome_config API, but I 
+	The API is essentially mimics a subset of the gnome_config API, but I
 believe it's similar (at least in spirit) to the Windows Registry, at least
 on the surface.
 */
@@ -119,7 +119,7 @@ static void config_sync(void)
 }
 
 /* set the prefix in some static manner so that we don't need to hard-code
- * it in the main code.  Thus, different architectures can have different 
+ * it in the main code.  Thus, different architectures can have different
  * prefixes depending on what's relevant for said arch.
  */
 void config_init(const gchar * path_prefix)

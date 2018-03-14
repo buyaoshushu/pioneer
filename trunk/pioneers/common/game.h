@@ -234,7 +234,7 @@ gchar *game_printf(const gchar * fmt, ...);
 
 /** Convert a string to an array of integers.
  * @param str A comma separated list of integers
- * @return An array of integers. If the array has length zero, NULL is returned. (you must use g_array_free to free the array) 
+ * @return An array of integers. If the array has length zero, NULL is returned. (you must use g_array_free to free the array)
  */
 GArray *build_int_list(const gchar * str);
 /** Convert an array of integers to a string.

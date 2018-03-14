@@ -4,7 +4,7 @@
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2004,2006 Roland Clobus <rclobus@bigfoot.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -254,7 +254,7 @@ void frontend_init(void)
 	notification_init();
 	gui_build_interface();
 
-	/* in theory, all windows are created now... 
+	/* in theory, all windows are created now...
 	 *   set logging to message window */
 	log_set_func_message_window();
 

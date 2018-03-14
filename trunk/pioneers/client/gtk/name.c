@@ -4,7 +4,7 @@
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2010 Roland Clobus <rclobus@rclobus.nl>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
