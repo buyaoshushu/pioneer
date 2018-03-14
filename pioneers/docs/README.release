@@ -36,20 +36,20 @@ At release time:
 * Create the tarball
   ./autogen.sh;make dist
 * Sign the tarball
-  gpg -u packager@foo.net --armor --output tarball.sig --detach-sig tarball.tar.gz
+  gpg -u rclobus@users.sourceforge.net --armor --output tarball.sig --detach-sig tarball.tar.gz
   (Verify with gpg --verify tarball.sig tarball.tar.gz)
-* Upload the tarball to upload.sourceforge.net
-* Update the Files section at SourceForge
-* Write a news item
+* Upload the tarball in the Files/Sources section of https://sourceforge.net/projects/pio/upload/Source/
+* Mark the tarball: 'Default Download for' -> all, except Windows and Android
+* Write a news item on SourceForge (using the content of NEWS)
 * Write an e-mail
   The lists to use: pio-announce@lists.sourceforge.net, and
   pio-general@lists.sourceforge.net
-* Update the homepage
-  ssh -t USERNAME,PROJECT@shell.sourceforge.net create
+* Update the homepage (https://sourceforge.net/p/forge/documentation/Project%20Web%20Services/)
+  sftp rclobus@web.sourceforge.net
+  cd /home/project-web/pio/htdocs
 * Update the screenshots page
-* Update the released information at freecode.com and tucows
 * Reboot to Windows
 * Download the tarball
 * Create the installer under MinGW
 * Upload the installer to SourceForge
-* Update the released information at gnomefiles
+* Update the released information at tucows (https://author.tucows.com/index.php) -> note: they need a long time to process the changes
