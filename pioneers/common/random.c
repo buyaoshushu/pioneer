@@ -22,10 +22,10 @@
 
 /** @file random.c
  * Contains the functions to randomly generate numbers.
- * 
- * The random number generator need to be initialized with random_init() before 
+ *
+ * The random number generator need to be initialized with random_init() before
  * any other functions are called.
- * 
+ *
  * To obtain a random number, use random_guint().
  */
 

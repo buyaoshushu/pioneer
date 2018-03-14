@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003-2006 Bas Wijnen <shevek@fmf.nl>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -1893,7 +1893,7 @@ gboolean mode_play_develop_response(StateMachine * sm, gint event)
 /*----------------------------------------------------------------------
  * Nested state machine for handling resource card discards.  We enter
  * discard mode whenever any player has to discard resources.
- * 
+ *
  * When in discard mode, a section of the GUI changes to list all
  * players who must discard resources.  This is important because if
  * during our turn we roll 7, but have less than 7 resources, we do
@@ -2625,7 +2625,7 @@ static void recover_from_disconnect(StateMachine * sm,
  *
  * This also includes choosing gold.  Gold-choose mode is entered the first
  * time prepare-gold is received.
- * 
+ *
  * When in gold-choose mode, as in discard mode, a section of the GUI
  * changes to list all players who must choose resources.  This is
  * important because if during our turn we do not receive gold, but others

@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2004-2006 Roland Clobus <rclobus@bigfoot.com>
  * Copyright (C) 2006 Bas Wijnen <shevek@fmf.nl>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -639,7 +639,7 @@ void quote_view_check_validity_of_trades(QuoteView * qv)
 			       check_valid_trade, qv);
 }
 
-/** Activate a new quote. 
+/** Activate a new quote.
  * If the quote == NULL, clear the selection in the listview too */
 static void set_selected_quote(QuoteView * qv, const QuoteInfo * quote)
 {

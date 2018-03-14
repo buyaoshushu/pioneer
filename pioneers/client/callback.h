@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003,2006 Bas Wijnen <shevek@fmf.nl>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -92,7 +92,7 @@ struct callbacks {
 	 * line for the default commands. */
 	void (*init_glib_et_al) (int argc, char **argv);
 	/* This function is called when the client is initialized.  The
-	 * frontend should initialize itself now and process its own 
+	 * frontend should initialize itself now and process its own
 	 * command line options. */
 	void (*init) (void);
 	/* Allows the frontend to show a message considering the network

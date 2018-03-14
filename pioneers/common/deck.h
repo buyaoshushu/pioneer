@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2011-2013 Micah Bunting <Amnykon@gmail.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -35,7 +35,7 @@
 #define __deck_h
 
 #include <glib.h>
-/** A deck that contains cards. 
+/** A deck that contains cards.
  */
 typedef struct _Deck Deck;
 
@@ -44,7 +44,7 @@ typedef struct _Deck Deck;
  */
 Deck *deck_new(void);
 
-/** Frees the memory allocated for the Deck. 
+/** Frees the memory allocated for the Deck.
  * @param deck The Deck to free.
  * @param element_free_func The function to free all of the cards in the deck.
  */
@@ -117,14 +117,14 @@ gpointer deck_remove_random(Deck * deck);
 guint deck_remove_random_guint(Deck * deck);
 
 /** Gets the number of cards in a deck.
- * @param deck The Deck to return the count of. 
+ * @param deck The Deck to return the count of.
  * @return The number of the cards in the deck.
  */
 guint deck_count(const Deck * deck);
 
 /** Moves all cards in source Deck to destination Deck.
- * @param source The source Deck. 
- * @param destination The destination Deck. 
+ * @param source The source Deck.
+ * @param destination The destination Deck.
  */
 void deck_combine(Deck * source, Deck * destination);
 

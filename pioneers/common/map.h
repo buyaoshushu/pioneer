@@ -5,7 +5,7 @@
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2011 Micah Bunting <Amnykon@gmail.com>
  * Copyright (C) 2011 Roland Clobus <rclobus@rclobus.nl>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or

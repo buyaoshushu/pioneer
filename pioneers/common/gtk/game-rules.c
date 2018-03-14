@@ -283,7 +283,7 @@ gboolean game_rules_get_random_terrain(GameRules * gr)
 					 (gr->random_terrain));
 }
 
-/* Set the sevens rule 
+/* Set the sevens rule
  * 0 = Normal
  * 1 = Reroll first two turns
  * 2 = Reroll all

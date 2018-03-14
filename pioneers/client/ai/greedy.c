@@ -4,7 +4,7 @@
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
  * Copyright (C) 2005,2010 Roland Clobus <rclobus@rclobus.nl>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 /*
- * This is a rudimentary AI for Pioneers. 
+ * This is a rudimentary AI for Pioneers.
  *
  * What it does _NOT_ do:
  *
@@ -417,7 +417,7 @@ static float default_score_hex(Hex * hex)
 	return score;
 }
 
-/* 
+/*
  * Give a numerical score to how valuable putting a settlement/city on this spot is
  *
  */

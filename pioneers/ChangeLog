@@ -1,3 +1,6 @@
+2017-03-14  Roland Clobus <rclobus@rclobus.nl>
+	* all: Removed trailing whitespace in comments.
+	
 2017-03-07  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am, client/Makefile.am, client/gtk/gui.c,
 	client/help/Makefile.am, client/help/C/*, omf.make,

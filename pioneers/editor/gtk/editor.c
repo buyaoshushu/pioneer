@@ -407,7 +407,7 @@ static const gchar *PORT_TOOLBAR_TOOLTIP[] = {
 	N_("Place a 3:1 port")
 };
 
-/** Builds toolbars for selecting terrains, chits, and ports. Places toolbar in 
+/** Builds toolbars for selecting terrains, chits, and ports. Places toolbar in
  * the table at the top.
  * @param table The table to place toolbar in.
  */
@@ -667,8 +667,8 @@ static gint button_press_map_cb(GtkWidget * area,
 			return TRUE;
 		case PORT_TOOLBAR_BUTTON_TYPE:
 			if (current_hex->terrain == SEA_TERRAIN) {
-				/* If selected resource is NO_RESOURCE, 
-				 * remove port from hex regardless of 
+				/* If selected resource is NO_RESOURCE,
+				 * remove port from hex regardless of
 				 * nearest edge.
 				 */
 				if (selected_toolbar_button.element.port ==
@@ -680,7 +680,7 @@ static gint button_press_map_cb(GtkWidget * area,
 				}
 
 				/* Find nearest edge. This determines the
-				 * direction of the port. 
+				 * direction of the port.
 				 */
 				const Edge *edge;
 				edge = guimap_get_current_edge(gmap);

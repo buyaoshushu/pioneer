@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999 Dave Cole
  * Copyright (C) 2003, 2006 Bas Wijnen <shevek@fmf.nl>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -35,10 +35,10 @@
 
 struct StateMachine {
 	gpointer user_data;	/* parameter for mode functions */
-	/* FIXME RC 2004-11-13 in practice: 
+	/* FIXME RC 2004-11-13 in practice:
 	 * it is NULL or a Player*
 	 * the value is set by sm_new.
-	 * Why? Can the player not be bound to a 
+	 * Why? Can the player not be bound to a
 	 * StateMachine otherwise? */
 
 	StateFunc global;	/* global state - test after current state */
@@ -453,7 +453,7 @@ void sm_pop_all_and_goto(StateMachine * sm, StateFunc new_state)
 /** Return the state at offset from the top of the stack.
  *  @param sm     The StateMachine
  *  @param offset Offset from the top (0=top, 1=previous)
- *  @return The StateFunc, or NULL if the stack contains 
+ *  @return The StateFunc, or NULL if the stack contains
  *          less than offset entries
  */
 StateFunc sm_stack_inspect(const StateMachine * sm, guint offset)

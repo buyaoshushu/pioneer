@@ -1048,7 +1048,7 @@ static gboolean map_island_recursive(Map * map, Node * node, gint owner)
 			continue;
 		edge->visited = TRUE;
 
-		/* If the edge points into the sea, or along the border, 
+		/* If the edge points into the sea, or along the border,
 		 * don't follow it */
 		num_sea = 0;
 		for (idx2 = 0; idx2 < G_N_ELEMENTS(edge->hexes); idx2++) {
