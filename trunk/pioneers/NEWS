@@ -1,3 +1,8 @@
+Subversion release 15.5
+* Fix for #298: Allow trade after a road building development card
+* Use more modern helper libraries for the inline help
+* Minor code quality improvements
+
 Subversion release 15.4
 
 * New theme Nouvellia, by Brian Mansberger
@@ -266,7 +271,7 @@ Fixed: replaces 127.0.0.1 with localhost
 CVS Snapshot release 0.8.1.37
 
 What's new/fixed:
-* Gnocatan can now build the console-only applications if GNOME2/Gtk+ is not 
+* Gnocatan can now build the console-only applications if GNOME2/Gtk+ is not
   found
 * Several cosmetic changes in the client
 * Fixed a bug in the ai when playing too many soldier cards
@@ -287,7 +292,7 @@ What's new/fixed:
 * Fixed bugs regarding the Road Building card
 * Connection as spectator in a game with more than 8 players+spectators is possible
 * Updated the log in the console
-* Minor user interface issues 
+* Minor user interface issues
 
 Release 0.8.1.16
 
