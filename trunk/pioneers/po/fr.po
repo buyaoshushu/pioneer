@@ -425,7 +425,7 @@ msgstr "%s est remboursé de %s.\n"
 #: ../client/common/client.c:753 ../client/common/client.c:1957
 #, c-format
 msgid "%s shuffled the dice deck.\n"
-msgstr "%s a mélangé le paquet de cartes-dé.\n"
+msgstr "%s a mélangé le paquet de cartes-dés.\n"
 
 #: ../client/common/client.c:772
 #, c-format
@@ -2300,15 +2300,15 @@ msgstr "Règle des sept :"
 
 #: ../client/gtk/settingscreen.c:196
 msgid "Use dice deck instead of dice:"
-msgstr "Utiliser des cartes-dé au lieu de dés :"
+msgstr "Utiliser des cartes-dés au lieu de dés :"
 
 #: ../client/gtk/settingscreen.c:201
 msgid "Number of dice decks:"
-msgstr "Nombre paquets de cartes-dé :"
+msgstr "Nombre paquets de cartes-dés :"
 
 #: ../client/gtk/settingscreen.c:207
 msgid "Number of dice cards removed after shuffling:"
-msgstr "Nombre de cartes-dé retirées après le mélange :"
+msgstr "Nombre de cartes-dés retirées après le mélange :"
 
 #: ../client/gtk/settingscreen.c:214
 msgid "Use the pirate to block ships:"
@@ -2639,29 +2639,29 @@ msgstr "Vérifie la victoire uniquement à la fin du tour"
 
 #: ../common/gtk/game-rules.c:145
 msgid "Use dice deck"
-msgstr "Utiliser des cartes-dé"
+msgstr "Utiliser des cartes-dés"
 
 #: ../common/gtk/game-rules.c:147
 msgid "Use a deck of 36 dice cards instead of real dice"
-msgstr "Utiliser 36 cartes-dé à la place de vrais dés"
+msgstr "Utiliser 36 cartes-dés à la place de vrais dés"
 
 #. Label
 #: ../common/gtk/game-rules.c:155
 msgid "Number of dice decks"
-msgstr "Nombre paquets de cartes-dé"
+msgstr "Nombre paquets de cartes-dés"
 
 #: ../common/gtk/game-rules.c:172
 msgid "The number of dice decks (of 36 cards each)"
-msgstr "Nombre de paquets de cartes-dé (de 36 cartes chacun)"
+msgstr "Nombre de paquets de cartes-dés (de 36 cartes chacun)"
 
 #. Label
 #: ../common/gtk/game-rules.c:180
 msgid "Number of removed dice cards"
-msgstr "Nombre de cartes-dé retirées"
+msgstr "Nombre de cartes-dés retirées"
 
 #: ../common/gtk/game-rules.c:199
 msgid "The number of dice cards that are removed after shuffling the deck"
-msgstr "Nombre de cartes-dé qui seront retirées après le mélange du paquet"
+msgstr "Nombre de cartes-dés qui seront retirées après le mélange du paquet"
 
 #. Label
 #: ../common/gtk/game-rules.c:207
@@ -2774,7 +2774,7 @@ msgstr "Construction : "
 #. Log prefix
 #: ../common/log.c:78
 msgid "Dice: "
-msgstr "Dé : "
+msgstr "Dés : "
 
 #. Log prefix
 #: ../common/log.c:82
@@ -3469,7 +3469,7 @@ msgstr "Démarrer le serveur"
 #: ../server/gtk/main.c:395
 #, c-format
 msgid "Player %s from %s entered\n"
-msgstr "Arrivé du joueur %s depuis %s\n"
+msgstr "Arrivée du joueur %s depuis %s\n"
 
 #: ../server/gtk/main.c:402
 #, c-format
@@ -3552,12 +3552,12 @@ msgstr "Adresse du joueur"
 #. Label for column Number
 #: ../server/gtk/main.c:771
 msgid "Number"
-msgstr "Nombre"
+msgstr "Numéro"
 
 #. Tooltip for column Number
 #: ../server/gtk/main.c:778
 msgid "Player number"
-msgstr "Nombre de joueurs"
+msgstr "Numéro du joueur"
 
 #. Label for column Role
 #: ../server/gtk/main.c:784
@@ -3572,12 +3572,12 @@ msgstr "Joueur ou spectateur"
 #. Button text
 #: ../server/gtk/main.c:825
 msgid "Launch Pioneers Client"
-msgstr "Lancer le client Pioneers"
+msgstr "Démarrer le client Pioneers"
 
 #. Tooltip
 #: ../server/gtk/main.c:839
 msgid "Launch the Pioneers client"
-msgstr "Lancer le client Pioneers"
+msgstr "Démarrer le client Pioneers"
 
 #. ai chat toggle
 #: ../server/gtk/main.c:868
@@ -3697,18 +3697,18 @@ msgstr "Outrepasser la gestion de la règle des 7"
 #. Commandline server-console: dice-deck
 #: ../server/main.c:98
 msgid "Override dice-deck handling"
-msgstr "Outrepasser la gestion des cartes-dé"
+msgstr "Outrepasser la gestion des cartes-dés"
 
 #. Commandline server-console: num-dice-decks
 #: ../server/main.c:101
 msgid "Override num-dice-decks handling"
-msgstr "Outrepasser le nombre de cartes dans la gestion des cartes-dé"
+msgstr "Outrepasser le nombre de cartes dans la gestion des cartes-dés"
 
 #. Commandline server-console: num-removed-dice-cards
 #: ../server/main.c:105
 msgid "Override num-removed-dice-cards handling"
 msgstr ""
-"Outrepasser le nombre de cartes supprimées dans la gestion des cartes-dé"
+"Outrepasser le nombre de cartes supprimées dans la gestion des cartes-dés"
 
 #. Commandline server-console: terrain
 #: ../server/main.c:108
@@ -3944,7 +3944,7 @@ msgstr "tentative d'attribuer des ressources au joueur NULL.\n"
 #. Cheat mode has been activated
 #: ../server/turn.c:516
 msgid "The dice roll has been determined by the administrator."
-msgstr "Le jet du dé a été défini par l'administrateur."
+msgstr "Le jet de dés a été défini par l'administrateur."
 
 #~ msgid "Join the selected game"
 #~ msgstr "Rejoindre la partie sélectionnée"

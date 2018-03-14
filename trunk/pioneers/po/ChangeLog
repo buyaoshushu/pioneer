@@ -1,3 +1,6 @@
+2017-03-14  Cyril C. <cyrilc81@users.sourceforge.net>
+	* fr.po: Plural forms for dice. Fixes SF bug #296
+	
 2016-09-15  Roland Clobus <rclobus@rclobus.nl>
 	* de.po: Changed shortcut keys that were used twice
 
@@ -21,7 +24,7 @@
 	* all: Line number update for 15.4. Some button texts were previously
 	in Gtk (OK, Cancel,...)
 	* en_GB.po, nl.po: Updated to 15.4
-	* fr.po: Fixed typos. Fixes SF bugs #291
+	* fr.po: Fixed typos. Fixes SF bug #291
 
 2015-05-31  Roland Clobus <rclobus@rclobus.nl>
 	* ca.po: Added a missing semicolon
