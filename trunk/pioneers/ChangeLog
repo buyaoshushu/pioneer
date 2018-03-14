@@ -1,5 +1,7 @@
 2017-03-14  Roland Clobus <rclobus@rclobus.nl>
 	* all: Removed trailing whitespace in comments.
+	* client/gtk/interface.c: Allow trade after a road building
+	development card (in strict_trade). Fixes SF bug #298
 	
 2017-03-07  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am, client/Makefile.am, client/gtk/gui.c,

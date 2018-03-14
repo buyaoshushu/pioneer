@@ -26,6 +26,7 @@
 #include "histogram.h"
 #include "audio.h"
 #include "notification.h"
+#include "client.h"
 
 /* local functions */
 static void frontend_state_robber(GuiEvent event);
@@ -473,6 +474,12 @@ static void frontend_state_roadbuilding(GuiEvent event)
 	case GUI_FINISH:
 		cb_end_turn();
 		gui_cursor_none();	/* Finish single click build */
+		/** @todo RC 2018-03-14 The line below allows trade after the
+		 * road building development card is played. There is still a
+		 * loophole: build a road, play the development card. Now trade
+		 * is enabled, but should not have been.
+		 * Even the server allows trade in this scenario. */
+		build_new_turn();	/* Re-enable trade */
 		set_gui_state(frontend_state_turn);
 		gui_prompt_hide();
 		return;
