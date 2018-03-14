@@ -1,2 +1,0 @@
-rm_conffile /etc/default/pioneers-console 14.2-1~
-rm_conffile /etc/init.d/pioneers-console 14.2-1~
