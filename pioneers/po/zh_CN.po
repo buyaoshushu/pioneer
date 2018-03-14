@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 15.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-28 17:28+0200\n"
+"POT-Creation-Date: 2018-03-14 16:51+0100\n"
 "PO-Revision-Date: 2012-01-12 13:22+0800\n"
 "Last-Translator: Gerald <gera2ld@163.com>\n"
 "Language-Team: Chinese (Simplified) <gera2ld@163.com>\n"
@@ -57,7 +57,7 @@ msgstr "电脑类型"
 #. Commandline option of metaserver: enable debug logging
 #. Commandline option of server-gtk: enable debug logging
 #. Commandline option of server: enable debug logging
-#: ../client/ai/ai.c:111 ../client/gtk/offline.c:70 ../metaserver/main.c:631
+#: ../client/ai/ai.c:111 ../client/gtk/offline.c:67 ../metaserver/main.c:631
 #: ../server/gtk/main.c:1170 ../server/main.c:159
 msgid "Enable debug messages"
 msgstr "启用调试信息"
@@ -68,7 +68,7 @@ msgstr "启用调试信息"
 #. Commandline option of metaserver: version
 #. Commandline option of server-gtk: version
 #. Commandline option of server-console: version
-#: ../client/ai/ai.c:114 ../client/gtk/offline.c:73 ../editor/gtk/editor.c:1843
+#: ../client/ai/ai.c:114 ../client/gtk/offline.c:70 ../editor/gtk/editor.c:1843
 #: ../metaserver/main.c:637 ../server/gtk/main.c:1173 ../server/main.c:114
 msgid "Show version information"
 msgstr "显示版本信息"
@@ -78,7 +78,7 @@ msgstr "显示版本信息"
 msgid "- Computer player for Pioneers"
 msgstr "- 电脑 for Pioneers"
 
-#: ../client/ai/ai.c:137 ../client/gtk/offline.c:199
+#: ../client/ai/ai.c:137 ../client/gtk/offline.c:196
 #: ../editor/gtk/editor.c:1888 ../metaserver/main.c:687
 #: ../server/gtk/main.c:1223 ../server/main.c:226
 #, c-format
@@ -364,7 +364,7 @@ msgstr "我们被踢出来了。\n"
 
 #. Network status: offline
 #: ../client/common/client.c:535 ../client/common/client.c:990
-#: ../client/gtk/gui.c:1534
+#: ../client/gtk/gui.c:1532
 msgid "Offline"
 msgstr "离线"
 
@@ -394,7 +394,7 @@ msgid "%s receives %s.\n"
 msgstr "%s 得到了 %s。\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:724 ../client/common/client.c:2669
+#: ../client/common/client.c:724 ../client/common/client.c:2663
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s 拿了 %s。\n"
@@ -410,7 +410,7 @@ msgid "%s is refunded %s.\n"
 msgstr "%s 被退还了 %s。\n"
 
 #. %s = Player name
-#: ../client/common/client.c:753 ../client/common/client.c:1957
+#: ../client/common/client.c:753
 #, c-format
 msgid "%s shuffled the dice deck.\n"
 msgstr "%s打乱了骰板。\n"
@@ -465,15 +465,15 @@ msgstr "或者"
 msgid "Waiting for your turn."
 msgstr "还没到你，你先等着。"
 
-#: ../client/common/client.c:1546 ../client/gtk/interface.c:777
+#: ../client/common/client.c:1546 ../client/gtk/interface.c:784
 msgid "Select the building to steal from."
 msgstr "选择要偷的建筑。"
 
-#: ../client/common/client.c:1568 ../client/gtk/interface.c:767
+#: ../client/common/client.c:1568 ../client/gtk/interface.c:774
 msgid "Select the ship to steal from."
 msgstr "选择要偷的船。"
 
-#: ../client/common/client.c:1652 ../client/gtk/interface.c:809
+#: ../client/common/client.c:1652 ../client/gtk/interface.c:816
 msgid "Place the robber."
 msgstr "放置强盗。"
 
@@ -490,17 +490,17 @@ msgid "Build two road segments."
 msgstr "修两段路。"
 
 #. Notification
-#: ../client/common/client.c:1985 ../client/common/client.c:2079
-#: ../client/gtk/interface.c:431
+#: ../client/common/client.c:1979 ../client/common/client.c:2073
+#: ../client/gtk/interface.c:432
 msgid "It is your turn."
 msgstr "到你了。"
 
-#: ../client/common/client.c:2173
+#: ../client/common/client.c:2167
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "抱歉，%s 还在。\n"
 
-#: ../client/common/client.c:2487
+#: ../client/common/client.c:2481
 msgid "The game is over."
 msgstr "游戏结束。"
 
@@ -1245,7 +1245,7 @@ msgstr "启动新游戏"
 
 #. Label
 #. Commandline option of client: name of the player
-#: ../client/gtk/connect.c:1464 ../client/gtk/offline.c:60
+#: ../client/gtk/connect.c:1464 ../client/gtk/offline.c:57
 msgid "Player name"
 msgstr "玩家姓名"
 
@@ -1318,7 +1318,7 @@ msgstr "加入一个私人游戏"
 
 #. Label
 #. Commandline option of client: hostname of the server
-#: ../client/gtk/connect.c:1777 ../client/gtk/offline.c:54
+#: ../client/gtk/connect.c:1777 ../client/gtk/offline.c:51
 msgid "Server host"
 msgstr "服务器主机"
 
@@ -1330,7 +1330,7 @@ msgstr "游戏主机名称"
 #. Label
 #. Commandline option of client: port of the server
 #. server port label
-#: ../client/gtk/connect.c:1795 ../client/gtk/offline.c:57
+#: ../client/gtk/connect.c:1795 ../client/gtk/offline.c:54
 #: ../server/gtk/main.c:555
 msgid "Server port"
 msgstr "服务器端口"
@@ -1422,457 +1422,457 @@ msgid "<b>Waiting for players to choose</b>"
 msgstr "<b>等待玩家选择</b>"
 
 #. Menu entry
-#: ../client/gtk/gui.c:227 ../server/gtk/main.c:91
+#: ../client/gtk/gui.c:224 ../server/gtk/main.c:91
 msgid "_Game"
 msgstr "游戏(_G)"
 
 #. Menu entry
-#: ../client/gtk/gui.c:230
+#: ../client/gtk/gui.c:227
 msgid "_New Game"
 msgstr "新游戏(_N)"
 
 #. Tooltip for New Game menu entry
-#: ../client/gtk/gui.c:232
+#: ../client/gtk/gui.c:229
 msgid "Start a new game"
 msgstr "开始一个新游戏"
 
 #. Menu entry
-#: ../client/gtk/gui.c:235
+#: ../client/gtk/gui.c:232
 msgid "_Leave Game"
 msgstr "离开游戏(_L)"
 
 #. Tooltip for Leave Game menu entry
-#: ../client/gtk/gui.c:237
+#: ../client/gtk/gui.c:234
 msgid "Leave this game"
 msgstr "离开当前游戏"
 
 #. Menu entry
-#: ../client/gtk/gui.c:241
+#: ../client/gtk/gui.c:238
 msgid "_Admin"
 msgstr "管理(_A)"
 
 #. Tooltip for Admin menu entry
-#: ../client/gtk/gui.c:243
+#: ../client/gtk/gui.c:240
 msgid "Administer Pioneers server"
 msgstr "管理员Pioneers服务器"
 
 #. Menu entry
-#: ../client/gtk/gui.c:247
+#: ../client/gtk/gui.c:244
 msgid "_Player Name"
 msgstr "玩家姓名(_P)"
 
 #. Tooltip for Player Name menu entry
-#: ../client/gtk/gui.c:249
+#: ../client/gtk/gui.c:246
 msgid "Change your player name"
 msgstr "修改玩家姓名"
 
 #. Menu entry
-#: ../client/gtk/gui.c:252
+#: ../client/gtk/gui.c:249
 msgid "L_egend"
 msgstr "图例(_E)"
 
 #. Tooltip for Legend menu entry
-#: ../client/gtk/gui.c:254
+#: ../client/gtk/gui.c:251
 msgid "Terrain legend and building costs"
 msgstr "地形图例和建筑消费"
 
 #. Menu entry
-#: ../client/gtk/gui.c:257
+#: ../client/gtk/gui.c:254
 msgid "_Game Settings"
 msgstr "游戏设置(_G)"
 
 #. Tooltip for Game Settings menu entry
-#: ../client/gtk/gui.c:259
+#: ../client/gtk/gui.c:256
 msgid "Settings for the current game"
 msgstr "当前游戏的设置"
 
 #. Menu entry
-#: ../client/gtk/gui.c:262
+#: ../client/gtk/gui.c:259
 msgid "_Dice Histogram"
 msgstr "骰子柱状图(_D)"
 
 #. Tooltip for Dice Histogram menu entry
-#: ../client/gtk/gui.c:264
+#: ../client/gtk/gui.c:261
 msgid "Histogram of dice rolls"
 msgstr "骰子结果柱状图"
 
 #. Menu entry
-#: ../client/gtk/gui.c:267 ../editor/gtk/editor.c:1759 ../server/gtk/main.c:103
+#: ../client/gtk/gui.c:264 ../editor/gtk/editor.c:1759 ../server/gtk/main.c:103
 msgid "_Quit"
 msgstr "退出(_Q)"
 
 #. Tooltip for Quit menu entry
 #. Tooltop for Quit menu entry
-#: ../client/gtk/gui.c:269 ../server/gtk/main.c:105
+#: ../client/gtk/gui.c:266 ../server/gtk/main.c:105
 msgid "Quit the program"
 msgstr "退出程序"
 
 #. Menu entry
-#: ../client/gtk/gui.c:272
+#: ../client/gtk/gui.c:269
 msgid "_Actions"
 msgstr "行动(_A)"
 
 #. Menu entry
-#: ../client/gtk/gui.c:275
+#: ../client/gtk/gui.c:272
 msgid "Roll Dice"
 msgstr "掷骰子"
 
 #. Tooltip for Roll Dice menu entry
-#: ../client/gtk/gui.c:277
+#: ../client/gtk/gui.c:274
 msgid "Roll the dice"
 msgstr "掷骰子"
 
 #. Menu entry
 #. Tooltip for Trade menu entry
 #. Tab page name
-#: ../client/gtk/gui.c:280 ../client/gtk/gui.c:282 ../client/gtk/gui.c:713
+#: ../client/gtk/gui.c:277 ../client/gtk/gui.c:279 ../client/gtk/gui.c:710
 msgid "Trade"
 msgstr "交易"
 
 #. Menu entry
 #. Tooltip for Undo menu entry
-#: ../client/gtk/gui.c:286 ../client/gtk/gui.c:288
+#: ../client/gtk/gui.c:283 ../client/gtk/gui.c:285
 msgid "Undo"
 msgstr "撤消"
 
 #. Menu entry
 #. Tooltip for Finish menu entry
-#: ../client/gtk/gui.c:291 ../client/gtk/gui.c:293
+#: ../client/gtk/gui.c:288 ../client/gtk/gui.c:290
 msgid "Finish"
 msgstr "完成"
 
 #. Menu entry
-#: ../client/gtk/gui.c:296 ../client/gtk/legend.c:189
+#: ../client/gtk/gui.c:293 ../client/gtk/legend.c:189
 #: ../editor/gtk/game-buildings.c:10
 msgid "Road"
 msgstr "道路"
 
 #. Tooltip for Road menu entry
-#: ../client/gtk/gui.c:298
+#: ../client/gtk/gui.c:295
 msgid "Build a road"
 msgstr "修一条路"
 
 #. Menu entry
-#: ../client/gtk/gui.c:301 ../client/gtk/legend.c:193
+#: ../client/gtk/gui.c:298 ../client/gtk/legend.c:193
 #: ../editor/gtk/game-buildings.c:10
 msgid "Ship"
 msgstr "轮船"
 
 #. Tooltip for Ship menu entry
-#: ../client/gtk/gui.c:303
+#: ../client/gtk/gui.c:300
 msgid "Build a ship"
 msgstr "造一条船"
 
 #. Menu entry
-#: ../client/gtk/gui.c:306
+#: ../client/gtk/gui.c:303
 msgid "Move Ship"
 msgstr "移动船"
 
 #. Tooltip for Move Ship menu entry
-#: ../client/gtk/gui.c:308
+#: ../client/gtk/gui.c:305
 msgid "Move a ship"
 msgstr "移动一艘船"
 
 #. Menu entry
-#: ../client/gtk/gui.c:311 ../client/gtk/legend.c:196
+#: ../client/gtk/gui.c:308 ../client/gtk/legend.c:196
 #: ../editor/gtk/game-buildings.c:10
 msgid "Bridge"
 msgstr "桥梁"
 
 #. Tooltip for Bridge menu entry
-#: ../client/gtk/gui.c:313
+#: ../client/gtk/gui.c:310
 msgid "Build a bridge"
 msgstr "建一座桥"
 
 #. Menu entry
-#: ../client/gtk/gui.c:316 ../client/gtk/legend.c:198 ../client/gtk/player.c:52
+#: ../client/gtk/gui.c:313 ../client/gtk/legend.c:198 ../client/gtk/player.c:52
 #: ../editor/gtk/game-buildings.c:10
 msgid "Settlement"
 msgstr "房子"
 
 #. Tooltip for Settlement menu entry
-#: ../client/gtk/gui.c:319
+#: ../client/gtk/gui.c:316
 msgid "Build a settlement"
 msgstr "建一个房子"
 
 #. Menu entry
-#: ../client/gtk/gui.c:322 ../client/gtk/legend.c:199 ../client/gtk/player.c:53
+#: ../client/gtk/gui.c:319 ../client/gtk/legend.c:199 ../client/gtk/player.c:53
 #: ../editor/gtk/game-buildings.c:11
 msgid "City"
 msgstr "城市"
 
 #. Tooltip for City menu entry
-#: ../client/gtk/gui.c:324
+#: ../client/gtk/gui.c:321
 msgid "Build a city"
 msgstr "建一个城市"
 
 #. Menu entry
-#: ../client/gtk/gui.c:327
+#: ../client/gtk/gui.c:324
 msgid "Develop"
 msgstr "发展卡"
 
 #. Tooltip for Develop menu entry
-#: ../client/gtk/gui.c:329
+#: ../client/gtk/gui.c:326
 msgid "Buy a development card"
 msgstr "买一张发展卡"
 
 #. Menu entry
-#: ../client/gtk/gui.c:332
+#: ../client/gtk/gui.c:329
 msgid "City Wall"
 msgstr "城墙"
 
 #. Tooltip for City Wall menu entry
-#: ../client/gtk/gui.c:334
+#: ../client/gtk/gui.c:331
 msgid "Build a city wall"
 msgstr "修一堵城墙"
 
 #. Menu entry
-#: ../client/gtk/gui.c:338
+#: ../client/gtk/gui.c:335
 msgid "_Settings"
 msgstr "设置(_S)"
 
 #. Menu entry
-#: ../client/gtk/gui.c:341
+#: ../client/gtk/gui.c:338
 msgid "Prefere_nces"
 msgstr "偏好(_N)"
 
 #. Tooltip for Preferences menu entry
-#: ../client/gtk/gui.c:343
+#: ../client/gtk/gui.c:340
 msgid "Configure the application"
 msgstr "设置应用程序"
 
 #. Menu entry
-#: ../client/gtk/gui.c:347 ../editor/gtk/editor.c:1721
+#: ../client/gtk/gui.c:344 ../editor/gtk/editor.c:1721
 msgid "_View"
 msgstr "查看(_V)"
 
 #. Menu entry
-#: ../client/gtk/gui.c:350 ../editor/gtk/editor.c:1765
+#: ../client/gtk/gui.c:347 ../editor/gtk/editor.c:1765
 msgid "_Reset"
 msgstr "重置(_R)"
 
 #. Tooltip for Reset menu entry
-#: ../client/gtk/gui.c:353 ../editor/gtk/editor.c:1768
+#: ../client/gtk/gui.c:350 ../editor/gtk/editor.c:1768
 msgid "View the full map"
 msgstr "查看完整地图"
 
 #. Menu entry
-#: ../client/gtk/gui.c:356 ../editor/gtk/editor.c:1771
+#: ../client/gtk/gui.c:353 ../editor/gtk/editor.c:1771
 msgid "_Center"
 msgstr "居中(_C)"
 
 #. Tooltip for Center menu entry
-#: ../client/gtk/gui.c:358 ../editor/gtk/editor.c:1773
+#: ../client/gtk/gui.c:355 ../editor/gtk/editor.c:1773
 msgid "Center the map"
 msgstr "让地图居中"
 
 #. Menu entry
-#: ../client/gtk/gui.c:362 ../client/gtk/gui.c:371 ../editor/gtk/editor.c:1724
+#: ../client/gtk/gui.c:359 ../client/gtk/gui.c:368 ../editor/gtk/editor.c:1724
 #: ../server/gtk/main.c:94
 msgid "_Help"
 msgstr "帮助(_H)"
 
 #. Menu entry
-#: ../client/gtk/gui.c:365
+#: ../client/gtk/gui.c:362
 msgid "_About Pioneers"
 msgstr "关于Pioneers(_A)"
 
 #. Tooltip for About Pioneers menu entry
-#: ../client/gtk/gui.c:367
+#: ../client/gtk/gui.c:364
 msgid "Information about Pioneers"
 msgstr "Pioneers的信息"
 
 #. Tooltip for Help menu entry
-#: ../client/gtk/gui.c:373 ../client/gtk/gui.c:1260
+#: ../client/gtk/gui.c:370 ../client/gtk/gui.c:1258
 msgid "Show the manual"
 msgstr "显示游戏指南"
 
 #. Menu entry
-#: ../client/gtk/gui.c:381 ../editor/gtk/editor.c:1791
+#: ../client/gtk/gui.c:378 ../editor/gtk/editor.c:1791
 msgid "_Fullscreen"
 msgstr "全屏(_F)"
 
 #. Tooltip for Fullscreen menu entry
-#: ../client/gtk/gui.c:384 ../editor/gtk/editor.c:1794
+#: ../client/gtk/gui.c:381 ../editor/gtk/editor.c:1794
 msgid "Set window to full screen mode"
 msgstr "进入全屏模式"
 
 #. Menu entry
-#: ../client/gtk/gui.c:389
+#: ../client/gtk/gui.c:386
 msgid "_Toolbar"
 msgstr "工具栏(_T)"
 
 #. Tooltip for Toolbar menu entry
-#: ../client/gtk/gui.c:391
+#: ../client/gtk/gui.c:388
 msgid "Show or hide the toolbar"
 msgstr "显示或隐藏工具栏"
 
 #. Victory points target in statusbar
-#: ../client/gtk/gui.c:494
+#: ../client/gtk/gui.c:491
 #, c-format
 msgid "Points needed to win: %i"
 msgstr "胜利需要的分数：%i"
 
-#: ../client/gtk/gui.c:580
+#: ../client/gtk/gui.c:577
 msgid "<b>Messages</b>"
 msgstr "<b>消息</b>"
 
 #. Tab page name
-#: ../client/gtk/gui.c:706 ../editor/gtk/editor.c:1946
+#: ../client/gtk/gui.c:703 ../editor/gtk/editor.c:1946
 msgid "Map"
 msgstr "地图"
 
 #. Tooltip
-#: ../client/gtk/gui.c:715
+#: ../client/gtk/gui.c:712
 msgid "Finish trading"
 msgstr "完成交易"
 
 #. Tab page name
 #. Button text
-#: ../client/gtk/gui.c:725 ../client/gtk/quote.c:339
+#: ../client/gtk/gui.c:722 ../client/gtk/quote.c:339
 msgid "Quote"
 msgstr "报价"
 
 #. Tooltip
-#: ../client/gtk/gui.c:727
+#: ../client/gtk/gui.c:724
 msgid "Reject domestic trade"
 msgstr "拒绝内部交易"
 
 #. Tab page name
 #. Dialog caption
-#: ../client/gtk/gui.c:737 ../client/gtk/legend.c:249
+#: ../client/gtk/gui.c:734 ../client/gtk/legend.c:249
 msgid "Legend"
 msgstr "图例"
 
 #. Tab page name, shown for the splash screen
-#: ../client/gtk/gui.c:747
+#: ../client/gtk/gui.c:744
 msgid "Welcome to Pioneers"
 msgstr "欢迎来到Pioneers"
 
 #. Caption of preferences dialog
-#: ../client/gtk/gui.c:1031
+#: ../client/gtk/gui.c:1028
 msgid "Pioneers Preferences"
 msgstr "Pioneers 偏好设置"
 
 #. Button text
-#: ../client/gtk/gui.c:1037 ../client/gtk/histogram.c:252
+#: ../client/gtk/gui.c:1034 ../client/gtk/histogram.c:252
 #: ../client/gtk/legend.c:253 ../client/gtk/settingscreen.c:413
 msgid "_Close"
 msgstr ""
 
 #. Label for changing the theme, in the preferences dialog
-#: ../client/gtk/gui.c:1062
+#: ../client/gtk/gui.c:1059
 msgid "Theme:"
 msgstr "主题："
 
 #. Tooltip for changing the theme in the preferences dialog
-#: ../client/gtk/gui.c:1085
+#: ../client/gtk/gui.c:1082
 msgid "Choose one of the themes"
 msgstr "选择一个主题"
 
 #. Label for the option to show the legend
-#: ../client/gtk/gui.c:1089
+#: ../client/gtk/gui.c:1086
 msgid "Show legend"
 msgstr "显示图例"
 
 #. Tooltip for the option to show the legend
-#: ../client/gtk/gui.c:1099
+#: ../client/gtk/gui.c:1096
 msgid "Show the legend as a page beside the map"
 msgstr "在地图旁以一个新页面来显示图例"
 
 #. Label for the option to display log messages in color
-#: ../client/gtk/gui.c:1104
+#: ../client/gtk/gui.c:1101
 msgid "Messages with color"
 msgstr "彩色消息"
 
 #. Tooltip for the option to display log messages in color
-#: ../client/gtk/gui.c:1114
+#: ../client/gtk/gui.c:1111
 msgid "Show new messages with color"
 msgstr "用彩色显示新消息"
 
 #. Label for the option to display chat in color of player
-#: ../client/gtk/gui.c:1119
+#: ../client/gtk/gui.c:1116
 msgid "Chat in color of player"
 msgstr "用玩家颜色显示聊天"
 
 #. Tooltip for the option to display chat in color of player
-#: ../client/gtk/gui.c:1130
+#: ../client/gtk/gui.c:1127
 msgid "Show new chat messages in the color of the player"
 msgstr "用玩家颜色显示新聊天消息"
 
 #. Label for the option to display the summary with colors
-#: ../client/gtk/gui.c:1135
+#: ../client/gtk/gui.c:1132
 msgid "Summary with color"
 msgstr "彩色汇总"
 
 #. Tooltip for the option to display the summary with colors
-#: ../client/gtk/gui.c:1146
+#: ../client/gtk/gui.c:1143
 msgid "Use colors in the player summary"
 msgstr "使用彩色显示玩家信息汇总"
 
 #. Label for the option to display keyboard accelerators in the toolbar
-#: ../client/gtk/gui.c:1151
+#: ../client/gtk/gui.c:1148
 msgid "Toolbar with shortcuts"
 msgstr "工具栏带快捷方式"
 
 #. Tooltip for the option to display keyboard accelerators in the toolbar
-#: ../client/gtk/gui.c:1161
+#: ../client/gtk/gui.c:1158
 msgid "Show keyboard shortcuts in the toolbar"
 msgstr "在工具栏中显示键盘快捷键"
 
 #. Label for the option to disable all sounds
-#: ../client/gtk/gui.c:1167
+#: ../client/gtk/gui.c:1164
 msgid "Silent mode"
 msgstr "安静模式"
 
 #. Tooltip for the option to disable all sounds
-#: ../client/gtk/gui.c:1173
+#: ../client/gtk/gui.c:1170
 msgid "In silent mode no sounds are made"
 msgstr "在安静模式下不会发出声音"
 
 #. Label for the option to announce when players/spectators enter
-#: ../client/gtk/gui.c:1179
+#: ../client/gtk/gui.c:1176
 msgid "Announce new players"
 msgstr "新玩家提示"
 
 #. Tooltip for the option to use sound when players/spectators enter
-#: ../client/gtk/gui.c:1189
+#: ../client/gtk/gui.c:1186
 msgid "Make a sound when a new player or spectator enters the game"
 msgstr "当一个新玩家或者观众进入游戏时发出声音提示"
 
 #. Label for the option to use the notifications.
-#: ../client/gtk/gui.c:1201
+#: ../client/gtk/gui.c:1198
 msgid "Show notifications"
 msgstr "显示通知"
 
 #. Tooltip for notifications option.
-#: ../client/gtk/gui.c:1211
+#: ../client/gtk/gui.c:1208
 msgid "Show notifications when it's your turn or when new trade is available"
 msgstr "轮到你或者有可用的新交易时显示通知"
 
 #. Label for the option to use the 16:9 layout.
-#: ../client/gtk/gui.c:1217
+#: ../client/gtk/gui.c:1214
 msgid "Use 16:9 layout"
 msgstr "使用16:9布局"
 
 #. Tooltip for 16:9 option.
-#: ../client/gtk/gui.c:1227
+#: ../client/gtk/gui.c:1224
 msgid "Use a 16:9 friendly layout for the window"
 msgstr "为窗口使用16:9的友好布局"
 
 #. Caption of about box
-#: ../client/gtk/gui.c:1236
+#: ../client/gtk/gui.c:1233
 msgid "About Pioneers"
 msgstr "关于 Pioneers"
 
 #. Initial text in status bar
-#: ../client/gtk/gui.c:1546 ../client/gtk/offline.c:110
+#: ../client/gtk/gui.c:1544 ../client/gtk/offline.c:107
 msgid "Welcome to Pioneers!"
 msgstr "欢迎来到Pioneers！"
 
 #. The name of the application
 #. Name of the application
-#: ../client/gtk/gui.c:1608 ../client/gtk/offline.c:218
+#: ../client/gtk/gui.c:1606 ../client/gtk/offline.c:209
 #: ../client/gtk/pioneers.desktop.in.h:1
 msgid "Pioneers"
 msgstr "Pioneers"
@@ -1882,16 +1882,16 @@ msgstr "Pioneers"
 msgid "Dice Histogram"
 msgstr "骰子柱状图"
 
-#: ../client/gtk/interface.c:110
+#: ../client/gtk/interface.c:111
 msgid "Ship movement canceled."
 msgstr "取消了船的移动。"
 
-#: ../client/gtk/interface.c:118 ../client/gtk/interface.c:119
+#: ../client/gtk/interface.c:119 ../client/gtk/interface.c:120
 msgid "Select a new location for the ship."
 msgstr "为船选择一个新位置。"
 
 #. Notification
-#: ../client/gtk/interface.c:912
+#: ../client/gtk/interface.c:919
 msgid "It is your turn to setup."
 msgstr "轮到你准备了。"
 
@@ -1973,24 +1973,24 @@ msgstr "头像："
 msgid "Variant:"
 msgstr "可变项："
 
-#: ../client/gtk/offline.c:64
+#: ../client/gtk/offline.c:61
 msgid "Connect as a spectator"
 msgstr "作为一个观众连接"
 
-#: ../client/gtk/offline.c:67
+#: ../client/gtk/offline.c:64
 msgid "Metaserver Host"
 msgstr "中转服务器地址"
 
-#: ../client/gtk/offline.c:81
+#: ../client/gtk/offline.c:78
 msgid "Select a game to join."
 msgstr "选择一个游戏来加入。"
 
-#: ../client/gtk/offline.c:97
+#: ../client/gtk/offline.c:94
 msgid "Connecting"
 msgstr "正在连接"
 
 #. Long description in the commandline for pioneers: help
-#: ../client/gtk/offline.c:186
+#: ../client/gtk/offline.c:183
 msgid "- Play a game of Pioneers"
 msgstr "- 玩一场Pioneers"
 
@@ -2820,30 +2820,30 @@ msgstr "观众："
 msgid "** UNKNOWN MESSAGE TYPE ** "
 msgstr "** 未知的消息类型 ** "
 
-#: ../common/network.c:145
+#: ../common/network.c:143
 #, c-format
 msgid "Error writing to socket: %s\n"
 msgstr "写到socket时发生错误: %s\n"
 
-#: ../common/network.c:156
+#: ../common/network.c:154
 msgid "Could not send all data\n"
 msgstr "无法发送所有数据\n"
 
-#: ../common/network.c:204
+#: ../common/network.c:202
 msgid "Read buffer overflow - disconnecting\n"
 msgstr "读缓存时溢出 - 断开连接\n"
 
-#: ../common/network.c:228
+#: ../common/network.c:226
 #, c-format
 msgid "Error reading socket: %s\n"
 msgstr "读socket错误：%s\n"
 
-#: ../common/network.c:380
+#: ../common/network.c:378
 #, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "连接到%s发生错误：%s\n"
 
-#: ../common/network.c:568 ../common/network.c:569
+#: ../common/network.c:566 ../common/network.c:567
 msgid "unknown"
 msgstr "未知"
 
@@ -3615,15 +3615,15 @@ msgid "- Host a game of Pioneers"
 msgstr "- Pioneers的一个游戏主机"
 
 #. Name in the titlebar of the server
-#: ../server/gtk/main.c:1236 ../server/gtk/pioneers-server.desktop.in.h:1
+#: ../server/gtk/main.c:1236 ../server/gtk/pioneers-server-gtk.desktop.in.h:1
 msgid "Pioneers Server"
 msgstr "Pioneers服务器"
 
-#: ../server/gtk/pioneers-server.desktop.in.h:2
+#: ../server/gtk/pioneers-server-gtk.desktop.in.h:2
 msgid "Host a game of Pioneers"
 msgstr "一个Pioneers游戏的主机"
 
-#: ../server/gtk/pioneers-server.desktop.in.h:3
+#: ../server/gtk/pioneers-server-gtk.desktop.in.h:3
 msgid "game;board;server;host;Pioneers;Settlers;"
 msgstr "game;board;server;host;Pioneers;Settlers;"
 

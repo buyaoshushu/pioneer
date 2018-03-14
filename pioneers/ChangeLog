@@ -1,9 +1,12 @@
-2017-03-14  Roland Clobus <rclobus@rclobus.nl>
+2018-03-14  Roland Clobus <rclobus@rclobus.nl>
+	* Released 15.5.
+
+2018-03-14  Roland Clobus <rclobus@rclobus.nl>
 	* all: Removed trailing whitespace in comments.
 	* client/gtk/interface.c: Allow trade after a road building
 	development card (in strict_trade). Fixes SF bug #298
 	
-2017-03-07  Roland Clobus <rclobus@rclobus.nl>
+2018-03-07  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am, client/Makefile.am, client/gtk/gui.c,
 	client/help/Makefile.am, client/help/C/*, omf.make,
 	xmldocs.make: Use yelp-tools for the help system.
@@ -11,28 +14,28 @@
 	server/gtk/pioneers-server.desktop.in: Fix missing icon when using
 	Alt-Tab in GNOME.
 
-2017-02-27  Roland Clobus <rclobus@rclobus.nl>
+2018-02-27  Roland Clobus <rclobus@rclobus.nl>
 	* README.subversion, client/Makefile.am, configure.ac:
 	Removed dependency on scrollkeeper (rarian-compat).
 
-2017-02-25  Roland Clobus <rclobus@rclobus.nl>
+2018-02-25  Roland Clobus <rclobus@rclobus.nl>
 	* common/map.c: Fixed potential memory leak in error path.
 	Found by scan-build-6.0
 	
-2017-02-23  Roland Clobus <rclobus@rclobus.nl>
+2018-02-23  Roland Clobus <rclobus@rclobus.nl>
 	* Makefile.am, client/Makefile.am, client/gtk/gui.c,
 	client/gtk/offline.c, common/Makefile.am, configure.ac,
 	editor/Makefile.am, server/Makefile.am: Removed dependency on
 	libgnome for displaying the help.
 
-2017-02-21  Roland Clobus <rclobus@rclobus.nl>
+2018-02-21  Roland Clobus <rclobus@rclobus.nl>
 	* client/common/client.c: Removed dead (duplicated) code, fixes a
 	compiler warning (-Wimplicit-fallthrough)
 	
-2017-01-07  Roland CLobus <rclobus@rclobus.nl>
+2018-01-07  Roland CLobus <rclobus@rclobus.nl>
 	* server/buildutil.c: Fixed compiler warning about fall through.
 	
-2017-01-05  Roland Clobus <rclobus@rclobus.nl>
+2018-01-05  Roland Clobus <rclobus@rclobus.nl>
 	* common/network.c: Reduced includes, as found by iwyu.
 	
 2016-09-15  Roland Clobus <rclobus@rclobus.nl>

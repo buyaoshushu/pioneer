@@ -15,11 +15,8 @@ You will need a valid build environment.
 You'll need at least gcc, intltool, libtool, autoconf, automake-1.9, make,
 pkgconfig and the development packages for glib and gettext.
 
-To build the graphical applications, you'll also need the gtk+-2.0 development
-packages, gnome-common, rsvg or ImageMagick, the base package for
-ghostscript, and netpbm.
-Netpbm 10.30 does not work correctly, use version 10.29 instead.
-(This has been confirmed for Cygwin and Gentoo)
+To build the graphical applications, you'll also need the gtk+-3.0 development
+packages, rsvg or ImageMagick and the base package for ghostscript.
 
 For a more complete and detailed list of packages, look in README.Cygwin
 
@@ -112,9 +109,6 @@ Interesting options are:
 
 Some musings
 ============
-The package gnome-common is not strictly needed, a copy of the only file
-that is needed (gnome-autogen.sh) is included in the macros directory.
-
 You need to have either rsvg or ImageMagick installed. It is used to render
 the .svg images to bitmaps. When the configure.ac script was written, rsvg
 gave the best results, so it is preferred over ImageMagick.
@@ -132,7 +126,7 @@ For the inclusion of help in pioneers, you need yelp.
 Alternatively you need xmlto, and go to the client/help/C directory and run
 'make html', to get the help rendered in html format.
 
-The build system uses the default paths that autoconf provides.  This is not 
+The build system uses the default paths that autoconf provides.  This is not
 conform the FHS (2.3) in two cases: bindir ($(prefix)/bin by default, should
 be $(prefix)/games) and mandir ($(prefix)/man by default, should be
 $(prefix)/share/man). If all the files should be in their proper places,
@@ -145,4 +139,4 @@ substitutions on the values.
 
 Roland Clobus
 Bas Wijnen
-2006-08-15 (Pioneers 0.10.1)
+2018-03-14 (Pioneers 15.5)

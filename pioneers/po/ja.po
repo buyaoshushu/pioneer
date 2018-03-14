@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pioneers 15.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-28 17:28+0200\n"
+"POT-Creation-Date: 2018-03-14 16:51+0100\n"
 "PO-Revision-Date: 2013-09-16 02:46+0000\n"
 "Last-Translator: KAMO Tomoyuki <kto@miomio.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -61,7 +61,7 @@ msgstr "コンピュータプレイヤーの種類"
 #. Commandline option of metaserver: enable debug logging
 #. Commandline option of server-gtk: enable debug logging
 #. Commandline option of server: enable debug logging
-#: ../client/ai/ai.c:111 ../client/gtk/offline.c:70 ../metaserver/main.c:631
+#: ../client/ai/ai.c:111 ../client/gtk/offline.c:67 ../metaserver/main.c:631
 #: ../server/gtk/main.c:1170 ../server/main.c:159
 msgid "Enable debug messages"
 msgstr "デバッグメッセージを有効にする"
@@ -72,7 +72,7 @@ msgstr "デバッグメッセージを有効にする"
 #. Commandline option of metaserver: version
 #. Commandline option of server-gtk: version
 #. Commandline option of server-console: version
-#: ../client/ai/ai.c:114 ../client/gtk/offline.c:73 ../editor/gtk/editor.c:1843
+#: ../client/ai/ai.c:114 ../client/gtk/offline.c:70 ../editor/gtk/editor.c:1843
 #: ../metaserver/main.c:637 ../server/gtk/main.c:1173 ../server/main.c:114
 msgid "Show version information"
 msgstr "バージョン情報を表示する"
@@ -82,7 +82,7 @@ msgstr "バージョン情報を表示する"
 msgid "- Computer player for Pioneers"
 msgstr "- Pioneers のコンピュータプレイヤー"
 
-#: ../client/ai/ai.c:137 ../client/gtk/offline.c:199
+#: ../client/ai/ai.c:137 ../client/gtk/offline.c:196
 #: ../editor/gtk/editor.c:1888 ../metaserver/main.c:687
 #: ../server/gtk/main.c:1223 ../server/main.c:226
 #, c-format
@@ -371,7 +371,7 @@ msgstr "ゲームから蹴り出された。\n"
 
 #. Network status: offline
 #: ../client/common/client.c:535 ../client/common/client.c:990
-#: ../client/gtk/gui.c:1534
+#: ../client/gtk/gui.c:1532
 msgid "Offline"
 msgstr "オフライン"
 
@@ -401,7 +401,7 @@ msgid "%s receives %s.\n"
 msgstr "%s は %s を受け取った。\n"
 
 #. Year of Plenty
-#: ../client/common/client.c:724 ../client/common/client.c:2669
+#: ../client/common/client.c:724 ../client/common/client.c:2663
 #, c-format
 msgid "%s takes %s.\n"
 msgstr "%s は %s を取る。\n"
@@ -417,7 +417,7 @@ msgid "%s is refunded %s.\n"
 msgstr "%s は %s を払い戻した。\n"
 
 #. %s = Player name
-#: ../client/common/client.c:753 ../client/common/client.c:1957
+#: ../client/common/client.c:753
 #, c-format
 msgid "%s shuffled the dice deck.\n"
 msgstr "%s はサイコロデッキをシャッフルした。\n"
@@ -472,15 +472,15 @@ msgstr " または"
 msgid "Waiting for your turn."
 msgstr "あなたのターンを待っている。"
 
-#: ../client/common/client.c:1546 ../client/gtk/interface.c:777
+#: ../client/common/client.c:1546 ../client/gtk/interface.c:784
 msgid "Select the building to steal from."
 msgstr "強奪する建築物を選択してください。"
 
-#: ../client/common/client.c:1568 ../client/gtk/interface.c:767
+#: ../client/common/client.c:1568 ../client/gtk/interface.c:774
 msgid "Select the ship to steal from."
 msgstr "強奪する船を選択してください。"
 
-#: ../client/common/client.c:1652 ../client/gtk/interface.c:809
+#: ../client/common/client.c:1652 ../client/gtk/interface.c:816
 msgid "Place the robber."
 msgstr "盗賊を配置してください。"
 
@@ -497,17 +497,17 @@ msgid "Build two road segments."
 msgstr "街道を2つ敷設してください。"
 
 #. Notification
-#: ../client/common/client.c:1985 ../client/common/client.c:2079
-#: ../client/gtk/interface.c:431
+#: ../client/common/client.c:1979 ../client/common/client.c:2073
+#: ../client/gtk/interface.c:432
 msgid "It is your turn."
 msgstr "あなたのターンです。"
 
-#: ../client/common/client.c:2173
+#: ../client/common/client.c:2167
 #, c-format
 msgid "Sorry, %s available.\n"
 msgstr "すみません、%s 利用可能。\n"
 
-#: ../client/common/client.c:2487
+#: ../client/common/client.c:2481
 msgid "The game is over."
 msgstr "ゲーム終了。"
 
@@ -1252,7 +1252,7 @@ msgstr "新しいゲームを開始"
 
 #. Label
 #. Commandline option of client: name of the player
-#: ../client/gtk/connect.c:1464 ../client/gtk/offline.c:60
+#: ../client/gtk/connect.c:1464 ../client/gtk/offline.c:57
 msgid "Player name"
 msgstr "プレイヤー名"
 
@@ -1325,7 +1325,7 @@ msgstr "非公開ゲームに参加する"
 
 #. Label
 #. Commandline option of client: hostname of the server
-#: ../client/gtk/connect.c:1777 ../client/gtk/offline.c:54
+#: ../client/gtk/connect.c:1777 ../client/gtk/offline.c:51
 msgid "Server host"
 msgstr "サーバホスト"
 
@@ -1337,7 +1337,7 @@ msgstr "ゲームホストの名前"
 #. Label
 #. Commandline option of client: port of the server
 #. server port label
-#: ../client/gtk/connect.c:1795 ../client/gtk/offline.c:57
+#: ../client/gtk/connect.c:1795 ../client/gtk/offline.c:54
 #: ../server/gtk/main.c:555
 msgid "Server port"
 msgstr "サーバポート"
@@ -1429,457 +1429,457 @@ msgid "<b>Waiting for players to choose</b>"
 msgstr "<b>プレイヤー選択待ち</b>"
 
 #. Menu entry
-#: ../client/gtk/gui.c:227 ../server/gtk/main.c:91
+#: ../client/gtk/gui.c:224 ../server/gtk/main.c:91
 msgid "_Game"
 msgstr "ゲーム(_G)"
 
 #. Menu entry
-#: ../client/gtk/gui.c:230
+#: ../client/gtk/gui.c:227
 msgid "_New Game"
 msgstr "新しいゲーム(_N)"
 
 #. Tooltip for New Game menu entry
-#: ../client/gtk/gui.c:232
+#: ../client/gtk/gui.c:229
 msgid "Start a new game"
 msgstr "新しいゲームを開始"
 
 #. Menu entry
-#: ../client/gtk/gui.c:235
+#: ../client/gtk/gui.c:232
 msgid "_Leave Game"
 msgstr "ゲームを去る(_L)"
 
 #. Tooltip for Leave Game menu entry
-#: ../client/gtk/gui.c:237
+#: ../client/gtk/gui.c:234
 msgid "Leave this game"
 msgstr "このゲームを去る"
 
 #. Menu entry
-#: ../client/gtk/gui.c:241
+#: ../client/gtk/gui.c:238
 msgid "_Admin"
 msgstr "管理(_A)"
 
 #. Tooltip for Admin menu entry
-#: ../client/gtk/gui.c:243
+#: ../client/gtk/gui.c:240
 msgid "Administer Pioneers server"
 msgstr "Pioneers サーバの管理"
 
 #. Menu entry
-#: ../client/gtk/gui.c:247
+#: ../client/gtk/gui.c:244
 msgid "_Player Name"
 msgstr "プレイヤー名(_P)"
 
 #. Tooltip for Player Name menu entry
-#: ../client/gtk/gui.c:249
+#: ../client/gtk/gui.c:246
 msgid "Change your player name"
 msgstr "プレイヤー名変更"
 
 #. Menu entry
-#: ../client/gtk/gui.c:252
+#: ../client/gtk/gui.c:249
 msgid "L_egend"
 msgstr "凡例(_E)"
 
 #. Tooltip for Legend menu entry
-#: ../client/gtk/gui.c:254
+#: ../client/gtk/gui.c:251
 msgid "Terrain legend and building costs"
 msgstr "地形の凡例と建設コスト"
 
 #. Menu entry
-#: ../client/gtk/gui.c:257
+#: ../client/gtk/gui.c:254
 msgid "_Game Settings"
 msgstr "ゲーム設定(_S)"
 
 #. Tooltip for Game Settings menu entry
-#: ../client/gtk/gui.c:259
+#: ../client/gtk/gui.c:256
 msgid "Settings for the current game"
 msgstr "現在のゲーム設定"
 
 #. Menu entry
-#: ../client/gtk/gui.c:262
+#: ../client/gtk/gui.c:259
 msgid "_Dice Histogram"
 msgstr "サイコロヒストグラム(_D)"
 
 #. Tooltip for Dice Histogram menu entry
-#: ../client/gtk/gui.c:264
+#: ../client/gtk/gui.c:261
 msgid "Histogram of dice rolls"
 msgstr "サイコロで出た目の度数分布図"
 
 #. Menu entry
-#: ../client/gtk/gui.c:267 ../editor/gtk/editor.c:1759 ../server/gtk/main.c:103
+#: ../client/gtk/gui.c:264 ../editor/gtk/editor.c:1759 ../server/gtk/main.c:103
 msgid "_Quit"
 msgstr "終了(_Q)"
 
 #. Tooltip for Quit menu entry
 #. Tooltop for Quit menu entry
-#: ../client/gtk/gui.c:269 ../server/gtk/main.c:105
+#: ../client/gtk/gui.c:266 ../server/gtk/main.c:105
 msgid "Quit the program"
 msgstr "プログラムを終了"
 
 #. Menu entry
-#: ../client/gtk/gui.c:272
+#: ../client/gtk/gui.c:269
 msgid "_Actions"
 msgstr "行動(_A)"
 
 #. Menu entry
-#: ../client/gtk/gui.c:275
+#: ../client/gtk/gui.c:272
 msgid "Roll Dice"
 msgstr "サイコロを振る"
 
 #. Tooltip for Roll Dice menu entry
-#: ../client/gtk/gui.c:277
+#: ../client/gtk/gui.c:274
 msgid "Roll the dice"
 msgstr "サイコロを振る"
 
 #. Menu entry
 #. Tooltip for Trade menu entry
 #. Tab page name
-#: ../client/gtk/gui.c:280 ../client/gtk/gui.c:282 ../client/gtk/gui.c:713
+#: ../client/gtk/gui.c:277 ../client/gtk/gui.c:279 ../client/gtk/gui.c:710
 msgid "Trade"
 msgstr "交易"
 
 #. Menu entry
 #. Tooltip for Undo menu entry
-#: ../client/gtk/gui.c:286 ../client/gtk/gui.c:288
+#: ../client/gtk/gui.c:283 ../client/gtk/gui.c:285
 msgid "Undo"
 msgstr "やり直し"
 
 #. Menu entry
 #. Tooltip for Finish menu entry
-#: ../client/gtk/gui.c:291 ../client/gtk/gui.c:293
+#: ../client/gtk/gui.c:288 ../client/gtk/gui.c:290
 msgid "Finish"
 msgstr "終了"
 
 #. Menu entry
-#: ../client/gtk/gui.c:296 ../client/gtk/legend.c:189
+#: ../client/gtk/gui.c:293 ../client/gtk/legend.c:189
 #: ../editor/gtk/game-buildings.c:10
 msgid "Road"
 msgstr "街道"
 
 #. Tooltip for Road menu entry
-#: ../client/gtk/gui.c:298
+#: ../client/gtk/gui.c:295
 msgid "Build a road"
 msgstr "街道を敷設する"
 
 #. Menu entry
-#: ../client/gtk/gui.c:301 ../client/gtk/legend.c:193
+#: ../client/gtk/gui.c:298 ../client/gtk/legend.c:193
 #: ../editor/gtk/game-buildings.c:10
 msgid "Ship"
 msgstr "船"
 
 #. Tooltip for Ship menu entry
-#: ../client/gtk/gui.c:303
+#: ../client/gtk/gui.c:300
 msgid "Build a ship"
 msgstr "船を製造する"
 
 #. Menu entry
-#: ../client/gtk/gui.c:306
+#: ../client/gtk/gui.c:303
 msgid "Move Ship"
 msgstr "船移動"
 
 #. Tooltip for Move Ship menu entry
-#: ../client/gtk/gui.c:308
+#: ../client/gtk/gui.c:305
 msgid "Move a ship"
 msgstr "船を移動する"
 
 #. Menu entry
-#: ../client/gtk/gui.c:311 ../client/gtk/legend.c:196
+#: ../client/gtk/gui.c:308 ../client/gtk/legend.c:196
 #: ../editor/gtk/game-buildings.c:10
 msgid "Bridge"
 msgstr "橋"
 
 #. Tooltip for Bridge menu entry
-#: ../client/gtk/gui.c:313
+#: ../client/gtk/gui.c:310
 msgid "Build a bridge"
 msgstr "橋を建設する"
 
 #. Menu entry
-#: ../client/gtk/gui.c:316 ../client/gtk/legend.c:198 ../client/gtk/player.c:52
+#: ../client/gtk/gui.c:313 ../client/gtk/legend.c:198 ../client/gtk/player.c:52
 #: ../editor/gtk/game-buildings.c:10
 msgid "Settlement"
 msgstr "開拓地"
 
 #. Tooltip for Settlement menu entry
-#: ../client/gtk/gui.c:319
+#: ../client/gtk/gui.c:316
 msgid "Build a settlement"
 msgstr "開拓地を建設する"
 
 #. Menu entry
-#: ../client/gtk/gui.c:322 ../client/gtk/legend.c:199 ../client/gtk/player.c:53
+#: ../client/gtk/gui.c:319 ../client/gtk/legend.c:199 ../client/gtk/player.c:53
 #: ../editor/gtk/game-buildings.c:11
 msgid "City"
 msgstr "都市"
 
 #. Tooltip for City menu entry
-#: ../client/gtk/gui.c:324
+#: ../client/gtk/gui.c:321
 msgid "Build a city"
 msgstr "都市を建設する"
 
 #. Menu entry
-#: ../client/gtk/gui.c:327
+#: ../client/gtk/gui.c:324
 msgid "Develop"
 msgstr "発展"
 
 #. Tooltip for Develop menu entry
-#: ../client/gtk/gui.c:329
+#: ../client/gtk/gui.c:326
 msgid "Buy a development card"
 msgstr "発展カードを購入する"
 
 #. Menu entry
-#: ../client/gtk/gui.c:332
+#: ../client/gtk/gui.c:329
 msgid "City Wall"
 msgstr "都市城壁"
 
 #. Tooltip for City Wall menu entry
-#: ../client/gtk/gui.c:334
+#: ../client/gtk/gui.c:331
 msgid "Build a city wall"
 msgstr "都市城壁を建設する"
 
 #. Menu entry
-#: ../client/gtk/gui.c:338
+#: ../client/gtk/gui.c:335
 msgid "_Settings"
 msgstr "設定(_S)"
 
 #. Menu entry
-#: ../client/gtk/gui.c:341
+#: ../client/gtk/gui.c:338
 msgid "Prefere_nces"
 msgstr "個人設定(_N)"
 
 #. Tooltip for Preferences menu entry
-#: ../client/gtk/gui.c:343
+#: ../client/gtk/gui.c:340
 msgid "Configure the application"
 msgstr "アプリケーションの設定"
 
 #. Menu entry
-#: ../client/gtk/gui.c:347 ../editor/gtk/editor.c:1721
+#: ../client/gtk/gui.c:344 ../editor/gtk/editor.c:1721
 msgid "_View"
 msgstr "表示(_V)"
 
 #. Menu entry
-#: ../client/gtk/gui.c:350 ../editor/gtk/editor.c:1765
+#: ../client/gtk/gui.c:347 ../editor/gtk/editor.c:1765
 msgid "_Reset"
 msgstr "リセット(_R)"
 
 #. Tooltip for Reset menu entry
-#: ../client/gtk/gui.c:353 ../editor/gtk/editor.c:1768
+#: ../client/gtk/gui.c:350 ../editor/gtk/editor.c:1768
 msgid "View the full map"
 msgstr "マップ全体を表示する"
 
 #. Menu entry
-#: ../client/gtk/gui.c:356 ../editor/gtk/editor.c:1771
+#: ../client/gtk/gui.c:353 ../editor/gtk/editor.c:1771
 msgid "_Center"
 msgstr "中央化(_C)"
 
 #. Tooltip for Center menu entry
-#: ../client/gtk/gui.c:358 ../editor/gtk/editor.c:1773
+#: ../client/gtk/gui.c:355 ../editor/gtk/editor.c:1773
 msgid "Center the map"
 msgstr "マップを中央に表示する"
 
 #. Menu entry
-#: ../client/gtk/gui.c:362 ../client/gtk/gui.c:371 ../editor/gtk/editor.c:1724
+#: ../client/gtk/gui.c:359 ../client/gtk/gui.c:368 ../editor/gtk/editor.c:1724
 #: ../server/gtk/main.c:94
 msgid "_Help"
 msgstr "ヘルプ(_H)"
 
 #. Menu entry
-#: ../client/gtk/gui.c:365
+#: ../client/gtk/gui.c:362
 msgid "_About Pioneers"
 msgstr "Pioneers について(_A)"
 
 #. Tooltip for About Pioneers menu entry
-#: ../client/gtk/gui.c:367
+#: ../client/gtk/gui.c:364
 msgid "Information about Pioneers"
 msgstr "Pioneers についての情報"
 
 #. Tooltip for Help menu entry
-#: ../client/gtk/gui.c:373 ../client/gtk/gui.c:1260
+#: ../client/gtk/gui.c:370 ../client/gtk/gui.c:1258
 msgid "Show the manual"
 msgstr "マニュアルを表示する"
 
 #. Menu entry
-#: ../client/gtk/gui.c:381 ../editor/gtk/editor.c:1791
+#: ../client/gtk/gui.c:378 ../editor/gtk/editor.c:1791
 msgid "_Fullscreen"
 msgstr "フルスクリーン(_F)"
 
 #. Tooltip for Fullscreen menu entry
-#: ../client/gtk/gui.c:384 ../editor/gtk/editor.c:1794
+#: ../client/gtk/gui.c:381 ../editor/gtk/editor.c:1794
 msgid "Set window to full screen mode"
 msgstr "ウィンドウをフルスクリーンモードに設定する"
 
 #. Menu entry
-#: ../client/gtk/gui.c:389
+#: ../client/gtk/gui.c:386
 msgid "_Toolbar"
 msgstr "ツールバー(_T)"
 
 #. Tooltip for Toolbar menu entry
-#: ../client/gtk/gui.c:391
+#: ../client/gtk/gui.c:388
 msgid "Show or hide the toolbar"
 msgstr "ツールバーを表示するか否か"
 
 #. Victory points target in statusbar
-#: ../client/gtk/gui.c:494
+#: ../client/gtk/gui.c:491
 #, c-format
 msgid "Points needed to win: %i"
 msgstr "勝利に必要なポイント: %i"
 
-#: ../client/gtk/gui.c:580
+#: ../client/gtk/gui.c:577
 msgid "<b>Messages</b>"
 msgstr "<b>メッセージ</b>"
 
 #. Tab page name
-#: ../client/gtk/gui.c:706 ../editor/gtk/editor.c:1946
+#: ../client/gtk/gui.c:703 ../editor/gtk/editor.c:1946
 msgid "Map"
 msgstr "マップ"
 
 #. Tooltip
-#: ../client/gtk/gui.c:715
+#: ../client/gtk/gui.c:712
 msgid "Finish trading"
 msgstr "交易を終了する"
 
 #. Tab page name
 #. Button text
-#: ../client/gtk/gui.c:725 ../client/gtk/quote.c:339
+#: ../client/gtk/gui.c:722 ../client/gtk/quote.c:339
 msgid "Quote"
 msgstr "見積もり"
 
 #. Tooltip
-#: ../client/gtk/gui.c:727
+#: ../client/gtk/gui.c:724
 msgid "Reject domestic trade"
 msgstr "国内貿易を拒否する"
 
 #. Tab page name
 #. Dialog caption
-#: ../client/gtk/gui.c:737 ../client/gtk/legend.c:249
+#: ../client/gtk/gui.c:734 ../client/gtk/legend.c:249
 msgid "Legend"
 msgstr "凡例"
 
 #. Tab page name, shown for the splash screen
-#: ../client/gtk/gui.c:747
+#: ../client/gtk/gui.c:744
 msgid "Welcome to Pioneers"
 msgstr "Pioneers へようこそ"
 
 #. Caption of preferences dialog
-#: ../client/gtk/gui.c:1031
+#: ../client/gtk/gui.c:1028
 msgid "Pioneers Preferences"
 msgstr "Pioneers 個人設定"
 
 #. Button text
-#: ../client/gtk/gui.c:1037 ../client/gtk/histogram.c:252
+#: ../client/gtk/gui.c:1034 ../client/gtk/histogram.c:252
 #: ../client/gtk/legend.c:253 ../client/gtk/settingscreen.c:413
 msgid "_Close"
 msgstr ""
 
 #. Label for changing the theme, in the preferences dialog
-#: ../client/gtk/gui.c:1062
+#: ../client/gtk/gui.c:1059
 msgid "Theme:"
 msgstr "テーマ:"
 
 #. Tooltip for changing the theme in the preferences dialog
-#: ../client/gtk/gui.c:1085
+#: ../client/gtk/gui.c:1082
 msgid "Choose one of the themes"
 msgstr "テーマを1つ選択する"
 
 #. Label for the option to show the legend
-#: ../client/gtk/gui.c:1089
+#: ../client/gtk/gui.c:1086
 msgid "Show legend"
 msgstr "凡例を表示"
 
 #. Tooltip for the option to show the legend
-#: ../client/gtk/gui.c:1099
+#: ../client/gtk/gui.c:1096
 msgid "Show the legend as a page beside the map"
 msgstr "マップの隣に凡例ページを表示する"
 
 #. Label for the option to display log messages in color
-#: ../client/gtk/gui.c:1104
+#: ../client/gtk/gui.c:1101
 msgid "Messages with color"
 msgstr "色付きメッセージ"
 
 #. Tooltip for the option to display log messages in color
-#: ../client/gtk/gui.c:1114
+#: ../client/gtk/gui.c:1111
 msgid "Show new messages with color"
 msgstr "新しいメッセージを色付きで表示する"
 
 #. Label for the option to display chat in color of player
-#: ../client/gtk/gui.c:1119
+#: ../client/gtk/gui.c:1116
 msgid "Chat in color of player"
 msgstr "プレイヤーの色でチャット"
 
 #. Tooltip for the option to display chat in color of player
-#: ../client/gtk/gui.c:1130
+#: ../client/gtk/gui.c:1127
 msgid "Show new chat messages in the color of the player"
 msgstr "新しいチャットメッセージをプレイヤーの色で表示する"
 
 #. Label for the option to display the summary with colors
-#: ../client/gtk/gui.c:1135
+#: ../client/gtk/gui.c:1132
 msgid "Summary with color"
 msgstr "色付き概要"
 
 #. Tooltip for the option to display the summary with colors
-#: ../client/gtk/gui.c:1146
+#: ../client/gtk/gui.c:1143
 msgid "Use colors in the player summary"
 msgstr "プレイヤー概要に色を使う"
 
 #. Label for the option to display keyboard accelerators in the toolbar
-#: ../client/gtk/gui.c:1151
+#: ../client/gtk/gui.c:1148
 msgid "Toolbar with shortcuts"
 msgstr "ショートカット付きツールバー"
 
 #. Tooltip for the option to display keyboard accelerators in the toolbar
-#: ../client/gtk/gui.c:1161
+#: ../client/gtk/gui.c:1158
 msgid "Show keyboard shortcuts in the toolbar"
 msgstr "ツールバーにキーボードショートカットを表示する"
 
 #. Label for the option to disable all sounds
-#: ../client/gtk/gui.c:1167
+#: ../client/gtk/gui.c:1164
 msgid "Silent mode"
 msgstr "サイレントモード"
 
 #. Tooltip for the option to disable all sounds
-#: ../client/gtk/gui.c:1173
+#: ../client/gtk/gui.c:1170
 msgid "In silent mode no sounds are made"
 msgstr "サイレントモードでは音が鳴らない"
 
 #. Label for the option to announce when players/spectators enter
-#: ../client/gtk/gui.c:1179
+#: ../client/gtk/gui.c:1176
 msgid "Announce new players"
 msgstr "新しいプレイヤーをアナウンス"
 
 #. Tooltip for the option to use sound when players/spectators enter
-#: ../client/gtk/gui.c:1189
+#: ../client/gtk/gui.c:1186
 msgid "Make a sound when a new player or spectator enters the game"
 msgstr "新しいプレイヤーや観戦者がゲームに入ったときに音を鳴らす"
 
 #. Label for the option to use the notifications.
-#: ../client/gtk/gui.c:1201
+#: ../client/gtk/gui.c:1198
 msgid "Show notifications"
 msgstr "通知を表示"
 
 #. Tooltip for notifications option.
-#: ../client/gtk/gui.c:1211
+#: ../client/gtk/gui.c:1208
 msgid "Show notifications when it's your turn or when new trade is available"
 msgstr "あなたのターンになったときや新しい交易が可能なときに通知を表示する"
 
 #. Label for the option to use the 16:9 layout.
-#: ../client/gtk/gui.c:1217
+#: ../client/gtk/gui.c:1214
 msgid "Use 16:9 layout"
 msgstr "16:9 レイアウトを使用"
 
 #. Tooltip for 16:9 option.
-#: ../client/gtk/gui.c:1227
+#: ../client/gtk/gui.c:1224
 msgid "Use a 16:9 friendly layout for the window"
 msgstr "16:9 の画面向きのレイアウトをウィンドウに使用"
 
 #. Caption of about box
-#: ../client/gtk/gui.c:1236
+#: ../client/gtk/gui.c:1233
 msgid "About Pioneers"
 msgstr "Pioneers について"
 
 #. Initial text in status bar
-#: ../client/gtk/gui.c:1546 ../client/gtk/offline.c:110
+#: ../client/gtk/gui.c:1544 ../client/gtk/offline.c:107
 msgid "Welcome to Pioneers!"
 msgstr "ようこそ Pioneers へ!"
 
 #. The name of the application
 #. Name of the application
-#: ../client/gtk/gui.c:1608 ../client/gtk/offline.c:218
+#: ../client/gtk/gui.c:1606 ../client/gtk/offline.c:209
 #: ../client/gtk/pioneers.desktop.in.h:1
 msgid "Pioneers"
 msgstr "Pioneers"
@@ -1889,16 +1889,16 @@ msgstr "Pioneers"
 msgid "Dice Histogram"
 msgstr "サイコロヒストグラム"
 
-#: ../client/gtk/interface.c:110
+#: ../client/gtk/interface.c:111
 msgid "Ship movement canceled."
 msgstr "船移動を取り消した。"
 
-#: ../client/gtk/interface.c:118 ../client/gtk/interface.c:119
+#: ../client/gtk/interface.c:119 ../client/gtk/interface.c:120
 msgid "Select a new location for the ship."
 msgstr "船の新しい場所を選択してください。"
 
 #. Notification
-#: ../client/gtk/interface.c:912
+#: ../client/gtk/interface.c:919
 msgid "It is your turn to setup."
 msgstr "あなたの初期配置ターンです。"
 
@@ -1980,24 +1980,24 @@ msgstr "顔:"
 msgid "Variant:"
 msgstr "変更:"
 
-#: ../client/gtk/offline.c:64
+#: ../client/gtk/offline.c:61
 msgid "Connect as a spectator"
 msgstr "観戦者として接続する"
 
-#: ../client/gtk/offline.c:67
+#: ../client/gtk/offline.c:64
 msgid "Metaserver Host"
 msgstr "メタサーバホスト"
 
-#: ../client/gtk/offline.c:81
+#: ../client/gtk/offline.c:78
 msgid "Select a game to join."
 msgstr "参加するゲームを選択。"
 
-#: ../client/gtk/offline.c:97
+#: ../client/gtk/offline.c:94
 msgid "Connecting"
 msgstr "接続"
 
 #. Long description in the commandline for pioneers: help
-#: ../client/gtk/offline.c:186
+#: ../client/gtk/offline.c:183
 msgid "- Play a game of Pioneers"
 msgstr "- Pioneers のゲームを遊ぶ"
 
@@ -2836,30 +2836,30 @@ msgstr "観戦者: "
 msgid "** UNKNOWN MESSAGE TYPE ** "
 msgstr "** メッセージの種類不明 ** "
 
-#: ../common/network.c:145
+#: ../common/network.c:143
 #, c-format
 msgid "Error writing to socket: %s\n"
 msgstr "ソケットへの書き込み時にエラー: %s\n"
 
-#: ../common/network.c:156
+#: ../common/network.c:154
 msgid "Could not send all data\n"
 msgstr "すべてのデータを送信しきれなかった\n"
 
-#: ../common/network.c:204
+#: ../common/network.c:202
 msgid "Read buffer overflow - disconnecting\n"
 msgstr "読み込みバッファあふれ - 切断\n"
 
-#: ../common/network.c:228
+#: ../common/network.c:226
 #, c-format
 msgid "Error reading socket: %s\n"
 msgstr "ソケット読み込み時にエラー: %s\n"
 
-#: ../common/network.c:380
+#: ../common/network.c:378
 #, c-format
 msgid "Error connecting to %s: %s\n"
 msgstr "%s への接続時にエラー: %s\n"
 
-#: ../common/network.c:568 ../common/network.c:569
+#: ../common/network.c:566 ../common/network.c:567
 msgid "unknown"
 msgstr "不明"
 
@@ -3632,15 +3632,15 @@ msgid "- Host a game of Pioneers"
 msgstr "- Pioneers のゲームをホストする"
 
 #. Name in the titlebar of the server
-#: ../server/gtk/main.c:1236 ../server/gtk/pioneers-server.desktop.in.h:1
+#: ../server/gtk/main.c:1236 ../server/gtk/pioneers-server-gtk.desktop.in.h:1
 msgid "Pioneers Server"
 msgstr "Pioneers サーバ"
 
-#: ../server/gtk/pioneers-server.desktop.in.h:2
+#: ../server/gtk/pioneers-server-gtk.desktop.in.h:2
 msgid "Host a game of Pioneers"
 msgstr "Pioneers のゲームをホストする"
 
-#: ../server/gtk/pioneers-server.desktop.in.h:3
+#: ../server/gtk/pioneers-server-gtk.desktop.in.h:3
 msgid "game;board;server;host;Pioneers;Settlers;"
 msgstr "ゲーム;ボード;サーバ;ホスト;Pioneers;開拓者;"
 
