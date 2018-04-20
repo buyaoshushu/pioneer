@@ -1,5 +1,7 @@
 2018-04-20  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Removed GTK warning for context menu.
+	* editor/gtk/editor.c: Fix for showing the context menu when the mouse
+	was moved during the previous display of a context menu.
 	
 2018-03-14  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Work version is 15.6.

@@ -641,6 +641,8 @@ static gint button_press_map_cb(GtkWidget * area,
 	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
+	gmap->last_x = event->x;
+	gmap->last_y = event->y;
 	current_hex = guimap_get_current_hex(gmap);
 	if (current_hex == NULL)
 		return TRUE;
