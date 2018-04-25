@@ -91,8 +91,8 @@ typedef struct {
 	gint y_point;		   /**< y offset of node 0 from centre */
 
 	gboolean is_custom_view;   /**< false if all hexes are shown and centered */
-	gint x_margin;		   /**< margin to leave empty */
-	gint y_margin;		   /**< margin to leave empty */
+	gdouble x_margin;	   /**< margin to leave empty */
+	gdouble y_margin;	   /**< margin to leave empty */
 	gint width;		   /**< pixel width of map */
 	gint height;		   /**< pixel height of map */
 	gint player_num;	   /**< player displaying this map */
