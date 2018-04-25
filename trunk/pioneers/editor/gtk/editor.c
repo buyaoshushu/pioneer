@@ -767,7 +767,8 @@ static gint button_press_map_cb(GtkWidget * area,
 	}
 
 	if (menu != NULL) {
-		gtk_menu_popup_at_pointer(GTK_MENU(menu), (GdkEvent*)event);
+		gtk_menu_popup_at_pointer(GTK_MENU(menu),
+					  (GdkEvent *) event);
 	}
 
 	return TRUE;
