@@ -153,11 +153,9 @@ static gboolean draw_map_cb(GtkWidget * area, cairo_t * cr,
 }
 
 static gint configure_map_cb(GtkWidget * area,
-			     G_GNUC_UNUSED GdkEventConfigure * event,
-			     gpointer user_data)
+			     GdkEventConfigure * event, gpointer user_data)
 {
 	GuiMap *gmap = user_data;
-	GtkAllocation allocation;
 
 	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
@@ -166,8 +164,7 @@ static gint configure_map_cb(GtkWidget * area,
 		cairo_surface_destroy(gmap->surface);
 		gmap->surface = NULL;
 	}
-	gtk_widget_get_allocation(area, &allocation);
-	guimap_scale_to_size(gmap, allocation.width, allocation.height);
+	guimap_scale_to_size(gmap, event->width, event->height);
 
 	gtk_widget_queue_draw(area);
 	return FALSE;
@@ -212,38 +209,37 @@ static gboolean zoom_map_cb(GtkWidget * area, GdkEventScroll * event,
 			    gpointer user_data)
 {
 	GuiMap *gmap = user_data;
-	GtkAllocation allocation;
 	gint radius;
+	gdouble old_width;
+	gdouble old_height;
 
 	if (gtk_widget_get_window(area) == NULL || gmap->map == NULL)
 		return FALSE;
 
 	radius = gmap->hex_radius;
+	old_width = gmap->width;
+	old_height = gmap->height;
+
 	gmap->is_custom_view = TRUE;
 
 	if (event->direction == GDK_SCROLL_UP) {
 		radius += ZOOM_AMOUNT;
-
-		gmap->x_margin -= (event->x - gmap->x_margin) *
-		    ZOOM_AMOUNT / radius;
-		gmap->y_margin -= (event->y - gmap->y_margin) *
-		    ZOOM_AMOUNT / radius;
-
 	} else if (event->direction == GDK_SCROLL_DOWN) {
-		gint old_radius = radius;
 		radius -= ZOOM_AMOUNT;
 		if (radius < MIN_HEX_RADIUS)
 			radius = MIN_HEX_RADIUS;
-
-		gmap->x_margin += (event->x - gmap->x_margin) *
-		    (old_radius - radius) / radius;
-		gmap->y_margin += (event->y - gmap->y_margin) *
-		    (old_radius - radius) / radius;
-
 	}
-	gmap->hex_radius = radius;
-	gtk_widget_get_allocation(gmap->area, &allocation);
-	guimap_scale_to_size(gmap, allocation.width, allocation.height);
+
+	guimap_scale_with_radius(gmap, radius);
+
+	gmap->x_margin =
+	    event->x - (event->x -
+			gmap->x_margin) / old_width *
+	    (gdouble) gmap->width;
+	gmap->y_margin =
+	    event->y - (event->y -
+			gmap->y_margin) / old_height *
+	    (gdouble) gmap->height;
 
 	guimap_display(gmap);
 	gtk_widget_queue_draw(gmap->area);
@@ -263,7 +259,8 @@ GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width, gint height)
 
 	gtk_widget_set_events(gmap->area, GDK_EXPOSURE_MASK
 			      | GDK_POINTER_MOTION_MASK
-			      | GDK_POINTER_MOTION_HINT_MASK);
+			      | GDK_POINTER_MOTION_HINT_MASK
+			      | GDK_SCROLL_MASK);
 
 	gtk_widget_set_size_request(gmap->area, width, height);
 	g_signal_connect(G_OBJECT(gmap->area), "draw",
@@ -1030,8 +1027,6 @@ void guimap_scale_with_radius(GuiMap * gmap, gint radius)
 	gmap->x_point = radius * cos(M_PI / 6.0);
 	gmap->y_point = radius * sin(M_PI / 6.0);
 
-	gmap->x_margin = gmap->y_margin = 0;
-
 	if (gmap->map == NULL)
 		return;
 
@@ -1064,13 +1059,7 @@ void guimap_scale_to_size(GuiMap * gmap, gint width, gint height)
 	gint height_radius;
 
 	if (gmap->is_custom_view) {
-		gint x_margin = gmap->x_margin;
-		gint y_margin = gmap->y_margin;
 		guimap_scale_with_radius(gmap, gmap->hex_radius);
-		gmap->x_margin = x_margin;
-		gmap->y_margin = y_margin;
-		gmap->width = width;
-		gmap->height = height;
 		return;
 	}
 
@@ -1087,11 +1076,8 @@ void guimap_scale_to_size(GuiMap * gmap, gint width, gint height)
 	else
 		guimap_scale_with_radius(gmap, height_radius);
 
-	gmap->x_margin += (width - gmap->width) / 2;
-	gmap->y_margin += (height - gmap->height) / 2;
-
-	gmap->width = width;
-	gmap->height = height;
+	gmap->x_margin = (width - gmap->width) / 2;
+	gmap->y_margin = (height - gmap->height) / 2;
 }
 
 /** @return The radius of the chit for the current font size */
@@ -1128,6 +1114,7 @@ void guimap_display(GuiMap * gmap)
 	PangoContext *pc;
 	PangoFontDescription *pfd;
 	gint font_size;
+	cairo_rectangle_t extents;
 
 	if (gmap->surface == NULL)
 		return;
@@ -1143,7 +1130,8 @@ void guimap_display(GuiMap * gmap)
 				    [BOARD_TILE], 0, 0);
 	cairo_pattern_set_extend(cairo_get_source(gmap->cr),
 				 CAIRO_EXTEND_REPEAT);
-	cairo_rectangle(gmap->cr, 0, 0, gmap->width, gmap->height);
+	cairo_recording_surface_get_extents(gmap->surface, &extents);
+	cairo_rectangle(gmap->cr, 0, 0, extents.width, extents.height);
 	cairo_fill(gmap->cr);
 
 	if (gmap->layout != NULL)
@@ -1205,25 +1193,10 @@ void guimap_zoom_normal(GuiMap * gmap)
 void guimap_zoom_center_map(GuiMap * gmap)
 {
 	GtkAllocation allocation;
-	gint width;
-	gint height;
-
-	if (!gmap->is_custom_view)
-		return;
-	width = gmap->map->x_size * 2 * gmap->x_point + gmap->x_point;
-	if (gmap->map->shrink_left)
-		width -= gmap->x_point;
-	if (gmap->map->shrink_right)
-		width -= gmap->x_point;
 
 	gtk_widget_get_allocation(gmap->area, &allocation);
-	gmap->x_margin = allocation.width / 2 - width / 2;
-
-	height = (gmap->map->y_size - 1) *
-	    (gmap->hex_radius + gmap->y_point)
-	    + 2 * gmap->hex_radius;
-
-	gmap->y_margin = allocation.height / 2 - height / 2;
+	gmap->x_margin = allocation.width / 2 - gmap->width / 2;
+	gmap->y_margin = allocation.height / 2 - gmap->height / 2;
 
 	guimap_display(gmap);
 	gtk_widget_queue_draw(gmap->area);

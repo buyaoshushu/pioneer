@@ -213,8 +213,8 @@ static GdkPixbuf *render_map(GtkWidget * base_widget, const Map * map)
 	guimap_display(gmap);
 
 	pixbuf =
-	    gdk_pixbuf_get_from_surface(gmap->surface, 0, 0, gmap->width,
-					gmap->height);
+	    gdk_pixbuf_get_from_surface(gmap->surface, 0, 0, MAP_WIDTH,
+					MAP_HEIGHT);
 	guimap_delete(gmap);
 
 	return pixbuf;
