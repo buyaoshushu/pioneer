@@ -1229,8 +1229,6 @@ int main(int argc, char *argv[])
 
 	set_enable_debug(enable_debug);
 
-	prepare_gtk_for_close_button_on_tab();
-
 	toplevel = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	/* Name in the titlebar of the server */
 	gtk_window_set_title(GTK_WINDOW(toplevel), _("Pioneers Server"));

@@ -54,11 +54,6 @@ void check_victory_points(GameParams * param, GtkWindow * main_window);
 
 extern UIDriver GTK_Driver;
 
-/** Prepare Gtk for close buttons on tabs.
- *  Needs to be called once
-*/
-void prepare_gtk_for_close_button_on_tab(void);
-
 /** Create a label with a close button.
  * @param label_text Text for the label
  * @param tooltip_text Tooltip for the close button
