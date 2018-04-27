@@ -1,3 +1,8 @@
+2018-04-27  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/gui.c, common/gtk/common_gtk.c, common/gtk/common_gtk.h,
+	server/gtk/main.c: Removed the need for a custom style for the close
+	button on a notebook tab.
+	
 2018-04-25  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/guimap.c, common/gtk/guimap.h, common/gtk/select-game.c:
 	(Re-)enable zoom functionality. Simplify code related to zoom.

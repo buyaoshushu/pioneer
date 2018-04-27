@@ -1605,8 +1605,6 @@ GtkWidget *gui_build_interface(void)
 	/* The name of the application */
 	gtk_window_set_title(GTK_WINDOW(app_window), _("Pioneers"));
 
-	prepare_gtk_for_close_button_on_tab();
-
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_widget_show(vbox);
 	gtk_container_add(GTK_CONTAINER(app_window), vbox);
