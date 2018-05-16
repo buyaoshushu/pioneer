@@ -1,3 +1,7 @@
+2018-05-16  Roland Clobus <rclobus@rclobus.nl>
+	* common/gtk/common_gtk.c: Fixed compiler warning from previous
+	commit.
+
 2018-04-27  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/gui.c, common/gtk/common_gtk.c, common/gtk/common_gtk.h,
 	server/gtk/main.c: Removed the need for a custom style for the close
