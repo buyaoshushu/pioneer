@@ -27,7 +27,6 @@
 #include "common_gtk.h"
 #include "cards.h"
 
-static GtkCssProvider *small_button_style_provider;
 static GtkWidget *message_txt;
 static GtkWidget *message_container;
 static gboolean msg_colors = TRUE;
