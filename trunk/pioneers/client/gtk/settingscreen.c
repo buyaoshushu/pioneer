@@ -31,19 +31,18 @@ enum { TYPE_NUM,
 	TYPE_STRING
 };
 
-static void add_setting_desc(GtkWidget * table, guint row, guint col,
+static void add_setting_desc(GtkWidget * grid, guint row, guint col,
 			     const gchar * desc)
 {
 	GtkWidget *label;
 
 	label = gtk_label_new(desc);
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, col, col + 1, row,
-			 row + 1, GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), label, col, row, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5f);
 }
 
-static void add_setting_desc_with_image(GtkWidget * table, guint row,
+static void add_setting_desc_with_image(GtkWidget * grid, guint row,
 					guint col, const gchar * desc,
 					const gchar * iconname)
 {
@@ -51,13 +50,12 @@ static void add_setting_desc_with_image(GtkWidget * table, guint row,
 
 	icon = gtk_image_new_from_stock(iconname, GTK_ICON_SIZE_MENU);
 	gtk_widget_show(icon);
-	gtk_table_attach(GTK_TABLE(table), icon, col, col + 1, row,
-			 row + 1, GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), icon, col, row, 1, 1);
 
-	add_setting_desc(table, row, col + 1, desc);
+	add_setting_desc(grid, row, col + 1, desc);
 }
 
-static void add_setting_val(GtkWidget * table, guint row, guint col,
+static void add_setting_val(GtkWidget * grid, guint row, guint col,
 			    gint type, gint int_val,
 			    const gchar * char_val, gboolean right_aligned)
 {
@@ -91,9 +89,7 @@ static void add_setting_val(GtkWidget * table, guint row, guint col,
 	label = gtk_label_new(label_var);
 	g_free(label_var);
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label,
-			 col, col + 1, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), label, col, row, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(label),
 			       (right_aligned ? 1.0 : 0.0), 0.5f);
 }
@@ -105,7 +101,7 @@ static GtkWidget *settings_create_content(void)
 	GtkWidget *alignment;
 	GtkWidget *vbox;
 	GtkWidget *hbox;
-	GtkWidget *table;
+	GtkWidget *grid;
 	GtkWidget *label;
 	gchar *sevens_desc;
 	gchar *island_bonus;
@@ -139,42 +135,42 @@ static GtkWidget *settings_create_content(void)
 	gtk_widget_show(alignment);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), alignment, FALSE, FALSE, 0);
 
-	table = gtk_table_new(13, 2, FALSE);
-	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(alignment), table);
-	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 6);
+	grid = gtk_grid_new();
+	gtk_widget_show(grid);
+	gtk_container_add(GTK_CONTAINER(alignment), grid);
+	gtk_grid_set_row_spacing(GTK_GRID(grid), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 
 	row = 0;
-	add_setting_desc(table, row, 0, _("Number of players:"));
-	add_setting_val(table, row, 1, TYPE_NUM, game_params->num_players,
+	add_setting_desc(grid, row, 0, _("Number of players:"));
+	add_setting_val(grid, row, 1, TYPE_NUM, game_params->num_players,
 			NULL, FALSE);
 	row++;
-	add_setting_desc(table, row, 0, _("Victory point target:"));
-	add_setting_val(table, row, 1, TYPE_NUM,
+	add_setting_desc(grid, row, 0, _("Victory point target:"));
+	add_setting_val(grid, row, 1, TYPE_NUM,
 			game_params->victory_points, NULL, FALSE);
 	row++;
-	add_setting_desc(table, row, 0, _("Random terrain:"));
-	add_setting_val(table, row, 1, TYPE_BOOL,
+	add_setting_desc(grid, row, 0, _("Random terrain:"));
+	add_setting_val(grid, row, 1, TYPE_BOOL,
 			game_params->random_terrain, NULL, FALSE);
 	row++;
-	add_setting_desc(table, row, 0, _("Allow trade between players:"));
-	add_setting_val(table, row, 1, TYPE_BOOL,
+	add_setting_desc(grid, row, 0, _("Allow trade between players:"));
+	add_setting_val(grid, row, 1, TYPE_BOOL,
 			game_params->domestic_trade, NULL, FALSE);
 	row++;
-	add_setting_desc(table, row, 0,
+	add_setting_desc(grid, row, 0,
 			 _("Allow trade only before building or buying:"));
-	add_setting_val(table, row, 1, TYPE_BOOL,
-			game_params->strict_trade, NULL, FALSE);
+	add_setting_val(grid, row, 1, TYPE_BOOL, game_params->strict_trade,
+			NULL, FALSE);
 	row++;
-	add_setting_desc(table, row, 0,
+	add_setting_desc(grid, row, 0,
 			 _("Check victory only at end of turn:"));
-	add_setting_val(table, row, 1, TYPE_BOOL,
+	add_setting_val(grid, row, 1, TYPE_BOOL,
 			game_params->check_victory_at_end_of_turn, NULL,
 			FALSE);
 	row++;
-	add_setting_desc(table, row, 0, _("Amount of each resource:"));
-	add_setting_val(table, row, 1, TYPE_NUM,
+	add_setting_desc(grid, row, 0, _("Amount of each resource:"));
+	add_setting_val(grid, row, 1, TYPE_NUM,
 			game_params->resource_count, NULL, FALSE);
 
 	if (game_params->sevens_rule == 0) {
@@ -187,32 +183,32 @@ static GtkWidget *settings_create_content(void)
 		sevens_desc = g_strdup(_("Unknown"));
 	}
 	row++;
-	add_setting_desc(table, row, 0, _("Sevens rule:"));
-	add_setting_val(table, row, 1, TYPE_STRING, 0, sevens_desc, FALSE);
+	add_setting_desc(grid, row, 0, _("Sevens rule:"));
+	add_setting_val(grid, row, 1, TYPE_STRING, 0, sevens_desc, FALSE);
 	g_free(sevens_desc);
 
 	row++;
-	add_setting_desc(table, row, 0,
+	add_setting_desc(grid, row, 0,
 			 _("Use dice deck instead of dice:"));
-	add_setting_val(table, row, 1, TYPE_BOOL,
+	add_setting_val(grid, row, 1, TYPE_BOOL,
 			game_params->use_dice_deck, NULL, FALSE);
 
 	row++;
-	add_setting_desc(table, row, 0, _("Number of dice decks:"));
-	add_setting_val(table, row, 1, TYPE_NUM,
+	add_setting_desc(grid, row, 0, _("Number of dice decks:"));
+	add_setting_val(grid, row, 1, TYPE_NUM,
 			game_params->num_dice_decks, NULL, FALSE);
 
 	row++;
-	add_setting_desc(table, row, 0,
+	add_setting_desc(grid, row, 0,
 			 _(""
 			   "Number of dice cards removed after shuffling:"));
-	add_setting_val(table, row, 1, TYPE_NUM,
+	add_setting_val(grid, row, 1, TYPE_NUM,
 			game_params->num_removed_dice_cards, NULL, FALSE);
 
 	row++;
-	add_setting_desc(table, row, 0,
+	add_setting_desc(grid, row, 0,
 			 _("Use the pirate to block ships:"));
-	add_setting_val(table, row, 1, TYPE_BOOL, game_params->use_pirate,
+	add_setting_val(grid, row, 1, TYPE_BOOL, game_params->use_pirate,
 			NULL, FALSE);
 
 	if (game_params->island_discovery_bonus) {
@@ -240,9 +236,8 @@ static GtkWidget *settings_create_content(void)
 		island_bonus = g_strdup(_("No"));
 	}
 	row++;
-	add_setting_desc(table, row, 0, _("Island discovery bonuses:"));
-	add_setting_val(table, row, 1, TYPE_STRING, 0, island_bonus,
-			FALSE);
+	add_setting_desc(grid, row, 0, _("Island discovery bonuses:"));
+	add_setting_val(grid, row, 1, TYPE_STRING, 0, island_bonus, FALSE);
 	g_free(island_bonus);
 
 	/* Double space, otherwise the columns are too close */
@@ -267,46 +262,46 @@ static GtkWidget *settings_create_content(void)
 	gtk_widget_show(alignment);
 	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, TRUE, 0);
 
-	table = gtk_table_new(6, 3, FALSE);
-	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(alignment), table);
-	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 6);
+	grid = gtk_grid_new();
+	gtk_widget_show(grid);
+	gtk_container_add(GTK_CONTAINER(alignment), grid);
+	gtk_grid_set_row_spacing(GTK_GRID(grid), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 	row = 0;
 
-	add_setting_desc_with_image(table, row, 0, _("Roads:"),
+	add_setting_desc_with_image(grid, row, 0, _("Roads:"),
 				    PIONEERS_PIXMAP_ROAD);
-	add_setting_val(table, row, 2, TYPE_NUM,
+	add_setting_val(grid, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_ROAD], NULL,
 			TRUE);
 	row++;
-	add_setting_desc_with_image(table, row, 0, _("Settlements:"),
+	add_setting_desc_with_image(grid, row, 0, _("Settlements:"),
 				    PIONEERS_PIXMAP_SETTLEMENT);
-	add_setting_val(table, row, 2, TYPE_NUM,
+	add_setting_val(grid, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_SETTLEMENT],
 			NULL, TRUE);
 	row++;
-	add_setting_desc_with_image(table, row, 0, _("Cities:"),
+	add_setting_desc_with_image(grid, row, 0, _("Cities:"),
 				    PIONEERS_PIXMAP_CITY);
-	add_setting_val(table, row, 2, TYPE_NUM,
+	add_setting_val(grid, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_CITY], NULL,
 			TRUE);
 	row++;
-	add_setting_desc_with_image(table, row, 0, _("City walls:"),
+	add_setting_desc_with_image(grid, row, 0, _("City walls:"),
 				    PIONEERS_PIXMAP_CITY_WALL);
-	add_setting_val(table, row, 2, TYPE_NUM,
+	add_setting_val(grid, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_CITY_WALL], NULL,
 			TRUE);
 	row++;
-	add_setting_desc_with_image(table, row, 0, _("Ships:"),
+	add_setting_desc_with_image(grid, row, 0, _("Ships:"),
 				    PIONEERS_PIXMAP_SHIP);
-	add_setting_val(table, row, 2, TYPE_NUM,
+	add_setting_val(grid, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_SHIP], NULL,
 			TRUE);
 	row++;
-	add_setting_desc_with_image(table, row, 0, _("Bridges:"),
+	add_setting_desc_with_image(grid, row, 0, _("Bridges:"),
 				    PIONEERS_PIXMAP_BRIDGE);
-	add_setting_val(table, row, 2, TYPE_NUM,
+	add_setting_val(grid, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_BRIDGE], NULL,
 			TRUE);
 
@@ -327,46 +322,46 @@ static GtkWidget *settings_create_content(void)
 	gtk_widget_show(alignment);
 	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, TRUE, 0);
 
-	table = gtk_table_new(9, 2, FALSE);
-	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(alignment), table);
-	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 6);
+	grid = gtk_grid_new();
+	gtk_widget_show(grid);
+	gtk_container_add(GTK_CONTAINER(alignment), grid);
+	gtk_grid_set_row_spacing(GTK_GRID(grid), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 
-	add_setting_desc(table, 0, 0, _("Road building cards:"));
-	add_setting_val(table, 0, 1, TYPE_NUM,
+	add_setting_desc(grid, 0, 0, _("Road building cards:"));
+	add_setting_val(grid, 0, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_ROAD_BUILDING],
 			NULL, TRUE);
-	add_setting_desc(table, 1, 0, _("Monopoly cards:"));
-	add_setting_val(table, 1, 1, TYPE_NUM,
+	add_setting_desc(grid, 1, 0, _("Monopoly cards:"));
+	add_setting_val(grid, 1, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_MONOPOLY],
 			NULL, TRUE);
-	add_setting_desc(table, 2, 0, _("Year of plenty cards:"));
-	add_setting_val(table, 2, 1, TYPE_NUM,
+	add_setting_desc(grid, 2, 0, _("Year of plenty cards:"));
+	add_setting_val(grid, 2, 1, TYPE_NUM,
 			game_params->num_develop_type
 			[DEVEL_YEAR_OF_PLENTY], NULL, TRUE);
-	add_setting_desc(table, 3, 0, _("Chapel cards:"));
-	add_setting_val(table, 3, 1, TYPE_NUM,
+	add_setting_desc(grid, 3, 0, _("Chapel cards:"));
+	add_setting_val(grid, 3, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_CHAPEL], NULL,
 			TRUE);
-	add_setting_desc(table, 4, 0, _("Pioneer university cards:"));
-	add_setting_val(table, 4, 1, TYPE_NUM,
+	add_setting_desc(grid, 4, 0, _("Pioneer university cards:"));
+	add_setting_val(grid, 4, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_UNIVERSITY],
 			NULL, TRUE);
-	add_setting_desc(table, 5, 0, _("Governor's house cards:"));
-	add_setting_val(table, 5, 1, TYPE_NUM,
+	add_setting_desc(grid, 5, 0, _("Governor's house cards:"));
+	add_setting_val(grid, 5, 1, TYPE_NUM,
 			game_params->num_develop_type
 			[DEVEL_GOVERNORS_HOUSE], NULL, TRUE);
-	add_setting_desc(table, 6, 0, _("Library cards:"));
-	add_setting_val(table, 6, 1, TYPE_NUM,
+	add_setting_desc(grid, 6, 0, _("Library cards:"));
+	add_setting_val(grid, 6, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_LIBRARY], NULL,
 			TRUE);
-	add_setting_desc(table, 7, 0, _("Market cards:"));
-	add_setting_val(table, 7, 1, TYPE_NUM,
+	add_setting_desc(grid, 7, 0, _("Market cards:"));
+	add_setting_val(grid, 7, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_MARKET], NULL,
 			TRUE);
-	add_setting_desc(table, 8, 0, _("Soldier cards:"));
-	add_setting_val(table, 8, 1, TYPE_NUM,
+	add_setting_desc(grid, 8, 0, _("Soldier cards:"));
+	add_setting_val(grid, 8, 1, TYPE_NUM,
 			game_params->num_develop_type[DEVEL_SOLDIER], NULL,
 			TRUE);
 

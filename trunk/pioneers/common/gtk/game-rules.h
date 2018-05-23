@@ -16,7 +16,7 @@ typedef struct _GameRules GameRules;
 typedef struct _GameRulesClass GameRulesClass;
 
 struct _GameRules {
-	GtkTable table;
+	GtkGrid grid;
 
 	GtkCheckButton *random_terrain;
 	GtkWidget *radio_sevens[3];	/* radio buttons for sevens rules */
@@ -31,7 +31,7 @@ struct _GameRules {
 };
 
 struct _GameRulesClass {
-	GtkTableClass parent_class;
+	GtkGridClass parent_class;
 };
 
 GType game_rules_get_type(void);

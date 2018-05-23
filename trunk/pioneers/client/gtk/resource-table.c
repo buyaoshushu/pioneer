@@ -53,7 +53,7 @@ GType resource_table_get_type(void)
 			NULL
 		};
 		rt_type =
-		    g_type_register_static(GTK_TYPE_TABLE, "ResourceTable",
+		    g_type_register_static(GTK_TYPE_GRID, "ResourceTable",
 					   &rt_info, 0);
 	}
 	return rt_type;
@@ -142,19 +142,16 @@ GtkWidget *resource_table_new(const gchar * title,
 	/* Don't set rt->with_total yet, wait for _set_total */
 
 	rt->bank_offset = with_bank ? 1 : 0;
-	gtk_table_resize(GTK_TABLE(rt),
-			 NO_RESOURCE + 1 + with_total ? 1 : 0,
-			 5 + rt->bank_offset);
-	gtk_table_set_row_spacings(GTK_TABLE(rt), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(rt), 6);
+	gtk_grid_set_row_spacing(GTK_GRID(rt), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(rt), 5);
 
 	temp = g_strconcat("<b>", title, "</b>", NULL);
 	widget = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(widget), temp);
 	g_free(temp);
 	gtk_widget_show(widget);
-	gtk_table_attach_defaults(GTK_TABLE(rt), widget,
-				  0, 5 + rt->bank_offset, 0, 1);
+	gtk_grid_attach(GTK_GRID(rt), widget, 0, 0, 5 + rt->bank_offset,
+			1);
 	gtk_misc_set_alignment(GTK_MISC(widget), 0, 0.5);
 
 	row = 1;
@@ -164,14 +161,12 @@ GtkWidget *resource_table_new(const gchar * title,
 		widget = rt->row[i].label_widget =
 		    gtk_label_new(resource_name(i, TRUE));
 		gtk_widget_show(widget);
-		gtk_table_attach_defaults(GTK_TABLE(rt), widget,
-					  0, 1, row, row + 1);
+		gtk_grid_attach(GTK_GRID(rt), widget, 0, row, 1, 1);
 		gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
 
 		widget = rt->row[i].hand_widget = gtk_entry_new();
 		gtk_widget_show(widget);
-		gtk_table_attach_defaults(GTK_TABLE(rt), widget,
-					  1, 2, row, row + 1);
+		gtk_grid_attach(GTK_GRID(rt), widget, 1, row, 1, 1);
 		gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
 		gtk_widget_set_sensitive(widget, FALSE);
 		gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
@@ -188,8 +183,7 @@ GtkWidget *resource_table_new(const gchar * title,
 				 G_CALLBACK(less_resource_cb),
 				 &rt->row[i]);
 		gtk_widget_show(widget);
-		gtk_table_attach_defaults(GTK_TABLE(rt), widget,
-					  2, 3, row, row + 1);
+		gtk_grid_attach(GTK_GRID(rt), widget, 2, row, 1, 1);
 		gtk_widget_set_tooltip_text(widget,
 					    /* Tooltip for decreasing the selected amount */
 					    _(""
@@ -199,8 +193,8 @@ GtkWidget *resource_table_new(const gchar * title,
 			rt->row[i].bank = get_bank()[i];
 			widget = rt->row[i].bank_widget = gtk_entry_new();
 			gtk_widget_show(widget);
-			gtk_table_attach_defaults(GTK_TABLE(rt), widget,
-						  3, 4, row, row + 1);
+			gtk_grid_attach(GTK_GRID(rt), widget, 3, row, 1,
+					1);
 			gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
 			gtk_widget_set_sensitive(widget, FALSE);
 			gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
@@ -217,10 +211,8 @@ GtkWidget *resource_table_new(const gchar * title,
 				 G_CALLBACK(more_resource_cb),
 				 &rt->row[i]);
 		gtk_widget_show(widget);
-		gtk_table_attach_defaults(GTK_TABLE(rt), widget,
-					  3 + rt->bank_offset,
-					  4 + rt->bank_offset, row,
-					  row + 1);
+		gtk_grid_attach(GTK_GRID(rt), widget, 3 + rt->bank_offset,
+				row, 1, 1);
 		gtk_widget_set_tooltip_text(widget,
 					    /* Tooltip for increasing the selected amount */
 					    _(""
@@ -229,10 +221,8 @@ GtkWidget *resource_table_new(const gchar * title,
 		widget = rt->row[i].amount_widget =
 		    gtk_spin_button_new_with_range(0, 99, 1);
 		gtk_widget_show(widget);
-		gtk_table_attach_defaults(GTK_TABLE(rt), widget,
-					  4 + rt->bank_offset,
-					  5 + rt->bank_offset, row,
-					  row + 1);
+		gtk_grid_attach(GTK_GRID(rt), widget, 4 + rt->bank_offset,
+				row, 1, 1);
 		gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
 		gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
 		g_signal_connect(G_OBJECT(widget), "value-changed",
@@ -270,16 +260,15 @@ void resource_table_set_total(ResourceTable * rt, const gchar * text,
 
 	widget = gtk_label_new(text);
 	gtk_widget_show(widget);
-	gtk_table_attach_defaults(GTK_TABLE(rt), widget,
-				  0, 4 + rt->bank_offset, row, row + 1);
+	gtk_grid_attach(GTK_GRID(rt), widget, 0, row, 4 + rt->bank_offset,
+			1);
 	gtk_misc_set_alignment(GTK_MISC(widget), 1.0, 0.5);
 
 	widget = rt->total_widget =
 	    gtk_spin_button_new_with_range(0, total, 1);
 	gtk_widget_show(widget);
-	gtk_table_attach_defaults(GTK_TABLE(rt), widget,
-				  4 + rt->bank_offset, 5 + rt->bank_offset,
-				  row, row + 1);
+	gtk_grid_attach(GTK_GRID(rt), widget, 4 + rt->bank_offset, row, 1,
+			1);
 	gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
 	gtk_widget_set_sensitive(widget, FALSE);
 	gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);

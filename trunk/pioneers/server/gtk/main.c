@@ -526,7 +526,7 @@ static GtkWidget *build_game_rules(void)
  */
 static GtkWidget *build_server_frame(void)
 {
-	/* table */
+	/* grid */
 	/*       server port label */
 	/*        - port entry */
 	/*       register toggle */
@@ -536,7 +536,7 @@ static GtkWidget *build_server_frame(void)
 	/*        - hostname entry */
 	/*       random toggle */
 
-	GtkWidget *table;
+	GtkWidget *grid;
 	GtkWidget *label;
 	GtkWidget *toggle;
 	GtkWidget *port_entry;
@@ -544,18 +544,18 @@ static GtkWidget *build_server_frame(void)
 	gint novar;
 	gchar *metaserver_name;
 
-	/* table */
-	table = gtk_table_new(6, 2, FALSE);
-	gtk_widget_show(table);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 3);
-	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
+	/* grid */
+	grid = gtk_grid_new();
+	gtk_widget_set_hexpand(grid, FALSE);
+	gtk_widget_show(grid);
+	gtk_container_set_border_width(GTK_CONTAINER(grid), 3);
+	gtk_grid_set_row_spacing(GTK_GRID(grid), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 
 	/* server port label */
 	label = gtk_label_new(_("Server port"));
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 0, 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 	/* port entry */
@@ -563,9 +563,8 @@ static GtkWidget *build_server_frame(void)
 	g_signal_connect(G_OBJECT(port_entry), "changed",
 			 G_CALLBACK(port_entry_changed_cb), NULL);
 	gtk_widget_show(port_entry);
-	gtk_table_attach(GTK_TABLE(table), port_entry, 1, 2, 0, 1,
-			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
-			 0);
+	gtk_widget_set_hexpand(port_entry, TRUE);
+	gtk_grid_attach(GTK_GRID(grid), port_entry, 1, 0, 1, 1);
 	gtk_widget_set_tooltip_text(port_entry,
 				    _("The port for the game server"));
 
@@ -578,9 +577,7 @@ static GtkWidget *build_server_frame(void)
 	/* register_toggle */
 	toggle = gtk_check_button_new_with_label(_("Register server"));
 	gtk_widget_show(toggle);
-	gtk_table_attach(GTK_TABLE(table), toggle, 0, 2, 1, 2,
-			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
-			 0);
+	gtk_grid_attach(GTK_GRID(grid), toggle, 0, 1, 2, 1);
 	g_signal_connect(G_OBJECT(toggle), "toggled",
 			 G_CALLBACK(register_toggle_cb), NULL);
 	gtk_widget_set_tooltip_text(toggle,
@@ -592,16 +589,13 @@ static GtkWidget *build_server_frame(void)
 	/* metaserver label */
 	label = gtk_label_new(_("Metaserver"));
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), label, 0, 2, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 	/* meta entry */
 	meta_entry = metaserver_new();
 	gtk_widget_show(meta_entry);
-	gtk_table_attach(GTK_TABLE(table), meta_entry, 1, 2, 2, 3,
-			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
-			 0);
+	gtk_grid_attach(GTK_GRID(grid), meta_entry, 1, 2, 1, 1);
 	gtk_widget_set_sensitive(meta_entry, register_server);
 
 	/* initialize meta entry */
@@ -617,8 +611,7 @@ static GtkWidget *build_server_frame(void)
 	/* hostname label */
 	label = gtk_label_new(_("Reported hostname"));
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 0, 1, 3, 4,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), label, 0, 3, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 	/* hostname entry */
@@ -626,9 +619,8 @@ static GtkWidget *build_server_frame(void)
 	g_signal_connect(G_OBJECT(overridden_hostname_entry), "changed",
 			 G_CALLBACK(overridden_hostname_changed_cb), NULL);
 	gtk_widget_show(overridden_hostname_entry);
-	gtk_table_attach(GTK_TABLE(table), overridden_hostname_entry, 1, 2,
-			 3, 4, GTK_EXPAND | GTK_FILL,
-			 GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), overridden_hostname_entry, 1, 3, 1,
+			1);
 	gtk_widget_set_tooltip_text(overridden_hostname_entry,
 				    _(""
 				      "The public name of this computer "
@@ -651,9 +643,7 @@ static GtkWidget *build_server_frame(void)
 	/* random toggle */
 	toggle = gtk_check_button_new_with_label(_("Random turn order"));
 	gtk_widget_show(toggle);
-	gtk_table_attach(GTK_TABLE(table), toggle, 0, 2, 4, 5,
-			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
-			 0);
+	gtk_grid_attach(GTK_GRID(grid), toggle, 0, 4, 2, 1);
 	g_signal_connect(G_OBJECT(toggle), "toggled",
 			 G_CALLBACK(random_toggle_cb), NULL);
 	gtk_widget_set_tooltip_text(toggle, _("Randomize turn order"));
@@ -663,7 +653,7 @@ static GtkWidget *build_server_frame(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle),
 				     random_order);
 
-	return table;
+	return grid;
 }
 
 static void

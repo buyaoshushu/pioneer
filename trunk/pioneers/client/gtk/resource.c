@@ -37,34 +37,34 @@ static void rebuild_single_resource(Resource type)
 						    resource_asset(type));
 }
 
-static void create_resource_image(GtkTable * table, Resource type,
+static void create_resource_image(GtkGrid * grid, Resource type,
 				  guint column, guint row)
 {
 	GtkWidget *box;
 
 	resource[type] = box = resource_view_new();
 	gtk_widget_show(box);
-	gtk_table_attach(table, box, column, column + 1, row, row + 1,
-			 GTK_EXPAND | GTK_FILL, GTK_FILL, 3, 0);
+	gtk_grid_attach(grid, box, column, row, 1, 1);
 }
 
 GtkWidget *resource_build_panel(void)
 {
-	GtkWidget *table;
+	GtkWidget *grid;
 	GtkWidget *label;
 	GtkWidget *alignment;
 	GtkWidget *total;
 	PangoLayout *layout;
 	gint width_00, height_00;
 
-	table = gtk_table_new(4, 2, TRUE);
-	gtk_widget_show(table);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
+	grid = gtk_grid_new();
+	gtk_widget_show(grid);
+	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
+	gtk_grid_set_column_homogeneous(GTK_GRID(grid), TRUE);
 
 	alignment = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
 	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 0, 3, 3);
 	gtk_widget_show(alignment);
-	gtk_table_attach_defaults(GTK_TABLE(table), alignment, 0, 2, 0, 1);
+	gtk_grid_attach(GTK_GRID(grid), alignment, 0, 0, 2, 1);
 
 	label = gtk_label_new(NULL);
 	/* Caption for overview of the resources of the player */
@@ -73,11 +73,11 @@ GtkWidget *resource_build_panel(void)
 	gtk_container_add(GTK_CONTAINER(alignment), label);
 	gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
 
-	create_resource_image(GTK_TABLE(table), BRICK_RESOURCE, 0, 1);
-	create_resource_image(GTK_TABLE(table), GRAIN_RESOURCE, 0, 2);
-	create_resource_image(GTK_TABLE(table), ORE_RESOURCE, 0, 3);
-	create_resource_image(GTK_TABLE(table), WOOL_RESOURCE, 1, 1);
-	create_resource_image(GTK_TABLE(table), LUMBER_RESOURCE, 1, 2);
+	create_resource_image(GTK_GRID(grid), BRICK_RESOURCE, 0, 1);
+	create_resource_image(GTK_GRID(grid), GRAIN_RESOURCE, 0, 2);
+	create_resource_image(GTK_GRID(grid), ORE_RESOURCE, 0, 3);
+	create_resource_image(GTK_GRID(grid), WOOL_RESOURCE, 1, 1);
+	create_resource_image(GTK_GRID(grid), LUMBER_RESOURCE, 1, 2);
 
 	total = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	gtk_widget_show(total);
@@ -98,11 +98,9 @@ GtkWidget *resource_build_panel(void)
 	gtk_box_pack_start(GTK_BOX(total), label, TRUE, TRUE, 3);
 	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
 
-	gtk_table_attach(GTK_TABLE(table), total, 1, 2, 3, 4,
-			 (GtkAttachOptions) GTK_EXPAND | GTK_FILL,
-			 (GtkAttachOptions) GTK_FILL, 3, 0);
+	gtk_grid_attach(GTK_GRID(grid), total, 1, 3, 1, 1);;
 
-	return table;
+	return grid;
 }
 
 void frontend_resource_change(Resource type, G_GNUC_UNUSED gint new_amount)
@@ -112,7 +110,7 @@ void frontend_resource_change(Resource type, G_GNUC_UNUSED gint new_amount)
 
 		snprintf(buff, sizeof(buff), "%d", resource_total());
 		gtk_label_set_text(GTK_LABEL(asset_total_label), buff);
-		/* Force resize of the table, this is needed because
+		/* Force resize of the grid, this is needed because
 		 * GTK does not correctly redraw a label when the amounts
 		 * cross the barrier of 1 or 2 positions.
 		 */

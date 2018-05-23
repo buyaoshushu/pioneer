@@ -40,7 +40,7 @@ GType game_rules_get_type(void)
 			NULL
 		};
 		gp_type =
-		    g_type_register_static(GTK_TYPE_TABLE,
+		    g_type_register_static(GTK_TYPE_GRID,
 					   "GameRules", &gp_info, 0);
 	}
 	return gp_type;
@@ -54,8 +54,7 @@ static void add_row(GameRules * gr, const gchar * name,
 
 	check_btn = gtk_check_button_new_with_label(name);
 	gtk_widget_show(check_btn);
-	gtk_table_attach_defaults(GTK_TABLE(gr), check_btn,
-				  0, 2, row, row + 1);
+	gtk_grid_attach(GTK_GRID(gr), check_btn, 0, row, 2, 1);
 	*check = GTK_CHECK_BUTTON(check_btn);
 
 	gtk_widget_set_tooltip_text(check_btn, tooltip);
@@ -71,17 +70,15 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 	gint idx;
 	guint row;
 
-	gtk_table_resize(GTK_TABLE(gr), show_all_rules ? 6 : 3, 2);
-	gtk_table_set_row_spacings(GTK_TABLE(gr), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(gr), 5);
+	gtk_grid_set_row_spacing(GTK_GRID(gr), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(gr), 5);
 
 	row = 0;
 
 	/* Label */
 	label = gtk_label_new(_("Sevens rule"));
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(gr), label, 0, 1, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(gr), label, 0, row, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
 
 	gr->radio_sevens[0] = gtk_radio_button_new_with_label(NULL,
@@ -122,8 +119,8 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 		gtk_box_pack_start(GTK_BOX(vbox_sevens),
 				   gr->radio_sevens[idx], TRUE, TRUE, 0);
 	}
-	gtk_table_attach(GTK_TABLE(gr), vbox_sevens, 1, 2, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(gr), vbox_sevens, 1, row, 1, 1);
+	gtk_widget_set_hexpand(vbox_sevens, TRUE);
 
 	row++;
 	add_row(gr, _("Randomize terrain"), _("Randomize the terrain"),
@@ -154,8 +151,7 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 		/* Label */
 		label = gtk_label_new(_("Number of dice decks"));
 		gtk_widget_show(label);
-		gtk_table_attach(GTK_TABLE(gr), label, 0, 1, row, row + 1,
-				 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+		gtk_grid_attach(GTK_GRID(gr), label, 0, row, 1, 1);
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 		gr->num_dice_decks =
 		    GTK_SPIN_BUTTON(gtk_spin_button_new_with_range
@@ -170,17 +166,15 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 		gtk_widget_set_tooltip_text(GTK_WIDGET(gr->num_dice_decks),
 					    _
 					    ("The number of dice decks (of 36 cards each)"));
-		gtk_table_attach(GTK_TABLE(gr),
-				 GTK_WIDGET(gr->num_dice_decks), 1, 2, row,
-				 row + 1, GTK_FILL, GTK_EXPAND | GTK_FILL,
-				 0, 0);
+		gtk_grid_attach(GTK_GRID(gr),
+				GTK_WIDGET(gr->num_dice_decks), 1, row, 1,
+				1);
 
 		row++;
 		/* Label */
 		label = gtk_label_new(_("Number of removed dice cards"));
 		gtk_widget_show(label);
-		gtk_table_attach(GTK_TABLE(gr), label, 0, 1, row, row + 1,
-				 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+		gtk_grid_attach(GTK_GRID(gr), label, 0, row, 1, 1);
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 		gr->num_removed_dice_cards =
 		    GTK_SPIN_BUTTON(gtk_spin_button_new_with_range
@@ -197,17 +191,15 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 					    (gr->num_removed_dice_cards),
 					    _
 					    ("The number of dice cards that are removed after shuffling the deck"));
-		gtk_table_attach(GTK_TABLE(gr),
-				 GTK_WIDGET(gr->num_removed_dice_cards), 1,
-				 2, row, row + 1, GTK_FILL,
-				 GTK_EXPAND | GTK_FILL, 0, 0);
+		gtk_grid_attach(GTK_GRID(gr),
+				GTK_WIDGET(gr->num_removed_dice_cards), 1,
+				row, 1, 1);
 
 		row++;
 		/* Label */
 		label = gtk_label_new(_("Island discovery bonuses"));
 		gtk_widget_show(label);
-		gtk_table_attach(GTK_TABLE(gr), label, 0, 1, row, row + 1,
-				 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+		gtk_grid_attach(GTK_GRID(gr), label, 0, row, 1, 1);
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 		hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 3);
@@ -238,9 +230,8 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 					      "discovery bonuses"));
 		gtk_box_pack_end(GTK_BOX(hbox), widget, FALSE, FALSE, 0);
 
-		gtk_table_attach(GTK_TABLE(gr), GTK_WIDGET(hbox), 1, 2,
-				 row, row + 1, GTK_FILL,
-				 GTK_EXPAND | GTK_FILL, 0, 0);
+		gtk_grid_attach(GTK_GRID(gr), GTK_WIDGET(hbox), 1, row, 1,
+				1);
 		row++;
 	} else {
 		gr->use_pirate = NULL;

@@ -49,7 +49,7 @@ GType metaserver_get_type(void)
 			NULL
 		};
 		sg_type =
-		    g_type_register_static(GTK_TYPE_TABLE, "MetaServer",
+		    g_type_register_static(GTK_TYPE_GRID, "MetaServer",
 					   &sg_info, 0);
 	}
 	return sg_type;
@@ -80,12 +80,11 @@ static void metaserver_init(MetaServer * ms)
 				       cell, "text", 0, NULL);
 
 	gtk_widget_show(ms->combo_box);
+	gtk_widget_set_hexpand(ms->combo_box, TRUE);
 	gtk_widget_set_tooltip_text(ms->combo_box,
 				    /* Tooltip for the list of metaservers */
 				    _("Select a metaserver"));
-	gtk_table_resize(GTK_TABLE(ms), 1, 1);
-	gtk_table_attach_defaults(GTK_TABLE(ms), ms->combo_box,
-				  0, 1, 0, 1);
+	gtk_grid_attach(GTK_GRID(ms), ms->combo_box, 0, 0, 1, 1);
 
 	/* Default metaserver */
 	default_metaserver_name = get_metaserver_name(TRUE);

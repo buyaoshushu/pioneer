@@ -909,12 +909,12 @@ static GtkWidget *build_create_interface(void)
 			 "change-players",
 			 G_CALLBACK(player_change_cb), NULL);
 
-	gtk_table_get_size(GTK_TABLE(game_settings), &row, NULL);
+	/* Add the number of computer players at the end of the grid */
+	row = 99;
 	/* Label */
 	label = gtk_label_new(_("Number of computer players"));
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(game_settings), label, 0, 1, row,
-			 row + 1, GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(game_settings), label, 0, row, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 	adj = GTK_ADJUSTMENT(gtk_adjustment_new(0,
@@ -927,9 +927,8 @@ static GtkWidget *build_create_interface(void)
 	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(aiplayers_spin), TRUE);
 	gtk_widget_show(aiplayers_spin);
 	gtk_entry_set_alignment(GTK_ENTRY(aiplayers_spin), 1.0);
-	gtk_table_attach(GTK_TABLE(game_settings), aiplayers_spin,
-			 1, 2, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(game_settings), aiplayers_spin, 1, row, 1,
+			1);
 	gtk_widget_set_tooltip_text(aiplayers_spin,
 				    /* Tooltip */
 				    _("The number of computer players"));
@@ -1412,7 +1411,7 @@ static void connect_avahi_cb(G_GNUC_UNUSED GtkWidget * widget,
 void connect_create_dlg(void)
 {
 	GtkWidget *dlg_vbox;
-	GtkWidget *table;
+	GtkWidget *grid;
 	GtkWidget *lbl;
 	GtkWidget *hbox;
 	GtkWidget *btn;
@@ -1452,19 +1451,18 @@ void connect_create_dlg(void)
 	dlg_vbox = gtk_dialog_get_content_area(GTK_DIALOG(connect_dlg));
 	gtk_widget_show(dlg_vbox);
 
-	table = gtk_table_new(4, 3, FALSE);
+	grid = gtk_grid_new();
 	row = 0;
-	gtk_widget_show(table);
-	gtk_box_pack_start(GTK_BOX(dlg_vbox), table, FALSE, TRUE, 0);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
-	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
+	gtk_widget_show(grid);
+	gtk_box_pack_start(GTK_BOX(dlg_vbox), grid, FALSE, TRUE, 0);
+	gtk_container_set_border_width(GTK_CONTAINER(grid), 5);
+	gtk_grid_set_row_spacing(GTK_GRID(grid), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 
 	/* Label */
 	lbl = gtk_label_new(_("Player name"));
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), lbl, 0, row, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
 	name = notifying_string_get(requested_name);
@@ -1474,8 +1472,7 @@ void connect_create_dlg(void)
 	gtk_entry_set_text(GTK_ENTRY(name_entry), name);
 	g_free(name);
 
-	gtk_table_attach(GTK_TABLE(table), name_entry, 1, 2, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), name_entry, 1, row, 1, 1);
 	/* Tooltip */
 	gtk_widget_set_tooltip_text(name_entry, _("Enter your name"));
 
@@ -1485,8 +1482,7 @@ void connect_create_dlg(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(spectator_toggle),
 				     connect_spectator);
 
-	gtk_table_attach(GTK_TABLE(table), spectator_toggle, 2, 3, row,
-			 row + 1, 0, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), spectator_toggle, 2, row, 1, 1);
 	gtk_widget_set_tooltip_text(spectator_toggle,
 				    /* Tooltip for checkbox Spectator */
 				    _
@@ -1495,16 +1491,14 @@ void connect_create_dlg(void)
 
 	sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_widget_show(sep);
-	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 6);
+	gtk_grid_attach(GTK_GRID(grid), sep, 0, row, 3, 1);
 	row++;
 
 #ifdef HAVE_AVAHI
 	/* Label */
 	lbl = gtk_label_new(_("Avahi"));
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), lbl, 0, row, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
 	/* Button */
@@ -1514,14 +1508,11 @@ void connect_create_dlg(void)
 				    /* Tooltip for button Join */
 				    _(""
 				      "Join an automatically discovered game"));
-	gtk_table_attach(GTK_TABLE(table), btn, 2, 3, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), btn, 2, row, 1, 1);
 
 	avahibrowser_entry = avahibrowser_new(btn);
 	gtk_widget_show(avahibrowser_entry);
-	gtk_table_attach(GTK_TABLE(table), avahibrowser_entry, 1, 2, row,
-			 row + 1, GTK_EXPAND | GTK_FILL,
-			 GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), avahibrowser_entry, 1, row, 1, 1);
 	row++;
 
 	g_signal_connect(G_OBJECT(btn), "clicked",
@@ -1533,31 +1524,26 @@ void connect_create_dlg(void)
 
 	sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_widget_show(sep);
-	gtk_table_attach(GTK_TABLE(table), sep, 0, 3, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 6);
+	gtk_grid_attach(GTK_GRID(grid), sep, 0, row, 3, 1);
 	row++;
 #endif				/* HAVE_AVAHI */
 
 	/* Label */
 	lbl = gtk_label_new(_("Metaserver"));
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), lbl, 0, row, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
 	metaserver_entry = metaserver_new();
 	gtk_widget_show(metaserver_entry);
-	gtk_table_attach(GTK_TABLE(table), metaserver_entry, 1, 3, row,
-			 row + 1, GTK_EXPAND | GTK_FILL,
-			 GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), metaserver_entry, 1, row, 2, 1);
 	metaserver_add(METASERVER(metaserver_entry),
 		       metaserver_info.server);
 	row++;
 
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 3);
 	gtk_widget_show(hbox);
-	gtk_table_attach(GTK_TABLE(table), hbox, 0, 3, row, row + 1,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 3);
+	gtk_grid_attach(GTK_GRID(grid), hbox, 0, row, 3, 1);
 	row++;
 
 	/* Button */
@@ -1716,7 +1702,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 				   GtkWindow * parent)
 {
 	GtkWidget *dlg_vbox;
-	GtkWidget *table;
+	GtkWidget *grid;
 	GtkWidget *lbl;
 	GtkWidget *hbox;
 
@@ -1766,25 +1752,22 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	    gtk_dialog_get_content_area(GTK_DIALOG(connect_private_dlg));
 	gtk_widget_show(dlg_vbox);
 
-	table = gtk_table_new(3, 2, FALSE);
-	gtk_widget_show(table);
-	gtk_box_pack_start(GTK_BOX(dlg_vbox), table, FALSE, TRUE, 0);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 5);
-	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
+	grid = gtk_grid_new();
+	gtk_widget_show(grid);
+	gtk_box_pack_start(GTK_BOX(dlg_vbox), grid, FALSE, TRUE, 0);
+	gtk_container_set_border_width(GTK_CONTAINER(grid), 5);
+	gtk_grid_set_row_spacing(GTK_GRID(grid), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 
 	/* Label */
 	lbl = gtk_label_new(_("Server host"));
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 0, 1,
-			 GTK_FILL, GTK_EXPAND, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), lbl, 0, 0, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
 	host_entry = gtk_entry_new();
 	gtk_widget_show(host_entry);
-	gtk_table_attach(GTK_TABLE(table), host_entry, 1, 2, 0, 1,
-			 GTK_EXPAND | GTK_FILL,
-			 GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), host_entry, 1, 0, 1, 1);
 	gtk_entry_set_text(GTK_ENTRY(host_entry), connect_server);
 	gtk_widget_set_tooltip_text(host_entry,
 				    /* Tooltip */
@@ -1794,14 +1777,12 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	/* Label */
 	lbl = gtk_label_new(_("Server port"));
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 1, 2,
-			 GTK_FILL, GTK_EXPAND, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), lbl, 0, 1, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	gtk_widget_show(hbox);
-	gtk_table_attach(GTK_TABLE(table), hbox, 1, 2, 1, 2,
-			 GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), hbox, 1, 1, 1, 1);
 
 	port_entry = gtk_entry_new();
 	gtk_widget_show(port_entry);
@@ -1848,16 +1829,14 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	g_signal_connect(G_OBJECT(host_list), "changed",
 			 G_CALLBACK(host_list_select_cb), host_entries);
 
-	gtk_table_attach(GTK_TABLE(table), host_list, 1, 2, 2, 3,
-			 GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), host_list, 1, 2, 1, 1);
 	/* Tooltip */
 	gtk_widget_set_tooltip_text(host_list, _("Recent games"));
 
 	/* Label */
 	lbl = gtk_label_new(_("Recent games"));
 	gtk_widget_show(lbl);
-	gtk_table_attach(GTK_TABLE(table), lbl, 0, 1, 2, 3,
-			 GTK_FILL, GTK_EXPAND, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), lbl, 0, 2, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
 
 	gtk_entry_set_activates_default(GTK_ENTRY(host_entry), TRUE);

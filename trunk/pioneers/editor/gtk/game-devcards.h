@@ -17,13 +17,13 @@ typedef struct _GameDevCards GameDevCards;
 typedef struct _GameDevCardsClass GameDevCardsClass;
 
 struct _GameDevCards {
-	GtkTable table;
+	GtkGrid grid;
 
 	GtkSpinButton *num_cards[NUM_DEVEL_TYPES];
 };
 
 struct _GameDevCardsClass {
-	GtkTableClass parent_class;
+	GtkGridClass parent_class;
 };
 
 GType game_devcards_get_type(void);

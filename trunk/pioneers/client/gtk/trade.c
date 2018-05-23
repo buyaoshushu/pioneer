@@ -265,7 +265,7 @@ static void toggled_cb(GtkWidget * widget, TradeRow * row)
 }
 
 /** Add a row with widgets for a resource */
-static void add_trade_row(GtkWidget * table, TradeRow * row,
+static void add_trade_row(GtkWidget * grid, TradeRow * row,
 			  Resource resource)
 {
 	gint col;
@@ -277,9 +277,7 @@ static void add_trade_row(GtkWidget * table, TradeRow * row,
 	g_signal_connect(G_OBJECT(row->chk), "toggled",
 			 G_CALLBACK(toggled_cb), row);
 	gtk_widget_show(row->chk);
-	gtk_table_attach(GTK_TABLE(table), row->chk,
-			 col, col + 1, resource, resource + 1,
-			 GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), row->chk, col, resource, 1, 1);
 	col++;
 
 	row->curr = gtk_entry_new();
@@ -287,9 +285,7 @@ static void add_trade_row(GtkWidget * table, TradeRow * row,
 	gtk_entry_set_alignment(GTK_ENTRY(row->curr), 1.0);
 	gtk_widget_set_sensitive(row->curr, FALSE);
 	gtk_widget_show(row->curr);
-	gtk_table_attach(GTK_TABLE(table), row->curr,
-			 col, col + 1, resource, resource + 1,
-			 GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), row->curr, col, resource, 1, 1);
 }
 
 /** Set the sensitivity of the row, and update the assets when applicable */
@@ -433,13 +429,13 @@ static GtkWidget *build_trade_resources_frame(const gchar * title,
 	/* vbox */
 	/*       label */
 	/*       alignment */
-	/*               table */
+	/*               grid */
 	/*                       trade rows */
 
 	GtkWidget *vbox;
 	GtkWidget *label;
 	GtkWidget *alignment;
-	GtkWidget *table;
+	GtkWidget *grid;
 
 	gchar *title_with_markup;
 	gint idx;
@@ -461,16 +457,16 @@ static GtkWidget *build_trade_resources_frame(const gchar * title,
 	gtk_widget_show(alignment);
 	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
 
-	table = gtk_table_new(NO_RESOURCE, 2, FALSE);
-	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(alignment), table);
-	gtk_container_set_border_width(GTK_CONTAINER(table), 0);
-	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 3);
+	grid = gtk_grid_new();
+	gtk_widget_show(grid);
+	gtk_container_add(GTK_CONTAINER(alignment), grid);
+	gtk_container_set_border_width(GTK_CONTAINER(grid), 0);
+	gtk_grid_set_row_spacing(GTK_GRID(grid), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(grid), 3);
 
 	/* trade rows, one for each resource */
 	for (idx = 0; idx < NO_RESOURCE; ++idx)
-		add_trade_row(table, trade_rows + idx, idx);
+		add_trade_row(grid, trade_rows + idx, idx);
 
 	return vbox;
 }

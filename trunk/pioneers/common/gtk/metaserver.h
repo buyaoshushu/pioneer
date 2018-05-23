@@ -36,14 +36,14 @@ typedef struct _MetaServer MetaServer;
 typedef struct _MetaServerClass MetaServerClass;
 
 struct _MetaServer {
-	GtkTable table;
+	GtkGrid grid;
 
 	GtkWidget *combo_box;
 	GtkListStore *data;
 };
 
 struct _MetaServerClass {
-	GtkComboBoxClass parent_class;
+	GtkGridClass parent_class;
 };
 
 GType metaserver_get_type(void);

@@ -52,7 +52,7 @@ GType select_game_get_type(void)
 			NULL
 		};
 		sg_type =
-		    g_type_register_static(GTK_TYPE_TABLE, "SelectGame",
+		    g_type_register_static(GTK_TYPE_GRID, "SelectGame",
 					   &sg_info, 0);
 	}
 	return sg_type;
@@ -133,9 +133,7 @@ static void select_game_init(SelectGame * sg)
 	gtk_widget_set_tooltip_text(sg->combo_box,
 				    /* Tooltip for the list of games */
 				    _("Select a game"));
-	gtk_table_resize(GTK_TABLE(sg), 1, 1);
-	gtk_table_attach_defaults(GTK_TABLE(sg), sg->combo_box,
-				  0, 1, 0, 1);
+	gtk_grid_attach(GTK_GRID(sg), sg->combo_box, 0, 0, 1, 1);
 	sg->default_game = g_strdup("Default");
 	g_signal_connect(G_OBJECT(sg->combo_box), "changed",
 			 G_CALLBACK(select_game_item_changed), sg);

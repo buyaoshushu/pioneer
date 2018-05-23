@@ -49,7 +49,7 @@ enum _ResourceTableDirection {
 typedef enum _ResourceTableDirection ResourceTableDirection;
 
 struct _ResourceTable {
-	GtkTable table;
+	GtkGrid grid;
 
 	struct _ResourceRow row[NO_RESOURCE];
 
@@ -65,7 +65,7 @@ struct _ResourceTable {
 };
 
 struct _ResourceTableClass {
-	GtkTableClass parent_class;
+	GtkGridClass parent_class;
 
 	void (*change) (ResourceTable * rt);
 };
