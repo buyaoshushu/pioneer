@@ -12,6 +12,8 @@
 	editor/gtk/game-devcards.h, editor/gtk/game-resources.c,
 	editor/gtk/game-resources.h, server/gtk/main.c: Migrate from gtk_table
 	to gtk_grid.
+	* editor/gtk/editor.c: The toolbar is now one row high, depending on
+	the width. Show the dots for the dice values.
 
 2018-05-16  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/common_gtk.c: Fixed compiler warning from previous
