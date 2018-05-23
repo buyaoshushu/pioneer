@@ -293,8 +293,8 @@ static gboolean draw_chit_cb(GtkWidget * widget, cairo_t * cr,
 
 	layout = gtk_widget_create_pango_layout(widget, "");
 	draw_dice_roll(layout, cr,
-		       12, 10, 15, GPOINTER_TO_INT(chip_number),
-		       GOLD_TERRAIN, FALSE);
+		       BUTTON_HEIGHT / 2, BUTTON_HEIGHT / 2, BUTTON_HEIGHT,
+		       GPOINTER_TO_INT(chip_number), GOLD_TERRAIN, FALSE);
 	g_object_unref(layout);
 	return TRUE;
 }
@@ -319,15 +319,18 @@ static gboolean draw_port_cb(GtkWidget * widget, cairo_t * cr,
 	width = gdk_pixbuf_get_width(theme->terrain_tiles[SEA_TERRAIN]);
 	height = gdk_pixbuf_get_height(theme->terrain_tiles[SEA_TERRAIN]);
 	gdk_cairo_set_source_pixbuf(cr, theme->terrain_tiles[SEA_TERRAIN],
-				    BUTTON_HEIGHT / 2 - width / 2,
-				    BUTTON_HEIGHT / 2 - height / 2);
+				    gtk_widget_get_allocated_width(widget)
+				    / 2 - width / 2,
+				    gtk_widget_get_allocated_height(widget)
+				    / 2 - height / 2);
 	cairo_pattern_set_extend(cairo_get_source(cr),
 				 CAIRO_EXTEND_REPEAT);
 	cairo_paint(cr);
 
-	draw_port_indicator(layout, cr, BUTTON_HEIGHT / 2,
-			    BUTTON_HEIGHT / 2, 11,
-			    GPOINTER_TO_INT(port_type));
+	draw_port_indicator(layout, cr,
+			    gtk_widget_get_allocated_width(widget) / 2,
+			    gtk_widget_get_allocated_height(widget) / 2,
+			    11, GPOINTER_TO_INT(port_type));
 	g_object_unref(layout);
 
 	return TRUE;
@@ -413,15 +416,21 @@ static const gchar *PORT_TOOLBAR_TOOLTIP[] = {
  */
 static void build_select_bars(GtkWidget * grid)
 {
+	GtkWidget *flowbox;
 	GtkWidget *box;
 	GtkWidget *area;
 	GtkWidget *button;
 	GSList *group;
-	GtkWidget *vsep;
 	gint i;
 	ToolbarButtonData *toolbar_button_data;
 
-	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);	/* upper bar */
+	flowbox = gtk_flow_box_new();
+	gtk_flow_box_set_column_spacing(GTK_FLOW_BOX(flowbox), 10);
+	gtk_flow_box_set_homogeneous(GTK_FLOW_BOX(flowbox), FALSE);
+	gtk_flow_box_set_selection_mode(GTK_FLOW_BOX(flowbox),
+					GTK_SELECTION_NONE);
+
+	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
 	area = gtk_drawing_area_new();
 	gtk_widget_show(area);
@@ -433,6 +442,7 @@ static void build_select_bars(GtkWidget * grid)
 	button = GTK_WIDGET(gtk_radio_tool_button_new(NULL));
 	gtk_tool_button_set_icon_widget(GTK_TOOL_BUTTON(button), area);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, TRUE, 0);
+	gtk_widget_set_margin_right(button, 10);
 	gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(button), _
 				       ("Select the terrain type with the context "
 					"menu on the left click or toggle a node to "
@@ -449,12 +459,6 @@ static void build_select_bars(GtkWidget * grid)
 	selected_toolbar_button.type = NO_TOOLBAR_BUTTON_TYPE;
 	gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(button),
 					  TRUE);
-
-	/* Line between unselect and terrains */
-	vsep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
-	gtk_widget_show(vsep);
-	gtk_widget_set_size_request(vsep, 10, 0);
-	gtk_box_pack_start(GTK_BOX(box), vsep, FALSE, TRUE, 0);
 
 	/* terrain toolbar buttons */
 	for (i = 0; i <= LAST_TERRAIN; i++) {
@@ -481,9 +485,9 @@ static void build_select_bars(GtkWidget * grid)
 
 	}
 
-	gtk_grid_attach(GTK_GRID(grid), box, 0, 0, 2, 1);
+	gtk_container_add(GTK_CONTAINER(flowbox), box);
 
-	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);	/* lower bar */
+	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
 	/* chit toolbar buttons */
 	for (i = 2; i <= 12; i++) {
@@ -518,11 +522,9 @@ static void build_select_bars(GtkWidget * grid)
 				 toolbar_button_data);
 	}
 
-	/* Line between chit and port */
-	vsep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
-	gtk_widget_show(vsep);
-	gtk_widget_set_size_request(vsep, 10, 0);
-	gtk_box_pack_start(GTK_BOX(box), vsep, FALSE, TRUE, 0);
+	gtk_container_add(GTK_CONTAINER(flowbox), box);
+
+	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
 	/* port toolbar buttons */
 	for (i = 0; i <= ANY_RESOURCE; i++) {
@@ -555,7 +557,11 @@ static void build_select_bars(GtkWidget * grid)
 				 toolbar_button_data);
 	}
 
-	gtk_grid_attach(GTK_GRID(grid), box, 0, 1, 2, 1);
+	gtk_widget_set_hexpand(box, TRUE);	/* Fill remaining space */
+	gtk_container_add(GTK_CONTAINER(flowbox), box);
+
+	gtk_widget_set_hexpand(flowbox, TRUE);	/* Fill remaining space */
+	gtk_grid_attach(GTK_GRID(grid), flowbox, 0, 0, 2, 1);
 }
 
 static void build_map_resize(GtkWidget * grid, guint col, guint row,
@@ -944,14 +950,14 @@ static GtkWidget *build_map(void)
 			 G_CALLBACK(button_press_map_cb), gmap);
 	g_signal_connect(G_OBJECT(gmap->area), "key_press_event",
 			 G_CALLBACK(key_press_map_cb), gmap);
-	gtk_grid_attach(GTK_GRID(grid), gmap->area, 0, 2, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), gmap->area, 0, 1, 1, 1);
 	gtk_widget_set_hexpand(gmap->area, TRUE);
 	gtk_widget_set_vexpand(gmap->area, TRUE);
 
 	build_select_bars(grid);
-	build_map_resize(grid, 1, 2, GTK_ORIENTATION_VERTICAL,
+	build_map_resize(grid, 1, 1, GTK_ORIENTATION_VERTICAL,
 			 vresize_buttons, G_CALLBACK(change_height));
-	build_map_resize(grid, 0, 3, GTK_ORIENTATION_HORIZONTAL,
+	build_map_resize(grid, 0, 2, GTK_ORIENTATION_HORIZONTAL,
 			 hresize_buttons, G_CALLBACK(change_width));
 
 	return grid;
