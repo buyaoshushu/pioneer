@@ -408,10 +408,10 @@ static const gchar *PORT_TOOLBAR_TOOLTIP[] = {
 };
 
 /** Builds toolbars for selecting terrains, chits, and ports. Places toolbar in
- * the table at the top.
- * @param table The table to place toolbar in.
+ * the grid at the top.
+ * @param grid The grid to place the toolbar in.
  */
-static void build_select_bars(GtkWidget * table)
+static void build_select_bars(GtkWidget * grid)
 {
 	GtkWidget *box;
 	GtkWidget *area;
@@ -481,8 +481,7 @@ static void build_select_bars(GtkWidget * table)
 
 	}
 
-	gtk_table_attach(GTK_TABLE(table), box, 0, 2, 0, 1,
-			 GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), box, 0, 0, 2, 1);
 
 	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);	/* lower bar */
 
@@ -556,11 +555,10 @@ static void build_select_bars(GtkWidget * table)
 				 toolbar_button_data);
 	}
 
-	gtk_table_attach(GTK_TABLE(table), box, 0, 2, 1, 2,
-			 GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), box, 0, 1, 2, 1);
 }
 
-static void build_map_resize(GtkWidget * table, guint col, guint row,
+static void build_map_resize(GtkWidget * grid, guint col, guint row,
 			     GtkOrientation dir, GtkWidget ** buttons,
 			     GCallback resize_callback)
 {
@@ -602,8 +600,7 @@ static void build_map_resize(GtkWidget * table, guint col, guint row,
 	}
 	gtk_box_pack_start(GTK_BOX(box), gtk_fixed_new(), TRUE, TRUE, 0);
 
-	gtk_table_attach(GTK_TABLE(table), box, col, col + 1, row, row + 1,
-			 GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), box, col, row, 1, 1);
 }
 
 static void scale_map(GuiMap * gmap)
@@ -928,10 +925,10 @@ static void change_width(G_GNUC_UNUSED GtkWidget * menu,
 
 static GtkWidget *build_map(void)
 {
-	GtkWidget *table;
+	GtkWidget *grid;
 	GtkWidget *area;
 
-	table = gtk_table_new(4, 2, FALSE);
+	grid = gtk_grid_new();
 
 	gmap = guimap_new();
 	guimap_set_show_no_setup_nodes(gmap, TRUE);
@@ -947,17 +944,17 @@ static GtkWidget *build_map(void)
 			 G_CALLBACK(button_press_map_cb), gmap);
 	g_signal_connect(G_OBJECT(gmap->area), "key_press_event",
 			 G_CALLBACK(key_press_map_cb), gmap);
-	gtk_table_attach(GTK_TABLE(table), gmap->area, 0, 1, 2, 3,
-			 GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0,
-			 0);
+	gtk_grid_attach(GTK_GRID(grid), gmap->area, 0, 2, 1, 1);
+	gtk_widget_set_hexpand(gmap->area, TRUE);
+	gtk_widget_set_vexpand(gmap->area, TRUE);
 
-	build_select_bars(table);
-	build_map_resize(table, 1, 2, GTK_ORIENTATION_VERTICAL,
+	build_select_bars(grid);
+	build_map_resize(grid, 1, 2, GTK_ORIENTATION_VERTICAL,
 			 vresize_buttons, G_CALLBACK(change_height));
-	build_map_resize(table, 0, 3, GTK_ORIENTATION_HORIZONTAL,
+	build_map_resize(grid, 0, 3, GTK_ORIENTATION_HORIZONTAL,
 			 hresize_buttons, G_CALLBACK(change_width));
 
-	return table;
+	return grid;
 }
 
 static gboolean update_title(GtkWidget * widget,

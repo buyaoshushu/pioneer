@@ -36,7 +36,7 @@ typedef struct _AvahiBrowser AvahiBrowser;
 typedef struct _AvahiBrowserClass AvahiBrowserClass;
 
 struct _AvahiBrowser {
-	GtkTable table;
+	GtkGrid grid;
 
 	GtkWidget *combo_box;
 	GtkListStore *data;

@@ -16,13 +16,13 @@ typedef struct _GameResources GameResources;
 typedef struct _GameResourcesClass GameResourcesClass;
 
 struct _GameResources {
-	GtkTable table;
+	GtkGrid grid;
 
 	GtkSpinButton *num_resources;
 };
 
 struct _GameResourcesClass {
-	GtkTableClass parent_class;
+	GtkGridClass parent_class;
 };
 
 GType game_resources_get_type(void);

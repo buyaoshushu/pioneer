@@ -24,7 +24,7 @@ typedef struct _SelectGame SelectGame;
 typedef struct _SelectGameClass SelectGameClass;
 
 struct _SelectGame {
-	GtkTable table;
+	GtkGrid grid;
 
 	GtkWidget *combo_box;
 	GtkListStore *data;
@@ -33,7 +33,7 @@ struct _SelectGame {
 };
 
 struct _SelectGameClass {
-	GtkTableClass parent_class;
+	GtkGridClass parent_class;
 
 	void (*activate) (SelectGame * sg);
 };

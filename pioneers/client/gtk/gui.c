@@ -1047,7 +1047,9 @@ static void preferences_cb(void)
 	    gtk_dialog_get_content_area(GTK_DIALOG(preferences_dlg));
 	gtk_widget_show(dlg_vbox);
 
-	layout = gtk_table_new(6, 2, FALSE);
+	layout = gtk_grid_new();
+	gtk_grid_set_row_spacing(GTK_GRID(layout), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(layout), 5);
 	gtk_widget_show(layout);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), layout, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(layout), 5);
@@ -1055,6 +1057,7 @@ static void preferences_cb(void)
 	row = 0;
 
 	theme_list = gtk_combo_box_text_new();
+	gtk_widget_set_hexpand(theme_list, TRUE);
 	/* Label for changing the theme, in the preferences dialog */
 	theme_label = gtk_label_new(_("Theme:"));
 	gtk_misc_set_alignment(GTK_MISC(theme_label), 0, 0.5);
@@ -1073,10 +1076,8 @@ static void preferences_cb(void)
 	g_signal_connect(G_OBJECT(theme_list), "changed",
 			 G_CALLBACK(theme_change_cb), NULL);
 
-	gtk_table_attach_defaults(GTK_TABLE(layout), theme_label,
-				  0, 1, row, row + 1);
-	gtk_table_attach_defaults(GTK_TABLE(layout), theme_list,
-				  1, 2, row, row + 1);
+	gtk_grid_attach(GTK_GRID(layout), theme_label, 0, row, 1, 1);
+	gtk_grid_attach(GTK_GRID(layout), theme_list, 1, row, 1, 1);
 	gtk_widget_set_tooltip_text(theme_list,
 				    /* Tooltip for changing the theme in the preferences dialog */
 				    _("Choose one of the themes"));
@@ -1089,8 +1090,7 @@ static void preferences_cb(void)
 				     legend_page_enabled);
 	g_signal_connect(G_OBJECT(widget), "toggled",
 			 G_CALLBACK(show_legend_cb), NULL);
-	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
-				  0, 2, row, row + 1);
+	gtk_grid_attach(GTK_GRID(layout), widget, 0, row, 2, 1);
 	gtk_widget_set_tooltip_text(widget,
 				    /* Tooltip for the option to show the legend */
 				    _(""
@@ -1100,8 +1100,7 @@ static void preferences_cb(void)
 	/* Label for the option to display log messages in color */
 	widget = gtk_check_button_new_with_label(_("Messages with color"));
 	gtk_widget_show(widget);
-	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
-				  0, 2, row, row + 1);
+	gtk_grid_attach(GTK_GRID(layout), widget, 0, row, 2, 1);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget),
 				     color_messages_enabled);
 	g_signal_connect(G_OBJECT(widget), "toggled",
@@ -1116,8 +1115,7 @@ static void preferences_cb(void)
 							_(""
 							  "Chat in color of player"));
 	gtk_widget_show(widget);
-	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
-				  0, 2, row, row + 1);
+	gtk_grid_attach(GTK_GRID(layout), widget, 0, row, 2, 1);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget),
 				     color_chat_enabled);
 	g_signal_connect(G_OBJECT(widget), "toggled",
@@ -1131,8 +1129,7 @@ static void preferences_cb(void)
 	/* Label for the option to display the summary with colors */
 	widget = gtk_check_button_new_with_label(_("Summary with color"));
 	gtk_widget_show(widget);
-	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
-				  0, 2, row, row + 1);
+	gtk_grid_attach(GTK_GRID(layout), widget, 0, row, 2, 1);
 	color_summary =
 	    config_get_int_with_default("settings/color_summary", TRUE);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), color_summary);	/* @todo RC use correct variable */
@@ -1147,8 +1144,7 @@ static void preferences_cb(void)
 	    /* Label for the option to display keyboard accelerators in the toolbar */
 	    gtk_check_button_new_with_label(_("Toolbar with shortcuts"));
 	gtk_widget_show(widget);
-	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
-				  0, 2, row, row + 1);
+	gtk_grid_attach(GTK_GRID(layout), widget, 0, row, 2, 1);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget),
 				     toolbar_show_accelerators);
 	g_signal_connect(G_OBJECT(widget), "toggled",
@@ -1163,8 +1159,8 @@ static void preferences_cb(void)
 	    /* Label for the option to disable all sounds */
 	    gtk_check_button_new_with_label(_("Silent mode"));
 	gtk_widget_show(silent_mode_widget);
-	gtk_table_attach_defaults(GTK_TABLE(layout), silent_mode_widget,
-				  0, 2, row, row + 1);
+	gtk_grid_attach(GTK_GRID(layout), silent_mode_widget, 0, row, 2,
+			1);
 	gtk_widget_set_tooltip_text(silent_mode_widget,
 				    /* Tooltip for the option to disable all sounds */
 				    _(""
@@ -1175,8 +1171,7 @@ static void preferences_cb(void)
 	    /* Label for the option to announce when players/spectators enter */
 	    gtk_check_button_new_with_label(_("Announce new players"));
 	gtk_widget_show(widget);
-	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
-				  0, 2, row, row + 1);
+	gtk_grid_attach(GTK_GRID(layout), widget, 0, row, 2, 1);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget),
 				     get_announce_player());
 	g_signal_connect(G_OBJECT(widget), "toggled",
@@ -1197,8 +1192,7 @@ static void preferences_cb(void)
 	/* Label for the option to use the notifications. */
 	widget = gtk_check_button_new_with_label(_("Show notifications"));
 	gtk_widget_show(widget);
-	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
-				  0, 2, row, row + 1);
+	gtk_grid_attach(GTK_GRID(layout), widget, 0, row, 2, 1);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget),
 				     get_show_notifications());
 	g_signal_connect(G_OBJECT(widget), "toggled",
@@ -1213,8 +1207,7 @@ static void preferences_cb(void)
 	/* Label for the option to use the 16:9 layout. */
 	widget = gtk_check_button_new_with_label(_("Use 16:9 layout"));
 	gtk_widget_show(widget);
-	gtk_table_attach_defaults(GTK_TABLE(layout), widget,
-				  0, 2, row, row + 1);
+	gtk_grid_attach(GTK_GRID(layout), widget, 0, row, 2, 1);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget),
 				     get_16_9_layout());
 	g_signal_connect(G_OBJECT(widget), "toggled",

@@ -53,7 +53,7 @@ GType game_settings_get_type(void)
 			NULL
 		};
 		gs_type =
-		    g_type_register_static(GTK_TYPE_TABLE, "GameSettings",
+		    g_type_register_static(GTK_TYPE_GRID, "GameSettings",
 					   &gs_info, 0);
 	}
 	return gs_type;
@@ -97,15 +97,14 @@ static void game_settings_init(GameSettings * gs)
 	GtkWidget *hbox;
 	GtkAdjustment *adj;
 
-	gtk_table_resize(GTK_TABLE(gs), 4, 2);
-	gtk_table_set_row_spacings(GTK_TABLE(gs), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(gs), 5);
+	gtk_grid_set_row_spacing(GTK_GRID(gs), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(gs), 5);
+	gtk_widget_set_hexpand(GTK_WIDGET(gs), FALSE);
 
 	/* Label text for customising a game */
 	label = gtk_label_new(_("Number of players"));
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(gs), label, 0, 1, 1, 2,
-			 GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(gs), label, 0, 1, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5f);
 
 	adj =
@@ -113,10 +112,10 @@ static void game_settings_init(GameSettings * gs)
 	gs->players_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
 	gtk_entry_set_alignment(GTK_ENTRY(gs->players_spin), 1.0);
 	gtk_widget_show(gs->players_spin);
+	gtk_widget_set_hexpand(gs->players_spin, TRUE);
 	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(gs->players_spin),
 				    TRUE);
-	gtk_table_attach(GTK_TABLE(gs), gs->players_spin, 1, 2, 1, 2,
-			 GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(gs), gs->players_spin, 1, 1, 1, 1);
 	g_signal_connect(G_OBJECT(gs->players_spin), "value-changed",
 			 G_CALLBACK(game_settings_change_players), gs);
 	gtk_widget_set_tooltip_text(gs->players_spin,
@@ -126,8 +125,7 @@ static void game_settings_init(GameSettings * gs)
 	/* Label for customising a game */
 	label = gtk_label_new(_("Victory point target"));
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(gs), label, 0, 1, 2, 3,
-			 GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(gs), label, 0, 2, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5f);
 
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 3);
@@ -160,8 +158,7 @@ static void game_settings_init(GameSettings * gs)
 				    /* Tooltip for the check button */
 				    _("Is it possible to win this game?"));
 
-	gtk_table_attach(GTK_TABLE(gs), hbox, 1, 2, 2, 3,
-			 GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(gs), hbox, 1, 2, 1, 1);
 	gtk_widget_show(hbox);
 
 	gs->players = 4;

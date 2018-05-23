@@ -47,7 +47,7 @@ GType avahibrowser_get_type(void)
 			NULL
 		};
 		sg_type =
-		    g_type_register_static(GTK_TYPE_TABLE,
+		    g_type_register_static(GTK_TYPE_GRID,
 					   "AvahiBrowser", &sg_info, 0);
 	}
 	return sg_type;
@@ -81,9 +81,8 @@ static void avahibrowser_init(AvahiBrowser * ab)
 	gtk_widget_set_tooltip_text(ab->combo_box,
 				    _
 				    ("Select an automatically discovered game"));
-	gtk_table_resize(GTK_TABLE(ab), 1, 1);
-	gtk_table_attach_defaults(GTK_TABLE(ab), ab->combo_box, 0, 1, 0,
-				  1);
+	gtk_grid_attach(GTK_GRID(ab), ab->combo_box, 0, 1, 1, 1);
+	gtk_widget_set_hexpand(ab->combo_box, TRUE);
 }
 
 /* Create a new instance of the widget */

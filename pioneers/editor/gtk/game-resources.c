@@ -27,7 +27,7 @@ GType game_resources_get_type(void)
 			NULL
 		};
 		gr_type =
-		    g_type_register_static(GTK_TYPE_TABLE, "GameResources",
+		    g_type_register_static(GTK_TYPE_GRID, "GameResources",
 					   &gr_info, 0);
 	}
 	return gr_type;
@@ -40,20 +40,19 @@ static void game_resources_init(GameResources * gr)
 	GtkWidget *spin;
 	GtkAdjustment *adjustment;
 
-	gtk_table_resize(GTK_TABLE(gr), 1, 2);
-	gtk_table_set_row_spacings(GTK_TABLE(gr), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(gr), 5);
-	gtk_table_set_homogeneous(GTK_TABLE(gr), TRUE);
+	gtk_grid_set_row_spacing(GTK_GRID(gr), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(gr), 5);
+	gtk_grid_set_column_homogeneous(GTK_GRID(gr), TRUE);
 
 	label = gtk_label_new(_("Resource count"));
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-	gtk_table_attach_defaults(GTK_TABLE(gr), label, 0, 1, 0, 1);
+	gtk_grid_attach(GTK_GRID(gr), label, 0, 0, 1, 1);
 
 	adjustment =
 	    GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0));
 	spin = gtk_spin_button_new(GTK_ADJUSTMENT(adjustment), 1, 0);
 	gtk_entry_set_alignment(GTK_ENTRY(spin), 1.0);
-	gtk_table_attach_defaults(GTK_TABLE(gr), spin, 1, 2, 0, 1);
+	gtk_grid_attach(GTK_GRID(gr), spin, 1, 0, 1, 1);
 	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(spin), TRUE);
 	gr->num_resources = GTK_SPIN_BUTTON(spin);
 }

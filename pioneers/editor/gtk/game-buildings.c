@@ -32,7 +32,7 @@ GType game_buildings_get_type(void)
 			NULL
 		};
 		gb_type =
-		    g_type_register_static(GTK_TYPE_TABLE, "GameBuildings",
+		    g_type_register_static(GTK_TYPE_GRID, "GameBuildings",
 					   &gb_info, 0);
 	}
 	return gb_type;
@@ -46,24 +46,21 @@ static void game_buildings_init(GameBuildings * gb)
 	GtkAdjustment *adjustment;
 	guint row;
 
-	gtk_table_resize(GTK_TABLE(gb), NUM_BUILD_TYPES - 1, 2);
-	gtk_table_set_row_spacings(GTK_TABLE(gb), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(gb), 5);
-	gtk_table_set_homogeneous(GTK_TABLE(gb), TRUE);
+	gtk_grid_set_row_spacing(GTK_GRID(gb), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(gb), 5);
+	gtk_grid_set_column_homogeneous(GTK_GRID(gb), TRUE);
 
 	for (row = 1; row < NUM_BUILD_TYPES; row++) {
 		label = gtk_label_new(gettext(building_names[row]));
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-		gtk_table_attach_defaults(GTK_TABLE(gb), label,
-					  0, 1, row - 1, row);
+		gtk_grid_attach(GTK_GRID(gb), label, 0, row - 1, 1, 1);
 
 		adjustment =
 		    GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0));
 		spin =
 		    gtk_spin_button_new(GTK_ADJUSTMENT(adjustment), 1, 0);
 		gtk_entry_set_alignment(GTK_ENTRY(spin), 1.0);
-		gtk_table_attach_defaults(GTK_TABLE(gb), spin,
-					  1, 2, row - 1, row);
+		gtk_grid_attach(GTK_GRID(gb), spin, 1, row - 1, 1, 1);
 		gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(spin), TRUE);
 		gb->num_buildings[row] = GTK_SPIN_BUTTON(spin);
 	}

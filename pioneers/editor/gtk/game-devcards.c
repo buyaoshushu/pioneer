@@ -27,7 +27,7 @@ GType game_devcards_get_type(void)
 			NULL
 		};
 		gd_type =
-		    g_type_register_static(GTK_TYPE_TABLE, "GameDevCards",
+		    g_type_register_static(GTK_TYPE_GRID, "GameDevCards",
 					   &gd_info, 0);
 	}
 	return gd_type;
@@ -41,16 +41,14 @@ static void game_devcards_init(GameDevCards * gd)
 	GtkAdjustment *adjustment;
 	guint row;
 
-	gtk_table_resize(GTK_TABLE(gd), NUM_DEVEL_TYPES, 2);
-	gtk_table_set_row_spacings(GTK_TABLE(gd), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(gd), 5);
-	gtk_table_set_homogeneous(GTK_TABLE(gd), TRUE);
+	gtk_grid_set_row_spacing(GTK_GRID(gd), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(gd), 5);
+	gtk_grid_set_column_homogeneous(GTK_GRID(gd), TRUE);
 
 	for (row = 0; row < NUM_DEVEL_TYPES; row++) {
 		label = gtk_label_new(get_devel_name(row));
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-		gtk_table_attach_defaults(GTK_TABLE(gd), label,
-					  0, 1, row, row + 1);
+		gtk_grid_attach(GTK_GRID(gd), label, 0, row, 1, 1);
 
 		adjustment =
 		    GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0));
@@ -59,8 +57,7 @@ static void game_devcards_init(GameDevCards * gd)
 		gtk_widget_set_tooltip_text(spin,
 					    get_devel_description(row));
 		gtk_entry_set_alignment(GTK_ENTRY(spin), 1.0);
-		gtk_table_attach_defaults(GTK_TABLE(gd), spin,
-					  1, 2, row, row + 1);
+		gtk_grid_attach(GTK_GRID(gd), spin, 1, row, 1, 1);
 		gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(spin), TRUE);
 		gd->num_cards[row] = GTK_SPIN_BUTTON(spin);
 	}

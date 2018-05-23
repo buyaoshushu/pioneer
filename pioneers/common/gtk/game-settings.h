@@ -24,7 +24,7 @@ typedef struct _GameSettings GameSettings;
 typedef struct _GameSettingsClass GameSettingsClass;
 
 struct _GameSettings {
-	GtkTable table;
+	GtkGrid grid;
 
 	GtkWidget *victory_spin;	/* victory point target */
 	GtkWidget *players_spin;	/* number of players */
@@ -35,7 +35,7 @@ struct _GameSettings {
 };
 
 struct _GameSettingsClass {
-	GtkTableClass parent_class;
+	GtkGridClass parent_class;
 
 	void (*change) (GameSettings * gs);
 	void (*change_players) (GameSettings * gs);

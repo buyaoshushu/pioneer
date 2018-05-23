@@ -47,44 +47,33 @@ static gboolean legend_did_connect = FALSE;
 static void legend_theme_changed(void);
 static void legend_rules_changed(void);
 
-static void add_legend_terrain(GtkWidget * table, guint row, guint col,
+static void add_legend_terrain(GtkWidget * grid, guint row, guint col,
 			       Terrain terrain, Resource resource)
 {
 	GtkWidget *label;
 
-	gtk_table_attach(GTK_TABLE(table), terrain_icon_new(terrain),
-			 col, col + 1, row, row + 1,
-			 (GtkAttachOptions) GTK_FILL,
-			 (GtkAttachOptions) GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), terrain_icon_new(terrain), col,
+			row, 1, 1);
 
 	label = gtk_label_new(_(terrain_names[terrain]));
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label,
-			 col + 1, col + 2, row, row + 1,
-			 (GtkAttachOptions) GTK_FILL,
-			 (GtkAttachOptions) GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), label, col + 1, row, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 	if (resource < NO_RESOURCE) {
 		label = resource_view_new_single_resource(resource);
 		gtk_widget_show(label);
-		gtk_table_attach(GTK_TABLE(table), label,
-				 col + 2, col + 3, row, row + 1,
-				 (GtkAttachOptions) GTK_FILL,
-				 (GtkAttachOptions) GTK_FILL, 0, 0);
+		gtk_grid_attach(GTK_GRID(grid), label, col + 2, row, 1, 1);
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 		label = gtk_label_new(resource_name(resource, TRUE));
 		gtk_widget_show(label);
-		gtk_table_attach(GTK_TABLE(table), label,
-				 col + 3, col + 4, row, row + 1,
-				 (GtkAttachOptions) GTK_FILL,
-				 (GtkAttachOptions) GTK_FILL, 0, 0);
+		gtk_grid_attach(GTK_GRID(grid), label, col + 3, row, 1, 1);
 		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 	}
 }
 
-static void add_legend_cost(GtkWidget * table, guint row,
+static void add_legend_cost(GtkWidget * grid, guint row,
 			    const gchar * iconname, const gchar * item,
 			    const gint * cost)
 {
@@ -93,19 +82,16 @@ static void add_legend_cost(GtkWidget * table, guint row,
 
 	icon = gtk_image_new_from_stock(iconname, GTK_ICON_SIZE_MENU);
 	gtk_widget_show(icon);
-	gtk_table_attach(GTK_TABLE(table), icon, 0, 1, row, row + 1,
-			 GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), icon, 0, row, 1, 1);
 	label = gtk_label_new(item);
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 1, 2, row, row + 1,
-			 GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), label, 1, row, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 	label = resource_view_new();
 	resource_view_set(RESOURCE_VIEW(label), cost);
 	gtk_widget_show(label);
-	gtk_table_attach(GTK_TABLE(table), label, 2, 3, row, row + 1,
-			 GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), label, 2, row, 1, 1);
 	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 }
 
@@ -115,7 +101,7 @@ static GtkWidget *legend_create_content_with_scrolling(gboolean
 	GtkWidget *hbox;
 	GtkWidget *vbox;
 	GtkWidget *label;
-	GtkWidget *table;
+	GtkWidget *grid;
 	GtkWidget *vsep;
 	GtkWidget *alignment;
 	guint num_rows;
@@ -139,26 +125,25 @@ static GtkWidget *legend_create_content_with_scrolling(gboolean
 	gtk_widget_show(alignment);
 	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
 
-	table = gtk_table_new(4, 9, FALSE);
-	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(alignment), table);
-	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 6);
+	grid = gtk_grid_new();
+	gtk_widget_show(grid);
+	gtk_container_add(GTK_CONTAINER(alignment), grid);
+	gtk_grid_set_row_spacing(GTK_GRID(grid), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 
-	add_legend_terrain(table, 0, 0, HILL_TERRAIN, BRICK_RESOURCE);
-	add_legend_terrain(table, 1, 0, FIELD_TERRAIN, GRAIN_RESOURCE);
-	add_legend_terrain(table, 2, 0, MOUNTAIN_TERRAIN, ORE_RESOURCE);
-	add_legend_terrain(table, 3, 0, PASTURE_TERRAIN, WOOL_RESOURCE);
+	add_legend_terrain(grid, 0, 0, HILL_TERRAIN, BRICK_RESOURCE);
+	add_legend_terrain(grid, 1, 0, FIELD_TERRAIN, GRAIN_RESOURCE);
+	add_legend_terrain(grid, 2, 0, MOUNTAIN_TERRAIN, ORE_RESOURCE);
+	add_legend_terrain(grid, 3, 0, PASTURE_TERRAIN, WOOL_RESOURCE);
 
 	vsep = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
 	gtk_widget_show(vsep);
-	gtk_table_attach(GTK_TABLE(table), vsep, 4, 5, 0, 4,
-			 GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach(GTK_GRID(grid), vsep, 4, 0, 1, 4);
 
-	add_legend_terrain(table, 0, 5, FOREST_TERRAIN, LUMBER_RESOURCE);
-	add_legend_terrain(table, 1, 5, GOLD_TERRAIN, GOLD_RESOURCE);
-	add_legend_terrain(table, 2, 5, DESERT_TERRAIN, NO_RESOURCE);
-	add_legend_terrain(table, 3, 5, SEA_TERRAIN, NO_RESOURCE);
+	add_legend_terrain(grid, 0, 5, FOREST_TERRAIN, LUMBER_RESOURCE);
+	add_legend_terrain(grid, 1, 5, GOLD_TERRAIN, GOLD_RESOURCE);
+	add_legend_terrain(grid, 2, 5, DESERT_TERRAIN, NO_RESOURCE);
+	add_legend_terrain(grid, 3, 5, SEA_TERRAIN, NO_RESOURCE);
 
 	label = gtk_label_new(NULL);
 	/* Label */
@@ -172,37 +157,30 @@ static GtkWidget *legend_create_content_with_scrolling(gboolean
 	gtk_widget_show(alignment);
 	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
 
-	num_rows = 4;
-	if (have_ships())
-		num_rows++;
-	if (have_bridges())
-		num_rows++;
-	if (have_city_walls())
-		num_rows++;
-	table = gtk_table_new(num_rows, 3, FALSE);
-	gtk_widget_show(table);
-	gtk_container_add(GTK_CONTAINER(alignment), table);
-	gtk_table_set_row_spacings(GTK_TABLE(table), 3);
-	gtk_table_set_col_spacings(GTK_TABLE(table), 5);
+	grid = gtk_grid_new();
+	gtk_widget_show(grid);
+	gtk_container_add(GTK_CONTAINER(alignment), grid);
+	gtk_grid_set_row_spacing(GTK_GRID(grid), 3);
+	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 
 	num_rows = 0;
-	add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_ROAD, _("Road"),
+	add_legend_cost(grid, num_rows++, PIONEERS_PIXMAP_ROAD, _("Road"),
 			cost_road());
 	if (have_ships())
-		add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_SHIP,
+		add_legend_cost(grid, num_rows++, PIONEERS_PIXMAP_SHIP,
 				_("Ship"), cost_ship());
 	if (have_bridges())
-		add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_BRIDGE,
+		add_legend_cost(grid, num_rows++, PIONEERS_PIXMAP_BRIDGE,
 				_("Bridge"), cost_bridge());
-	add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_SETTLEMENT,
+	add_legend_cost(grid, num_rows++, PIONEERS_PIXMAP_SETTLEMENT,
 			_("Settlement"), cost_settlement());
-	add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_CITY, _("City"),
+	add_legend_cost(grid, num_rows++, PIONEERS_PIXMAP_CITY, _("City"),
 			cost_upgrade_settlement());
 	if (have_city_walls())
-		add_legend_cost(table, num_rows++,
+		add_legend_cost(grid, num_rows++,
 				PIONEERS_PIXMAP_CITY_WALL, _("City wall"),
 				cost_city_wall());
-	add_legend_cost(table, num_rows++, PIONEERS_PIXMAP_DEVELOP,
+	add_legend_cost(grid, num_rows++, PIONEERS_PIXMAP_DEVELOP,
 			_("Development card"), cost_development());
 
 	gtk_widget_show(vbox);
