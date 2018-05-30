@@ -5,6 +5,8 @@
 	* client/common/client.c, client/common/client.h,
 	client/common/stock.c: Don't count development cards twice on
 	reconnect.
+	* server/player.c: Fixed an integer underflow when assigning a player
+	number.
 
 2018-05-23  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/avahi-browser.c, client/gtk/avahi-browser.h,
