@@ -315,7 +315,7 @@ GtkWidget *quote_build_page(void)
 					       /* Label */
 					       _("I want"),
 					       RESOURCE_TABLE_MORE_IN_HAND,
-					       FALSE, FALSE);
+					       FALSE);
 	gtk_widget_show(want_table);
 	gtk_box_pack_start(GTK_BOX(vbox), want_table, FALSE, TRUE, 0);
 	g_signal_connect(G_OBJECT(want_table), "change",
@@ -325,7 +325,7 @@ GtkWidget *quote_build_page(void)
 					       /* Label */
 					       _("Give them"),
 					       RESOURCE_TABLE_LESS_IN_HAND,
-					       FALSE, FALSE);
+					       FALSE);
 	gtk_widget_show(give_table);
 	gtk_box_pack_start(GTK_BOX(vbox), give_table, FALSE, TRUE, 0);
 	g_signal_connect(G_OBJECT(give_table), "change",

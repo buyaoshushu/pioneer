@@ -96,8 +96,7 @@ void plenty_create_dlg(const gint * bank)
 	} else
 		str = _("The bank is empty");
 	plenty.resource_widget =
-	    resource_table_new(str, RESOURCE_TABLE_MORE_IN_HAND, TRUE,
-			       TRUE);
+	    resource_table_new(str, RESOURCE_TABLE_MORE_IN_HAND, TRUE);
 	resource_table_set_total(RESOURCETABLE(plenty.resource_widget),
 				 /* Text for total in year of plenty dialog */
 				 _("Total resources"), total);

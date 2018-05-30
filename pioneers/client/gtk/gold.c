@@ -97,8 +97,7 @@ void gold_choose_player_must(gint num, const gint * bank)
 					"You may choose %d resources",
 					num), num);
 	gold.resource_widget =
-	    resource_table_new(text, RESOURCE_TABLE_MORE_IN_HAND, TRUE,
-			       TRUE);
+	    resource_table_new(text, RESOURCE_TABLE_MORE_IN_HAND, TRUE);
 	g_free(text);
 	resource_table_set_total(RESOURCETABLE(gold.resource_widget),
 				 /* Text for total in choose gold dialog */

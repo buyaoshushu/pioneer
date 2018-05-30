@@ -1,3 +1,8 @@
+2018-05-30  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/discard.c, client/gtk/gold.c, client/gtk/plenty.c,
+	client/gtk/quote.c, client/gtk/resource-table.c,
+	client/gtk/resource-table.h: Removed the Gtk+-2 More and Less buttons.
+
 2018-05-23  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/avahi-browser.c, client/gtk/avahi-browser.h,
 	client/gtk/connect.c, client/gtk/gui.c, client/gtk/legend.c,

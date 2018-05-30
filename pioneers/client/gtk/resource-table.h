@@ -38,8 +38,6 @@ struct _ResourceRow {
 	GtkWidget *amount_widget;
 
 	gint limit;
-	GtkWidget *less_widget;
-	GtkWidget *more_widget;
 };
 
 enum _ResourceTableDirection {
@@ -73,7 +71,7 @@ struct _ResourceTableClass {
 GType resource_table_get_type(void);
 GtkWidget *resource_table_new(const gchar * title,
 			      ResourceTableDirection direction,
-			      gboolean with_bank, gboolean with_total);
+			      gboolean with_bank);
 
 void resource_table_limit_bank(ResourceTable * rt, gboolean limit);
 void resource_table_set_total(ResourceTable * rt, const gchar * text,
