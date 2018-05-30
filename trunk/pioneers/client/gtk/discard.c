@@ -102,8 +102,7 @@ static GtkWidget *discard_create_dlg(gint num)
 					"You must discard %d resources",
 					num), num);
 	discard.resource_widget =
-	    resource_table_new(text, RESOURCE_TABLE_LESS_IN_HAND, FALSE,
-			       TRUE);
+	    resource_table_new(text, RESOURCE_TABLE_LESS_IN_HAND, FALSE);
 	g_free(text);
 	resource_table_set_total(RESOURCETABLE(discard.resource_widget),
 				 /* Label */
