@@ -84,7 +84,8 @@ static gint next_free_player_num(Game * game, gboolean force_spectator)
 				skip = 0;
 			}
 			idx = 0;
-			while (player_taken[idx] || skip-- != 0)
+			++skip;
+			while (player_taken[idx] || --skip != 0)
 				++idx;
 			return idx;
 		}
