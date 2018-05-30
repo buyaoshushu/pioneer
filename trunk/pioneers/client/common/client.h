@@ -145,6 +145,7 @@ void stock_replace_city(void);
 void stock_use_city_wall(void);
 void stock_replace_city_wall(void);
 void stock_use_develop(void);
+void stock_dont_count_develop(void);
 
 /********** resource.c **********/
 void resource_init(void);
