@@ -2,6 +2,9 @@
 	* client/gtk/discard.c, client/gtk/gold.c, client/gtk/plenty.c,
 	client/gtk/quote.c, client/gtk/resource-table.c,
 	client/gtk/resource-table.h: Removed the Gtk+-2 More and Less buttons.
+	* client/common/client.c, client/common/client.h,
+	client/common/stock.c: Don't count development cards twice on
+	reconnect.
 
 2018-05-23  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/avahi-browser.c, client/gtk/avahi-browser.h,

@@ -165,3 +165,10 @@ void stock_use_develop(void)
 {
 	num_develop--;
 }
+
+/** Do not count the next development card.
+*/
+void stock_dont_count_develop(void)
+{
+	num_develop++;
+}

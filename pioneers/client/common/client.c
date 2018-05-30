@@ -1177,6 +1177,7 @@ static gboolean mode_load_gameinfo(StateMachine * sm, gint event)
 			return FALSE;
 		}
 
+		stock_dont_count_develop();
 		develop_bought_card_turn(devcard, devcardturnbought != 0);
 
 		devcardidx++;
