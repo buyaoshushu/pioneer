@@ -30,11 +30,11 @@
 
 static gboolean load_pixbuf(const gchar * name, GdkPixbuf ** pixbuf);
 static void replace_colors(GdkPixbuf * pixbuf,
-			   const GdkColor * replace_this,
-			   const GdkColor * replace_with);
+			   const GdkRGBA * replace_this,
+			   const GdkRGBA * replace_with);
 
-GdkColor default_face_color = { 0, 0xd500, 0x7f00, 0x2000 };
-GdkColor default_variant_color = { 0, 0, 0, 0 };
+GdkRGBA default_face_color = { 0.84, 0.50, 0.12, 1.0 };
+GdkRGBA default_variant_color = { 0.00, 0.00, 0.00, 1.0 };
 
 GSList *player_avatar;
 gpointer ai_avatar_data;
@@ -132,8 +132,8 @@ guint playericon_human_style_count(void)
  */
 static gchar *replace_colors_in_svg_data(gconstpointer original_data,
 					 gsize size,
-					 const GdkColor * replace_this,
-					 const GdkColor * replace_with)
+					 const GdkRGBA * replace_this,
+					 const GdkRGBA * replace_with)
 {
 	gchar *replace_here;
 	gchar *data;
@@ -145,13 +145,13 @@ static gchar *replace_colors_in_svg_data(gconstpointer original_data,
 	memcpy(data, original_data, size);
 
 	color_old = g_strdup_printf("fill:#%02x%02x%02x",
-				    (replace_this->red >> 8) & 0xFF,
-				    (replace_this->green >> 8) & 0xFF,
-				    (replace_this->blue >> 8) & 0xFF);
+				    (unsigned) (replace_this->red * 255),
+				    (unsigned) (replace_this->green * 255),
+				    (unsigned) (replace_this->blue * 255));
 	color_new = g_strdup_printf("fill:#%02x%02x%02x",
-				    (replace_with->red >> 8) & 0xFF,
-				    (replace_with->green >> 8) & 0xFF,
-				    (replace_with->blue >> 8) & 0xFF);
+				    (unsigned) (replace_with->red * 255),
+				    (unsigned) (replace_with->green * 255),
+				    (unsigned) (replace_with->blue * 255));
 
 	g_assert(strlen(color_old) == 12);
 	g_assert(strlen(color_new) == 12);
@@ -172,8 +172,8 @@ static gchar *replace_colors_in_svg_data(gconstpointer original_data,
 }
 
 static void replace_colors(GdkPixbuf * pixbuf,
-			   const GdkColor * replace_this,
-			   const GdkColor * replace_with)
+			   const GdkRGBA * replace_this,
+			   const GdkRGBA * replace_with)
 {
 	gint i;
 	guint new_color;
@@ -187,13 +187,13 @@ static void replace_colors(GdkPixbuf * pixbuf,
 
 	pixel = (guint *) gdk_pixbuf_get_pixels(pixbuf);
 	new_color = 0xff000000 |
-	    ((replace_with->red >> 8) & 0xff) |
-	    ((replace_with->green >> 8) & 0xff) << 8 |
-	    ((replace_with->blue >> 8) & 0xff) << 16;
+	    (unsigned) (replace_with->red * 255) |
+	    (unsigned) (replace_with->green * 255) << 8 |
+	    (unsigned) (replace_with->blue * 255) << 16;
 	old_color = 0xff000000 |
-	    ((replace_this->red >> 8) & 0xff) |
-	    ((replace_this->green >> 8) & 0xff) << 8 |
-	    ((replace_this->blue >> 8) & 0xff) << 16;
+	    (unsigned) (replace_this->red * 255) |
+	    (unsigned) (replace_this->green * 255) << 8 |
+	    (unsigned) (replace_this->blue * 255) << 16;
 	for (i = 0;
 	     i <
 	     (gdk_pixbuf_get_rowstride(pixbuf) / 4 *
@@ -205,7 +205,7 @@ static void replace_colors(GdkPixbuf * pixbuf,
 }
 
 cairo_surface_t *playericon_create_icon(const gchar * style,
-					GdkColor * color,
+					GdkRGBA * color,
 					gboolean spectator,
 					gboolean connected, gdouble width,
 					gdouble height)
@@ -266,33 +266,33 @@ cairo_surface_t *playericon_create_icon(const gchar * style,
 	case PLAYER_HUMAN:{
 			/* Draw a bust */
 			guint variant;
-			GdkColor face_color;
+			GdkRGBA face_color;
 			gdouble face_radius;
-			GdkColor variant_color;
+			GdkRGBA variant_color;
 			GdkPixbuf *pixbuf;
 			GdkPixbuf *pixbuf_scaled;
 
 			playericon_parse_human_style(style, &face_color,
 						     &variant,
 						     &variant_color);
-			gdk_cairo_set_source_color(cr, color);
+			gdk_cairo_set_source_rgba(cr, color);
 			cairo_set_line_width(cr, 1.0);
 			cairo_arc_negative(cr, width / 2, height,
 					   width / 2, 0.0, M_PI);
 			cairo_fill(cr);
-			gdk_cairo_set_source_color(cr, &black);
+			gdk_cairo_set_source_rgba(cr, &black);
 			cairo_arc_negative(cr, width / 2, height,
 					   width / 2, 0.0, M_PI);
 			cairo_move_to(cr, 0.0, height - 0.5);
 			cairo_line_to(cr, width, height - 0.5);
 			cairo_stroke(cr);
-			gdk_cairo_set_source_color(cr, &face_color);
+			gdk_cairo_set_source_rgba(cr, &face_color);
 			face_radius = 25.0 / 64.0 * height / 2.0;
 			cairo_arc(cr, width / 2 + 0.5,
 				  height / 2 - face_radius, face_radius,
 				  0.0, 2 * M_PI);
 			cairo_fill(cr);
-			gdk_cairo_set_source_color(cr, &black);
+			gdk_cairo_set_source_rgba(cr, &black);
 			cairo_arc(cr, width / 2 + 0.5,
 				  height / 2 - face_radius, face_radius,
 				  0.0, 2 * M_PI);
@@ -324,11 +324,11 @@ cairo_surface_t *playericon_create_icon(const gchar * style,
 			cairo_rectangle(cr, 0, 0, width, height);
 			cairo_fill(cr);
 		} else {
-			gdk_cairo_set_source_color(cr, color);
+			gdk_cairo_set_source_rgba(cr, color);
 			cairo_rectangle(cr, 0, 0, width, height);
 			cairo_fill(cr);
 
-			gdk_cairo_set_source_color(cr, &black);
+			gdk_cairo_set_source_rgba(cr, &black);
 			cairo_set_line_width(cr, 1.0);
 			cairo_rectangle(cr, 0.5, 0.5, width - 1,
 					height - 1);
@@ -352,7 +352,7 @@ cairo_surface_t *playericon_create_icon(const gchar * style,
 		cairo_arc(cr, width * 3 / 4, height / 4, width / 4, 0.0,
 			  2 * M_PI);
 		cairo_fill(cr);
-		gdk_cairo_set_source_color(cr, &white);
+		gdk_cairo_set_source_rgba(cr, &white);
 		cairo_rectangle(cr,
 				width / 2 + 2, height / 4 - height / 16,
 				width / 2 - 4, height / 8);
@@ -363,9 +363,9 @@ cairo_surface_t *playericon_create_icon(const gchar * style,
 	return surface;
 }
 
-gchar *playericon_create_human_style(const GdkColor * face_color,
+gchar *playericon_create_human_style(const GdkRGBA * face_color,
 				     gint variant,
-				     const GdkColor * variant_color)
+				     const GdkRGBA * variant_color)
 {
 	gchar *c1;
 	gchar *c2;
@@ -382,9 +382,9 @@ gchar *playericon_create_human_style(const GdkColor * face_color,
 }
 
 gboolean playericon_parse_human_style(const gchar * style,
-				      GdkColor * face_color,
+				      GdkRGBA * face_color,
 				      guint * variant,
-				      GdkColor * variant_color)
+				      GdkRGBA * variant_color)
 {
 	gchar **style_parts;
 	gboolean parse_ok;
@@ -421,30 +421,24 @@ gboolean playericon_parse_human_style(const gchar * style,
 }
 
 
-gboolean string_to_color(const gchar * spec, GdkColor * color)
+gboolean string_to_color(const gchar * spec, GdkRGBA * color)
 {
 	PangoColor pango_color;
 
 	if (pango_color_parse(&pango_color, spec)) {
-		color->red = pango_color.red;
-		color->green = pango_color.green;
-		color->blue = pango_color.blue;
+		color->red = pango_color.red / 255.0 / 256;
+		color->green = pango_color.green / 255.0 / 256;
+		color->blue = pango_color.blue / 255.0 / 256;
+		color->alpha = 1.0;
 		return TRUE;
 	}
 	return FALSE;
 }
 
-gchar *color_to_string(GdkColor color)
+gchar *color_to_string(GdkRGBA color)
 {
-	return g_strdup_printf("#%04x%04x%04x", color.red, color.green,
-			       color.blue);
-/** @todo RC Enable this code when the minimum Gtk+ version is high enough
-	PangoColor pango_color;
-
-	pango_color.red = color.red;
-	pango_color.green = color.green;
-	pango_color.blue = color.blue;
-
-	return pango_color_to_string(&pango_color);
-*/
+	return g_strdup_printf("#%04x%04x%04x",
+			       (unsigned) (color.red * 255 * 256),
+			       (unsigned) (color.green * 255 * 256),
+			       (unsigned) (color.blue * 255 * 256));
 }

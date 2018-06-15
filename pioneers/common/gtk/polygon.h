@@ -31,7 +31,7 @@ typedef struct {
 void poly_offset(Polygon * poly, gint x_offset, gint y_offset);
 void poly_bound_rect(const Polygon * poly, int pad, GdkRectangle * rect);
 void poly_draw(cairo_t * cr, gboolean filled, const Polygon * poly);
-void poly_draw_with_border(cairo_t * cr, const GdkColor * border_color,
+void poly_draw_with_border(cairo_t * cr, const GdkRGBA * border_color,
 			   const Polygon * poly);
 
 #endif

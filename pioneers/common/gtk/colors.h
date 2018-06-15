@@ -23,18 +23,18 @@
 
 #include <gdk/gdk.h>
 
-extern GdkColor black;
-extern GdkColor white;
-extern GdkColor red;
-extern GdkColor green;
-extern GdkColor blue;
-extern GdkColor lightblue;
+extern GdkRGBA black;
+extern GdkRGBA white;
+extern GdkRGBA red;
+extern GdkRGBA green;
+extern GdkRGBA blue;
+extern GdkRGBA lightblue;
 
-extern GdkColor ck_die_red;
-extern GdkColor ck_die_yellow;
+extern GdkRGBA ck_die_red;
+extern GdkRGBA ck_die_yellow;
 
 void colors_init(void);
 
-GdkColor *colors_get_player(gint player_num);
+GdkRGBA *colors_get_player(gint player_num);
 
 #endif

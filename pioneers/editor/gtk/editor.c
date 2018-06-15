@@ -294,7 +294,7 @@ static gboolean draw_chit_cb(GtkWidget * widget, cairo_t * cr,
 	layout = gtk_widget_create_pango_layout(widget, "");
 	draw_dice_roll(layout, cr,
 		       BUTTON_HEIGHT / 2, BUTTON_HEIGHT / 2, BUTTON_HEIGHT,
-		       GPOINTER_TO_INT(chip_number), GOLD_TERRAIN, FALSE);
+		       GPOINTER_TO_INT(chip_number), SEA_TERRAIN, FALSE);
 	g_object_unref(layout);
 	return TRUE;
 }
@@ -346,7 +346,7 @@ static gboolean draw_unselect_cb(G_GNUC_UNUSED GtkWidget * widget,
 				 cairo_t * cr,
 				 G_GNUC_UNUSED gpointer user_data)
 {
-	gdk_cairo_set_source_color(cr, &white);
+	gdk_cairo_set_source_rgba(cr, &white);
 	cairo_paint(cr);
 
 	return TRUE;
@@ -1108,7 +1108,8 @@ static GtkWidget *build_roll_menu(void)
 	gchar buffer[128];
 	MapTheme *theme = theme_get_current();
 	THEME_COLOR tcolor;
-	GdkColor *color;
+	GdkRGBA *colorFG;
+	GdkRGBA *colorBG;
 	GtkWidget *item;
 	GtkWidget *label;
 
@@ -1119,10 +1120,23 @@ static GtkWidget *build_roll_menu(void)
 			continue;
 
 		tcolor = (i == 6 || i == 8) ? TC_CHIP_H_FG : TC_CHIP_FG;
-		color = &theme->colors[tcolor].color;
+		colorFG =
+		    theme->ovr_colors[SEA_TERRAIN][tcolor].
+		    set ? &theme->ovr_colors[SEA_TERRAIN][tcolor].
+		    color : &theme->colors[tcolor].color;
+		tcolor = TC_CHIP_BG;
+		colorBG =
+		    theme->ovr_colors[SEA_TERRAIN][tcolor].
+		    set ? &theme->ovr_colors[SEA_TERRAIN][tcolor].
+		    color : &theme->colors[tcolor].color;
 		sprintf(buffer,
-			"<span foreground=\"#%04x%04x%04x\">%d</span>",
-			color->red, color->green, color->blue, i);
+			"<span foreground=\"#%04x%04x%04x\" background=\"#%04x%04x%04x\">%d</span>",
+			(unsigned) (colorFG->red * 255 * 256),
+			(unsigned) (colorFG->green * 255 * 256),
+			(unsigned) (colorFG->blue * 255 * 256),
+			(unsigned) (colorBG->red * 255 * 256),
+			(unsigned) (colorBG->green * 255 * 256),
+			(unsigned) (colorBG->blue * 255 * 256), i);
 
 		item = gtk_check_menu_item_new();
 		label = gtk_label_new("");

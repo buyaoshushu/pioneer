@@ -201,8 +201,8 @@ static void draw_building_and_count(cairo_t * cr, GtkWidget * area,
 }
 
 static void show_die(cairo_t * cr, gint x_offset, gint num,
-		     GdkColor * die_border_color, GdkColor * die_color,
-		     GdkColor * die_dots_color)
+		     GdkRGBA * die_border_color, GdkRGBA * die_color,
+		     GdkRGBA * die_dots_color)
 {
 	static GdkPoint die_points[4] = {
 		{0, 0}, {30, 0}, {30, 30}, {0, 30}
@@ -227,12 +227,12 @@ static void show_die(cairo_t * cr, gint x_offset, gint num,
 	gint idx;
 	y_offset = IDENTITY_BORDER;
 	poly_offset(&die_shape, x_offset, y_offset);
-	gdk_cairo_set_source_color(cr, die_color);
+	gdk_cairo_set_source_rgba(cr, die_color);
 	poly_draw(cr, TRUE, &die_shape);
-	gdk_cairo_set_source_color(cr, die_border_color);
+	gdk_cairo_set_source_rgba(cr, die_border_color);
 	poly_draw(cr, FALSE, &die_shape);
 	poly_offset(&die_shape, -x_offset, -y_offset);
-	gdk_cairo_set_source_color(cr, die_dots_color);
+	gdk_cairo_set_source_rgba(cr, die_dots_color);
 	for (idx = 0; idx < 7; idx++) {
 		if (list[idx] == 0)
 			continue;
@@ -254,7 +254,7 @@ static void identity_resize_cb(GtkWidget * area,
 static gint draw_identity_area_cb(GtkWidget * widget, cairo_t * cr,
 				  G_GNUC_UNUSED gpointer user_data)
 {
-	GdkColor *colour;
+	GdkRGBA *colour;
 	const GameParams *game_params;
 	gint i;
 	GtkAllocation allocation;
@@ -267,7 +267,7 @@ static gint draw_identity_area_cb(GtkWidget * widget, cairo_t * cr,
 	cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
 	cairo_set_line_width(cr, 1.0);
 	colour = player_or_spectator_color(my_player_num());
-	gdk_cairo_set_source_color(cr, colour);
+	gdk_cairo_set_source_rgba(cr, colour);
 	gtk_widget_get_allocation(widget, &allocation);
 	cairo_rectangle(cr, 0, 0, allocation.width, allocation.height);
 	cairo_fill(cr);
@@ -275,7 +275,7 @@ static gint draw_identity_area_cb(GtkWidget * widget, cairo_t * cr,
 		colour = &white;
 	else
 		colour = &black;
-	gdk_cairo_set_source_color(cr, colour);
+	gdk_cairo_set_source_rgba(cr, colour);
 	game_params = get_game_params();
 	if (game_params == NULL)
 		return TRUE;

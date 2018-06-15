@@ -280,7 +280,7 @@ static void load_pixmaps(QuoteView * qv)
 				 CAIRO_EXTEND_REPEAT);
 	cairo_rectangle(cr, 0, 0, width, height);
 	cairo_fill(cr);
-	gdk_cairo_set_source_color(cr, &black);
+	gdk_cairo_set_source_rgba(cr, &black);
 	cairo_set_line_width(cr, 1.0);
 	cairo_rectangle(cr, 0.5, 0.5, width - 1, height - 1);
 	cairo_stroke(cr);
@@ -720,7 +720,7 @@ void quote_view_theme_changed(QuoteView * qv)
 				 CAIRO_EXTEND_REPEAT);
 	cairo_rectangle(cr, 0, 0, width, height);
 	cairo_fill(cr);
-	gdk_cairo_set_source_color(cr, &black);
+	gdk_cairo_set_source_rgba(cr, &black);
 	cairo_set_line_width(cr, 1.0);
 	cairo_rectangle(cr, 0.5, 0.5, width - 1, height - 1);
 	cairo_stroke(cr);

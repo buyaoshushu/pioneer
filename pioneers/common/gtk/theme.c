@@ -70,6 +70,9 @@
   The order is bg, fg, bd, hi-bg, hi-fg. Sorry, you can't skip definitions at
   the beginning...
 
+  The chip colors for SEA_TILE are used in the GUI to display stand-alone
+  chips. Transparency should not be used here.
+
   Normally, all pixmaps are used in their native size and repeat over their
   area as needed (tiling). This doesn't look good for photo-like images, so
   you can add "scaling = always" in that case. Then images will always be
@@ -80,23 +83,20 @@
 
 */
 
-#define TCOL_INIT(r,g,b)	{ TRUE, FALSE, { 0, r, g, b } }
-#define TCOL_TRANSP()		{ TRUE, TRUE, { 0, 0, 0, 0 } }
-#define TCOL_UNSET()		{ FALSE, FALSE, { 0, 0, 0, 0 } }
-#define TSCALE				{ NULL, NULL, 0, 0.0 }
+#define TCOL_INIT(r,g,b)	{ TRUE, FALSE, { r, g, b, 1.0 } }
 
 static TColor default_colors[] = {
-	TCOL_INIT(0xff00, 0xda00, 0xb900),
-	TCOL_INIT(0, 0, 0),
-	TCOL_INIT(0, 0, 0),
-	TCOL_INIT(0, 0xff00, 0),
-	TCOL_INIT(0xff00, 0, 0),
-	TCOL_INIT(0, 0, 0xff00),
-	TCOL_INIT(0xff00, 0xff00, 0xff00),
-	TCOL_INIT(0, 0, 0),
-	TCOL_INIT(0, 0, 0),
-	TCOL_INIT(0xff00, 0xff00, 0xff00),
-	TCOL_INIT(0xff00, 0xda00, 0xb900)
+	TCOL_INIT(1.00, 0.85, 0.72),
+	TCOL_INIT(0.00, 0.00, 0.00),
+	TCOL_INIT(0.00, 0.00, 0.00),
+	TCOL_INIT(0.00, 1.00, 0.00),
+	TCOL_INIT(1.00, 0.00, 0.00),
+	TCOL_INIT(0.00, 0.00, 1.00),
+	TCOL_INIT(1.00, 1.00, 1.00),
+	TCOL_INIT(0.00, 0.00, 0.00),
+	TCOL_INIT(0.00, 0.00, 0.00),
+	TCOL_INIT(1.00, 1.00, 1.00),
+	TCOL_INIT(1.00, 0.85, 0.72)
 };
 
 #define offs(elem)           ((size_t)(&(((MapTheme *)0)->elem)))
@@ -125,8 +125,8 @@ static struct tvars {
 		    offs(terrain_tile_names[FOREST_TILE])}, {
 	"desert-tile", FALSE, FNAME, -1,
 		    offs(terrain_tile_names[DESERT_TILE])}, {
-	"sea-tile", FALSE, FNAME, -1, offs(terrain_tile_names[SEA_TILE])},
-	{
+	"sea-tile", FALSE, FNAME, SEA_TILE,
+		    offs(terrain_tile_names[SEA_TILE])}, {
 	"gold-tile", FALSE, FNAME, GOLD_TILE,
 		    offs(terrain_tile_names[GOLD_TILE])}, {
 	"board-tile", FALSE, FNAME, -1,
@@ -562,7 +562,7 @@ static gboolean parsecolor(char *p, TColor * tc, const gchar * filename,
 		return TRUE;
 	}
 	tc->transparent = FALSE;
-	if (!gdk_color_parse(p, &tc->color)) {
+	if (!gdk_rgba_parse(&tc->color, p)) {
 		ERR1("invalid color: %s", p);
 		return FALSE;
 	}

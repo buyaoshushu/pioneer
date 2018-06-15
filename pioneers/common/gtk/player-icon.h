@@ -40,7 +40,7 @@ guint playericon_human_style_count(void);
  *          when not needed anymore.
  */
 cairo_surface_t *playericon_create_icon(const gchar * style,
-					GdkColor * color,
+					GdkRGBA * color,
 					gboolean spectator,
 					gboolean connected, gdouble width,
 					gdouble height);
@@ -51,9 +51,9 @@ cairo_surface_t *playericon_create_icon(const gchar * style,
  *  @param variant_color The color of the variant
  *  @return The style string. Call g_free() when not needed anymore.
  */
-gchar *playericon_create_human_style(const GdkColor * face_color,
+gchar *playericon_create_human_style(const GdkRGBA * face_color,
 				     gint variant,
-				     const GdkColor * variant_color);
+				     const GdkRGBA * variant_color);
 
 /** Parse the style string in its components.
  *  @param  style         The style
@@ -63,9 +63,9 @@ gchar *playericon_create_human_style(const GdkColor * face_color,
  *  @return TRUE if the style could be parsed. When FALSE, the return values contain the default values
  */
 gboolean playericon_parse_human_style(const gchar * style,
-				      GdkColor * face_color,
+				      GdkRGBA * face_color,
 				      guint * variant,
-				      GdkColor * variant_color);
+				      GdkRGBA * variant_color);
 
 /** Convert a string to a color.
  *  The color is allocated in the system colormap.
@@ -73,13 +73,13 @@ gboolean playericon_parse_human_style(const gchar * style,
  * @retval color The color
  * @return TRUE if the conversion succeeded.
  */
-gboolean string_to_color(const gchar * spec, GdkColor * color);
+gboolean string_to_color(const gchar * spec, GdkRGBA * color);
 
 /** Convert a color to a string.
  *  After use, the string must be freed with g_free()
  *  @param color The color
  *  @return the string
  */
-gchar *color_to_string(GdkColor color);
+gchar *color_to_string(GdkRGBA color);
 
 #endif

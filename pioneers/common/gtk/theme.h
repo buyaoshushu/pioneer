@@ -27,7 +27,7 @@
 typedef struct {
 	gboolean set;
 	gboolean transparent;
-	GdkColor color;
+	GdkRGBA color;
 } TColor;
 
 typedef struct {

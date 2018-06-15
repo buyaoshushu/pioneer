@@ -143,7 +143,7 @@ static gboolean draw_histogram_cb(GtkWidget * widget, cairo_t * cr,
 		gdouble y =
 		    grid_offset_y + grid_height - 0.5 -
 		    (gdouble) i * grid_height / GRID_DIVISIONS;
-		gdk_cairo_set_source_color(cr, &lightblue);
+		gdk_cairo_set_source_rgba(cr, &lightblue);
 		cairo_move_to(cr, grid_offset_x, y);
 		cairo_line_to(cr, w - SPACING_AROUND, y);
 		cairo_stroke(cr);
@@ -153,7 +153,7 @@ static gboolean draw_histogram_cb(GtkWidget * widget, cairo_t * cr,
 			pango_layout_set_text(layout, buff, -1);
 			pango_layout_get_pixel_size(layout, &width,
 						    &height);
-			gdk_cairo_set_source_color(cr, &black);
+			gdk_cairo_set_source_rgba(cr, &black);
 			cairo_move_to(cr,
 				      label_width - width + SPACING_AROUND,
 				      y - height / 2.0);
@@ -183,7 +183,7 @@ static gboolean draw_histogram_cb(GtkWidget * widget, cairo_t * cr,
 			pango_layout_set_markup(layout, buff, -1);
 			pango_layout_get_pixel_size(layout, &width,
 						    &height);
-			gdk_cairo_set_source_color(cr, &black);
+			gdk_cairo_set_source_rgba(cr, &black);
 			cairo_move_to(cr, x + (bar_width - width) / 2,
 				      grid_height + grid_offset_y - bh -
 				      height);
@@ -214,7 +214,7 @@ static gboolean draw_histogram_cb(GtkWidget * widget, cairo_t * cr,
 	mi = le + 5 * (bar_width + BAR_SEPARATION);
 	ri = mi + 5 * (bar_width + BAR_SEPARATION);
 
-	gdk_cairo_set_source_color(cr, &red);
+	gdk_cairo_set_source_rgba(cr, &red);
 	cairo_move_to(cr, le, expected_low_y);
 	cairo_line_to(cr,
 		      mi - (seven_thrown ? 0 : bar_width + BAR_SEPARATION),

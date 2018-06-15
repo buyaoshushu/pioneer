@@ -25,32 +25,32 @@
 #include "colors.h"
 #include "game.h"
 
-GdkColor black = { 0, 0, 0, 0 };
-GdkColor white = { 0, 0xff00, 0xff00, 0xff00 };
-GdkColor red = { 0, 0xff00, 0, 0 };
-GdkColor green = { 0, 0, 0xff00, 0 };
-GdkColor blue = { 0, 0, 0, 0xff00 };
-GdkColor lightblue = { 0, 0xbe00, 0xbe00, 0xff00 };
+GdkRGBA black = { 0.0, 0.0, 0.0, 1.0 };
+GdkRGBA white = { 1.0, 1.0, 1.0, 1.0 };
+GdkRGBA red = { 1.0, 0.0, 0.0, 1.0 };
+GdkRGBA green = { 0.0, 1.0, 0.0, 1.0 };
+GdkRGBA blue = { 0.0, 0.0, 1.0, 1.0 };
+GdkRGBA lightblue = { 0.75, 0.75, 1.0, 1.0 };
 
-GdkColor ck_die_red = { 0, 0x8800, 0x0200, 0x0200 };
-GdkColor ck_die_yellow = { 0, 0xab00, 0xbd00, 0x1300 };
+GdkRGBA ck_die_red = { 0.53, 0.01, 0.01, 1.0 };
+GdkRGBA ck_die_yellow = { 0.67, 0.74, 0.07, 1.0 };
 
-static GdkColor token_colors[MAX_PLAYERS] = {
-	{0, 0xCD00, 0x0000, 0x0000},	/* red */
-	{0, 0x1E00, 0x9000, 0xFF00},	/* blue */
-	{0, 0xE800, 0xE800, 0xE800},	/* white */
-	{0, 0xFF00, 0x7F00, 0x0000},	/* orange */
-	{0, 0xEE00, 0xEE00, 0x0000},	/* yellow */
-	{0, 0x8E00, 0xE500, 0xEE00},	/* cyan */
-	{0, 0xD100, 0x5F00, 0xEE00},	/* magenta */
-	{0, 0x0000, 0xEE00, 0x7600}	/* green */
+static GdkRGBA token_colors[MAX_PLAYERS] = {
+	{0.80, 0.00, 0.00, 1.0},	/* red */
+	{0.12, 0.57, 1.00, 1.0},	/* blue */
+	{0.91, 0.91, 0.91, 1.0},	/* white */
+	{1.00, 0.50, 0.00, 1.0},	/* orange */
+	{0.93, 0.93, 0.00, 1.0},	/* yellow */
+	{0.55, 0.90, 0.93, 1.0},	/* cyan */
+	{0.82, 0.37, 0.93, 1.0},	/* magenta */
+	{0.00, 0.93, 0.46, 1.0}	/* green */
 };
 
 void colors_init(void)
 {
 }
 
-GdkColor *colors_get_player(gint player_num)
+GdkRGBA *colors_get_player(gint player_num)
 {
 	g_assert(player_num >= 0);
 	g_assert(player_num < MAX_PLAYERS);
