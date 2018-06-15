@@ -33,19 +33,19 @@ static void player_show_connected_at_iter(gint player_num,
 					  gboolean connected,
 					  GtkTreeIter * iter);
 
-static GdkColor ps_settlement = { 0, 0xbb00, 0x0000, 0x0000 };
-static GdkColor ps_city = { 0, 0xff00, 0x0000, 0x0000 };
-static GdkColor ps_city_wall = { 0, 0xff00, 0x0000, 0x0000 };
-static GdkColor ps_largest = { 0, 0x1c00, 0xb500, 0xed00 };
-static GdkColor ps_soldier = { 0, 0xe500, 0x8f00, 0x1600 };
-static GdkColor ps_resource = { 0, 0x0000, 0x0000, 0xFF00 };
-static GdkColor ps_development = { 0, 0xc600, 0xc600, 0x1300 };
-static GdkColor ps_building = { 0, 0x0b00, 0xed00, 0x8900 };
+static GdkRGBA ps_settlement = { 0.73, 0.00, 0.00, 1.0 };
+static GdkRGBA ps_city = { 1.00, 0.00, 0.00, 1.0 };
+static GdkRGBA ps_city_wall = { 1.00, 0.00, 0.00, 1.0 };
+static GdkRGBA ps_largest = { 0.11, 0.71, 0.93, 1.0 };
+static GdkRGBA ps_soldier = { 0.90, 0.56, 0.09, 1.0 };
+static GdkRGBA ps_resource = { 0.00, 0.00, 1.00, 1.0 };
+static GdkRGBA ps_development = { 0.78, 0.78, 0.07, 1.0 };
+static GdkRGBA ps_building = { 0.04, 0.93, 0.54, 1.0 };
 
 typedef struct {
 	const gchar *singular;
 	const gchar *plural;
-	GdkColor *textcolor;
+	GdkRGBA *textcolor;
 } Statistic;
 
 static Statistic statistics[] = {
@@ -108,12 +108,12 @@ void player_init(void)
 	playericon_init();
 }
 
-GdkColor *player_color(gint player_num)
+GdkRGBA *player_color(gint player_num)
 {
 	return colors_get_player(player_num);
 }
 
-GdkColor *player_or_spectator_color(gint player_num)
+GdkRGBA *player_or_spectator_color(gint player_num)
 {
 	if (player_is_spectator(player_num)) {
 		/* spectator color is always black */
@@ -564,7 +564,7 @@ GtkWidget *player_build_summary(void)
 	summary_store = gtk_list_store_new(SUMMARY_COLUMN_LAST, GDK_TYPE_PIXBUF,	/* player icon */
 					   G_TYPE_INT,	/* player number */
 					   G_TYPE_STRING,	/* text */
-					   GDK_TYPE_COLOR,	/* text colour */
+					   GDK_TYPE_RGBA,	/* text colour */
 					   G_TYPE_STRING,	/* score */
 					   G_TYPE_INT,	/* statistic */
 					   G_TYPE_INT);	/* points */
@@ -584,7 +584,7 @@ GtkWidget *player_build_summary(void)
 							  gtk_cell_renderer_text_new
 							  (), "text",
 							  SUMMARY_COLUMN_TEXT,
-							  "foreground-gdk",
+							  "foreground-rgba",
 							  SUMMARY_COLUMN_TEXT_COLOUR,
 							  NULL);
 	gtk_tree_view_column_set_sizing(column,
@@ -597,7 +597,7 @@ GtkWidget *player_build_summary(void)
 							  renderer,
 							  "text",
 							  SUMMARY_COLUMN_SCORE,
-							  "foreground-gdk",
+							  "foreground-rgba",
 							  SUMMARY_COLUMN_TEXT_COLOUR,
 							  NULL);
 	g_object_set(renderer, "xalign", 1.0f, NULL);
@@ -633,12 +633,12 @@ static gboolean draw_turn_area_cb(GtkWidget * widget, cairo_t * cr,
 	gtk_widget_get_allocation(widget, &allocation);
 	offset = 0;
 	for (idx = 0; idx < num_players(); idx++) {
-		gdk_cairo_set_source_color(cr, player_color(idx));
+		gdk_cairo_set_source_rgba(cr, player_color(idx));
 		cairo_rectangle(cr, offset, 0, turn_area_icon_width,
 				allocation.height);
 		cairo_fill(cr);
 
-		gdk_cairo_set_source_color(cr, &black);
+		gdk_cairo_set_source_rgba(cr, &black);
 		if (idx == current_player()) {
 			cairo_set_line_width(cr, 3.0);
 			cairo_rectangle(cr, offset + 1.5, 1.5,

@@ -83,10 +83,10 @@ void poly_draw(cairo_t * cr, gboolean filled, const Polygon * poly)
 }
 
 void poly_draw_with_border(cairo_t * cr,
-			   const GdkColor * border_color,
+			   const GdkRGBA * border_color,
 			   const Polygon * poly)
 {
 	poly_draw(cr, TRUE, poly);
-	gdk_cairo_set_source_color(cr, border_color);
+	gdk_cairo_set_source_rgba(cr, border_color);
 	poly_draw(cr, FALSE, poly);
 }

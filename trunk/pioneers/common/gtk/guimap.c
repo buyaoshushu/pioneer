@@ -707,9 +707,9 @@ void draw_port_indicator(PangoLayout * layout, cairo_t * cr,
 			typeind = TRUE;
 			drawit = TRUE;
 		} else if (!theme->colors[TC_PORT_BG].transparent) {
-			gdk_cairo_set_source_color(cr,
-						   &theme->colors
-						   [TC_PORT_BG].color);
+			gdk_cairo_set_source_rgba(cr,
+						  &theme->colors
+						  [TC_PORT_BG].color);
 			typeind = FALSE;
 			drawit = TRUE;
 		} else {
@@ -724,9 +724,9 @@ void draw_port_indicator(PangoLayout * layout, cairo_t * cr,
 
 		/* Outline port indicator */
 		if (!theme->colors[TC_PORT_BD].transparent) {
-			gdk_cairo_set_source_color(cr,
-						   &theme->colors
-						   [TC_PORT_BD].color);
+			gdk_cairo_set_source_rgba(cr,
+						  &theme->colors
+						  [TC_PORT_BD].color);
 			cairo_arc(cr, x_offset, y_offset,
 				  chit_radius, 0.0, 2 * M_PI);
 			cairo_stroke(cr);
@@ -771,9 +771,9 @@ void draw_port_indicator(PangoLayout * layout, cairo_t * cr,
 			pango_layout_set_markup(layout, str, -1);
 			pango_layout_get_pixel_size(layout, &width,
 						    &height);
-			gdk_cairo_set_source_color(cr,
-						   &theme->colors
-						   [TC_PORT_FG].color);
+			gdk_cairo_set_source_rgba(cr,
+						  &theme->colors
+						  [TC_PORT_FG].color);
 			cairo_move_to(cr, x_offset - width / 2,
 				      y_offset - height / 2);
 			pango_cairo_show_layout(cr, layout);
@@ -805,14 +805,14 @@ void draw_dice_roll(PangoLayout * layout, cairo_t * cr,
 	col = highlight ? TC_CHIP_H_BG : TC_CHIP_BG;
 	tcol = col_or_ovr(terrain, col);
 	if (!tcol->transparent) {
-		gdk_cairo_set_source_color(cr, &(tcol->color));
+		gdk_cairo_set_source_rgba(cr, &(tcol->color));
 		cairo_move_to(cr, x_offset + radius, y_offset);
 		cairo_arc(cr, x_offset, y_offset, radius, 0.0, 2 * M_PI);
 		cairo_fill(cr);
 	}
 	tcol = col_or_ovr(terrain, TC_CHIP_BD);
 	if (!tcol->transparent) {
-		gdk_cairo_set_source_color(cr, &(tcol->color));
+		gdk_cairo_set_source_rgba(cr, &(tcol->color));
 		cairo_move_to(cr, x_offset + radius, y_offset);
 		cairo_arc(cr, x_offset, y_offset, radius, 0.0, 2 * M_PI);
 		cairo_stroke(cr);
@@ -823,7 +823,7 @@ void draw_dice_roll(PangoLayout * layout, cairo_t * cr,
 		sprintf(num, "<b>%d</b>", n);
 		pango_layout_set_markup(layout, num, -1);
 		pango_layout_get_pixel_size(layout, &width, &height);
-		gdk_cairo_set_source_color(cr, &(tcol->color));
+		gdk_cairo_set_source_rgba(cr, &(tcol->color));
 		cairo_move_to(cr, x_offset - width / 2,
 			      y_offset - height / 2);
 		pango_cairo_show_layout(cr, layout);
@@ -872,9 +872,8 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 
 	/* Draw border around hex */
 	if (!theme->colors[TC_HEX_BD].transparent) {
-		gdk_cairo_set_source_color(gmap->cr,
-					   &theme->
-					   colors[TC_HEX_BD].color);
+		gdk_cairo_set_source_rgba(gmap->cr,
+					  &theme->colors[TC_HEX_BD].color);
 		poly_draw(gmap->cr, FALSE, &poly);
 	}
 
@@ -893,7 +892,7 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 		const double dashes[] = { 4.0 };
 
 		/* Draw lines from port to shore */
-		gdk_cairo_set_source_color(gmap->cr, &white);
+		gdk_cairo_set_source_rgba(gmap->cr, &white);
 		cairo_set_dash(gmap->cr, dashes, G_N_ELEMENTS(dashes),
 			       0.0);
 		cairo_move_to(gmap->cr, x_offset, y_offset);
@@ -932,15 +931,15 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 			g_assert_not_reached();
 			break;
 		}
-		gdk_cairo_set_source_color(gmap->cr,
-					   colors_get_player(edge->owner));
+		gdk_cairo_set_source_rgba(gmap->cr,
+					  colors_get_player(edge->owner));
 		poly_draw_with_border(gmap->cr, &black, &poly);
 	}
 
 	/* Draw all buildings */
 	for (idx = 0; idx < G_N_ELEMENTS(hex->nodes); idx++) {
 		const Node *node = hex->nodes[idx];
-		const GdkColor *color;
+		const GdkRGBA *color;
 
 		if (node->owner < 0 && !gmap->show_nosetup_nodes)
 			continue;
@@ -959,8 +958,7 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 				poly.num_points = G_N_ELEMENTS(points);
 				guimap_city_wall_polygon(gmap, node,
 							 &poly);
-				gdk_cairo_set_source_color(gmap->cr,
-							   color);
+				gdk_cairo_set_source_rgba(gmap->cr, color);
 				poly_draw_with_border(gmap->cr, &black,
 						      &poly);
 			}
@@ -973,7 +971,7 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 				guimap_settlement_polygon(gmap, node,
 							  &poly);
 		}
-		gdk_cairo_set_source_color(gmap->cr, color);
+		gdk_cairo_set_source_rgba(gmap->cr, color);
 		poly_draw_with_border(gmap->cr, &black, &poly);
 	}
 
@@ -983,15 +981,15 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 		guimap_robber_polygon(gmap, hex, &poly);
 		cairo_set_line_width(gmap->cr, 1.0);
 		if (!theme->colors[TC_ROBBER_FG].transparent) {
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_ROBBER_FG].color);
+			gdk_cairo_set_source_rgba(gmap->cr,
+						  &theme->colors
+						  [TC_ROBBER_FG].color);
 			poly_draw(gmap->cr, TRUE, &poly);
 		}
 		if (!theme->colors[TC_ROBBER_BD].transparent) {
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_ROBBER_BD].color);
+			gdk_cairo_set_source_rgba(gmap->cr,
+						  &theme->colors
+						  [TC_ROBBER_BD].color);
 			poly_draw(gmap->cr, FALSE, &poly);
 		}
 	}
@@ -1002,15 +1000,15 @@ static gboolean display_hex(const Hex * hex, gpointer closure)
 		guimap_pirate_polygon(gmap, hex, &poly);
 		cairo_set_line_width(gmap->cr, 1.0);
 		if (!theme->colors[TC_ROBBER_FG].transparent) {
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_ROBBER_FG].color);
+			gdk_cairo_set_source_rgba(gmap->cr,
+						  &theme->colors
+						  [TC_ROBBER_FG].color);
 			poly_draw(gmap->cr, TRUE, &poly);
 		}
 		if (!theme->colors[TC_ROBBER_BD].transparent) {
-			gdk_cairo_set_source_color(gmap->cr,
-						   &theme->colors
-						   [TC_ROBBER_BD].color);
+			gdk_cairo_set_source_rgba(gmap->cr,
+						  &theme->colors
+						  [TC_ROBBER_BD].color);
 			poly_draw(gmap->cr, FALSE, &poly);
 		}
 	}
@@ -1331,7 +1329,7 @@ static void draw_cursor(GuiMap * gmap, gint owner, const Polygon * poly)
 	g_return_if_fail(gmap->cursor.pointer != NULL);
 
 	cairo_set_line_width(gmap->cr, 3.0);
-	gdk_cairo_set_source_color(gmap->cr, colors_get_player(owner));
+	gdk_cairo_set_source_rgba(gmap->cr, colors_get_player(owner));
 	poly_draw_with_border(gmap->cr, &green, poly);
 
 	poly_bound_rect(poly, 1, &rect);
@@ -1556,7 +1554,7 @@ static void draw_robber_cursor(GuiMap * gmap)
 	poly_bound_rect(&poly, 1, &rect);
 
 	cairo_set_line_width(gmap->cr, 2.0);
-	gdk_cairo_set_source_color(gmap->cr, &green);
+	gdk_cairo_set_source_rgba(gmap->cr, &green);
 	poly_draw(gmap->cr, FALSE, &poly);
 
 	gdk_window_invalidate_rect(gtk_widget_get_window(gmap->area),

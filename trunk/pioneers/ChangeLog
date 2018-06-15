@@ -1,3 +1,18 @@
+2018-06-16  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/data/themes/Iceland/theme.cfg,
+	client/gtk/data/themes/Tiny/theme.cfg,
+	client/gtk/data/themes/ccFlickr/theme.cfg, common/gtk/theme.c,
+	common/gtk/theme.h, client/gtk/histogram.c, editor/gtk/editor.c: Use
+	the SEA_TERRAIN for the colours of the chits in the editor and the
+	dice histogram.
+	* client/gtk/frontend.h, client/gtk/histogram.c,
+	client/gtk/identity.c, client/gtk/name.c, client/gtk/player.c,
+	client/gtk/quote-view.c, common/gtk/colors.c, common/gtk/colors.h,
+	common/gtk/guimap.c, common/gtk/player-icon.c,
+	common/gtk/player-icon.h, common/gtk/polygon.c, common/gtk/polygon.h,
+	common/gtk/theme.c, common/gtk/theme.h, editor/gtk/editor.c: Migrate
+	from GdkColor to GdkRGBA.
+
 2018-05-30  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/discard.c, client/gtk/gold.c, client/gtk/plenty.c,
 	client/gtk/quote.c, client/gtk/resource-table.c,

@@ -93,12 +93,12 @@ static void change_style_cb(G_GNUC_UNUSED GtkWidget * widget,
 	g_free(dialog->current_style);
 	if (gtk_toggle_button_get_active
 	    (GTK_TOGGLE_BUTTON(dialog->check_btn))) {
-		GdkColor c1;
-		GdkColor c2;
+		GdkRGBA c1;
+		GdkRGBA c2;
 		guint variant;
-		gtk_color_button_get_color(GTK_COLOR_BUTTON
+		gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER
 					   (dialog->color_btn1), &c1);
-		gtk_color_button_get_color(GTK_COLOR_BUTTON
+		gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER
 					   (dialog->color_btn2), &c2);
 		variant =
 		    gtk_range_get_value(GTK_RANGE(dialog->variant_btn)) -
@@ -125,7 +125,7 @@ void name_create_dlg(void)
 	GtkWidget *dlg_vbox;
 	GtkWidget *hbox;
 	GtkWidget *lbl;
-	GdkColor face_color, variant_color;
+	GdkRGBA face_color, variant_color;
 	guint variant;
 	gboolean parse_ok;
 	gint width;
@@ -237,9 +237,8 @@ void name_create_dlg(void)
 			   TRUE, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
 
-	name_dialog.color_btn1 = gtk_color_button_new();
-	gtk_color_button_set_color(GTK_COLOR_BUTTON
-				   (name_dialog.color_btn1), &face_color);
+	name_dialog.color_btn1 =
+	    gtk_color_button_new_with_rgba(&face_color);
 	gtk_widget_show(name_dialog.color_btn1);
 	gtk_box_pack_start(GTK_BOX(name_dialog.style_hbox),
 			   name_dialog.color_btn1, FALSE, TRUE, 0);
@@ -253,10 +252,8 @@ void name_create_dlg(void)
 			   TRUE, 0);
 	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
 
-	name_dialog.color_btn2 = gtk_color_button_new();
-	gtk_color_button_set_color(GTK_COLOR_BUTTON
-				   (name_dialog.color_btn2),
-				   &variant_color);
+	name_dialog.color_btn2 =
+	    gtk_color_button_new_with_rgba(&variant_color);
 	gtk_widget_show(name_dialog.color_btn2);
 	gtk_box_pack_start(GTK_BOX(name_dialog.style_hbox),
 			   name_dialog.color_btn2, FALSE, TRUE, 0);

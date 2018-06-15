@@ -262,9 +262,9 @@ GtkWidget *player_build_turn_area(void);
 void player_clear_summary(void);
 void player_init(void);
 /** The colour of the player, or spectator */
-GdkColor *player_or_spectator_color(gint player_num);
+GdkRGBA *player_or_spectator_color(gint player_num);
 /** The colour of the player */
-GdkColor *player_color(gint player_num);
+GdkRGBA *player_color(gint player_num);
 /** Create an icon of the player, for player_num, who is connected.
  *  You should unref the pixbuf when it is no longer needed
  */
