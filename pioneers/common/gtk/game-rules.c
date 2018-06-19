@@ -429,5 +429,6 @@ static void verify_island_discovery_bonus(G_GNUC_UNUSED GtkButton * button,
 
 	bonuses = game_rules_get_island_discovery_bonus(gr);
 	game_rules_set_island_discovery_bonus(gr, bonuses);
-	g_array_free(bonuses, TRUE);
+	if (bonuses != NULL)
+		g_array_free(bonuses, TRUE);
 }
