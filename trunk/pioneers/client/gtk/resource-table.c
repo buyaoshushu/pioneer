@@ -148,7 +148,7 @@ GtkWidget *resource_table_new(const gchar * title,
 	gtk_widget_show(widget);
 	gtk_grid_attach(GTK_GRID(rt), widget, 0, 0, 3 + rt->bank_offset,
 			1);
-	gtk_misc_set_alignment(GTK_MISC(widget), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(widget), 0.0);
 
 	row = 1;
 	for (i = 0; i < NO_RESOURCE; i++) {
@@ -158,7 +158,7 @@ GtkWidget *resource_table_new(const gchar * title,
 		    gtk_label_new(resource_name(i, TRUE));
 		gtk_widget_show(widget);
 		gtk_grid_attach(GTK_GRID(rt), widget, 0, row, 1, 1);
-		gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
+		gtk_label_set_xalign(GTK_LABEL(widget), 0.0);
 
 		widget = rt->row[i].hand_widget = gtk_entry_new();
 		gtk_widget_show(widget);
@@ -231,7 +231,7 @@ void resource_table_set_total(ResourceTable * rt, const gchar * text,
 	gtk_widget_show(widget);
 	gtk_grid_attach(GTK_GRID(rt), widget, 0, row, 2 + rt->bank_offset,
 			1);
-	gtk_misc_set_alignment(GTK_MISC(widget), 1.0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(widget), 1.0);
 
 	widget = rt->total_widget =
 	    gtk_spin_button_new_with_range(0, total, 1);

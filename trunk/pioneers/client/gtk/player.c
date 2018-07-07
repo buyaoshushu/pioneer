@@ -558,7 +558,7 @@ GtkWidget *player_build_summary(void)
 	/* Caption for the overview of the points and card of other players */
 	gtk_label_set_markup(GTK_LABEL(label), _("<b>Player summary</b>"));
 	gtk_widget_show(label);
-	gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 	gtk_container_add(GTK_CONTAINER(alignment), label);
 
 	summary_store = gtk_list_store_new(SUMMARY_COLUMN_LAST, GDK_TYPE_PIXBUF,	/* player icon */

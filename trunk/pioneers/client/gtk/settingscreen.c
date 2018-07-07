@@ -39,7 +39,7 @@ static void add_setting_desc(GtkWidget * grid, guint row, guint col,
 	label = gtk_label_new(desc);
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(grid), label, col, row, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5f);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 }
 
 static void add_setting_desc_with_image(GtkWidget * grid, guint row,
@@ -90,8 +90,7 @@ static void add_setting_val(GtkWidget * grid, guint row, guint col,
 	g_free(label_var);
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(grid), label, col, row, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(label),
-			       (right_aligned ? 1.0 : 0.0), 0.5f);
+	gtk_label_set_xalign(GTK_LABEL(label), (right_aligned ? 1.0 : 0.0));
 }
 
 static GtkWidget *settings_create_content(void)
@@ -127,7 +126,7 @@ static GtkWidget *settings_create_content(void)
 			     /* Label */
 			     _("<b>General settings</b>"));
 	gtk_widget_show(label);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), label, FALSE, TRUE, 0);
 
 	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
@@ -254,7 +253,7 @@ static GtkWidget *settings_create_content(void)
 			     /* Label */
 			     _("<b>Building quotas</b>"));
 	gtk_widget_show(label);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
 
 	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
@@ -314,7 +313,7 @@ static GtkWidget *settings_create_content(void)
 			     /* Label */
 			     _("<b>Development card deck</b>"));
 	gtk_widget_show(label);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
 
 	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);

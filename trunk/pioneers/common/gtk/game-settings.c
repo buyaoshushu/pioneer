@@ -105,7 +105,7 @@ static void game_settings_init(GameSettings * gs)
 	label = gtk_label_new(_("Number of players"));
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(gs), label, 0, 1, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5f);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 
 	adj =
 	    GTK_ADJUSTMENT(gtk_adjustment_new(0, 2, MAX_PLAYERS, 1, 4, 0));
@@ -126,7 +126,7 @@ static void game_settings_init(GameSettings * gs)
 	label = gtk_label_new(_("Victory point target"));
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(gs), label, 0, 2, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5f);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 3);
 

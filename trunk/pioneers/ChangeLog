@@ -1,6 +1,19 @@
+2018-07-07  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/connect.c, client/gtk/develop.c, client/gtk/discard.c,
+	client/gtk/gold.c, client/gtk/gui.c, client/gtk/legend.c,
+	client/gtk/monopoly.c, client/gtk/name.c, client/gtk/player.c,
+	client/gtk/quote.c, client/gtk/resource-table.c,
+	client/gtk/resource-view.gob, client/gtk/resource.c,
+	client/gtk/settingscreen.c, client/gtk/trade.c,
+	common/gtk/common_gtk.c, common/gtk/game-rules.c,
+	common/gtk/game-settings.c, editor/gtk/editor.c,
+	editor/gtk/game-buildings.c, editor/gtk/game-devcards.c,
+	editor/gtk/game-resources.c, server/gtk/main.c: Migrate away from
+	GtkMisc.
+
 2018-06-19  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/game-rules.c: Fixed a Gdk warning (SF bug 295)
-	
+
 2018-06-16  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/data/themes/Iceland/theme.cfg,
 	client/gtk/data/themes/Tiny/theme.cfg,

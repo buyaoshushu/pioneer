@@ -47,7 +47,7 @@ static void game_devcards_init(GameDevCards * gd)
 
 	for (row = 0; row < NUM_DEVEL_TYPES; row++) {
 		label = gtk_label_new(get_devel_name(row));
-		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+		gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 		gtk_grid_attach(GTK_GRID(gd), label, 0, row, 1, 1);
 
 		adjustment =

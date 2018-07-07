@@ -107,7 +107,7 @@ void monopoly_create_dlg(void)
 			      "monopolize."));
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(vbox), lbl, TRUE, TRUE, 0);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(lbl), 0.0);
 
 	monop_grp = add_resource_btn(vbox, monop_grp, BRICK_RESOURCE);
 	monop_grp = add_resource_btn(vbox, monop_grp, GRAIN_RESOURCE);

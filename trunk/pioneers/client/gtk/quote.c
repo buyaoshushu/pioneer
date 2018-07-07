@@ -301,7 +301,7 @@ GtkWidget *quote_build_page(void)
 	desc_lbl = gtk_label_new("");
 	gtk_widget_show(desc_lbl);
 	gtk_box_pack_start(GTK_BOX(hbox), desc_lbl, TRUE, TRUE, 0);
-	gtk_misc_set_alignment(GTK_MISC(desc_lbl), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(desc_lbl), 0.0);
 
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
 	gtk_widget_show(hbox);

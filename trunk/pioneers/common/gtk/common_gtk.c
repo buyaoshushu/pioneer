@@ -380,7 +380,7 @@ void build_frame(GtkWidget * parent, const gchar * title,
 	title_with_markup = g_strdup_printf("<b>%s</b>", title);
 	gtk_label_set_markup(GTK_LABEL(label), title_with_markup);
 	g_free(title_with_markup);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 	gtk_widget_show(label);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
 
