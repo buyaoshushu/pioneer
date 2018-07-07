@@ -915,7 +915,7 @@ static GtkWidget *build_create_interface(void)
 	label = gtk_label_new(_("Number of computer players"));
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(game_settings), label, 0, row, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 
 	adj = GTK_ADJUSTMENT(gtk_adjustment_new(0,
 						0,
@@ -1463,7 +1463,7 @@ void connect_create_dlg(void)
 	lbl = gtk_label_new(_("Player name"));
 	gtk_widget_show(lbl);
 	gtk_grid_attach(GTK_GRID(grid), lbl, 0, row, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(lbl), 0.0);
 
 	name = notifying_string_get(requested_name);
 	name_entry = gtk_entry_new();
@@ -1499,7 +1499,7 @@ void connect_create_dlg(void)
 	lbl = gtk_label_new(_("Avahi"));
 	gtk_widget_show(lbl);
 	gtk_grid_attach(GTK_GRID(grid), lbl, 0, row, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(lbl), 0.0);
 
 	/* Button */
 	btn = gtk_button_new_with_label(_("Join"));
@@ -1532,7 +1532,7 @@ void connect_create_dlg(void)
 	lbl = gtk_label_new(_("Metaserver"));
 	gtk_widget_show(lbl);
 	gtk_grid_attach(GTK_GRID(grid), lbl, 0, row, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(lbl), 0.0);
 
 	metaserver_entry = metaserver_new();
 	gtk_widget_show(metaserver_entry);
@@ -1763,7 +1763,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	lbl = gtk_label_new(_("Server host"));
 	gtk_widget_show(lbl);
 	gtk_grid_attach(GTK_GRID(grid), lbl, 0, 0, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(lbl), 0.0);
 
 	host_entry = gtk_entry_new();
 	gtk_widget_show(host_entry);
@@ -1778,7 +1778,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	lbl = gtk_label_new(_("Server port"));
 	gtk_widget_show(lbl);
 	gtk_grid_attach(GTK_GRID(grid), lbl, 0, 1, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(lbl), 0.0);
 
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	gtk_widget_show(hbox);
@@ -1837,7 +1837,7 @@ static void connect_private_dialog(G_GNUC_UNUSED GtkWidget * widget,
 	lbl = gtk_label_new(_("Recent games"));
 	gtk_widget_show(lbl);
 	gtk_grid_attach(GTK_GRID(grid), lbl, 0, 2, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(lbl), 0.0);
 
 	gtk_entry_set_activates_default(GTK_ENTRY(host_entry), TRUE);
 	gtk_entry_set_activates_default(GTK_ENTRY(port_entry), TRUE);

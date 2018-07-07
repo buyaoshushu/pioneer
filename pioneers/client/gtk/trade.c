@@ -448,7 +448,7 @@ static GtkWidget *build_trade_resources_frame(const gchar * title,
 	gtk_label_set_markup(GTK_LABEL(label), title_with_markup);
 	g_free(title_with_markup);
 	gtk_widget_show(label);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
 
 	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
@@ -543,7 +543,7 @@ GtkWidget *trade_build_page(void)
 
 	active_quote_label = gtk_label_new("");
 	gtk_widget_show(active_quote_label);
-	gtk_misc_set_alignment(GTK_MISC(active_quote_label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(active_quote_label), 0.0);
 	gtk_box_pack_start(GTK_BOX(vbox), active_quote_label,
 			   FALSE, FALSE, 0);
 

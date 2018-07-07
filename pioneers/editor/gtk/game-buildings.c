@@ -52,7 +52,7 @@ static void game_buildings_init(GameBuildings * gb)
 
 	for (row = 1; row < NUM_BUILD_TYPES; row++) {
 		label = gtk_label_new(gettext(building_names[row]));
-		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+		gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 		gtk_grid_attach(GTK_GRID(gb), label, 0, row - 1, 1, 1);
 
 		adjustment =

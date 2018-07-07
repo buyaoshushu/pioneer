@@ -215,7 +215,7 @@ GtkWidget *gold_build_page(void)
 			     /* Caption for list of player that must choose gold */
 			     _("<b>Waiting for players to choose</b>"));
 	gtk_widget_show(label);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 	gtk_container_add(GTK_CONTAINER(alignment), label);
 
 	scroll_win = gtk_scrolled_window_new(NULL, NULL);

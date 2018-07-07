@@ -575,7 +575,7 @@ static GtkWidget *build_messages_panel(void)
 	/* Label for messages log */
 	label = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label), _("<b>Messages</b>"));
-	gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 	gtk_widget_show(label);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 0);
 
@@ -1060,7 +1060,7 @@ static void preferences_cb(void)
 	gtk_widget_set_hexpand(theme_list, TRUE);
 	/* Label for changing the theme, in the preferences dialog */
 	theme_label = gtk_label_new(_("Theme:"));
-	gtk_misc_set_alignment(GTK_MISC(theme_label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(theme_label), 0.0);
 	gtk_widget_show(theme_list);
 	gtk_widget_show(theme_label);
 

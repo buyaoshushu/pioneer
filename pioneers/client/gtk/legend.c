@@ -58,18 +58,17 @@ static void add_legend_terrain(GtkWidget * grid, guint row, guint col,
 	label = gtk_label_new(_(terrain_names[terrain]));
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(grid), label, col + 1, row, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 
 	if (resource < NO_RESOURCE) {
 		label = resource_view_new_single_resource(resource);
 		gtk_widget_show(label);
 		gtk_grid_attach(GTK_GRID(grid), label, col + 2, row, 1, 1);
-		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 
 		label = gtk_label_new(resource_name(resource, TRUE));
 		gtk_widget_show(label);
 		gtk_grid_attach(GTK_GRID(grid), label, col + 3, row, 1, 1);
-		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+		gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 	}
 }
 
@@ -86,13 +85,12 @@ static void add_legend_cost(GtkWidget * grid, guint row,
 	label = gtk_label_new(item);
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(grid), label, 1, row, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 
 	label = resource_view_new();
 	resource_view_set(RESOURCE_VIEW(label), cost);
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(grid), label, 2, row, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
 }
 
 static GtkWidget *legend_create_content_with_scrolling(gboolean
@@ -116,7 +114,7 @@ static GtkWidget *legend_create_content_with_scrolling(gboolean
 	label = gtk_label_new(NULL);
 	/* Label */
 	gtk_label_set_markup(GTK_LABEL(label), _("<b>Terrain yield</b>"));
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 	gtk_widget_show(label);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
 
@@ -148,7 +146,7 @@ static GtkWidget *legend_create_content_with_scrolling(gboolean
 	label = gtk_label_new(NULL);
 	/* Label */
 	gtk_label_set_markup(GTK_LABEL(label), _("<b>Building costs</b>"));
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 	gtk_widget_show(label);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
 

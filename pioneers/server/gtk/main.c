@@ -556,7 +556,7 @@ static GtkWidget *build_server_frame(void)
 	label = gtk_label_new(_("Server port"));
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 
 	/* port entry */
 	port_entry = gtk_entry_new();
@@ -590,7 +590,7 @@ static GtkWidget *build_server_frame(void)
 	label = gtk_label_new(_("Metaserver"));
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(grid), label, 0, 2, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 
 	/* meta entry */
 	meta_entry = metaserver_new();
@@ -612,7 +612,7 @@ static GtkWidget *build_server_frame(void)
 	label = gtk_label_new(_("Reported hostname"));
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(grid), label, 0, 3, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 
 	/* hostname entry */
 	overridden_hostname_entry = gtk_entry_new();

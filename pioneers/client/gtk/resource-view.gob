@@ -35,7 +35,7 @@ requires 2.0.0
 #include "frontend.h"
 %}
 
-class Resource:View from Gtk:Misc {
+class Resource:View from Gtk:Image {
 	private gint resource[NO_RESOURCE];
 	private gdouble distance;
 	private gint max_width;
@@ -105,8 +105,6 @@ class Resource:View from Gtk:Misc {
 		gint i;
 		gint num_res;
 		gint tot_res;
-		gint xpad;
-		gint ypad;
 		gint size;
 
 		num_res = tot_res = 0;
@@ -134,12 +132,11 @@ class Resource:View from Gtk:Misc {
 		}
 
 		/* Set the optimal size as a request */
-		gtk_misc_get_padding(GTK_MISC(self), &xpad, &ypad);
 		if (width != NULL) {
-			*width = size * tot_res + xpad * 2;
+			*width = size * tot_res;
 		}
 		if (height != NULL) {
-			*height = size + ypad * 2;
+			*height = size;
 		}
 	}
 
@@ -198,8 +195,6 @@ class Resource:View from Gtk:Misc {
 		GtkRequisition r;
 		GtkRequisition r2;
 		GtkAllocation allocation;
-		gfloat xalign;
-		gfloat yalign;
 		gdouble xoffset;
 		gdouble yoffset;
 
@@ -209,9 +204,8 @@ class Resource:View from Gtk:Misc {
 		gtk_widget_get_preferred_size(GTK_WIDGET(self), &r, &r2);
 		gtk_widget_get_allocation(GTK_WIDGET(self), &allocation);
 
-		gtk_misc_get_alignment(GTK_MISC(self), &xalign, &yalign);
-
-		yoffset = (gfloat) (allocation.height - r.height) * yalign;
+		/* Center alignment */
+		yoffset = (gfloat) (allocation.height - r.height) * 0.5;
 
 		if (allocation.width != -1) {
 			r.width = allocation.width;
@@ -220,6 +214,7 @@ class Resource:View from Gtk:Misc {
 			r.height = allocation.height;
 		}
 
+		/* Left alignment */
 		xoffset = 0;
 		for (i = 0; i < NO_RESOURCE; i++) {
 			gint n;

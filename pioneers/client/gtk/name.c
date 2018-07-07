@@ -172,7 +172,7 @@ void name_create_dlg(void)
 	lbl = gtk_label_new(_("Player name:"));
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(hbox), lbl, FALSE, TRUE, 0);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(lbl), 1.0);
 
 	name_dialog.name_entry = gtk_entry_new();
 	gtk_entry_set_max_length(GTK_ENTRY(name_dialog.name_entry),
@@ -235,7 +235,7 @@ void name_create_dlg(void)
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(name_dialog.style_hbox), lbl, FALSE,
 			   TRUE, 0);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(lbl), 1.0);
 
 	name_dialog.color_btn1 =
 	    gtk_color_button_new_with_rgba(&face_color);
@@ -250,7 +250,7 @@ void name_create_dlg(void)
 	gtk_widget_show(lbl);
 	gtk_box_pack_start(GTK_BOX(name_dialog.style_hbox), lbl, FALSE,
 			   TRUE, 0);
-	gtk_misc_set_alignment(GTK_MISC(lbl), 1, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(lbl), 1.0);
 
 	name_dialog.color_btn2 =
 	    gtk_color_button_new_with_rgba(&variant_color);

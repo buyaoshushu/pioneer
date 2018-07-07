@@ -983,7 +983,7 @@ static GtkWidget *build_comments(void)
 	/* Label */
 	widget = gtk_label_new_with_mnemonic(_("_Title"));
 	gtk_widget_show(widget);
-	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(widget), 0.0);
 	gtk_box_pack_start(GTK_BOX(vbox), widget, FALSE, FALSE, 0);
 
 	game_title = gtk_entry_new();
@@ -996,7 +996,7 @@ static GtkWidget *build_comments(void)
 	/* Label */
 	widget = gtk_label_new_with_mnemonic(_("_Description"));
 	gtk_widget_show(widget);
-	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(widget), 0.0);
 	gtk_box_pack_start(GTK_BOX(vbox), widget, FALSE, FALSE, 0);
 
 	game_description = scrollable_text_view_new();
@@ -1014,7 +1014,7 @@ static GtkWidget *build_comments(void)
 	/* Label */
 	widget = gtk_label_new_with_mnemonic(_("_Comments"));
 	gtk_widget_show(widget);
-	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(widget), 0.0);
 	gtk_box_pack_start(GTK_BOX(vbox), widget, FALSE, FALSE, 0);
 
 	game_comments = scrollable_text_view_new();
@@ -1650,7 +1650,7 @@ static void change_title_menu_cb(void)
 	/* Label */
 	label = gtk_label_new(_("New title:"));
 	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, TRUE, 0);
-	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 1.0);
 
 	/* Update the window_title before is it shown */
 	set_window_title(gtk_entry_get_text(GTK_ENTRY(game_title)));

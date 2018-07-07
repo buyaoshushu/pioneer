@@ -71,7 +71,7 @@ GtkWidget *resource_build_panel(void)
 	gtk_label_set_markup(GTK_LABEL(label), _("<b>Resources</b>"));
 	gtk_widget_show(label);
 	gtk_container_add(GTK_CONTAINER(alignment), label);
-	gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 
 	create_resource_image(GTK_GRID(grid), BRICK_RESOURCE, 0, 1);
 	create_resource_image(GTK_GRID(grid), GRAIN_RESOURCE, 0, 2);
@@ -86,7 +86,7 @@ GtkWidget *resource_build_panel(void)
 	label = gtk_label_new(_("Total"));
 	gtk_widget_show(label);
 	gtk_box_pack_start(GTK_BOX(total), label, TRUE, TRUE, 3);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 
 	asset_total_label = label = gtk_label_new("-");
 	/* Measure the size of '00' to avoid resizing problems */
@@ -96,7 +96,7 @@ GtkWidget *resource_build_panel(void)
 	gtk_widget_set_size_request(label, width_00, height_00);
 	gtk_widget_show(label);
 	gtk_box_pack_start(GTK_BOX(total), label, TRUE, TRUE, 3);
-	gtk_misc_set_alignment(GTK_MISC(label), 1, 0.5);
+	gtk_label_set_xalign(GTK_LABEL(label), 1.0);
 
 	gtk_grid_attach(GTK_GRID(grid), total, 1, 3, 1, 1);;
 

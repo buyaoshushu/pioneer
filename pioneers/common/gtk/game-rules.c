@@ -79,7 +79,8 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 	label = gtk_label_new(_("Sevens rule"));
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(gr), label, 0, row, 1, 1);
-	gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
+	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
+	gtk_label_set_yalign(GTK_LABEL(label), 0.0);
 
 	gr->radio_sevens[0] = gtk_radio_button_new_with_label(NULL,
 							      /* Sevens rule: normal */
@@ -152,7 +153,7 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 		label = gtk_label_new(_("Number of dice decks"));
 		gtk_widget_show(label);
 		gtk_grid_attach(GTK_GRID(gr), label, 0, row, 1, 1);
-		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+		gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 		gr->num_dice_decks =
 		    GTK_SPIN_BUTTON(gtk_spin_button_new_with_range
 				    (1, 5, 1));
@@ -175,7 +176,7 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 		label = gtk_label_new(_("Number of removed dice cards"));
 		gtk_widget_show(label);
 		gtk_grid_attach(GTK_GRID(gr), label, 0, row, 1, 1);
-		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+		gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 		gr->num_removed_dice_cards =
 		    GTK_SPIN_BUTTON(gtk_spin_button_new_with_range
 				    (0, 30, 1));
@@ -200,7 +201,7 @@ static void game_rules_init(GameRules * gr, gboolean show_all_rules)
 		label = gtk_label_new(_("Island discovery bonuses"));
 		gtk_widget_show(label);
 		gtk_grid_attach(GTK_GRID(gr), label, 0, row, 1, 1);
-		gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+		gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 
 		hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 3);
 
