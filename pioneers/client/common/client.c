@@ -1036,8 +1036,10 @@ static gboolean mode_load_game(StateMachine * sm, gint event)
 	if (event != SM_RECV)
 		return FALSE;
 	if (sm_recv(sm, "game")) {
-		if (game_params != NULL)
+		if (game_params != NULL) {
+			callbacks.set_map(NULL);
 			params_free(game_params);
+		}
 		game_params = params_new();
 		return TRUE;
 	}
