@@ -90,7 +90,8 @@ static void add_setting_val(GtkWidget * grid, guint row, guint col,
 	g_free(label_var);
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(grid), label, col, row, 1, 1);
-	gtk_label_set_xalign(GTK_LABEL(label), (right_aligned ? 1.0 : 0.0));
+	gtk_label_set_xalign(GTK_LABEL(label),
+			     (right_aligned ? 1.0 : 0.0));
 }
 
 static GtkWidget *settings_create_content(void)
