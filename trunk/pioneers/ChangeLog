@@ -1,4 +1,6 @@
 2018-07-07  Roland Clobus <rclobus@rclobus.nl>
+	* client/common/client.c: Fixed a racing condition where the old map
+	was drawn while loading the new map. Found by clang ASAN.
 	* client/gtk/connect.c, client/gtk/develop.c, client/gtk/discard.c,
 	client/gtk/gold.c, client/gtk/gui.c, client/gtk/legend.c,
 	client/gtk/monopoly.c, client/gtk/name.c, client/gtk/player.c,
