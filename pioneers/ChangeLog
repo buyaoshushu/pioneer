@@ -1,3 +1,6 @@
+2018-11-22  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/resource-view.gob: Fixed a compiler warning.
+	
 2018-07-07  Roland Clobus <rclobus@rclobus.nl>
 	* client/common/client.c: Fixed a racing condition where the old map
 	was drawn while loading the new map. Found by clang ASAN.
