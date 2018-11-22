@@ -181,7 +181,7 @@ class Resource:View from Gtk:Image {
 				  GtkAllocation * allocation,
 				  gpointer user_data) {
 		/* Remove compiler warning */
-		user_data = user_data;
+		(void)user_data;
 
 		RESOURCE_VIEW(self)->_priv->max_width = allocation->width;
 		resource_view_calculate_size(RESOURCE_VIEW(self), NULL,
@@ -199,7 +199,7 @@ class Resource:View from Gtk:Image {
 		gdouble yoffset;
 
 		/* Remove compiler warnings */
-		user_data = user_data;
+		(void)user_data;
 
 		gtk_widget_get_preferred_size(GTK_WIDGET(self), &r, &r2);
 		gtk_widget_get_allocation(GTK_WIDGET(self), &allocation);
@@ -246,7 +246,7 @@ class Resource:View from Gtk:Image {
 		}
 
 		/* Remove compiler warnings */
-		event = event;
+		(void)event;
 
 		cr = gdk_cairo_create(gtk_widget_get_window
 				      (GTK_WIDGET(self)));
