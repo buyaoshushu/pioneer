@@ -19,8 +19,6 @@
  */
 
 #include "config.h"
-#include <gdk/gdk.h>
-
 #include "audio.h"
 
 static gboolean silent_mode = FALSE;
@@ -48,19 +46,18 @@ void set_silent_mode(gboolean silent)
 
 static void do_beep(guint frequency)
 {
-	gchar *argv[5];
+	gchar *argv[3];
 	guint i;
 
 	argv[0] = g_strdup("beep");
-	argv[1] = g_strdup("beep");
-	argv[2] = g_strdup("-f");
-	argv[3] = g_strdup_printf("%u", frequency);
-	argv[4] = NULL;
+	argv[1] = g_strdup_printf("-f %u", frequency);
+	argv[2] = NULL;
 	if (!g_spawn_async
-	    (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL,
-	     NULL)) {
-		/* Use old style beep, which does not always work */
-		gdk_beep();
+	    (NULL, argv, NULL,
+	     G_SPAWN_SEARCH_PATH | G_SPAWN_FILE_AND_ARGV_ZERO, NULL, NULL,
+	     NULL, NULL)) {
+		/* Beep is not working, turn on silent mode */
+		set_silent_mode(TRUE);
 	}
 	for (i = 0; i < G_N_ELEMENTS(argv); i++) {
 		g_free(argv[i]);
