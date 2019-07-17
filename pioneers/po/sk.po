@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Pioneers 15.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-14 16:51+0100\n"
-"PO-Revision-Date: 2019-06-22 20:05+0200\n"
+"PO-Revision-Date: 2019-07-01 06:38+0200\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -688,7 +688,7 @@ msgstr "%s postavil(a) mestskú hradbu.\n"
 #: ../client/common/player.c:551
 #, c-format
 msgid "player_build_add called with BUILD_NONE for user %s\n"
-msgstr ""
+msgstr "bola zavolaná funkcia player_build_all s BUILD_NONE pre užívateľa %s\n"
 
 #: ../client/common/player.c:561
 #, c-format
@@ -708,7 +708,7 @@ msgstr "%s odstránil(a) loď.\n"
 #: ../client/common/player.c:607
 #, c-format
 msgid "%s removed a settlement.\n"
-msgstr "%d ostránil(a) dedinu.\n"
+msgstr "%s ostránil(a) dedinu.\n"
 
 #: ../client/common/player.c:618
 #, c-format
@@ -724,7 +724,7 @@ msgstr "%s odstránil(a) mestskú hradbu.\n"
 #: ../client/common/player.c:642
 #, c-format
 msgid "player_build_remove called with BUILD_NONE for user %s\n"
-msgstr ""
+msgstr "bola zavolaná funkcia player_build_remove s BUILD_NONE pre užívateľa %s\n"
 
 #: ../client/common/player.c:651
 #, c-format
@@ -1029,13 +1029,13 @@ msgstr "Zlý riadok presmerovania: %s\n"
 #: ../client/gtk/connect.c:631
 #, c-format
 msgid "The metaserver is too old to create servers (version %d.%d)\n"
-msgstr ""
+msgstr "Verzia metaservera je príliš stará a neumožňuje vytváranie serverov (verzia %d.%d)\n"
 
 #: ../client/gtk/connect.c:670 ../client/gtk/connect.c:749
 #: ../client/gtk/connect.c:755
 #, c-format
 msgid "Unexpected data from the metaserver: %s\n"
-msgstr ""
+msgstr "Neočakávané dáta od metaservera: %s\n"
 
 #. Sevens rule: normal
 #: ../client/gtk/connect.c:701 ../client/gtk/settingscreen.c:181
@@ -1066,16 +1066,16 @@ msgstr "Náhodné"
 #: ../client/gtk/connect.c:819 ../server/meta.c:299
 #, c-format
 msgid "Redirected to the metaserver at %s.\n"
-msgstr ""
+msgstr "Presmerovaný na metaserver na %s.\n"
 
 #: ../client/gtk/connect.c:824 ../server/meta.c:302
 #, c-format
 msgid "Redirected to the metaserver at %s, port %s.\n"
-msgstr ""
+msgstr "Presmerovaný na metaserver na %s, port %s.\n"
 
 #: ../client/gtk/connect.c:831
 msgid "Receiving a list of Pioneers servers from the metaserver.\n"
-msgstr ""
+msgstr "Získavam zoznam serverov Pioneers z metaservera.\n"
 
 #. Label
 #: ../client/gtk/connect.c:914
@@ -1096,7 +1096,7 @@ msgstr "Zrušené.\n"
 
 #: ../client/gtk/connect.c:960
 msgid "Requesting new game server.\n"
-msgstr ""
+msgstr "Vysielam požiadavku na nový herný server.\n"
 
 #: ../client/gtk/connect.c:1015 ../server/gtk/main.c:370 ../server/server.c:123
 #, c-format
@@ -1313,7 +1313,7 @@ msgstr "Pripojiť sa k súkromnej hre"
 #. Dialog caption
 #: ../client/gtk/connect.c:1592 ../client/gtk/connect.c:1737
 msgid "Join a private game"
-msgstr "Pripojiť sa k verejnej hre"
+msgstr "Pripojiť sa k súkromnej hre"
 
 #. Label
 #. Commandline option of client: hostname of the server
@@ -1337,7 +1337,7 @@ msgstr "Port na serveri"
 #. Tooltip
 #: ../client/gtk/connect.c:1812
 msgid "Port of the host of the game"
-msgstr ""
+msgstr "Port na serveri s hrou"
 
 #. Tooltip
 #. Label
@@ -1422,7 +1422,7 @@ msgstr "Celkom surovín"
 #. Caption for list of player that must choose gold
 #: ../client/gtk/gold.c:217
 msgid "<b>Waiting for players to choose</b>"
-msgstr ""
+msgstr "<b>Čakám, kým si hráči vyberú</b>"
 
 #. Menu entry
 #: ../client/gtk/gui.c:224 ../server/gtk/main.c:91
@@ -1457,7 +1457,7 @@ msgstr "_Admin"
 #. Tooltip for Admin menu entry
 #: ../client/gtk/gui.c:240
 msgid "Administer Pioneers server"
-msgstr ""
+msgstr "Správa servera Pioneers"
 
 #. Menu entry
 #: ../client/gtk/gui.c:244
@@ -1477,12 +1477,12 @@ msgstr "L_egenda"
 #. Tooltip for Legend menu entry
 #: ../client/gtk/gui.c:251
 msgid "Terrain legend and building costs"
-msgstr ""
+msgstr "Legenda krajiny a stavebných nákladov"
 
 #. Menu entry
 #: ../client/gtk/gui.c:254
 msgid "_Game Settings"
-msgstr "_Nastavenia hry"
+msgstr "Na_stavenia hry"
 
 #. Tooltip for Game Settings menu entry
 #: ../client/gtk/gui.c:256
@@ -1986,7 +1986,7 @@ msgstr ""
 
 #: ../client/gtk/offline.c:78
 msgid "Select a game to join."
-msgstr "Vyberte hru, ku ktorej sa chcete pripojiť"
+msgstr "Vyberte hru, ku ktorej sa chcete pripojiť."
 
 #: ../client/gtk/offline.c:94
 msgid "Connecting"
@@ -2295,7 +2295,7 @@ msgstr "Počet balíčkov kariet:"
 
 #: ../client/gtk/settingscreen.c:207
 msgid "Number of dice cards removed after shuffling:"
-msgstr "Počet odobratých kariet z balíčku"
+msgstr "Počet odobratých kariet z balíčku:"
 
 #: ../client/gtk/settingscreen.c:214
 msgid "Use the pirate to block ships:"
@@ -2830,7 +2830,7 @@ msgstr "** NEZNÁMY TYP SPRÁVY ** "
 #: ../common/network.c:143
 #, c-format
 msgid "Error writing to socket: %s\n"
-msgstr ""
+msgstr "Chyba pri zápise do socketu: %s\n"
 
 #: ../common/network.c:154
 msgid "Could not send all data\n"
