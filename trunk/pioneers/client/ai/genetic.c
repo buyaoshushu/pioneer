@@ -615,7 +615,7 @@ static float genetic_score_hex(const Node * node, Hex * hex,
 	/* I want to decrease the devaluation the hex resource suffers (increase the hex value) if a I have a generic port or a specific port to export that resource */
 	if (info.any_resource)
 		port = 3;	/* I have a generic port, depreciation will be less */
-	else if (info.specific_resource[resrc])
+	else if (resrc < NO_RESOURCE && info.specific_resource[resrc])
 		port = 2;	/* I have a port to export this resource, depreciation will be even less */
 	nodeHasPort = facingOK(node, hex);
 	if (resrc < NO_RESOURCE) {
