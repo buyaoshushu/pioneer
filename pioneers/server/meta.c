@@ -82,6 +82,10 @@ static gboolean timed_out(gpointer data)
 	log_message(MSG_INFO,
 		    _("Attempting to reconnect to the metaserver.\n"));
 	reconnect_interval *= 2;
+	/* The maximum reconnection time is 24 hours */
+	if (reconnect_interval > 24 * 3600) {
+		reconnect_interval = 24 * 3600;
+	}
 	if (!meta_connect(game)) {
 		start_reconnect_timer(game);
 	}
