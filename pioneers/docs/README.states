@@ -15,7 +15,7 @@ Functions also become more readable once you understand how they work.
 A state machine is a stack of state function pointers.  The current state
 is the top of stack.  If something happens, the current state is asked
 (e.g. the function is called) to do something with it.  If it didn't do
-anything with it, the program may do some state-independant things, like
+anything with it, the program may do some state-independent things, like
 telling the user that it received unexpected input.  This happens in the
 function called global_unhandled.
 
