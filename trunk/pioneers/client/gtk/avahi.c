@@ -195,7 +195,7 @@ void avahi_register(AvahiBrowser * widget)
 	    avahi_client_new(poll_api, 0, client_callback, NULL, &error);
 
 
-	/* Check wether creating the client object succeeded */
+	/* Check whether creating the client object succeeded */
 	if (!client) {
 		debug("Avahi: Failed to create client: %s",
 		      avahi_strerror(error));
