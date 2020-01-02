@@ -325,9 +325,8 @@ void sm_unhandled_set(StateMachine * sm, StateFunc state)
 
 static void push_new_state(StateMachine * sm)
 {
-	++sm->stack_ptr;
 	/* check for stack overflows */
-	if (sm->stack_ptr >= (gint) G_N_ELEMENTS(sm->stack)) {
+	if (sm->stack_ptr + 1 >= (gint) G_N_ELEMENTS(sm->stack)) {
 		log_message(MSG_ERROR,
 			    /* Error message */
 			    _(""
@@ -335,6 +334,7 @@ static void push_new_state(StateMachine * sm)
 		sm_stack_dump(sm);
 		g_error("State stack overflow");
 	}
+	++sm->stack_ptr;
 	sm->stack[sm->stack_ptr] = NULL;
 	sm->stack_name[sm->stack_ptr] = NULL;
 }

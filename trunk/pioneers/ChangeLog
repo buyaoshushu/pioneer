@@ -1,6 +1,7 @@
 2020-01-02  Roland Clobus <rclobus@rclobus.nl>
 	* ChangeLog, client/gtk/avahi.c, docs/README.states: Apply
 	misspell-fixer.
+	* common/state.c: Fix for Coverity CID 241968: out-of-bounds access.
 
 2019-10-10  Roland Clobus <rclobus@rclobus.nl>
 	* server/meta.c: The maximum reconnect interval is 24 hours.
