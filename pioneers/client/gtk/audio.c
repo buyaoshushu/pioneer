@@ -20,6 +20,7 @@
 
 #include "config.h"
 #include "audio.h"
+#include "log.h"
 
 static gboolean silent_mode = FALSE;
 static gboolean announce_player = TRUE;
@@ -46,22 +47,28 @@ void set_silent_mode(gboolean silent)
 
 static void do_beep(guint frequency)
 {
-	gchar *argv[3];
+	gchar *argv[4];
+	GError *error = NULL;
 	guint i;
+	guint n = 0;
 
-	argv[0] = g_strdup("beep");
-	argv[1] = g_strdup_printf("-f %u", frequency);
-	argv[2] = NULL;
+	argv[n++] = g_strdup("beep");
+	argv[n++] = g_strdup("-f");
+	argv[n++] = g_strdup_printf("%u", frequency);
+	argv[n++] = NULL;
+	g_assert(n <= G_N_ELEMENTS(argv));
+
 	if (!g_spawn_async
-	    (NULL, argv, NULL,
-	     G_SPAWN_SEARCH_PATH | G_SPAWN_FILE_AND_ARGV_ZERO, NULL, NULL,
-	     NULL, NULL)) {
+	    (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL,
+	     &error)) {
 		/* Beep is not working, turn on silent mode */
 		set_silent_mode(TRUE);
+		log_message(MSG_ERROR, _("Error starting %s: %s\n"),
+			    argv[0], error->message);
+		g_error_free(error);
 	}
-	for (i = 0; i < G_N_ELEMENTS(argv); i++) {
+	for (i = 0; argv[i] != NULL; i++)
 		g_free(argv[i]);
-	}
 }
 
 void play_sound(SoundType sound)
