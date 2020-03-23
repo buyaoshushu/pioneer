@@ -9,6 +9,7 @@ client/common/resource.c
 client/common/robber.c
 client/common/setup.c
 client/common/turn.c
+client/gtk/audio.c
 client/gtk/avahi-browser.c
 client/gtk/chat.c
 client/gtk/connect.c
