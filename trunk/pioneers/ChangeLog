@@ -1,3 +1,6 @@
+2020-03-23  Roland Clobus <rclobus@rclobus.nl>
+	* po/POTFILES.in: client/gtk/audio.c contains a translatable text too.
+
 2020-03-22  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/audio.c: Fixed beeping, effectively reverting 2019-06-30.
 
