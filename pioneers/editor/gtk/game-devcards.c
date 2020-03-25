@@ -6,7 +6,7 @@
 
 #include "game-devcards.h"
 
-static void game_devcards_init(GameDevCards * gd);
+static void game_devcards_init(GTypeInstance * instance, gpointer g_class);
 
 /* Register the class */
 GType game_devcards_get_type(void)
@@ -23,7 +23,7 @@ GType game_devcards_get_type(void)
 			NULL,	/* class_data */
 			sizeof(GameDevCards),
 			0,
-			(GInstanceInitFunc) game_devcards_init,
+			game_devcards_init,
 			NULL
 		};
 		gd_type =
@@ -34,12 +34,14 @@ GType game_devcards_get_type(void)
 }
 
 /* Build the composite widget */
-static void game_devcards_init(GameDevCards * gd)
+static void game_devcards_init(GTypeInstance * instance,
+			       G_GNUC_UNUSED gpointer g_class)
 {
 	GtkWidget *label;
 	GtkWidget *spin;
 	GtkAdjustment *adjustment;
 	guint row;
+	GameDevCards *gd = GAMEDEVCARDS(instance);
 
 	gtk_grid_set_row_spacing(GTK_GRID(gd), 3);
 	gtk_grid_set_column_spacing(GTK_GRID(gd), 5);

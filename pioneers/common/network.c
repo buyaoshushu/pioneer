@@ -351,8 +351,8 @@ static void net_start_listening(Session * ses)
 						   (G_IO_STREAM
 						    (ses->connection))),
 						  ses->input_cancel);
-	g_source_set_callback(input_source, (GSourceFunc) input_ready, ses,
-			      NULL);
+	g_source_set_callback(input_source, G_SOURCE_FUNC(input_ready),
+			      ses, NULL);
 	g_source_attach(input_source, NULL);
 	g_source_unref(input_source);
 }

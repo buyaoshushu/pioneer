@@ -23,8 +23,10 @@ enum {
 	LAST_SIGNAL
 };
 
-static void resource_table_class_init(ResourceTableClass * klass);
-static void resource_table_init(ResourceTable * rt);
+static void resource_table_class_init(gpointer g_class,
+				      gpointer class_data);
+static void resource_table_init(GTypeInstance * instance,
+				gpointer g_class);
 static void resource_table_update(ResourceTable * rt);
 
 static void value_changed_cb(GtkSpinButton * widget, gpointer user_data);
@@ -42,12 +44,12 @@ GType resource_table_get_type(void)
 			sizeof(ResourceTableClass),
 			NULL,	/* base_init */
 			NULL,	/* base_finalize */
-			(GClassInitFunc) resource_table_class_init,
+			resource_table_class_init,
 			NULL,	/* class_finalize */
 			NULL,	/* class_data */
 			sizeof(ResourceTable),
 			0,
-			(GInstanceInitFunc) resource_table_init,
+			resource_table_init,
 			NULL
 		};
 		rt_type =
@@ -61,11 +63,12 @@ GType resource_table_get_type(void)
  * ResourceTable will emit this signal:
  * 'change'         when any change in the amount occurs.
  */
-static void resource_table_class_init(ResourceTableClass * klass)
+static void resource_table_class_init(gpointer g_class,
+				      G_GNUC_UNUSED gpointer class_data)
 {
 	resource_table_signals[CHANGE] = g_signal_new("change",
 						      G_TYPE_FROM_CLASS
-						      (klass),
+						      (g_class),
 						      G_SIGNAL_RUN_FIRST |
 						      G_SIGNAL_ACTION,
 						      G_STRUCT_OFFSET
@@ -76,9 +79,11 @@ static void resource_table_class_init(ResourceTableClass * klass)
 }
 
 /* Initialise the composite widget */
-static void resource_table_init(ResourceTable * rt)
+static void resource_table_init(GTypeInstance * instance,
+				G_GNUC_UNUSED gpointer g_class)
 {
 	gint i;
+	ResourceTable *rt = RESOURCETABLE(instance);
 
 	for (i = 0; i < NO_RESOURCE; i++) {
 		rt->row[i].hand = 0;
@@ -96,7 +101,6 @@ static void resource_table_init(ResourceTable * rt)
 	rt->with_bank = FALSE;
 	rt->with_total = FALSE;
 	rt->direction = RESOURCE_TABLE_MORE_IN_HAND;
-
 }
 
 static void resource_table_set_limit(ResourceTable * rt, gint row)

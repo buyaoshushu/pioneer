@@ -22,8 +22,9 @@ enum {
 	LAST_SIGNAL
 };
 
-static void game_settings_class_init(GameSettingsClass * klass);
-static void game_settings_init(GameSettings * sg);
+static void game_settings_class_init(gpointer g_class,
+				     gpointer class_data);
+static void game_settings_init(GTypeInstance * instance, gpointer g_class);
 static void game_settings_change_players(GtkSpinButton * widget,
 					 GameSettings * gs);
 static void game_settings_change_victory_points(GtkSpinButton * widget,
@@ -44,12 +45,12 @@ GType game_settings_get_type(void)
 			sizeof(GameSettingsClass),
 			NULL,	/* base_init */
 			NULL,	/* base_finalize */
-			(GClassInitFunc) game_settings_class_init,
+			game_settings_class_init,
 			NULL,	/* class_finalize */
 			NULL,	/* class_data */
 			sizeof(GameSettings),
 			0,
-			(GInstanceInitFunc) game_settings_init,
+			game_settings_init,
 			NULL
 		};
 		gs_type =
@@ -64,11 +65,12 @@ GType game_settings_get_type(void)
  * 'change'         when any change to one of the controls occurs.
  * 'change-players' when the amount of player has changed.
  */
-static void game_settings_class_init(GameSettingsClass * klass)
+static void game_settings_class_init(gpointer g_class,
+				     G_GNUC_UNUSED gpointer class_data)
 {
 	game_settings_signals[CHANGE] = g_signal_new("change",
 						     G_TYPE_FROM_CLASS
-						     (klass),
+						     (g_class),
 						     G_SIGNAL_RUN_FIRST |
 						     G_SIGNAL_ACTION,
 						     G_STRUCT_OFFSET
@@ -77,13 +79,13 @@ static void game_settings_class_init(GameSettingsClass * klass)
 						     g_cclosure_marshal_VOID__VOID,
 						     G_TYPE_NONE, 0);
 	game_settings_signals[CHANGE_PLAYERS] =
-	    g_signal_new("change-players", G_TYPE_FROM_CLASS(klass),
+	    g_signal_new("change-players", G_TYPE_FROM_CLASS(g_class),
 			 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
 			 G_STRUCT_OFFSET(GameSettingsClass,
 					 change_players), NULL, NULL,
 			 g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 	game_settings_signals[CHECK] =
-	    g_signal_new("check", G_TYPE_FROM_CLASS(klass),
+	    g_signal_new("check", G_TYPE_FROM_CLASS(g_class),
 			 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
 			 G_STRUCT_OFFSET(GameSettingsClass, check), NULL,
 			 NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE,
@@ -91,11 +93,13 @@ static void game_settings_class_init(GameSettingsClass * klass)
 }
 
 /* Build the composite widget */
-static void game_settings_init(GameSettings * gs)
+static void game_settings_init(GTypeInstance * instance,
+			       G_GNUC_UNUSED gpointer g_class)
 {
 	GtkWidget *label;
 	GtkWidget *hbox;
 	GtkAdjustment *adj;
+	GameSettings *gs = GAMESETTINGS(instance);
 
 	gtk_grid_set_row_spacing(GTK_GRID(gs), 3);
 	gtk_grid_set_column_spacing(GTK_GRID(gs), 5);

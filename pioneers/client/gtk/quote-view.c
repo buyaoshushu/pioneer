@@ -59,8 +59,8 @@ enum {
 	LAST_SIGNAL
 };
 
-static void quote_view_class_init(QuoteViewClass * klass);
-static void quote_view_init(QuoteView * qv);
+static void quote_view_class_init(gpointer g_class, gpointer class_data);
+static void quote_view_init(GTypeInstance * instance, gpointer g_class);
 
 static gint quote_click_cb(GtkWidget * widget,
 			   GdkEventButton * event, gpointer user_data);
@@ -85,12 +85,12 @@ GType quote_view_get_type(void)
 			sizeof(QuoteViewClass),
 			NULL,	/* base_init */
 			NULL,	/* base_finalize */
-			(GClassInitFunc) quote_view_class_init,
+			quote_view_class_init,
 			NULL,	/* class_finalize */
 			NULL,	/* class_data */
 			sizeof(QuoteView),
 			0,
-			(GInstanceInitFunc) quote_view_init,
+			quote_view_init,
 			NULL
 		};
 		rt_type =
@@ -105,12 +105,13 @@ GType quote_view_get_type(void)
  * 'selection-changed'   when the selection changes.
  * 'selection-activated' when the selection is double-clicked
  */
-static void quote_view_class_init(QuoteViewClass * klass)
+static void quote_view_class_init(gpointer g_class,
+				  G_GNUC_UNUSED gpointer class_data)
 {
 	quote_view_signals[SELECTION_CHANGED] =
 	    g_signal_new("selection-changed",
 			 G_TYPE_FROM_CLASS
-			 (klass),
+			 (g_class),
 			 G_SIGNAL_RUN_FIRST |
 			 G_SIGNAL_ACTION,
 			 G_STRUCT_OFFSET
@@ -120,7 +121,7 @@ static void quote_view_class_init(QuoteViewClass * klass)
 	quote_view_signals[SELECTION_ACTIVATED] =
 	    g_signal_new("selection-activated",
 			 G_TYPE_FROM_CLASS
-			 (klass),
+			 (g_class),
 			 G_SIGNAL_RUN_FIRST |
 			 G_SIGNAL_ACTION,
 			 G_STRUCT_OFFSET
@@ -130,9 +131,11 @@ static void quote_view_class_init(QuoteViewClass * klass)
 }
 
 /* Initialise the composite widget */
-static void quote_view_init(QuoteView * qv)
+static void quote_view_init(GTypeInstance * instance,
+			    G_GNUC_UNUSED gpointer g_class)
 {
 	GtkTreeViewColumn *column;
+	QuoteView *qv = QUOTEVIEW(instance);
 
 	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW
 					    (qv), GTK_SHADOW_IN);
