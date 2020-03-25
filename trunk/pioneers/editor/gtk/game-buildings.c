@@ -11,7 +11,8 @@ static const gchar *building_names[NUM_BUILD_TYPES] = {
 	N_("City"), N_("City wall")
 };
 
-static void game_buildings_init(GameBuildings * gb);
+static void game_buildings_init(GTypeInstance * instance,
+				gpointer g_class);
 
 /* Register the class */
 GType game_buildings_get_type(void)
@@ -28,7 +29,7 @@ GType game_buildings_get_type(void)
 			NULL,	/* class_data */
 			sizeof(GameBuildings),
 			0,
-			(GInstanceInitFunc) game_buildings_init,
+			game_buildings_init,
 			NULL
 		};
 		gb_type =
@@ -39,12 +40,14 @@ GType game_buildings_get_type(void)
 }
 
 /* Build the composite widget */
-static void game_buildings_init(GameBuildings * gb)
+static void game_buildings_init(GTypeInstance * instance,
+				G_GNUC_UNUSED gpointer g_class)
 {
 	GtkWidget *label;
 	GtkWidget *spin;
 	GtkAdjustment *adjustment;
 	guint row;
+	GameBuildings *gb = GAMEBUILDINGS(instance);
 
 	gtk_grid_set_row_spacing(GTK_GRID(gb), 3);
 	gtk_grid_set_column_spacing(GTK_GRID(gb), 5);

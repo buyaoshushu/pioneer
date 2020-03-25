@@ -25,8 +25,7 @@
 
 #include "avahi-browser.h"
 
-static void avahibrowser_class_init(AvahiBrowserClass * klass);
-static void avahibrowser_init(AvahiBrowser * ab);
+static void avahibrowser_init(GTypeInstance * instance, gpointer g_class);
 
 /* Register the class */
 GType avahibrowser_get_type(void)
@@ -38,12 +37,12 @@ GType avahibrowser_get_type(void)
 			sizeof(AvahiBrowserClass),
 			NULL,	/* base_init */
 			NULL,	/* base_finalize */
-			(GClassInitFunc) avahibrowser_class_init,
+			NULL,	/* class_init */
 			NULL,	/* class_finalize */
 			NULL,	/* class_data */
 			sizeof(AvahiBrowser),
 			0,
-			(GInstanceInitFunc) avahibrowser_init,
+			avahibrowser_init,
 			NULL
 		};
 		sg_type =
@@ -53,15 +52,12 @@ GType avahibrowser_get_type(void)
 	return sg_type;
 }
 
-static void avahibrowser_class_init(G_GNUC_UNUSED AvahiBrowserClass *
-				    klass)
-{
-}
-
 /* Build the composite widget */
-static void avahibrowser_init(AvahiBrowser * ab)
+static void avahibrowser_init(GTypeInstance * instance,
+			      G_GNUC_UNUSED gpointer g_class)
 {
 	GtkCellRenderer *cell;
+	AvahiBrowser *ab = AVAHIBROWSER(instance);
 
 	/* Create model */
 	ab->data =

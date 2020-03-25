@@ -27,8 +27,7 @@
 
 #include "metaserver.h"
 
-static void metaserver_class_init(MetaServerClass * klass);
-static void metaserver_init(MetaServer * ms);
+static void metaserver_init(GTypeInstance * instance, gpointer g_class);
 
 /* Register the class */
 GType metaserver_get_type(void)
@@ -40,12 +39,12 @@ GType metaserver_get_type(void)
 			sizeof(MetaServerClass),
 			NULL,	/* base_init */
 			NULL,	/* base_finalize */
-			(GClassInitFunc) metaserver_class_init,
+			NULL,	/* class_init */
 			NULL,	/* class_finalize */
 			NULL,	/* class_data */
 			sizeof(MetaServer),
 			0,
-			(GInstanceInitFunc) metaserver_init,
+			metaserver_init,
 			NULL
 		};
 		sg_type =
@@ -55,18 +54,16 @@ GType metaserver_get_type(void)
 	return sg_type;
 }
 
-static void metaserver_class_init(G_GNUC_UNUSED MetaServerClass * klass)
-{
-}
-
 /* Build the composite widget */
-static void metaserver_init(MetaServer * ms)
+static void metaserver_init(GTypeInstance * instance,
+			    G_GNUC_UNUSED gpointer g_class)
 {
 	GtkTreeIter iter;
 	GtkCellRenderer *cell;
 	gchar *default_metaserver_name;
 	gchar *custom_metaserver_name;
 	gboolean novar;
+	MetaServer *ms = METASERVER(instance);
 
 	/* Create model */
 	ms->data = gtk_list_store_new(1, G_TYPE_STRING);

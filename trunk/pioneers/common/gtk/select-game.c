@@ -25,8 +25,8 @@ enum {
 static const gint MAP_WIDTH = 64;
 static const gint MAP_HEIGHT = 48;
 
-static void select_game_class_init(SelectGameClass * klass);
-static void select_game_init(SelectGame * sg);
+static void select_game_class_init(gpointer g_class, gpointer class_data);
+static void select_game_init(GTypeInstance * instance, gpointer g_class);
 static void select_game_finalize(GObject * object);
 static void select_game_item_changed(GtkWidget * widget, SelectGame * sg);
 
@@ -43,12 +43,12 @@ GType select_game_get_type(void)
 			sizeof(SelectGameClass),
 			NULL,	/* base_init */
 			NULL,	/* base_finalize */
-			(GClassInitFunc) select_game_class_init,
+			select_game_class_init,
 			NULL,	/* class_finalize */
 			NULL,	/* class_data */
 			sizeof(SelectGame),
 			0,
-			(GInstanceInitFunc) select_game_init,
+			select_game_init,
 			NULL
 		};
 		sg_type =
@@ -85,13 +85,14 @@ static void select_game_finalize(GObject * object)
  * SelectGame will emit one signal: 'activate' with the text of the
  *    active game in user_data
  */
-static void select_game_class_init(SelectGameClass * klass)
+static void select_game_class_init(gpointer g_class,
+				   G_GNUC_UNUSED gpointer class_data)
 {
-	GObjectClass *object_class = G_OBJECT_CLASS(klass);
+	GObjectClass *object_class = G_OBJECT_CLASS(g_class);
 
 	select_game_signals[ACTIVATE] = g_signal_new("activate",
 						     G_TYPE_FROM_CLASS
-						     (klass),
+						     (g_class),
 						     G_SIGNAL_RUN_FIRST |
 						     G_SIGNAL_ACTION,
 						     G_STRUCT_OFFSET
@@ -104,9 +105,11 @@ static void select_game_class_init(SelectGameClass * klass)
 }
 
 /* Build the composite widget */
-static void select_game_init(SelectGame * sg)
+static void select_game_init(GTypeInstance * instance,
+			     G_GNUC_UNUSED gpointer g_class)
 {
 	GtkCellRenderer *cell;
+	SelectGame *sg = SELECTGAME(instance);
 
 	/* Create model */
 	sg->data =

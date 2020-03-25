@@ -6,7 +6,8 @@
 
 #include "game-resources.h"
 
-static void game_resources_init(GameResources * gr);
+static void game_resources_init(GTypeInstance * instance,
+				gpointer g_class);
 
 /* Register the class */
 GType game_resources_get_type(void)
@@ -23,7 +24,7 @@ GType game_resources_get_type(void)
 			NULL,	/* class_data */
 			sizeof(GameResources),
 			0,
-			(GInstanceInitFunc) game_resources_init,
+			game_resources_init,
 			NULL
 		};
 		gr_type =
@@ -34,11 +35,13 @@ GType game_resources_get_type(void)
 }
 
 /* Build the composite widget */
-static void game_resources_init(GameResources * gr)
+static void game_resources_init(GTypeInstance * instance,
+				G_GNUC_UNUSED gpointer g_class)
 {
 	GtkWidget *label;
 	GtkWidget *spin;
 	GtkAdjustment *adjustment;
+	GameResources *gr = GAMERESOURCES(instance);
 
 	gtk_grid_set_row_spacing(GTK_GRID(gr), 3);
 	gtk_grid_set_column_spacing(GTK_GRID(gr), 5);
