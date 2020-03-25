@@ -1,3 +1,8 @@
+2020-03-25  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/Makefile.am, client/gtk/audio.c, configure.ac: Use
+	libcanberra instead of beep, which allows for sounds when pioneers is
+	not started from a console.
+
 2020-03-23  Roland Clobus <rclobus@rclobus.nl>
 	* po/POTFILES.in: client/gtk/audio.c contains a translatable text too.
 
