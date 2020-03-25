@@ -1,6 +1,7 @@
 pioneers (15.6-1~local1) UNRELEASED; urgency=medium
 
   * Waiting for a new release.
+  * Replaced beep by libcanberra.
 
  -- Roland Clobus <roland@silent.lan>  Wed, 14 Mar 2018 18:54:08 +0100
 

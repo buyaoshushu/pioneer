@@ -176,6 +176,16 @@ AC_ARG_WITH([notify],
 esac],
 	[with_notify=yes])
 
+AC_ARG_WITH([sound],
+	AS_HELP_STRING([--with-sound],
+		[Use libcanberra to play sounds.]),
+[case "${withval}" in
+  yes)  with_sound=yes ;;
+  "")   with_sound=yes ;;
+  *)    with_sound=no  ;;
+esac],
+	[with_sound=yes])
+
 if test "x$GCC" = xyes && test $enable_hardening = yes; then
 	if test "$pioneers_is_windows_port" = "no"; then
 		# Flags from Debian hardening (dpkg-buildflags --get CFLAGS)
@@ -328,6 +338,25 @@ fi
 
 have_graphical=$have_gtk;
 AM_CONDITIONAL(HAVE_GTK, [test "$have_graphical" = "yes"])
+
+#
+# Check for sound support
+#
+if test $with_sound = no; then
+	have_libcanberra="no, disabled in configure"
+else
+	PKG_CHECK_MODULES(LIBCANBERRA, libcanberra,
+		[have_libcanberra=yes],
+		[have_libcanberra="no, libcanberra not installed"])
+	if test "$have_gtk" = "yes"; then
+		if test "$have_libcanberra" = "yes"; then
+			AC_DEFINE(HAVE_CANBERRA, 1,
+				[Defined if libcanberra is present])
+		fi
+	else
+		have_libcanberra="no, GTK+ is not enabled"
+	fi
+fi
 
 # Avahi support
 if test $with_avahi = no; then
@@ -499,6 +528,7 @@ $PACKAGE v$VERSION configuration:
         Build help                $pioneers_help
         AVAHI support             $have_avahi
         LIBNOTIFY support         $have_libnotify
+        LIBCANBERRA support       $have_libcanberra
     Developers only:
         Use compiler warnings     $pioneers_warnings
         Add debug information     $pioneers_debug
