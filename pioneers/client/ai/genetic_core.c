@@ -622,6 +622,7 @@ int checkRoadNow(enum action firstAction, enum action secondAction,
 			return (roadsPossible);
 			break;
 		}
+		return 0;
 	case RSET:
 		/*Even if I can do two roads now, I should not use the resources I will need for the settlement of RSET */
 		return (1);

@@ -1975,8 +1975,8 @@ static void genetic_turn(void)
 			   else if ((destinationLongRoadScore)&&(destinationLongRoadScore>destinationRoadScore)) {
 			   cb_build_road(long_road_edge);
 			   return;
-			   }
-			   break; */
+			   } */
+			break;
 		case RSET:
 			if (destinationRoadScore) {
 				printf
