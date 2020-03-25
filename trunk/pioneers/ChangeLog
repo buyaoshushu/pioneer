@@ -3,6 +3,8 @@
 	libcanberra instead of beep, which allows for sounds when pioneers is
 	not started from a console.
 	* client/gtk/gui.c: Use 16:9 layout as the default.
+	* client/ai/genetic.c, client/ai/genetic_core.c: Fix fall-through
+	warnings.
 
 2020-03-23  Roland Clobus <rclobus@rclobus.nl>
 	* po/POTFILES.in: client/gtk/audio.c contains a translatable text too.
