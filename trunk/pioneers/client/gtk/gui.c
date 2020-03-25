@@ -898,7 +898,7 @@ static GtkWidget *build_main_interface(void)
 			   build_messages_panel(), TRUE, TRUE, 0);
 
 	set_16_9_layout(config_get_int_with_default
-			("settings/layout_16_9", FALSE));
+			("settings/layout_16_9", TRUE));
 
 	gtk_paned_pack2(GTK_PANED(hpaned), main_paned, TRUE, TRUE);
 	return hpaned;
