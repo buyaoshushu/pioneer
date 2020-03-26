@@ -1,6 +1,9 @@
 2020-03-26  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Fix for warning in ar.
 	* common/deck.c, client/ai/genetic.c: Fix for -Wold-style-definition.
+	* editor/gtk/editor.c, editor/gtk/game-buildings.c,
+	editor/gtk/game-devcards.c: Fix for -Wsign-conversion.
+
 
 2020-03-25  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/Makefile.am, client/gtk/audio.c, configure.ac: Use

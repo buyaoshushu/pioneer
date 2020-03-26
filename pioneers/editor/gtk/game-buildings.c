@@ -46,7 +46,7 @@ static void game_buildings_init(GTypeInstance * instance,
 	GtkWidget *label;
 	GtkWidget *spin;
 	GtkAdjustment *adjustment;
-	guint row;
+	gint row;
 	GameBuildings *gb = GAMEBUILDINGS(instance);
 
 	gtk_grid_set_row_spacing(GTK_GRID(gb), 3);

@@ -564,7 +564,7 @@ static void build_select_bars(GtkWidget * grid)
 	gtk_grid_attach(GTK_GRID(grid), flowbox, 0, 0, 2, 1);
 }
 
-static void build_map_resize(GtkWidget * grid, guint col, guint row,
+static void build_map_resize(GtkWidget * grid, gint col, gint row,
 			     GtkOrientation dir, GtkWidget ** buttons,
 			     GCallback resize_callback)
 {
