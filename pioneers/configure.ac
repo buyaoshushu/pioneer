@@ -45,6 +45,16 @@ AC_SUBST(GTK_REQUIRED_VERSION)
 
 AM_MAINTAINER_MODE
 
+# Work-around for the bug in automake
+#   ar: `u' modifier ignored since `D' is the default (see `U')
+#
+# Use 'cr' instead of 'cru' for the default ARFLAGS
+# See also https://bugzilla.redhat.com/show_bug.cgi?id=1155273
+# This fix was found in https://sources.debian.org/src/cinnamon/4.4.8-2/configure.ac
+m4_divert_text([DEFAULTS], [: "${ARFLAGS=cr} ${AR_FLAGS=cr}"])
+# Also export this variable
+AC_SUBST(ARFLAGS, "${ARFLAGS}")
+
 LT_INIT
 AC_PATH_PROG(ECHO, echo)
 
