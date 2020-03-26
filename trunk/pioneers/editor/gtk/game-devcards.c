@@ -40,7 +40,7 @@ static void game_devcards_init(GTypeInstance * instance,
 	GtkWidget *label;
 	GtkWidget *spin;
 	GtkAdjustment *adjustment;
-	guint row;
+	gint row;
 	GameDevCards *gd = GAMEDEVCARDS(instance);
 
 	gtk_grid_set_row_spacing(GTK_GRID(gd), 3);
