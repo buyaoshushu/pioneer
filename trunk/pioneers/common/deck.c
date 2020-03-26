@@ -27,7 +27,7 @@ struct _Deck {
 	GPtrArray *array;
 };
 
-Deck *deck_new()
+Deck *deck_new(void)
 {
 	Deck *deck = g_malloc0(sizeof(*deck));
 	deck->array = g_ptr_array_new();

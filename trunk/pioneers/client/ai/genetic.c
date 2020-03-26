@@ -2266,7 +2266,7 @@ static float monopoly_wildcard_value(const resource_values_t * resval,
 /** Determine the best resource to get with a monopoly card.
  * @return the resource
 */
-static gint determine_monopoly_resource()
+static gint determine_monopoly_resource(void)
 {
 	gint assets[NO_RESOURCE];
 	int i;
