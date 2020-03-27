@@ -2,6 +2,7 @@
 	* client/gtk/quote-view.c: Fix for a crash: the client would segfault
 	when the theme was changed after a maritime was shown at least once in
 	the game.
+	* common/network.c: Allow building on Ubuntu 18.04 and Debian 8.
 
 2020-03-26  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac: Fix for warning in ar.
@@ -16,12 +17,6 @@
 	* client/gtk/gui.c: Use 16:9 layout as the default.
 	* client/ai/genetic.c, client/ai/genetic_core.c: Fix fall-through
 	warnings.
-	* client/gtk/avahi-browser.c, client/gtk/quote-view.c,
-	client/gtk/resource-table.c, common/gtk/game-settings.c,
-	common/gtk/metaserver.c, common/gtk/select-game.c, common/network.c,
-	editor/gtk/game-buildings.c, editor/gtk/game-devcards.c,
-	editor/gtk/game-resources.c: Fixed compiler warning
-	-Wcast-function-type in the C code.
 
 2020-03-23  Roland Clobus <rclobus@rclobus.nl>
 	* po/POTFILES.in: client/gtk/audio.c contains a translatable text too.
