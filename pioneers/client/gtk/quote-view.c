@@ -745,7 +745,9 @@ void quote_view_theme_changed(QuoteView * qv)
 	}
 
 	/* Add all of the maritime trades that can be performed */
-	check_maritime_trades(qv);
+	if (qv->quote_list != NULL) {
+		check_maritime_trades(qv);
+	}
 }
 
 gboolean quote_view_trade_exists(QuoteView * qv, const gint * supply,
