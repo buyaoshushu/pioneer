@@ -36,18 +36,35 @@ static gboolean draw_terrain_cb(GtkWidget * widget, cairo_t * cr,
 {
 	MapTheme *theme = theme_get_current();
 	GdkPixbuf *p;
-	gint height;
 	GtkAllocation allocation;
 	Terrain terrain = GPOINTER_TO_INT(terrain_data);
 
 	gtk_widget_get_allocation(widget, &allocation);
-	height = allocation.width / theme->scaledata[terrain].aspect;
-	p = gdk_pixbuf_scale_simple(theme->scaledata[terrain].native_image,
-				    allocation.width, height,
-				    GDK_INTERP_BILINEAR);
-
-	gdk_cairo_set_source_pixbuf(cr, p, 0, 0);
-	cairo_rectangle(cr, 0, 0, allocation.width, height);
+	if (theme->scaling == NEVER) {
+		p = gdk_pixbuf_copy(theme->
+				    scaledata[terrain].native_image);
+		gdk_cairo_set_source_pixbuf(cr, p, 0, 0);
+		cairo_pattern_set_extend(cairo_get_source(cr),
+					 CAIRO_EXTEND_REPEAT);
+	} else {
+		/* Scale to fit in the allocated space */
+		gint width = allocation.width;
+		gint height = allocation.height;
+		if (height > width / theme->scaledata[terrain].aspect) {
+			height = width / theme->scaledata[terrain].aspect;
+		} else {
+			width = height * theme->scaledata[terrain].aspect;
+		}
+		p = gdk_pixbuf_scale_simple(theme->scaledata
+					    [terrain].native_image, width,
+					    height, GDK_INTERP_BILINEAR);
+		gdk_cairo_set_source_pixbuf(cr, p,
+					    (allocation.width -
+					     width) / 2.0,
+					    (allocation.height -
+					     height) / 2.0);
+	}
+	cairo_rectangle(cr, 0, 0, allocation.width, allocation.height);
 	cairo_fill(cr);
 
 	g_object_unref(p);
@@ -59,15 +76,8 @@ GtkWidget *terrain_icon_new(Terrain terrain)
 	GtkWidget *area;
 	gint width;
 	gint height;
-	MapTheme *theme = theme_get_current();
 
 	gtk_icon_size_lookup(GTK_ICON_SIZE_DND, &width, &height);
-	if (height > width / theme->scaledata[terrain].aspect) {
-		height = width / theme->scaledata[terrain].aspect;
-	} else {
-		width = height * theme->scaledata[terrain].aspect;
-	}
-
 	area = gtk_drawing_area_new();
 	gtk_widget_show(area);
 	gtk_widget_set_size_request(area, width, height);
