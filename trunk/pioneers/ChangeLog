@@ -1,6 +1,7 @@
 2020-04-08  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/map-icons.c: Properly apply the scaling of the theme.
 	* editor/gtk/editor.c: Always show the icons in the context menus.
+	* editor/gtk/editor.c: Replace deprecated gtk_widget_set_margin_right.
 
 2020-03-27  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/quote-view.c: Fix for a crash: the client would segfault
