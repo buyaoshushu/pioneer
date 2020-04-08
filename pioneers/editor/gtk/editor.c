@@ -442,7 +442,7 @@ static void build_select_bars(GtkWidget * grid)
 	button = GTK_WIDGET(gtk_radio_tool_button_new(NULL));
 	gtk_tool_button_set_icon_widget(GTK_TOOL_BUTTON(button), area);
 	gtk_box_pack_start(GTK_BOX(box), button, FALSE, TRUE, 0);
-	gtk_widget_set_margin_right(button, 10);
+	gtk_widget_set_margin_end(button, 10);
 	gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(button), _
 				       ("Select the terrain type with the context "
 					"menu on the left click or toggle a node to "
