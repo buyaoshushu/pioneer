@@ -1041,45 +1041,32 @@ static GtkWidget *build_terrain_menu(void)
 	gint i;
 	GtkWidget *menu;
 	GtkWidget *item;
-	GdkPixbuf *pixbuf;
+	GtkWidget *box;
 	GtkWidget *image;
-	gint width;
-	gint height;
-	MapTheme *theme = theme_get_current();
+	GtkWidget *label;
 
 	menu = gtk_menu_new();
 
 	for (i = 0; i <= LAST_TERRAIN; i++) {
-		item =
-		    gtk_image_menu_item_new_with_mnemonic(gettext
-							  (terrain_names
-							   [i]));
+		item = gtk_menu_item_new();
+		box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
+		label =
+		    gtk_label_new_with_mnemonic(gettext(terrain_names[i]));
+		if (i == LAST_TERRAIN) {
+			image = gtk_drawing_area_new();
+		} else {
+			image = terrain_icon_new(i);
+		}
+		gtk_widget_set_size_request(image, BUTTON_HEIGHT,
+					    BUTTON_HEIGHT);
+		gtk_container_add(GTK_CONTAINER(box), image);
+		gtk_container_add(GTK_CONTAINER(box), label);
+		gtk_container_add(GTK_CONTAINER(item), box);
 
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 		g_signal_connect(G_OBJECT(item), "activate",
 				 G_CALLBACK(select_terrain_cb),
 				 GINT_TO_POINTER(i));
-
-		if (i == LAST_TERRAIN)
-			continue;
-
-		/* Use the default size, or smaller */
-		gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &width, &height);
-		if (height > width / theme->scaledata[i].aspect) {
-			height = width / theme->scaledata[i].aspect;
-		} else {
-			width = height * theme->scaledata[i].aspect;
-		}
-
-		pixbuf =
-		    gdk_pixbuf_scale_simple(theme->
-					    scaledata[i].native_image,
-					    width, height,
-					    GDK_INTERP_BILINEAR);
-
-		image = gtk_image_new_from_pixbuf(pixbuf);
-		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
-					      image);
 	}
 
 	gtk_widget_show_all(menu);
@@ -1202,32 +1189,33 @@ static GtkWidget *build_port_menu(void)
 {
 	gint i;
 	GtkWidget *item;
-	GdkPixbuf *pixbuf;
+	GtkWidget *box;
 	GtkWidget *image;
+	GtkWidget *label;
 	GtkWidget *menu;
-	MapTheme *theme = theme_get_current();
 
 	menu = gtk_menu_new();
 
 	for (i = 0; i <= ANY_RESOURCE; i++) {
-		item =
-		    gtk_image_menu_item_new_with_mnemonic(gettext
-							  (port_names[i]));
+		item = gtk_menu_item_new();
+		box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
+		label =
+		    gtk_label_new_with_mnemonic(gettext(port_names[i]));
+
+		image = gtk_drawing_area_new();
+		gtk_widget_set_size_request(image, BUTTON_HEIGHT,
+					    BUTTON_HEIGHT);
+		g_signal_connect(G_OBJECT(image), "draw",
+				 G_CALLBACK(draw_port_cb),
+				 GINT_TO_POINTER(i));
+		gtk_container_add(GTK_CONTAINER(box), image);
+		gtk_container_add(GTK_CONTAINER(box), label);
+		gtk_container_add(GTK_CONTAINER(item), box);
 
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
 		g_signal_connect(G_OBJECT(item), "activate",
 				 G_CALLBACK(select_port_resource_cb),
 				 GINT_TO_POINTER(i));
-
-		if (i >= NO_RESOURCE)
-			continue;
-		pixbuf = theme->port_tiles[i];
-		if (pixbuf == NULL)
-			continue;
-
-		image = gtk_image_new_from_pixbuf(pixbuf);
-		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(item),
-					      image);
 	}
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu),
 			      gtk_separator_menu_item_new());
