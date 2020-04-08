@@ -631,8 +631,7 @@ static void gui_theme_changed(void)
 {
 	g_assert(legend_page != NULL);
 	gtk_widget_queue_draw(legend_page);
-	gtk_widget_queue_draw_area(gmap->area, 0, 0, gmap->width,
-				   gmap->height);
+	gtk_widget_queue_draw(gmap->area);
 }
 
 void gui_show_legend_page(gboolean show)
