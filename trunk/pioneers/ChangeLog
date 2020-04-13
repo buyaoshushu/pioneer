@@ -1,3 +1,8 @@
+2020-04-13  Roland Clobus <rclobus@rclobus.nl>
+	* configure.ac, editor/gtk/Makefile.am, editor/gtk/editor.c,
+	editor/gtk/editor.gresource.xml, editor/gtk/editor.ui,
+	po/POTFILES.in: Replace GtkUIManager with GtkBuilder.
+
 2020-04-08  Roland Clobus <rclobus@rclobus.nl>
 	* common/gtk/map-icons.c: Properly apply the scaling of the theme.
 	* editor/gtk/editor.c: Always show the icons in the context menus.

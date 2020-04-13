@@ -331,7 +331,8 @@ fi
 if test $with_gtk = no; then
 	have_gtk="no, disabled in configure"
 else
-	PKG_CHECK_MODULES(GTK, gtk+-3.0 >= $GTK_REQUIRED_VERSION,
+	# gmodule-2.0 is required for gtk_builder
+	PKG_CHECK_MODULES(GTK, gtk+-3.0 >= $GTK_REQUIRED_VERSION gmodule-2.0,
 		have_gtk=yes, 
 		[PKG_CHECK_EXISTS(gtk+-3.0,
 			[have_gtk="no, GTK+ version too old"],

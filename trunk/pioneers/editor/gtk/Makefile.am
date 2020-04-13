@@ -27,6 +27,16 @@ icons += editor/gtk/pioneers-editor.svg
 
 pioneers_editor_CPPFLAGS = $(gtk_cflags)
 
+resource_files = $(shell glib-compile-resources --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/editor/gtk/editor.gresource.xml)
+editor/gtk/editor-resources.c: editor/gtk/editor.gresource.xml $(resource_files)
+	$(AM_V_GEN)glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-source --c-name editor $(srcdir)/editor/gtk/editor.gresource.xml
+editor/gtk/editor-resources.h: editor/gtk/editor.gresource.xml $(resource_files)
+	$(AM_V_GEN)glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-header --c-name editor $(srcdir)/editor/gtk/editor.gresource.xml
+
+BUILT_RESOURCES = \
+	editor/gtk/editor-resources.c \
+	editor/gtk/editor-resources.h
+
 pioneers_editor_SOURCES = \
 	editor/gtk/editor.c \
 	editor/gtk/game-devcards.c \
@@ -36,9 +46,17 @@ pioneers_editor_SOURCES = \
 	editor/gtk/game-resources.c \
 	editor/gtk/game-resources.h \
 	editor/gtk/pioneers-editor.ico \
-	editor/gtk/pioneers-editor.rc
+	editor/gtk/pioneers-editor.rc \
+	$(BUILT_RESOURCES)
 
 pioneers_editor_LDADD = $(gtk_libs)
+
+EXTRA_DIST += \
+	$(resource_files) \
+	editor/gtk/editor.gresource.xml
+
+CLEANFILES += \
+	$(BUILT_RESOURCES)
 
 if USE_WINDOWS_ICON
 pioneers_editor_LDADD += editor/gtk/pioneers-editor.res
