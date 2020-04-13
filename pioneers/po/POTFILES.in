@@ -48,6 +48,7 @@ common/log.c
 common/network.c
 common/state.c
 editor/gtk/editor.c
+[type: gettext/glade]editor/gtk/editor.ui
 editor/gtk/game-buildings.c
 editor/gtk/game-devcards.c
 editor/gtk/game-resources.c

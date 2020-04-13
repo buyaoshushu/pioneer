@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.2 
+
+pioneers-editor - Main window
+Copyright (C) 2020 Roland Clobus
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+Author: Roland Clobus
+
+-->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <!-- interface-license-type gplv2 -->
+  <!-- interface-name pioneers-editor -->
+  <!-- interface-description Main window -->
+  <!-- interface-copyright 2020 Roland Clobus -->
+  <!-- interface-authors Roland Clobus -->
+  <object class="GtkWindow" id="toplevel">
+    <property name="can_focus">False</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkMenuBar" id="main-menu">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes" comments="Menu entry">_File</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes" comments="Tooltip for New menu entry">Create a new game</property>
+                        <property name="accel_path">&lt;File&gt;/New</property>
+                        <property name="label" translatable="yes" comments="Menu entry">_New</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="new_game_menu_cb" swapped="no"/>
+                        <accelerator key="n" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes" comments="Tooltip for Open menu entry">Open an existing game</property>
+                        <property name="label" translatable="yes" comments="Menu entry">_Open...</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="load_game_menu_cb" swapped="no"/>
+                        <accelerator key="o" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes" comments="Tooltip for Save menu entry">Save game</property>
+                        <property name="label" translatable="yes" comments="Menu entry">_Save</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="save_game_menu_cb" swapped="no"/>
+                        <accelerator key="s" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes" comments="Tooltip for Save As menu entry">Save as</property>
+                        <property name="label" translatable="yes" comments="Menu entry">Save _As...</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="save_as_menu_cb" swapped="no"/>
+                        <accelerator key="s" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes" comments="Tooltip for Change Title menu entry">Change game title</property>
+                        <property name="label" translatable="yes" comments="Menu entry">Change _Title</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="change_title_menu_cb" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes" comments="Tooltip for Check Victory Point Target menu entry">Check whether the game can be won</property>
+                        <property name="label" translatable="yes" comments="Menu entry">_Check Victory Point Target</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="check_vp_cb" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes" comments="Tooltip for Quit menu entry">Quit</property>
+                        <property name="label" translatable="yes" comments="Menu entry">_Quit</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="exit_cb" swapped="no"/>
+                        <accelerator key="q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes" comments="Menu entry">_View</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkCheckMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes" comments="Tooltip for Fullscreen menu entry">Set window to full screen mode</property>
+                        <property name="label" translatable="yes" comments="Menu entry">_Fullscreen</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="toggle_full_screen_cb" swapped="no"/>
+                        <accelerator key="Return" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes" comments="Tooltip for Reset menu entry">View the full map</property>
+                        <property name="label" translatable="yes" comments="Menu entry">_Reset</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="zoom_normal_cb" swapped="no"/>
+                        <accelerator key="0" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes" comments="Tooltip for Center menu entry">Center the map</property>
+                        <property name="label" translatable="yes" comments="Menu entry">_Center</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="zoom_center_map_cb" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes" comments="Menu entry">_Help</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes" comments="Tooltip for About Pioneers Editor menu entry">Information about Pioneers Editor</property>
+                        <property name="accel_path">&lt;Help&gt;/About</property>
+                        <property name="label" translatable="yes" comments="Menu entry">_About Pioneers Editor</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="about_menu_cb" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkNotebook" id="notebook">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

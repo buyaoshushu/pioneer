@@ -2,7 +2,7 @@
  *   Go buy a copy.
  *
  * Copyright (C) 2005 Brian Wellington
- * Copyright (C) 2005,2011 Roland Clobus
+ * Copyright (C) 2005,2011,2020 Roland Clobus
  * Copyright (C) 2005,2006 Bas Wijnen
  * Copyright (C) 2011-2013 Micah Bunting <Amnykon@gmail.com>
  *
@@ -52,6 +52,19 @@
 
 #define BUTTON_HEIGHT 24	/* height of the toolbar buttons */
 #define TERRAIN_BUTTON_WIDTH 27	/* width of the terrain toolbar buttons */
+
+/* Callback functions from the resource file */
+G_MODULE_EXPORT void new_game_menu_cb(GObject *gobject, gpointer user_data);
+G_MODULE_EXPORT void load_game_menu_cb(GObject *gobject, gpointer user_data);
+G_MODULE_EXPORT void save_as_menu_cb(GObject *gobject, gpointer user_data);
+G_MODULE_EXPORT void save_game_menu_cb(GObject *gobject, gpointer user_data);
+G_MODULE_EXPORT void change_title_menu_cb(GObject *gobject, gpointer user_data);
+G_MODULE_EXPORT void check_vp_cb(GObject *gobject, gpointer user_data);
+G_MODULE_EXPORT void exit_cb(GObject *gobject, gpointer user_data);
+G_MODULE_EXPORT void about_menu_cb(GObject *gobject, gpointer user_data);
+G_MODULE_EXPORT void toggle_full_screen_cb(GObject *gobject, gpointer user_data);
+G_MODULE_EXPORT void zoom_normal_cb(GObject *gobject, gpointer user_data);
+G_MODULE_EXPORT void zoom_center_map_cb(GObject *gobject, gpointer user_data);
 
 static GtkWidget *toplevel;
 static gchar *default_game;
@@ -161,7 +174,6 @@ static const gchar *port_direction_names[] = {
 	N_("South East|SE")
 };
 
-static void check_vp_cb(GObject * caller, gpointer main_window);
 static void set_window_title(const gchar * title);
 
 static void error_dialog(const char *fmt, ...)
@@ -1493,7 +1505,7 @@ static void save_game(const gchar * file)
 	params_free(params);
 }
 
-static void new_game_menu_cb(void)
+void new_game_menu_cb(G_GNUC_UNUSED GObject *gobject, G_GNUC_UNUSED gpointer user_data)
 {
 	load_game(NULL, TRUE);
 }
@@ -1515,7 +1527,7 @@ static void add_file_filter(GtkFileChooser * file_chooser)
 	gtk_file_chooser_add_filter(file_chooser, filter);
 }
 
-static void load_game_menu_cb(void)
+void load_game_menu_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
 {
 	GtkWidget *dialog;
 	gchar *directory;
@@ -1523,7 +1535,7 @@ static void load_game_menu_cb(void)
 	dialog = gtk_file_chooser_dialog_new(
 						    /* Dialog caption */
 						    _("Open Game"),
-						    GTK_WINDOW(toplevel),
+						    GTK_WINDOW(user_data),
 						    GTK_FILE_CHOOSER_ACTION_OPEN,
 						    /* Button text */
 						    _("_Cancel"),
@@ -1556,7 +1568,7 @@ static void load_game_menu_cb(void)
 	gtk_widget_destroy(dialog);
 }
 
-static void save_as_menu_cb(void)
+void save_as_menu_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
 {
 	GtkWidget *dialog;
 	gchar *directory;
@@ -1564,7 +1576,7 @@ static void save_as_menu_cb(void)
 	dialog = gtk_file_chooser_dialog_new(
 						    /* Dialog caption */
 						    _("Save As..."),
-						    GTK_WINDOW(toplevel),
+						    GTK_WINDOW(user_data),
 						    GTK_FILE_CHOOSER_ACTION_SAVE,
 						    /* Button text */
 						    _("_Cancel"),
@@ -1597,22 +1609,22 @@ static void save_as_menu_cb(void)
 	gtk_widget_destroy(dialog);
 }
 
-static void save_game_menu_cb(void)
+void save_game_menu_cb(GObject *gobject, gpointer user_data)
 {
 	if (open_filename == NULL)
-		save_as_menu_cb();
+		save_as_menu_cb(gobject, user_data);
 	else
 		save_game(open_filename);
 }
 
-static void change_title_menu_cb(void)
+void change_title_menu_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
 {
 	GtkWidget *dialog, *vbox, *hbox, *label, *entry;
 
 	dialog = gtk_dialog_new_with_buttons(
 						    /* Dialog caption */
 						    _("Change Title"),
-						    GTK_WINDOW(toplevel),
+						    GTK_WINDOW(user_data),
 						    GTK_DIALOG_MODAL |
 						    GTK_DIALOG_DESTROY_WITH_PARENT,
 						    /* Button text */
@@ -1656,185 +1668,47 @@ static void change_title_menu_cb(void)
 	gtk_widget_destroy(dialog);
 }
 
-static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
-			gpointer main_window)
+void check_vp_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
 {
 	GameParams *params;
 
 	params = get_params();
-	check_victory_points(params, main_window);
+	check_victory_points(params, GTK_WINDOW(user_data));
 	params_free(params);
 }
 
-static void exit_cb(void)
+void exit_cb(G_GNUC_UNUSED GObject *gobject, G_GNUC_UNUSED gpointer user_data)
 {
 	gtk_main_quit();
 }
 
-#ifdef HAVE_HELP
-/* Commented out, until the help is written
-static void contents_menu_cb(void)
+void about_menu_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
 {
-	GtkWidget *dialog;
-
-	dialog = gtk_message_dialog_new(GTK_WINDOW(toplevel),
-					GTK_DIALOG_MODAL |
-					GTK_DIALOG_DESTROY_WITH_PARENT,
-					GTK_MESSAGE_WARNING,
-					GTK_BUTTONS_CLOSE,
-					_("There is no help"));
-	gtk_dialog_run(GTK_DIALOG(dialog));
-	gtk_widget_destroy(dialog);
-}
-*/
-#endif
-
-static void about_menu_cb(void)
-{
-	aboutbox_display(GTK_WINDOW(toplevel),
+	aboutbox_display(GTK_WINDOW(user_data),
 			 /* Caption of about box */
 			 _("About Pioneers Game Editor"));
 }
 
 /** Toggles full screen mode.
- * @param GtkToggleAction The calling action.
- * @param main_window The window to toggle full screen mode.
 */
-static void toggle_full_screen_cb(GtkToggleAction * caller,
-				  gpointer main_window)
+void toggle_full_screen_cb(GObject *gobject, gpointer user_data)
 {
-	if (gtk_toggle_action_get_active(caller)) {
-		gtk_window_fullscreen(GTK_WINDOW(main_window));
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(gobject))) {
+		gtk_window_fullscreen(GTK_WINDOW(user_data));
 	} else {
-		gtk_window_unfullscreen(GTK_WINDOW(main_window));
+		gtk_window_unfullscreen(GTK_WINDOW(user_data));
 	}
 }
 
-static void zoom_normal_cb(void)
+void zoom_normal_cb(G_GNUC_UNUSED GObject *gobject, G_GNUC_UNUSED gpointer user_data)
 {
 	guimap_zoom_normal(gmap);
 }
 
-static void zoom_center_map_cb(void)
+void zoom_center_map_cb(G_GNUC_UNUSED GObject *gobject, G_GNUC_UNUSED gpointer user_data)
 {
 	guimap_zoom_center_map(gmap);
 }
-
-static GtkActionEntry entries[] = {
-	{"FileMenu", NULL,
-	 /* Menu entry */
-	 N_("_File"), NULL, NULL, NULL},
-	{"ViewMenu", NULL,
-	 /* Menu entry */
-	 N_("_View"), NULL, NULL, NULL},
-	{"HelpMenu", NULL,
-	 /* Menu entry */
-	 N_("_Help"), NULL, NULL, NULL},
-
-	{"New", NULL,
-	 /* Menu entry */
-	 N_("_New"), "<control>N",
-	 N_("Create a new game"), new_game_menu_cb},
-	{"Open", NULL,
-	 /* Menu entry */
-	 N_("_Open..."), "<control>O",
-	 /* Tooltip for Open menu entry */
-	 N_("Open an existing game"), load_game_menu_cb},
-	{"Save", NULL,
-	 /* Menu entry */
-	 N_("_Save"), "<control>S",
-	 /* Tooltip for Save menu entry */
-	 N_("Save game"), save_game_menu_cb},
-	{"SaveAs", NULL,
-	 /* Menu entry */
-	 N_("Save _As..."),
-	 "<control><shift>S",
-	 /* Tooltip for Save As menu entry */
-	 N_("Save as"), save_as_menu_cb},
-	{"ChangeTitle", NULL,
-	 /* Menu entry */
-	 N_("Change _Title"), "<control>T",
-	 /* Tooltip for Change Title menu entry */
-	 N_("Change game title"), change_title_menu_cb},
-	{"CheckVP", NULL,
-	 /* Menu entry */
-	 N_("_Check Victory Point Target"),
-	 NULL,
-	 /* Tooltip for Check Victory Point Target menu entry */
-	 N_("Check whether the game can be won"), G_CALLBACK(check_vp_cb)},
-	{"Quit", NULL,
-	 /* Menu entry */
-	 N_("_Quit"), "<control>Q",
-	 /* Tooltip for Quit menu entry */
-	 N_("Quit"), exit_cb},
-
-	{"Full", NULL,
-	 /* Menu entry */
-	 N_("_Reset"),
-	 "<control>0",
-	 /* Tooltip for Reset menu entry */
-	 N_("View the full map"), zoom_normal_cb},
-	{"Center", NULL,
-	 /* Menu entry */
-	 N_("_Center"), NULL,
-	 /* Tooltip for Center menu entry */
-	 N_("Center the map"), zoom_center_map_cb},
-
-#ifdef HAVE_HELP
-	/* Disable this item, until the help is written
-	   {"Contents", NULL, N_("_Contents"), "F1",
-	   N_("Contents"), contents_menu_cb},
-	 */
-#endif
-	{"About", NULL,
-	 /* Menu entry */
-	 N_("_About Pioneers Editor"), NULL,
-	 /* Tooltip for About Pioneers Editor menu entry */
-	 N_("Information about Pioneers Editor"), about_menu_cb},
-};
-
-static GtkToggleActionEntry toggle_entries[] = {
-	{"FullScreen", NULL,
-	 /* Menu entry */
-	 N_("_Fullscreen"),
-	 "<alt>Return",
-	 /* Tooltip for Fullscreen menu entry */
-	 N_("Set window to full screen mode"),
-	 G_CALLBACK(toggle_full_screen_cb), FALSE}
-};
-
-/* *INDENT-OFF* */
-static const char *ui_description =
-"<ui>"
-"  <menubar name='MainMenu'>"
-"    <menu action='FileMenu'>"
-"      <menuitem action='New'/>"
-"      <menuitem action='Open'/>"
-"      <menuitem action='Save'/>"
-"      <menuitem action='SaveAs'/>"
-"      <separator/>"
-"      <menuitem action='CheckVP'/>"
-"      <menuitem action='ChangeTitle'/>"
-"      <separator/>"
-"      <menuitem action='Quit'/>"
-"    </menu>"
-"    <menu action='ViewMenu'>"
-"      <menuitem action='FullScreen'/>"
-"      <menuitem action='Full'/>"
-"      <menuitem action='Center'/>"
-"    </menu>"
-"    <menu action='HelpMenu'>"
-#ifdef HAVE_HELP
-/* Disable this menu item, until the help is written
-"      <menuitem action='Contents'/>"
-"      <separator/>"
-*/
-#endif
-"      <menuitem action='About'/>"
-"    </menu>"
-"  </menubar>"
-"</ui>";
-/* *INDENT-ON* */
 
 gchar **filenames;
 gboolean show_version = FALSE;
@@ -1854,14 +1728,10 @@ static GOptionEntry commandline_entries[] = {
 
 int main(int argc, char *argv[])
 {
+	GtkBuilder *builder;
 	gchar *filename;
 	gboolean default_used;
 	GtkWidget *notebook;
-	GtkActionGroup *action_group;
-	GtkUIManager *ui_manager;
-	GtkWidget *vbox;
-	GtkWidget *menubar;
-	GtkAccelGroup *accel_group;
 	GError *error = NULL;
 	gchar *icon_file;
 	GOptionContext *context;
@@ -1905,31 +1775,11 @@ int main(int argc, char *argv[])
 	else
 		filename = NULL;
 
-	toplevel = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	builder = gtk_builder_new_from_resource("/net/sourceforge/pio/editor/gtk/editor.ui");
+	toplevel = GTK_WIDGET(gtk_builder_get_object(builder, "toplevel"));
+	gtk_builder_connect_signals(builder, toplevel);
 	g_signal_connect(G_OBJECT(toplevel), "delete_event",
 			 G_CALLBACK(exit_cb), NULL);
-
-	action_group = gtk_action_group_new("MenuActions");
-	gtk_action_group_set_translation_domain(action_group, PACKAGE);
-	gtk_action_group_add_actions(action_group, entries,
-				     G_N_ELEMENTS(entries), toplevel);
-	gtk_action_group_add_toggle_actions(action_group, toggle_entries,
-					    G_N_ELEMENTS(toggle_entries),
-					    toplevel);
-
-	ui_manager = gtk_ui_manager_new();
-	gtk_ui_manager_insert_action_group(ui_manager, action_group, 0);
-
-	accel_group = gtk_ui_manager_get_accel_group(ui_manager);
-	gtk_window_add_accel_group(GTK_WINDOW(toplevel), accel_group);
-
-	error = NULL;
-	if (!gtk_ui_manager_add_ui_from_string(ui_manager, ui_description,
-					       -1, &error)) {
-		g_message(_("Building menus failed: %s"), error->message);
-		g_error_free(error);
-		return 1;
-	}
 
 	config_init("pioneers-editor");
 
@@ -1946,9 +1796,7 @@ int main(int argc, char *argv[])
 	themes_init();
 	colors_init();
 
-	notebook = gtk_notebook_new();
-	gtk_notebook_set_tab_pos(GTK_NOTEBOOK(notebook), GTK_POS_TOP);
-
+	notebook = GTK_WIDGET(gtk_builder_get_object(builder, "notebook"));
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), build_map(),
 				 /* Tab page name */
 				 gtk_label_new(_("Map")));
@@ -1964,13 +1812,6 @@ int main(int argc, char *argv[])
 	terrain_menu = build_terrain_menu();
 	roll_menu = build_roll_menu();
 	port_menu = build_port_menu();
-
-	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-	gtk_container_add(GTK_CONTAINER(toplevel), vbox);
-
-	menubar = gtk_ui_manager_get_widget(ui_manager, "/MainMenu");
-	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 0);
 
 	if (filename == NULL) {
 		filename =
