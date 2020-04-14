@@ -46,7 +46,10 @@
 
 #define MAINICON_FILE	"pioneers-server.png"
 
-static GtkWidget *toplevel;	/* top level window */
+/* Callback functions from the resource file */
+G_MODULE_EXPORT void check_vp_cb(GObject * gobject, gpointer user_data);
+G_MODULE_EXPORT void quit_cb(GObject * gobject, gpointer user_data);
+G_MODULE_EXPORT void help_about_cb(GObject * gobject, gpointer user_data);
 
 static GtkWidget *settings_notebook;	/* relevant settings */
 
@@ -71,9 +74,6 @@ static gboolean show_version = FALSE;
 
 /* Local function prototypes */
 static void add_game_to_list(gpointer name, gpointer user_data);
-static void check_vp_cb(GObject * caller, gpointer main_window);
-static void quit_cb(void);
-static void help_about_cb(void);
 
 enum {
 	PLAYER_COLUMN_CONNECTED,
@@ -83,48 +83,6 @@ enum {
 	PLAYER_COLUMN_ISSPECTATOR,
 	PLAYER_COLUMN_LAST
 };
-
-/* Normal items */
-static GtkActionEntry entries[] = {
-	{"GameMenu", NULL,
-	 /* Menu entry */
-	 N_("_Game"), NULL, NULL, NULL},
-	{"HelpMenu", NULL,
-	 /* Menu entry */
-	 N_("_Help"), NULL, NULL, NULL},
-	{"GameCheckVP", NULL,
-	 /* Menu entry */
-	 N_("_Check Victory Point Target"),
-	 NULL,
-	 /* Tooltop for Check Victory Point Target menu entry */
-	 N_("Check whether the game can be won"), G_CALLBACK(check_vp_cb)},
-	{"GameQuit", NULL,
-	 /* Menu entry */
-	 N_("_Quit"), "<control>Q",
-	 /* Tooltop for Quit menu entry */
-	 N_("Quit the program"), quit_cb},
-	{"HelpAbout", NULL,
-	 /* Menu entry */
-	 N_("_About Pioneers Server"), NULL,
-	 /* Tooltop for About Pioneers Server menu entry */
-	 N_("Information about Pioneers Server"), help_about_cb}
-};
-
-/* *INDENT-OFF* */
-static const char *ui_description =
-"<ui>"
-"  <menubar name='MainMenu'>"
-"    <menu action='GameMenu'>"
-"      <menuitem action='GameCheckVP' />"
-"      <separator/>"
-"      <menuitem action='GameQuit' />"
-"    </menu>"
-"    <menu action='HelpMenu'>"
-"      <menuitem action='HelpAbout' />"
-"    </menu>"
-"  </menubar>"
-"</ui>";
-/* *INDENT-ON* */
 
 static void port_entry_changed_cb(GtkWidget * widget,
 				  G_GNUC_UNUSED gpointer user_data)
@@ -1081,8 +1039,7 @@ static void load_last_game_params(void)
 	params_free(params);
 }
 
-static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
-			gpointer main_window)
+void check_vp_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
 	GameParams *params;
 
@@ -1125,17 +1082,18 @@ static void check_vp_cb(G_GNUC_UNUSED GObject * caller,
 	    game_rules_get_island_discovery_bonus(GAMERULES(game_rules));
 	update_game_settings(params);
 
-	check_victory_points(params, main_window);
+	check_victory_points(params, GTK_WINDOW(user_data));
 }
 
-static void quit_cb(void)
+void quit_cb(G_GNUC_UNUSED GObject * gobject,
+	     G_GNUC_UNUSED gpointer user_data)
 {
 	gtk_main_quit();
 }
 
-static void help_about_cb(void)
+void help_about_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
-	aboutbox_display(GTK_WINDOW(toplevel),
+	aboutbox_display(GTK_WINDOW(user_data),
 			 /* Caption of about box */
 			 _("About the Pioneers Game Server"));
 }
@@ -1167,11 +1125,9 @@ static GOptionEntry commandline_entries[] = {
 int main(int argc, char *argv[])
 {
 	gchar *icon_file;
+	GtkWidget *toplevel;
 	GtkWidget *vbox;
-	GtkWidget *menubar;
-	GtkActionGroup *action_group;
-	GtkUIManager *ui_manager;
-	GtkAccelGroup *accel_group;
+	GtkBuilder *builder;
 	GError *error = NULL;
 	GOptionContext *context;
 	Game *game;
@@ -1219,32 +1175,13 @@ int main(int argc, char *argv[])
 
 	set_enable_debug(enable_debug);
 
-	toplevel = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	builder =
+	    gtk_builder_new_from_resource
+	    ("/net/sourceforge/pio/server/gtk/server.ui");
+	toplevel = GTK_WIDGET(gtk_builder_get_object(builder, "toplevel"));
 	/* Name in the titlebar of the server */
 	gtk_window_set_title(GTK_WINDOW(toplevel), _("Pioneers Server"));
-
-	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-	gtk_container_add(GTK_CONTAINER(toplevel), vbox);
-
-	action_group = gtk_action_group_new("MenuActions");
-	gtk_action_group_set_translation_domain(action_group, PACKAGE);
-	gtk_action_group_add_actions(action_group, entries,
-				     G_N_ELEMENTS(entries), toplevel);
-
-	ui_manager = gtk_ui_manager_new();
-	gtk_ui_manager_insert_action_group(ui_manager, action_group, 0);
-
-	accel_group = gtk_ui_manager_get_accel_group(ui_manager);
-	gtk_window_add_accel_group(GTK_WINDOW(toplevel), accel_group);
-
-	error = NULL;
-	if (!gtk_ui_manager_add_ui_from_string
-	    (ui_manager, ui_description, -1, &error)) {
-		/* Error message */
-		g_message(_("Building menus failed: %s"), error->message);
-		g_error_free(error);
-		return 1;
-	}
+	gtk_builder_connect_signals(builder, toplevel);
 
 	config_init("pioneers-server");
 
@@ -1258,10 +1195,8 @@ int main(int argc, char *argv[])
 	}
 	g_free(icon_file);
 
-	menubar = gtk_ui_manager_get_widget(ui_manager, "/MainMenu");
-	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
-
 	game = NULL;
+	vbox = GTK_WIDGET(gtk_builder_get_object(builder, "vbox"));
 	gtk_box_pack_start(GTK_BOX(vbox),
 			   build_interface(GTK_WINDOW(toplevel), &game),
 			   TRUE, TRUE, 0);

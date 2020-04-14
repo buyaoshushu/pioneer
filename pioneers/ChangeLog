@@ -1,3 +1,8 @@
+2020-04-14  Roland Clobus <rclobus@rclobus.nl>
+	* server/gtk/Makefile.am, server/gtk/main.c,
+	server/gtk/server.gresource.xml, server/gtk/server.ui, po/POTFILES.in:
+	Replace GtkUIManager with GtkBuilder.
+
 2020-04-13  Roland Clobus <rclobus@rclobus.nl>
 	* configure.ac, editor/gtk/Makefile.am, editor/gtk/editor.c,
 	editor/gtk/editor.gresource.xml, editor/gtk/editor.ui,
