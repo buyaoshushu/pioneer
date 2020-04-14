@@ -44,7 +44,7 @@ pioneers_server_gtk_SOURCES = \
 	$(pioneers_server_gtk_BUILT_RESOURCES)
 
 EXTRA_DIST += \
-	$(resource_files) \
+	$(server_resource_files) \
 	server/gtk/server.gresource.xml
 
 CLEANFILES += \
