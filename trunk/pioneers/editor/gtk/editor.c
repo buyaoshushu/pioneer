@@ -54,17 +54,24 @@
 #define TERRAIN_BUTTON_WIDTH 27	/* width of the terrain toolbar buttons */
 
 /* Callback functions from the resource file */
-G_MODULE_EXPORT void new_game_menu_cb(GObject *gobject, gpointer user_data);
-G_MODULE_EXPORT void load_game_menu_cb(GObject *gobject, gpointer user_data);
-G_MODULE_EXPORT void save_as_menu_cb(GObject *gobject, gpointer user_data);
-G_MODULE_EXPORT void save_game_menu_cb(GObject *gobject, gpointer user_data);
-G_MODULE_EXPORT void change_title_menu_cb(GObject *gobject, gpointer user_data);
-G_MODULE_EXPORT void check_vp_cb(GObject *gobject, gpointer user_data);
-G_MODULE_EXPORT void exit_cb(GObject *gobject, gpointer user_data);
-G_MODULE_EXPORT void about_menu_cb(GObject *gobject, gpointer user_data);
-G_MODULE_EXPORT void toggle_full_screen_cb(GObject *gobject, gpointer user_data);
-G_MODULE_EXPORT void zoom_normal_cb(GObject *gobject, gpointer user_data);
-G_MODULE_EXPORT void zoom_center_map_cb(GObject *gobject, gpointer user_data);
+G_MODULE_EXPORT void new_game_menu_cb(GObject * gobject,
+				      gpointer user_data);
+G_MODULE_EXPORT void load_game_menu_cb(GObject * gobject,
+				       gpointer user_data);
+G_MODULE_EXPORT void save_as_menu_cb(GObject * gobject,
+				     gpointer user_data);
+G_MODULE_EXPORT void save_game_menu_cb(GObject * gobject,
+				       gpointer user_data);
+G_MODULE_EXPORT void change_title_menu_cb(GObject * gobject,
+					  gpointer user_data);
+G_MODULE_EXPORT void check_vp_cb(GObject * gobject, gpointer user_data);
+G_MODULE_EXPORT void exit_cb(GObject * gobject, gpointer user_data);
+G_MODULE_EXPORT void about_menu_cb(GObject * gobject, gpointer user_data);
+G_MODULE_EXPORT void toggle_full_screen_cb(GObject * gobject,
+					   gpointer user_data);
+G_MODULE_EXPORT void zoom_normal_cb(GObject * gobject, gpointer user_data);
+G_MODULE_EXPORT void zoom_center_map_cb(GObject * gobject,
+					gpointer user_data);
 
 static GtkWidget *toplevel;
 static gchar *default_game;
@@ -1505,7 +1512,8 @@ static void save_game(const gchar * file)
 	params_free(params);
 }
 
-void new_game_menu_cb(G_GNUC_UNUSED GObject *gobject, G_GNUC_UNUSED gpointer user_data)
+void new_game_menu_cb(G_GNUC_UNUSED GObject * gobject,
+		      G_GNUC_UNUSED gpointer user_data)
 {
 	load_game(NULL, TRUE);
 }
@@ -1527,7 +1535,7 @@ static void add_file_filter(GtkFileChooser * file_chooser)
 	gtk_file_chooser_add_filter(file_chooser, filter);
 }
 
-void load_game_menu_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
+void load_game_menu_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
 	GtkWidget *dialog;
 	gchar *directory;
@@ -1568,7 +1576,7 @@ void load_game_menu_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
 	gtk_widget_destroy(dialog);
 }
 
-void save_as_menu_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
+void save_as_menu_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
 	GtkWidget *dialog;
 	gchar *directory;
@@ -1609,7 +1617,7 @@ void save_as_menu_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
 	gtk_widget_destroy(dialog);
 }
 
-void save_game_menu_cb(GObject *gobject, gpointer user_data)
+void save_game_menu_cb(GObject * gobject, gpointer user_data)
 {
 	if (open_filename == NULL)
 		save_as_menu_cb(gobject, user_data);
@@ -1617,7 +1625,8 @@ void save_game_menu_cb(GObject *gobject, gpointer user_data)
 		save_game(open_filename);
 }
 
-void change_title_menu_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
+void change_title_menu_cb(G_GNUC_UNUSED GObject * gobject,
+			  gpointer user_data)
 {
 	GtkWidget *dialog, *vbox, *hbox, *label, *entry;
 
@@ -1668,7 +1677,7 @@ void change_title_menu_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
 	gtk_widget_destroy(dialog);
 }
 
-void check_vp_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
+void check_vp_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
 	GameParams *params;
 
@@ -1677,12 +1686,13 @@ void check_vp_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
 	params_free(params);
 }
 
-void exit_cb(G_GNUC_UNUSED GObject *gobject, G_GNUC_UNUSED gpointer user_data)
+void exit_cb(G_GNUC_UNUSED GObject * gobject,
+	     G_GNUC_UNUSED gpointer user_data)
 {
 	gtk_main_quit();
 }
 
-void about_menu_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
+void about_menu_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
 	aboutbox_display(GTK_WINDOW(user_data),
 			 /* Caption of about box */
@@ -1691,7 +1701,7 @@ void about_menu_cb(G_GNUC_UNUSED GObject *gobject, gpointer user_data)
 
 /** Toggles full screen mode.
 */
-void toggle_full_screen_cb(GObject *gobject, gpointer user_data)
+void toggle_full_screen_cb(GObject * gobject, gpointer user_data)
 {
 	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(gobject))) {
 		gtk_window_fullscreen(GTK_WINDOW(user_data));
@@ -1700,12 +1710,14 @@ void toggle_full_screen_cb(GObject *gobject, gpointer user_data)
 	}
 }
 
-void zoom_normal_cb(G_GNUC_UNUSED GObject *gobject, G_GNUC_UNUSED gpointer user_data)
+void zoom_normal_cb(G_GNUC_UNUSED GObject * gobject,
+		    G_GNUC_UNUSED gpointer user_data)
 {
 	guimap_zoom_normal(gmap);
 }
 
-void zoom_center_map_cb(G_GNUC_UNUSED GObject *gobject, G_GNUC_UNUSED gpointer user_data)
+void zoom_center_map_cb(G_GNUC_UNUSED GObject * gobject,
+			G_GNUC_UNUSED gpointer user_data)
 {
 	guimap_zoom_center_map(gmap);
 }
@@ -1775,7 +1787,9 @@ int main(int argc, char *argv[])
 	else
 		filename = NULL;
 
-	builder = gtk_builder_new_from_resource("/net/sourceforge/pio/editor/gtk/editor.ui");
+	builder =
+	    gtk_builder_new_from_resource
+	    ("/net/sourceforge/pio/editor/gtk/editor.ui");
 	toplevel = GTK_WIDGET(gtk_builder_get_object(builder, "toplevel"));
 	gtk_builder_connect_signals(builder, toplevel);
 	g_signal_connect(G_OBJECT(toplevel), "delete_event",
