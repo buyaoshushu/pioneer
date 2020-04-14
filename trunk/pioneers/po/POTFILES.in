@@ -58,6 +58,7 @@ server/admin.c
 server/avahi.c
 server/gtk/main.c
 server/gtk/pioneers-server-gtk.desktop.in
+[type: gettext/glade]server/gtk/server.ui
 server/main.c
 server/meta.c
 server/player.c

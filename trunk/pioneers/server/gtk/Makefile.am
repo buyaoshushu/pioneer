@@ -27,10 +27,28 @@ icons += server/gtk/pioneers-server.svg
 pioneers_server_gtk_CPPFLAGS = $(gtk_cflags) $(avahi_cflags) -I $(srcdir)/server
 pioneers_server_gtk_LDADD = libpioneers_server.a $(gtk_libs) $(avahi_libs)
 
+server_resource_files = $(shell glib-compile-resources --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/server/gtk/server.gresource.xml)
+server/gtk/server-resources.c: server/gtk/server.gresource.xml $(server_resource_files)
+	$(AM_V_GEN)glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-source --c-name server $(srcdir)/server/gtk/server.gresource.xml
+server/gtk/server-resources.h: server/gtk/server.gresource.xml $(server_resource_files)
+	$(AM_V_GEN)glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-header --c-name server $(srcdir)/server/gtk/server.gresource.xml
+
+pioneers_server_gtk_BUILT_RESOURCES = \
+	server/gtk/server-resources.c \
+	server/gtk/server-resources.h
+
 pioneers_server_gtk_SOURCES = \
 	server/gtk/main.c \
 	server/gtk/pioneers-server.ico \
-	server/gtk/pioneers-server.rc
+	server/gtk/pioneers-server.rc \
+	$(pioneers_server_gtk_BUILT_RESOURCES)
+
+EXTRA_DIST += \
+	$(resource_files) \
+	server/gtk/server.gresource.xml
+
+CLEANFILES += \
+	$(pioneers_server_gtk_BUILT_RESOURCES)
 
 if USE_WINDOWS_ICON
 pioneers_server_gtk_LDADD += server/gtk/pioneers-server.res
