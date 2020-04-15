@@ -211,7 +211,7 @@ GtkWidget *legend_create_content(void)
 	return legend_create_content_with_scrolling(TRUE);
 }
 
-GtkWidget *legend_create_dlg(GtkWindow *parent_window)
+GtkWidget *legend_create_dlg(GtkWindow * parent_window)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;

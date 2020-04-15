@@ -389,7 +389,7 @@ static void settings_rules_changed(void)
 	}
 }
 
-GtkWidget *settings_create_dlg(GtkWindow *parent_window)
+GtkWidget *settings_create_dlg(GtkWindow * parent_window)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
