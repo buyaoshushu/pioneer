@@ -220,7 +220,7 @@ void frontend_quote_trade(gint player_num, gint partner_num,
 			  const gint * they_receive);
 
 /* legend.c */
-GtkWidget *legend_create_dlg(void);
+GtkWidget *legend_create_dlg(GtkWindow * parent_window);
 GtkWidget *legend_create_content(void);
 
 /* gui_develop.c */
@@ -298,7 +298,7 @@ void name_create_dlg(void);
 
 /* settingscreen.c */
 void settings_init(void);
-GtkWidget *settings_create_dlg(void);
+GtkWidget *settings_create_dlg(GtkWindow *parent_window);
 
 /* monopoly.c */
 Resource monopoly_type(void);

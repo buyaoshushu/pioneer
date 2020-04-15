@@ -1227,17 +1227,17 @@ static void help_about_cb(void)
 
 static void game_legend_cb(void)
 {
-	legend_create_dlg();
+	legend_create_dlg(GTK_WINDOW(app_window));
 }
 
 static void game_histogram_cb(void)
 {
-	histogram_create_dlg();
+	histogram_create_dlg(GTK_WINDOW(app_window));
 }
 
 static void game_settings_cb(void)
 {
-	settings_create_dlg();
+	settings_create_dlg(GTK_WINDOW(app_window));
 }
 
 #ifdef HAVE_HELP

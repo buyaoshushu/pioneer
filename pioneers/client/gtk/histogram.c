@@ -236,7 +236,7 @@ static void histogram_destroyed_cb(GtkWidget * widget, gpointer arg)
 	gtk_widget_destroyed(widget, arg);
 }
 
-GtkWidget *histogram_create_dlg(void)
+GtkWidget *histogram_create_dlg(GtkWindow *parent_window)
 {
 	GtkWidget *dlg_vbox;
 
@@ -246,7 +246,7 @@ GtkWidget *histogram_create_dlg(void)
 
 	/* Dialog caption */
 	histogram_dlg = gtk_dialog_new_with_buttons(_("Dice Histogram"),
-						    GTK_WINDOW(app_window),
+						    parent_window,
 						    GTK_DIALOG_DESTROY_WITH_PARENT,
 						    /* Button text */
 						    _("_Close"),
