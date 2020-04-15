@@ -236,7 +236,7 @@ static void histogram_destroyed_cb(GtkWidget * widget, gpointer arg)
 	gtk_widget_destroyed(widget, arg);
 }
 
-GtkWidget *histogram_create_dlg(GtkWindow *parent_window)
+GtkWidget *histogram_create_dlg(GtkWindow * parent_window)
 {
 	GtkWidget *dlg_vbox;
 

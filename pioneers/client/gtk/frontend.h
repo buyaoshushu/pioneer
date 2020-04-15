@@ -298,7 +298,7 @@ void name_create_dlg(void);
 
 /* settingscreen.c */
 void settings_init(void);
-GtkWidget *settings_create_dlg(GtkWindow *parent_window);
+GtkWidget *settings_create_dlg(GtkWindow * parent_window);
 
 /* monopoly.c */
 Resource monopoly_type(void);
