@@ -389,7 +389,7 @@ static void settings_rules_changed(void)
 	}
 }
 
-GtkWidget *settings_create_dlg(void)
+GtkWidget *settings_create_dlg(GtkWindow *parent_window)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
@@ -401,8 +401,7 @@ GtkWidget *settings_create_dlg(void)
 							  /* Dialog caption */
 							  _(""
 							    "Current Game Settings"),
-							  GTK_WINDOW
-							  (app_window),
+							  parent_window,
 							  GTK_DIALOG_DESTROY_WITH_PARENT,
 							  /* Button text */
 							  _("_Close"),

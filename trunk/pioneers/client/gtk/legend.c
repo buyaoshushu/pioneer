@@ -211,7 +211,7 @@ GtkWidget *legend_create_content(void)
 	return legend_create_content_with_scrolling(TRUE);
 }
 
-GtkWidget *legend_create_dlg(void)
+GtkWidget *legend_create_dlg(GtkWindow *parent_window)
 {
 	GtkWidget *dlg_vbox;
 	GtkWidget *vbox;
@@ -223,7 +223,7 @@ GtkWidget *legend_create_dlg(void)
 
 	/* Dialog caption */
 	legend_dlg = gtk_dialog_new_with_buttons(_("Legend"),
-						 GTK_WINDOW(app_window),
+						 parent_window,
 						 GTK_DIALOG_DESTROY_WITH_PARENT,
 						 /* Button text */
 						 _("_Close"),

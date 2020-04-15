@@ -1,3 +1,8 @@
+2020-04-15  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/frontend.h, client/gtk/gui.c, client/gtk/histogram.c,
+	client/gtk/histogram.h, client/gtk/legend.c,
+	client/gtk/settingscreen.c: Avoid the global variable app_window.
+
 2020-04-14  Roland Clobus <rclobus@rclobus.nl>
 	* server/gtk/Makefile.am, server/gtk/main.c,
 	server/gtk/server.gresource.xml, server/gtk/server.ui, po/POTFILES.in:
