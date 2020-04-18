@@ -1,3 +1,7 @@
+2020-04-18  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/histogram.c: Nicer filling for the bars in the dice
+	histogram. Fixes showing the hexagons for some themes.
+
 2020-04-15  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/frontend.h, client/gtk/gui.c, client/gtk/histogram.c,
 	client/gtk/histogram.h, client/gtk/legend.c,
