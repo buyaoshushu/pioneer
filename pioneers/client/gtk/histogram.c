@@ -67,7 +67,7 @@ static gint histogram_dice_retrieve(gint roll)
  */
 
 static gboolean draw_histogram_cb(GtkWidget * widget, cairo_t * cr,
-				  gpointer terrain)
+				  G_GNUC_UNUSED gpointer user_data)
 {
 	gint w;
 	gint h;
@@ -93,8 +93,7 @@ static gboolean draw_histogram_cb(GtkWidget * widget, cairo_t * cr,
 	gint CHIT_RADIUS;
 	GdkPixbuf *pixbuf;
 	GtkAllocation allocation;
-
-	pixbuf = theme_get_terrain_pixbuf(GPOINTER_TO_INT(terrain));
+	MapTheme *theme;
 
 	cairo_set_line_width(cr, 1.0);
 
@@ -164,6 +163,33 @@ static gboolean draw_histogram_cb(GtkWidget * widget, cairo_t * cr,
 	bar_width = (grid_width - 12 * BAR_SEPARATION) / 11.0;
 	grid_offset_x += BAR_SEPARATION;
 
+	/* the filling of the bars */
+	theme = theme_get_current();
+	if (gdk_pixbuf_get_has_alpha
+	    (theme_get_terrain_pixbuf(SEA_TERRAIN))) {
+		GdkPixbuf *p;
+		int w;
+		int h;
+
+		/* The image has transparency, so it is probably a hexagon.
+		   Take the middle rectangle.
+		   It doesn't tile the best, but it is better than tiling the hexagon.
+		 */
+		w = gdk_pixbuf_get_width(theme->scaledata
+					 [SEA_TERRAIN].native_image);
+		h = gdk_pixbuf_get_height(theme->scaledata
+					  [SEA_TERRAIN].native_image);
+		p = gdk_pixbuf_new_subpixbuf(theme->scaledata
+					     [SEA_TERRAIN].native_image, 0,
+					     h / 4, w, h / 2);
+		pixbuf = gdk_pixbuf_copy(p);
+		g_object_unref(p);
+	} else {
+		pixbuf =
+		    gdk_pixbuf_copy(theme->
+				    scaledata[SEA_TERRAIN].native_image);
+	}
+
 	/* histogram bars */
 	for (i = 2; i <= 12; i++) {
 		gdouble bh =
@@ -171,7 +197,8 @@ static gboolean draw_histogram_cb(GtkWidget * widget, cairo_t * cr,
 		    max + 0.5;
 		gdouble x =
 		    grid_offset_x + (i - 2) * (bar_width + BAR_SEPARATION);
-		gdk_cairo_set_source_pixbuf(cr, pixbuf, 0.0, 0.0);
+		gdk_cairo_set_source_pixbuf(cr, pixbuf, grid_offset_x,
+					    grid_offset_y);
 		cairo_pattern_set_extend(cairo_get_source(cr),
 					 CAIRO_EXTEND_REPEAT);
 		cairo_rectangle(cr, x, grid_height + grid_offset_y - bh,
@@ -195,6 +222,7 @@ static gboolean draw_histogram_cb(GtkWidget * widget, cairo_t * cr,
 				       i, SEA_TERRAIN, i == last_roll);
 		}
 	}
+	g_object_unref(pixbuf);
 
 	/* expected value */
 	seven_thrown = histogram_dice_retrieve(7) != 0;
@@ -262,8 +290,7 @@ GtkWidget *histogram_create_dlg(GtkWindow * parent_window)
 
 	histogram_area = gtk_drawing_area_new();
 	g_signal_connect(G_OBJECT(histogram_area), "draw",
-			 G_CALLBACK(draw_histogram_cb),
-			 GINT_TO_POINTER(SEA_TERRAIN));
+			 G_CALLBACK(draw_histogram_cb), NULL);
 	gtk_box_pack_start(GTK_BOX(dlg_vbox), histogram_area, TRUE, TRUE,
 			   SPACING_AROUND);
 	gtk_widget_show(histogram_area);
