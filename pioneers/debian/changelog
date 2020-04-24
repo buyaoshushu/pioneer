@@ -2,6 +2,7 @@ pioneers (15.6-1~local1) UNRELEASED; urgency=medium
 
   * Waiting for a new release.
   * Replaced beep by libcanberra.
+  * Fixed FTBFS for gcc-10. (closes: #957687)
 
  -- Roland Clobus <roland@silent.lan>  Wed, 14 Mar 2018 18:54:08 +0100
 
