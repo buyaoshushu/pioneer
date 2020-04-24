@@ -1,3 +1,6 @@
+2020-04-24  Roland Clobus <rclobus@rclobus.nl>
+	* common/game.h: Fixed FTBFS for gcc-10.
+
 2020-04-18  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/histogram.c: Nicer filling for the bars in the dice
 	histogram. Fixes showing the hexagons for some themes.
