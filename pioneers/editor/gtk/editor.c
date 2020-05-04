@@ -1459,6 +1459,8 @@ static void load_game(const gchar * file, gboolean is_reload)
 	params = params_load_file(gamefile);
 	if (params == NULL) {
 		error_dialog(_("Failed to load '%s'"), file);
+		if (!is_reload)
+			load_game(NULL, TRUE);
 		return;
 	}
 
