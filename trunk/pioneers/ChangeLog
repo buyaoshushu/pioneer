@@ -1,3 +1,7 @@
+2020-05-04  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c: Open the default game when loading the old game
+	fails.
+
 2020-04-24  Roland Clobus <rclobus@rclobus.nl>
 	* common/game.h: Fixed FTBFS for gcc-10.
 
