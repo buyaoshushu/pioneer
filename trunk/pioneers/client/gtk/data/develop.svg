@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -7,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="develop.svg"
-   height="256"
-   width="256"
-   inkscape:version="1.0rc1 (09960d6f05, 2020-04-09)"
+   id="svg2"
    version="1.1"
-   id="svg2">
+   inkscape:version="0.48.1 r9760"
+   width="256"
+   height="256"
+   sodipodi:docname="develop.svg">
   <metadata
      id="metadata8">
     <rdf:RDF>
@@ -21,59 +23,42 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-        <cc:license
-           rdf:resource="" />
-        <dc:description>https://www.x.org/releases/individual/font/font-bitstream-type1-1.0.3.tar.gz
-The glyph 'question'
----
-(c) Copyright 1989-1992, Bitstream Inc., Cambridge, MA.
-
-You are hereby granted permission under all Bitstream propriety rights
-to use, copy, modify, sublicense, sell, and redistribute the 4 Bitstream
-Charter (r) Type 1 outline fonts and the 4 Courier Type 1 outline fonts
-for any purpose and without restriction; provided, that this notice is
-left intact on all copies of such fonts and that Bitstream's trademark
-is acknowledged as shown below on all unmodified copies of the 4 Charter
-Type 1 fonts.
-
-BITSTREAM CHARTER is a registered trademark of Bitstream Inc.</dc:description>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
      id="defs6" />
   <sodipodi:namedview
-     units="px"
-     inkscape:document-rotation="0"
-     inkscape:current-layer="svg2"
-     inkscape:window-maximized="1"
-     inkscape:window-y="27"
-     inkscape:window-x="0"
-     inkscape:cy="128"
-     inkscape:cx="83.114873"
-     inkscape:zoom="3.2304688"
-     showgrid="false"
-     id="namedview4"
-     inkscape:window-height="1016"
-     inkscape:window-width="1920"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0"
-     guidetolerance="10"
-     gridtolerance="10"
-     objecttolerance="10"
-     borderopacity="1"
+     pagecolor="#ffffff"
      bordercolor="#666666"
-     pagecolor="#ffffff" />
-  <g
-     style="stroke-width:2.70312"
-     transform="matrix(0.3699422,0,0,-0.3699422,41.988438,252.67052)"
-     id="g911">
-    <path
-       style="stroke-width:7.30688"
-       inkscape:connector-curvature="0"
-       fill="currentColor"
-       d="M 227,288 V 171 h -53 v 146 c 96,36 145,96 145,179 0,89 -51,141 -140,141 h -6 l -40,-99 c -6,-1 -12,-1 -18,-1 -39,0 -60,20 -60,53 0,50 58,93 147,93 128,0 208,-73 208,-181 0,-94 -60,-161 -183,-214 z M 200,105 c 32,0 58,-25 58,-57 0,-31 -26,-57 -58,-57 -31,0 -56,25 -56,57 0,32 25,57 56,57 z"
-       id="path909" />
-  </g>
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1007"
+     id="namedview4"
+     showgrid="false"
+     inkscape:zoom="3.2304688"
+     inkscape:cx="89.151149"
+     inkscape:cy="128"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <text
+     xml:space="preserve"
+     style="font-size:466.9815979px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Gentium;-inkscape-font-specification:Gentium"
+     x="-7.1717906"
+     y="318.94843"
+     id="text2987"
+     sodipodi:linespacing="125%"
+     transform="scale(1.2623096,0.79219869)"><tspan
+       sodipodi:role="line"
+       id="tspan2989"
+       x="-7.1717906"
+       y="318.94843">?</tspan></text>
 </svg>
