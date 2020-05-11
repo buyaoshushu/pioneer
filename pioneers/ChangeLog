@@ -1,3 +1,8 @@
+2020-05-11  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/data/develop.svg, client/gtk/data/splash.svg: Replace
+	Bitstream Charter by Gentium, because pango stopped support for Type 1
+	fonts. See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=939748
+
 2020-05-04  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Open the default game when loading the old game
 	fails.
