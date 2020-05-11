@@ -1,3 +1,8 @@
+2020-05-11  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/data/develop.svg: Embed the glyph from Bitstream Charter,
+	after pango stopped support for Type 1 fonts.
+	https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=939748
+
 2020-05-04  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Open the default game when loading the old game
 	fails.
