@@ -310,6 +310,7 @@ int main(int argc, char *argv[])
 				}
 			}
 			game->no_player_timeout = timeout;
+			start_timeout(game);
 			num_ai_players =
 			    CLAMP(num_ai_players, 0,
 				  (gint) game->params->num_players);
