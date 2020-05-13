@@ -93,6 +93,7 @@ void game_free(Game * game)
 	params_free(game->params);
 	net_service_free(game->service);
 	game->service = NULL;
+	g_free(game->develop_deck);
 	g_free(game);
 }
 
