@@ -29,6 +29,7 @@ Architecture: any
 Depends: librsvg2-common,
          pioneers-console (=${binary:Version}),
          pioneers-data (=${source:Version}),
+         fonts-sil-gentium,
          ${misc:Depends},
          ${shlibs:Depends}
 Recommends: yelp
