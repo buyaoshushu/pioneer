@@ -1,3 +1,6 @@
+2020-05-13  Roland Clobus <rclobus@rclobus.nl>
+	* server/server.c: Fixed a small memory leak.
+
 2020-05-11  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/data/develop.svg, client/gtk/data/splash.svg: Replace
 	Bitstream Charter by Gentium, because pango stopped support for Type 1
