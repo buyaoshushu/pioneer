@@ -1,5 +1,6 @@
 2020-05-13  Roland Clobus <rclobus@rclobus.nl>
 	* server/server.c: Fixed a small memory leak.
+	* server/main.c: Restored functionality of -k/--empty-timeout. 
 
 2020-05-11  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/data/develop.svg, client/gtk/data/splash.svg: Replace
