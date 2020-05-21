@@ -43,14 +43,14 @@ static AvahiServiceBrowser *sb = NULL;
 static AvahiBrowser *zcsptr = NULL;
 
 static void resolve_callback(AvahiServiceResolver * r,
-			     AVAHI_GCC_UNUSED AvahiIfIndex interface,
-			     AVAHI_GCC_UNUSED AvahiProtocol protocol,
+			     AvahiIfIndex interface,
+			     AvahiProtocol protocol,
 			     AvahiResolverEvent event,
 			     const char *name,
 			     const char *type,
 			     const char *domain,
 			     const char *host_name,
-			     AVAHI_GCC_UNUSED const AvahiAddress * address,
+			     const AvahiAddress * address,
 			     uint16_t port,
 			     AvahiStringList * txt,
 			     AVAHI_GCC_UNUSED AvahiLookupResultFlags flags,
@@ -95,15 +95,40 @@ static void resolve_callback(AvahiServiceResolver * r,
 						    port);
 				char resolved_hostname
 				    [AVAHI_ADDRESS_STR_MAX];
+				gchar *resolved_address;
 				avahi_address_snprint(resolved_hostname,
 						      sizeof
 						      (resolved_hostname),
 						      address);
+				/* For IPv6 link local addresses, the zone index must be provided.
+				 * See https://en.wikipedia.org/wiki/Link-local_address
+				 * See https://github.com/lathiat/avahi/issues/110
+				 */
+				if (protocol == AVAHI_PROTO_INET6) {
+					GInetAddress *a =
+					    g_inet_address_new_from_bytes((const guint8 *) (&address->data.ipv6), G_SOCKET_FAMILY_IPV6);
+					if (g_inet_address_get_is_link_local(a)) {
+						resolved_address =
+						    g_strdup_printf
+						    ("[%s%%%d]",
+						     resolved_hostname,
+						     interface);
+					} else {
+						resolved_address =
+						    g_strdup
+						    (resolved_hostname);
+					}
+					g_object_unref(a);
+				} else {
+					resolved_address =
+					    g_strdup(resolved_hostname);
+				}
 				avahibrowser_add(zcsptr, name,
-						 resolved_hostname,
+						 resolved_address,
 						 host_name, sport, version,
 						 title);
 				g_free(sport);
+				g_free(resolved_address);
 			}
 			g_free(version);
 			g_free(title);

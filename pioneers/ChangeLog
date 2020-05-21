@@ -1,3 +1,7 @@
+2020-05-21  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/avahi.c: When connecting with a link local IPv6
+	connection over Avahi, use the zone index.
+
 2020-05-13  Roland Clobus <rclobus@rclobus.nl>
 	* server/server.c: Fixed a small memory leak.
 	* server/main.c: Restored functionality of -k/--empty-timeout. 
