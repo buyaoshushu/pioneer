@@ -1,3 +1,16 @@
+2020-05-31  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/Makefile.am, client/gtk/client.gresource.xml,
+	client/gtk/client.ui, client/gtk/data/Makefile.am,
+	client/gtk/frontend.c, client/gtk/frontend.h, client/gtk/gui.c,
+	client/gtk/interface.c,	client/gtk/legend.c,
+	client/gtk/notification.c, client/gtk/quote.c,
+	client/gtk/settingscreen.c, client/gtk/trade.c, po/POTFILES.in:
+	Replace GtkUIManager with GtkBuilder. Use an icon theme instead of
+	individual images for the toolbar. The notification icons are
+	in-memory. Restored the shortcuts in the toolbar.
+	* clientk/gtk/data/pioneers-finish.svg: New name of finish.svg, to
+	avoid using the image from the default theme.
+
 2020-05-21  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/avahi.c: When connecting with a link local IPv6
 	connection over Avahi, use the zone index.

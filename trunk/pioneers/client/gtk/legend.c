@@ -79,7 +79,7 @@ static void add_legend_cost(GtkWidget * grid, guint row,
 	GtkWidget *label;
 	GtkWidget *icon;
 
-	icon = gtk_image_new_from_stock(iconname, GTK_ICON_SIZE_MENU);
+	icon = gtk_image_new_from_icon_name(iconname, GTK_ICON_SIZE_MENU);
 	gtk_widget_show(icon);
 	gtk_grid_attach(GTK_GRID(grid), icon, 0, row, 1, 1);
 	label = gtk_label_new(item);
@@ -162,23 +162,22 @@ static GtkWidget *legend_create_content_with_scrolling(gboolean
 	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 
 	num_rows = 0;
-	add_legend_cost(grid, num_rows++, PIONEERS_PIXMAP_ROAD, _("Road"),
+	add_legend_cost(grid, num_rows++, ICON_ROAD, _("Road"),
 			cost_road());
 	if (have_ships())
-		add_legend_cost(grid, num_rows++, PIONEERS_PIXMAP_SHIP,
-				_("Ship"), cost_ship());
+		add_legend_cost(grid, num_rows++, ICON_SHIP, _("Ship"),
+				cost_ship());
 	if (have_bridges())
-		add_legend_cost(grid, num_rows++, PIONEERS_PIXMAP_BRIDGE,
-				_("Bridge"), cost_bridge());
-	add_legend_cost(grid, num_rows++, PIONEERS_PIXMAP_SETTLEMENT,
-			_("Settlement"), cost_settlement());
-	add_legend_cost(grid, num_rows++, PIONEERS_PIXMAP_CITY, _("City"),
+		add_legend_cost(grid, num_rows++, ICON_BRIDGE, _("Bridge"),
+				cost_bridge());
+	add_legend_cost(grid, num_rows++, ICON_SETTLEMENT, _("Settlement"),
+			cost_settlement());
+	add_legend_cost(grid, num_rows++, ICON_CITY, _("City"),
 			cost_upgrade_settlement());
 	if (have_city_walls())
-		add_legend_cost(grid, num_rows++,
-				PIONEERS_PIXMAP_CITY_WALL, _("City wall"),
-				cost_city_wall());
-	add_legend_cost(grid, num_rows++, PIONEERS_PIXMAP_DEVELOP,
+		add_legend_cost(grid, num_rows++, ICON_CITY_WALL,
+				_("City wall"), cost_city_wall());
+	add_legend_cost(grid, num_rows++, ICON_DEVELOP,
 			_("Development card"), cost_development());
 
 	gtk_widget_show(vbox);

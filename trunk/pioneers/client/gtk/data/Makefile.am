@@ -31,7 +31,7 @@ pixmap_DATA += \
 	client/gtk/data/city_wall.svg \
 	client/gtk/data/develop.svg \
 	client/gtk/data/dice.svg \
-	client/gtk/data/finish.svg \
+	client/gtk/data/pioneers-finish.svg \
 	client/gtk/data/road.svg \
 	client/gtk/data/settlement.svg \
 	client/gtk/data/ship.svg \
