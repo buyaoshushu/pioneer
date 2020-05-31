@@ -39,11 +39,13 @@ static void set_sensitive(G_GNUC_UNUSED void *key, GuiWidgetState * gui,
 		gui->next = FALSE;
 
 	if (gui->widget != NULL && gui->next != gui->current) {
-		if (GTK_IS_ACTION(gui->widget))
-			gtk_action_set_sensitive(GTK_ACTION(gui->widget),
-						 gui->next);
+		if (G_IS_ACTION(gui->widget))
+			g_simple_action_set_enabled(G_SIMPLE_ACTION
+						    (gui->widget),
+						    gui->next);
 		else
-			gtk_widget_set_sensitive(gui->widget, gui->next);
+			gtk_widget_set_sensitive(GTK_WIDGET(gui->widget),
+						 gui->next);
 	}
 	if (gui->next != gui->current) {
 		switch (gui->id) {
@@ -181,7 +183,7 @@ void frontend_gui_register_destroy(GtkWidget * widget, GuiEvent id)
 			 G_CALLBACK(destroy_route_event_cb), gui);
 }
 
-void frontend_gui_register_action(GtkAction * action, GuiEvent id)
+void frontend_gui_register_action(GAction * action, GuiEvent id)
 {
 	GuiWidgetState *gui = gui_new(action, id);
 	gui->signal = NULL;

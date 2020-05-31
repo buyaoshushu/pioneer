@@ -48,7 +48,7 @@ static void add_setting_desc_with_image(GtkWidget * grid, guint row,
 {
 	GtkWidget *icon;
 
-	icon = gtk_image_new_from_stock(iconname, GTK_ICON_SIZE_MENU);
+	icon = gtk_image_new_from_icon_name(iconname, GTK_ICON_SIZE_MENU);
 	gtk_widget_show(icon);
 	gtk_grid_attach(GTK_GRID(grid), icon, col, row, 1, 1);
 
@@ -269,38 +269,35 @@ static GtkWidget *settings_create_content(void)
 	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 	row = 0;
 
-	add_setting_desc_with_image(grid, row, 0, _("Roads:"),
-				    PIONEERS_PIXMAP_ROAD);
+	add_setting_desc_with_image(grid, row, 0, _("Roads:"), ICON_ROAD);
 	add_setting_val(grid, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_ROAD], NULL,
 			TRUE);
 	row++;
 	add_setting_desc_with_image(grid, row, 0, _("Settlements:"),
-				    PIONEERS_PIXMAP_SETTLEMENT);
+				    ICON_SETTLEMENT);
 	add_setting_val(grid, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_SETTLEMENT],
 			NULL, TRUE);
 	row++;
-	add_setting_desc_with_image(grid, row, 0, _("Cities:"),
-				    PIONEERS_PIXMAP_CITY);
+	add_setting_desc_with_image(grid, row, 0, _("Cities:"), ICON_CITY);
 	add_setting_val(grid, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_CITY], NULL,
 			TRUE);
 	row++;
 	add_setting_desc_with_image(grid, row, 0, _("City walls:"),
-				    PIONEERS_PIXMAP_CITY_WALL);
+				    ICON_CITY_WALL);
 	add_setting_val(grid, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_CITY_WALL], NULL,
 			TRUE);
 	row++;
-	add_setting_desc_with_image(grid, row, 0, _("Ships:"),
-				    PIONEERS_PIXMAP_SHIP);
+	add_setting_desc_with_image(grid, row, 0, _("Ships:"), ICON_SHIP);
 	add_setting_val(grid, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_SHIP], NULL,
 			TRUE);
 	row++;
 	add_setting_desc_with_image(grid, row, 0, _("Bridges:"),
-				    PIONEERS_PIXMAP_BRIDGE);
+				    ICON_BRIDGE);
 	add_setting_val(grid, row, 2, TYPE_NUM,
 			game_params->num_build_type[BUILD_BRIDGE], NULL,
 			TRUE);

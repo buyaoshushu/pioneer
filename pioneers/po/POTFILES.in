@@ -12,6 +12,7 @@ client/common/turn.c
 client/gtk/audio.c
 client/gtk/avahi-browser.c
 client/gtk/chat.c
+[type: gettext/glade]client/gtk/client.ui
 client/gtk/connect.c
 client/gtk/develop.c
 client/gtk/discard.c

@@ -66,7 +66,7 @@ typedef enum {
 
 /* Information about a GUI component */
 typedef struct {
-	GtkWidget *widget;	/* the GTK widget */
+	GObject *widget;	/* the GTK widget */
 	GuiEvent id;		/* widget id */
 	gboolean destroy_only;	/* react to destroy signal */
 	const gchar *signal;	/* signal attached */
@@ -96,7 +96,7 @@ void frontend_gui_register_init(void);
 void frontend_gui_register_destroy(GtkWidget * widget, GuiEvent id);
 
 /** register an action. */
-void frontend_gui_register_action(GtkAction * action, GuiEvent id);
+void frontend_gui_register_action(GAction * action, GuiEvent id);
 
 /** register a new "normal" widget. */
 void frontend_gui_register(GtkWidget * widget, GuiEvent id,
@@ -314,16 +314,14 @@ gboolean plenty_can_activate(void);
 /* gameover.c */
 GtkWidget *gameover_create_dlg(gint player_num, gint num_points);
 
-#define PIONEERS_PIXMAP_DICE "pioneers/dice.svg"
-#define PIONEERS_PIXMAP_TRADE "pioneers/trade.svg"
-#define PIONEERS_PIXMAP_ROAD "pioneers/road.svg"
-#define PIONEERS_PIXMAP_SHIP "pioneers/ship.svg"
-#define PIONEERS_PIXMAP_SHIP_MOVEMENT "pioneers/ship_move.svg"
-#define PIONEERS_PIXMAP_BRIDGE "pioneers/bridge.svg"
-#define PIONEERS_PIXMAP_SETTLEMENT "pioneers/settlement.svg"
-#define PIONEERS_PIXMAP_CITY "pioneers/city.svg"
-#define PIONEERS_PIXMAP_CITY_WALL "pioneers/city_wall.svg"
-#define PIONEERS_PIXMAP_DEVELOP "pioneers/develop.svg"
-#define PIONEERS_PIXMAP_FINISH "pioneers/finish.svg"
+#define ICON_DICE "dice"
+#define ICON_TRADE "trade"
+#define ICON_ROAD "road"
+#define ICON_SHIP "ship"
+#define ICON_BRIDGE "bridge"
+#define ICON_SETTLEMENT "settlement"
+#define ICON_CITY "city"
+#define ICON_CITY_WALL "city_wall"
+#define ICON_DEVELOP "develop"
 
 #endif

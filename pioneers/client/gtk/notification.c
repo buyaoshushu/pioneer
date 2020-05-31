@@ -42,14 +42,17 @@ void notification_send(const gchar * text, const gchar * icon)
 #ifdef HAVE_NOTIFY
 	notification_close();
 	if (show_notifications) {
-		gchar *filename;
+		GdkPixbuf *pixbuf;
 
-		filename =
-		    g_build_filename(DATADIR, "pixmaps", icon, NULL);
+		pixbuf =
+		    gtk_icon_theme_load_icon(gtk_icon_theme_get_default(),
+					     icon, 24, 0, NULL);
 		notification =
 		    notify_notification_new(g_get_application_name(), text,
-					    filename);
-		g_free(filename);
+					    NULL);
+		notify_notification_set_image_from_pixbuf(notification,
+							  pixbuf);
+		g_object_unref(pixbuf);
 		notify_notification_set_urgency(notification,
 						NOTIFY_URGENCY_LOW);
 		notify_notification_show(notification, NULL);

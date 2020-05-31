@@ -37,6 +37,16 @@ pioneers_CPPFLAGS = -I$(top_srcdir)/client -I$(top_srcdir)/client/common $(LIBNO
 
 EXTRA_pioneers_SOURCES = $(ADMIN_GTK_FILES_INACTIVE)
 
+client_resource_files = $(shell glib-compile-resources --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/client/gtk/client.gresource.xml)
+client/gtk/client-resources.c: client/gtk/client.gresource.xml $(client_resource_files)
+	$(AM_V_GEN)glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-source --c-name client $(srcdir)/client/gtk/client.gresource.xml
+client/gtk/client-resources.h: client/gtk/client.gresource.xml $(client_resource_files)
+	$(AM_V_GEN)glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-header --c-name client $(srcdir)/client/gtk/client.gresource.xml
+
+pioneers_BUILT_RESOURCES = \
+	client/gtk/client-resources.c \
+	client/gtk/client-resources.h
+
 pioneers_SOURCES = \
 	$(ADMIN_GTK_FILES_ACTIVE) \
 	client/callback.h \
@@ -82,7 +92,15 @@ pioneers_SOURCES = \
 	client/gtk/resource-table.h \
 	client/gtk/settingscreen.c \
 	client/gtk/state.c \
-	client/gtk/trade.c
+	client/gtk/trade.c \
+	$(pioneers_BUILT_RESOURCES)
+
+EXTRA_DIST += \
+	$(client_resource_files) \
+	client/gtk/client.gresource.xml
+
+CLEANFILES += \
+	$(pioneers_BUILT_RESOURCES)
 
 pioneers_LDADD = libpioneersclient.a $(gtk_libs) $(avahi_libs) $(LIBNOTIFY_LIBS) $(LIBCANBERRA_LIBS)
 

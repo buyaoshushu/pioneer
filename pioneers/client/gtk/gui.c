@@ -45,6 +45,28 @@ GtkWidget *app_window;		/* main application window */
 
 #define PIONEERS_ICON_FILE	"pioneers.png"
 
+/* Callback functions from the resource file */
+G_MODULE_EXPORT void game_quit_cb(GObject * gobject, gpointer user_data);
+G_MODULE_EXPORT void game_legend_cb(GObject * gobject, gpointer user_data);
+G_MODULE_EXPORT void game_histogram_cb(GObject * gobject,
+				       gpointer user_data);
+G_MODULE_EXPORT void game_settings_cb(GObject * gobject,
+				      gpointer user_data);
+G_MODULE_EXPORT void show_admin_interface_cb(GObject * gobject,
+					     gpointer user_data);
+G_MODULE_EXPORT void zoom_normal_cb(GObject * gobject, gpointer user_data);
+G_MODULE_EXPORT void zoom_center_map_cb(GObject * gobject,
+					gpointer user_data);
+G_MODULE_EXPORT void toggle_full_screen_cb(GObject * gobject,
+					   gpointer user_data);
+G_MODULE_EXPORT void showhide_toolbar_cb(GObject * gobject,
+					 gpointer user_data);
+G_MODULE_EXPORT void preferences_cb(GObject * gobject, gpointer user_data);
+G_MODULE_EXPORT void help_about_cb(GObject * gobject, gpointer user_data);
+#ifdef HAVE_HELP
+G_MODULE_EXPORT void help_manual_cb(GObject * gobject, gpointer user_data);
+#endif
+
 static GuiMap *gmap;		/* handle to map drawing code */
 
 enum {
@@ -73,8 +95,8 @@ static GtkWidget *vp_target_status;
 static GtkWidget *main_paned;	/* Horizontal for 16:9, Vertical for 4:3 mode */
 static GtkWidget *chat_panel = NULL;	/* Panel for chat, placed below or to the right */
 
-static GtkUIManager *ui_manager = NULL;	/* The manager of the GtkActions */
-static GtkWidget *toolbar = NULL;	/* The toolbar */
+static GtkBuilder *builder = NULL;	/* The manager of the GUI */
+static GActionGroup *action_group = NULL;	/* Global action group */
 
 static gboolean toolbar_show_accelerators = TRUE;
 static gboolean color_messages_enabled = TRUE;
@@ -82,378 +104,59 @@ static gboolean legend_page_enabled = TRUE;
 
 static GList *rules_callback_list = NULL;
 
-#define PIONEERS_PIXMAP_SPLASH "pioneers/splash.png"
-
-static const gchar *pioneers_pixmaps[] = {
-	PIONEERS_PIXMAP_DICE,
-	PIONEERS_PIXMAP_TRADE,
-	PIONEERS_PIXMAP_ROAD,
-	PIONEERS_PIXMAP_SHIP,
-	PIONEERS_PIXMAP_SHIP_MOVEMENT,
-	PIONEERS_PIXMAP_BRIDGE,
-	PIONEERS_PIXMAP_SETTLEMENT,
-	PIONEERS_PIXMAP_CITY,
-	PIONEERS_PIXMAP_CITY_WALL,
-	PIONEERS_PIXMAP_DEVELOP,
-	PIONEERS_PIXMAP_FINISH
-};
-
-static void gui_set_toolbar_visible(void);
+static void gui_set_toolbar_visible(gboolean visible);
 static void gui_toolbar_show_accelerators(gboolean show_accelerators);
 
-static void game_new_cb(void)
+static void redirect_gui_event_cb(G_GNUC_UNUSED GSimpleAction * action,
+				  G_GNUC_UNUSED GVariant * parameter,
+				  gpointer user_data)
 {
-	route_gui_event(GUI_CONNECT);
+	route_gui_event(g_variant_get_int32(user_data));
 }
 
-static void game_leave_cb(void)
+static void game_leave_cb(G_GNUC_UNUSED GSimpleAction * action,
+			  G_GNUC_UNUSED GVariant * parameter,
+			  G_GNUC_UNUSED gpointer user_data)
 {
 	frontend_quote_end();
 	route_gui_event(GUI_DISCONNECT);
 }
 
-static void playername_cb(void)
+void game_quit_cb(G_GNUC_UNUSED GObject * gobject,
+		  G_GNUC_UNUSED gpointer user_data)
 {
-	route_gui_event(GUI_CHANGE_NAME);
-}
-
-static void game_quit_cb(void)
-{
+	guimap_delete(gmap);
 	route_gui_event(GUI_QUIT);
 }
 
-static void roll_dice_cb(void)
+void show_admin_interface_cb(G_GNUC_UNUSED GObject * gobject,
+			     G_GNUC_UNUSED gpointer user_data)
 {
-	route_gui_event(GUI_ROLL);
-}
-
-static void trade_cb(void)
-{
-	route_gui_event(GUI_TRADE);
-}
-
-static void undo_cb(void)
-{
-	route_gui_event(GUI_UNDO);
-}
-
-static void finish_cb(void)
-{
-	route_gui_event(GUI_FINISH);
-}
-
-static void build_road_cb(void)
-{
-	route_gui_event(GUI_ROAD);
-}
-
-static void build_ship_cb(void)
-{
-	route_gui_event(GUI_SHIP);
-}
-
-static void move_ship_cb(void)
-{
-	route_gui_event(GUI_MOVE_SHIP);
-}
-
-static void build_bridge_cb(void)
-{
-	route_gui_event(GUI_BRIDGE);
-}
-
-static void build_settlement_cb(void)
-{
-	route_gui_event(GUI_SETTLEMENT);
-}
-
-static void build_city_cb(void)
-{
-	route_gui_event(GUI_CITY);
-}
-
-static void buy_development_cb(void)
-{
-	route_gui_event(GUI_BUY_DEVELOP);
-}
-
-static void build_city_wall_cb(void)
-{
-	route_gui_event(GUI_CITY_WALL);
-}
-
-static void showhide_toolbar_cb(void);
-static void preferences_cb(void);
-
-static void help_about_cb(void);
-static void game_legend_cb(void);
-static void game_histogram_cb(void);
-static void game_settings_cb(void);
-#ifdef HAVE_HELP
-static void help_manual_cb(void);
+#ifdef ADMIN_GTK
+	show_admin_interface();
 #endif
+}
 
-/** Toggles full screen mode.
- * @param GtkToggleAction The calling action.
- * @param main_window The window to toggle full screen mode.
-*/
-static void toggle_full_screen_cb(GtkToggleAction * caller,
-				  gpointer main_window)
+void toggle_full_screen_cb(GObject * gobject, gpointer user_data)
 {
-	if (gtk_toggle_action_get_active(caller)) {
-		gtk_window_fullscreen(GTK_WINDOW(main_window));
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(gobject))) {
+		gtk_window_fullscreen(GTK_WINDOW(user_data));
 	} else {
-		gtk_window_unfullscreen(GTK_WINDOW(main_window));
+		gtk_window_unfullscreen(GTK_WINDOW(user_data));
 	}
 }
 
-static void zoom_normal_cb(void)
+void zoom_normal_cb(G_GNUC_UNUSED GObject * gobject,
+		    G_GNUC_UNUSED gpointer user_data)
 {
 	guimap_zoom_normal(gmap);
 }
 
-static void zoom_center_map_cb(void)
+void zoom_center_map_cb(G_GNUC_UNUSED GObject * gobject,
+			G_GNUC_UNUSED gpointer user_data)
 {
 	guimap_zoom_center_map(gmap);
 }
-
-/* Normal items */
-static GtkActionEntry entries[] = {
-	{"GameMenu", NULL,
-	 /* Menu entry */
-	 N_("_Game"), NULL, NULL, NULL},
-	{"GameNew", NULL,
-	 /* Menu entry */
-	 N_("_New Game"), "<control>N",
-	 /* Tooltip for New Game menu entry */
-	 N_("Start a new game"), game_new_cb},
-	{"GameLeave", NULL,
-	 /* Menu entry */
-	 N_("_Leave Game"), NULL,
-	 /* Tooltip for Leave Game menu entry */
-	 N_("Leave this game"), game_leave_cb},
-#ifdef ADMIN_GTK
-	{"GameAdmin", NULL,
-	 /* Menu entry */
-	 N_("_Admin"), "<control>A",
-	 /* Tooltip for Admin menu entry */
-	 N_("Administer Pioneers server"), show_admin_interface},
-#endif
-	{"PlayerName", NULL,
-	 /* Menu entry */
-	 N_("_Player Name"), "<control>P",
-	 /* Tooltip for Player Name menu entry */
-	 N_("Change your player name"), playername_cb},
-	{"Legend", NULL,
-	 /* Menu entry */
-	 N_("L_egend"), NULL,
-	 /* Tooltip for Legend menu entry */
-	 N_("Terrain legend and building costs"), game_legend_cb},
-	{"GameSettings", NULL,
-	 /* Menu entry */
-	 N_("_Game Settings"), NULL,
-	 /* Tooltip for Game Settings menu entry */
-	 N_("Settings for the current game"), game_settings_cb},
-	{"DiceHistogram", NULL,
-	 /* Menu entry */
-	 N_("_Dice Histogram"), NULL,
-	 /* Tooltip for Dice Histogram menu entry */
-	 N_("Histogram of dice rolls"), game_histogram_cb},
-	{"GameQuit", NULL,
-	 /* Menu entry */
-	 N_("_Quit"), "<control>Q",
-	 /* Tooltip for Quit menu entry */
-	 N_("Quit the program"), game_quit_cb},
-	{"ActionsMenu", NULL,
-	 /* Menu entry */
-	 N_("_Actions"), NULL, NULL, NULL},
-	{"RollDice", PIONEERS_PIXMAP_DICE,
-	 /* Menu entry */
-	 N_("Roll Dice"), "F1",
-	 /* Tooltip for Roll Dice menu entry */
-	 N_("Roll the dice"), roll_dice_cb},
-	{"Trade", PIONEERS_PIXMAP_TRADE,
-	 /* Menu entry */
-	 N_("Trade"), "F2",
-	 /* Tooltip for Trade menu entry */
-	 N_("Trade"),
-	 trade_cb},
-	{"Undo", "edit-undo",
-	 /* Menu entry */
-	 N_("Undo"), "F3",
-	 /* Tooltip for Undo menu entry */
-	 N_("Undo"), undo_cb},
-	{"Finish", PIONEERS_PIXMAP_FINISH,
-	 /* Menu entry */
-	 N_("Finish"), "F4",
-	 /* Tooltip for Finish menu entry */
-	 N_("Finish"), finish_cb},
-	{"BuildRoad", PIONEERS_PIXMAP_ROAD,
-	 /* Menu entry */
-	 N_("Road"), "F5",
-	 /* Tooltip for Road menu entry */
-	 N_("Build a road"), build_road_cb},
-	{"BuildShip", PIONEERS_PIXMAP_SHIP,
-	 /* Menu entry */
-	 N_("Ship"), "F6",
-	 /* Tooltip for Ship menu entry */
-	 N_("Build a ship"), build_ship_cb},
-	{"MoveShip", PIONEERS_PIXMAP_SHIP_MOVEMENT,
-	 /* Menu entry */
-	 N_("Move Ship"), "F7",
-	 /* Tooltip for Move Ship menu entry */
-	 N_("Move a ship"), move_ship_cb},
-	{"BuildBridge", PIONEERS_PIXMAP_BRIDGE,
-	 /* Menu entry */
-	 N_("Bridge"), "F8",
-	 /* Tooltip for Bridge menu entry */
-	 N_("Build a bridge"), build_bridge_cb},
-	{"BuildSettlement", PIONEERS_PIXMAP_SETTLEMENT,
-	 /* Menu entry */
-	 N_("Settlement"),
-	 "F9",
-	 /* Tooltip for Settlement menu entry */
-	 N_("Build a settlement"), build_settlement_cb},
-	{"BuildCity", PIONEERS_PIXMAP_CITY,
-	 /* Menu entry */
-	 N_("City"), "F10",
-	 /* Tooltip for City menu entry */
-	 N_("Build a city"), build_city_cb},
-	{"BuyDevelopment", PIONEERS_PIXMAP_DEVELOP,
-	 /* Menu entry */
-	 N_("Develop"), "F11",
-	 /* Tooltip for Develop menu entry */
-	 N_("Buy a development card"), buy_development_cb},
-	{"BuildCityWall", PIONEERS_PIXMAP_CITY_WALL,
-	 /* Menu entry */
-	 N_("City Wall"), NULL,
-	 /* Tooltip for City Wall menu entry */
-	 N_("Build a city wall"), build_city_wall_cb},
-
-	{"SettingsMenu", NULL,
-	 /* Menu entry */
-	 N_("_Settings"), NULL, NULL, NULL},
-	{"Preferences", NULL,
-	 /* Menu entry */
-	 N_("Prefere_nces"), NULL,
-	 /* Tooltip for Preferences menu entry */
-	 N_("Configure the application"), preferences_cb},
-
-	{"ViewMenu", NULL,
-	 /* Menu entry */
-	 N_("_View"), NULL, NULL, NULL},
-	{"Full", NULL,
-	 /* Menu entry */
-	 N_("_Reset"),
-	 "<control>0",
-	 /* Tooltip for Reset menu entry */
-	 N_("View the full map"), zoom_normal_cb},
-	{"Center", NULL,
-	 /* Menu entry */
-	 N_("_Center"), NULL,
-	 /* Tooltip for Center menu entry */
-	 N_("Center the map"), zoom_center_map_cb},
-
-	{"HelpMenu", NULL,
-	 /* Menu entry */
-	 N_("_Help"), NULL, NULL, NULL},
-	{"HelpAbout", NULL,
-	 /* Menu entry */
-	 N_("_About Pioneers"), NULL,
-	 /* Tooltip for About Pioneers menu entry */
-	 N_("Information about Pioneers"), help_about_cb},
-#ifdef HAVE_HELP
-	{"HelpManual", NULL,
-	 /* Menu entry */
-	 N_("_Help"), "<control>H",
-	 /* Tooltip for Help menu entry */
-	 N_("Show the manual"), help_manual_cb}
-#endif
-};
-
-/* Toggle items */
-static GtkToggleActionEntry toggle_entries[] = {
-	{"FullScreen", NULL,
-	 /* Menu entry */
-	 N_("_Fullscreen"),
-	 "<alt>Return",
-	 /* Tooltip for Fullscreen menu entry */
-	 N_("Set window to full screen mode"),
-	 G_CALLBACK(toggle_full_screen_cb),
-	 FALSE},
-	{"ShowHideToolbar", NULL,
-	 /* Menu entry */
-	 N_("_Toolbar"), NULL,
-	 /* Tooltip for Toolbar menu entry */
-	 N_("Show or hide the toolbar"), showhide_toolbar_cb, TRUE}
-};
-
-/* *INDENT-OFF* */
-static const char *ui_description =
-"<ui>"
-"  <menubar name='MainMenu'>"
-"    <menu action='GameMenu'>"
-"      <menuitem action='GameNew'/>"
-"      <menuitem action='GameLeave'/>"
-#ifdef ADMIN_GTK
-"      <menuitem action='GameAdmin'/>"
-#endif
-"      <separator/>"
-"      <menuitem action='PlayerName'/>"
-"      <separator/>"
-"      <menuitem action='Legend'/>"
-"      <menuitem action='GameSettings'/>"
-"      <menuitem action='DiceHistogram'/>"
-"      <separator/>"
-"      <menuitem action='GameQuit'/>"
-"    </menu>"
-"    <menu action='ActionsMenu'>"
-"      <menuitem action='RollDice'/>"
-"      <menuitem action='Trade'/>"
-"      <menuitem action='Undo'/>"
-"      <menuitem action='Finish'/>"
-"      <separator/>"
-"      <menuitem action='BuildRoad'/>"
-"      <menuitem action='BuildShip'/>"
-"      <menuitem action='MoveShip'/>"
-"      <menuitem action='BuildBridge'/>"
-"      <menuitem action='BuildSettlement'/>"
-"      <menuitem action='BuildCity'/>"
-"      <menuitem action='BuyDevelopment'/>"
-"      <menuitem action='BuildCityWall'/>"
-"    </menu>"
-"    <menu action='SettingsMenu'>"
-"      <menuitem action='ShowHideToolbar'/>"
-"      <menuitem action='Preferences'/>"
-"    </menu>"
-"    <menu action='ViewMenu'>"
-"      <menuitem action='FullScreen'/>"
-"      <menuitem action='Full'/>"
-"      <menuitem action='Center'/>"
-"    </menu>"
-"    <menu action='HelpMenu'>"
-"      <menuitem action='HelpAbout'/>"
-#ifdef HAVE_HELP
-"      <menuitem action='HelpManual'/>"
-#endif
-"    </menu>"
-"  </menubar>"
-"  <toolbar name='MainToolbar'>"
-"    <toolitem action='RollDice'/>"
-"    <toolitem action='Trade'/>"
-"    <toolitem action='Undo'/>"
-"    <toolitem action='Finish'/>"
-"    <toolitem action='BuildRoad'/>"
-"    <toolitem action='BuildShip'/>"
-"    <toolitem action='MoveShip'/>"
-"    <toolitem action='BuildBridge'/>"
-"    <toolitem action='BuildSettlement'/>"
-"    <toolitem action='BuildCity'/>"
-"    <toolitem action='BuyDevelopment'/>"
-"    <toolitem action='BuildCityWall'/>"
-"  </toolbar>"
-"</ui>";
-/* *INDENT-ON* */
 
 GtkWidget *gui_get_dialog_button(GtkDialog * dlg, gint button)
 {
@@ -667,25 +370,16 @@ void gui_show_splash_page(gboolean show, GtkWidget * chat_widget)
 
 static GtkWidget *splash_build_page(void)
 {
-	GtkWidget *pm;
-	GtkWidget *viewport;
+	GtkWidget *image;
 	gchar *filename;
 
 	filename = g_build_filename(DATADIR, "pixmaps", "pioneers",
 				    "splash.png", NULL);
-	pm = gtk_image_new_from_file(filename);
+	image = gtk_image_new_from_file(filename);
+	gtk_widget_show(image);
 	g_free(filename);
 
-	/* The viewport avoids that the pixmap is drawn up into the tab area if
-	 * it's too large for the space provided. */
-	viewport = gtk_viewport_new(NULL, NULL);
-	gtk_viewport_set_shadow_type(GTK_VIEWPORT(viewport),
-				     GTK_SHADOW_NONE);
-	gtk_widget_show(viewport);
-	gtk_widget_set_size_request(pm, 1, 1);
-	gtk_widget_show(pm);
-	gtk_container_add(GTK_CONTAINER(viewport), pm);
-	return viewport;
+	return image;
 }
 
 static GtkWidget *build_map_panel(void)
@@ -903,16 +597,10 @@ static GtkWidget *build_main_interface(void)
 	return hpaned;
 }
 
-static void quit_cb(G_GNUC_UNUSED GtkWidget * widget,
-		    G_GNUC_UNUSED void *data)
+static void theme_change_cb(GObject * gobject,
+			    G_GNUC_UNUSED gpointer user_data)
 {
-	guimap_delete(gmap);
-	frontend_quit();
-}
-
-static void theme_change_cb(GtkWidget * widget, G_GNUC_UNUSED void *data)
-{
-	gint idx = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+	gint idx = gtk_combo_box_get_active(GTK_COMBO_BOX(gobject));
 	MapTheme *theme = g_list_nth_data(theme_get_list(), idx);
 	if (theme != theme_get_current()) {
 		config_set_string("settings/theme", theme->name);
@@ -994,9 +682,11 @@ static void toggle_notifications_cb(GtkToggleButton * widget,
 	set_show_notifications(show_notifications);
 }
 
-static void showhide_toolbar_cb(void)
+void showhide_toolbar_cb(GObject * gobject,
+			 G_GNUC_UNUSED gpointer user_data)
 {
-	gui_set_toolbar_visible();
+	gui_set_toolbar_visible(gtk_check_menu_item_get_active
+				(GTK_CHECK_MENU_ITEM(gobject)));
 }
 
 static void toolbar_shortcuts_cb(void)
@@ -1004,7 +694,7 @@ static void toolbar_shortcuts_cb(void)
 	gui_toolbar_show_accelerators(!toolbar_show_accelerators);
 }
 
-static void preferences_cb(void)
+void preferences_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
 	GtkWidget *silent_mode_widget;
 	GtkWidget *widget;
@@ -1027,7 +717,7 @@ static void preferences_cb(void)
 	preferences_dlg = gtk_dialog_new_with_buttons(_(""
 							"Pioneers Preferences"),
 						      GTK_WINDOW
-						      (app_window),
+						      (user_data),
 						      GTK_DIALOG_DESTROY_WITH_PARENT,
 						      /* Button text */
 						      _("_Close"),
@@ -1218,33 +908,33 @@ static void preferences_cb(void)
 	row++;
 }
 
-static void help_about_cb(void)
+void help_about_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
-	aboutbox_display(GTK_WINDOW(app_window),
+	aboutbox_display(GTK_WINDOW(user_data),
 			 /* Caption of about box */
 			 _("About Pioneers"));
 }
 
-static void game_legend_cb(void)
+void game_legend_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
-	legend_create_dlg(GTK_WINDOW(app_window));
+	legend_create_dlg(GTK_WINDOW(user_data));
 }
 
-static void game_histogram_cb(void)
+void game_histogram_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
-	histogram_create_dlg(GTK_WINDOW(app_window));
+	histogram_create_dlg(GTK_WINDOW(user_data));
 }
 
-static void game_settings_cb(void)
+void game_settings_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
-	settings_create_dlg(GTK_WINDOW(app_window));
+	settings_create_dlg(GTK_WINDOW(user_data));
 }
 
 #ifdef HAVE_HELP
-static void help_manual_cb(void)
+void help_manual_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
 	GError *error = NULL;
-	gtk_show_uri_on_window(GTK_WINDOW(app_window), "help:pioneers",
+	gtk_show_uri_on_window(GTK_WINDOW(user_data), "help:pioneers",
 			       GDK_CURRENT_TIME, &error);
 	if (error) {
 		log_message(MSG_ERROR, "%s: %s\n", _("Show the manual"),
@@ -1254,11 +944,9 @@ static void help_manual_cb(void)
 }
 #endif
 
-static GtkAction *getAction(GuiEvent id)
+static GAction *getAction(GuiEvent id)
 {
 	const gchar *path = NULL;
-	gchar *full_path;
-	GtkAction *action;
 #ifdef ADMIN_GTK
 	frontend_gui_register_action(gtk_ui_manager_get_action
 				     (manager,
@@ -1268,49 +956,49 @@ static GtkAction *getAction(GuiEvent id)
 
 	switch (id) {
 	case GUI_CONNECT:
-		path = "GameMenu/GameNew";
+		path = "action_game_new";
 		break;
 	case GUI_DISCONNECT:
-		path = "GameMenu/GameLeave";
+		path = "action_game_leave";
 		break;
 	case GUI_CHANGE_NAME:
-		path = "GameMenu/PlayerName";
+		path = "action_player_name";
 		break;
 	case GUI_ROLL:
-		path = "ActionsMenu/RollDice";
+		path = "action_roll_dice";
 		break;
 	case GUI_TRADE:
-		path = "ActionsMenu/Trade";
+		path = "action_trade";
 		break;
 	case GUI_UNDO:
-		path = "ActionsMenu/Undo";
+		path = "action_undo";
 		break;
 	case GUI_FINISH:
-		path = "ActionsMenu/Finish";
+		path = "action_finish";
 		break;
 	case GUI_ROAD:
-		path = "ActionsMenu/BuildRoad";
+		path = "action_build_road";
 		break;
 	case GUI_SHIP:
-		path = "ActionsMenu/BuildShip";
+		path = "action_build_ship";
 		break;
 	case GUI_MOVE_SHIP:
-		path = "ActionsMenu/MoveShip";
+		path = "action_move_ship";
 		break;
 	case GUI_BRIDGE:
-		path = "ActionsMenu/BuildBridge";
+		path = "action_build_bridge";
 		break;
 	case GUI_SETTLEMENT:
-		path = "ActionsMenu/BuildSettlement";
+		path = "action_build_settlement";
 		break;
 	case GUI_CITY:
-		path = "ActionsMenu/BuildCity";
+		path = "action_build_city";
 		break;
 	case GUI_BUY_DEVELOP:
-		path = "ActionsMenu/BuyDevelopment";
+		path = "action_buy_development";
 		break;
 	case GUI_CITY_WALL:
-		path = "ActionsMenu/BuildCityWall";
+		path = "action_build_city_wall";
 		break;
 	default:
 		break;
@@ -1319,32 +1007,47 @@ static GtkAction *getAction(GuiEvent id)
 	if (!path)
 		return NULL;
 
-	full_path = g_strdup_printf("ui/MainMenu/%s", path);
-	action = gtk_ui_manager_get_action(ui_manager, full_path);
-	g_free(full_path);
-	return action;
+	return g_action_map_lookup_action(G_ACTION_MAP(action_group),
+					  path);
 }
 
 /** Set the visibility of the toolbar */
-static void gui_set_toolbar_visible(void)
+static void gui_set_toolbar_visible(gboolean visible)
 {
-	GSList *list;
-	gboolean visible;
+	GtkWidget *toolbar =
+	    GTK_WIDGET(gtk_builder_get_object(builder, "toolbar"));
 
-	list = gtk_ui_manager_get_toplevels(ui_manager,
-					    GTK_UI_MANAGER_TOOLBAR);
-	g_assert(g_slist_length(list) == 1);
-	visible = gtk_toggle_action_get_active(GTK_TOGGLE_ACTION
-					       (gtk_ui_manager_get_action
-						(ui_manager,
-						 "ui/MainMenu/SettingsMenu/ShowHideToolbar")));
 	if (visible)
-		gtk_widget_show(GTK_WIDGET(list->data));
+		gtk_widget_show(GTK_WIDGET(toolbar));
 	else
-		gtk_widget_hide(GTK_WIDGET(list->data));
+		gtk_widget_hide(GTK_WIDGET(toolbar));
 	config_set_int("settings/show_toolbar", visible);
-	g_slist_free(list);
 }
+
+/* Note:
+ * 1. the accelerators are not translated
+ * 2. the accelerators are duplicated here from the .ui file
+ * 3. the UI file has Roll Dice\nF1 to ensure the proper initial size
+ */
+/* *INDENT-OFF* */
+static struct {
+	const gchar *text;
+	const gchar *accelerator;
+} toolbar_accelerators[] = {
+	{ N_("Roll Dice"), "F1" },
+	{ N_("Trade"), "F2" },
+	{ N_("Undo"), "F3" },
+	{ N_("Finish") , "F4" },
+	{ N_("Road"), "F5" },
+	{ N_("Ship"), "F6" },
+	{ N_("Move Ship"), "F7" },
+	{ N_("Bridge"), "F8" },
+	{ N_("Settlement"), "F9" },
+	{ N_("City"), "F10" },
+	{ N_("Develop"), "F11" },
+	{ N_("City Wall"), NULL },
+};
+/* *INDENT-ON* */
 
 /** Show the accelerators in the toolbar */
 static void gui_toolbar_show_accelerators(gboolean show_accelerators)
@@ -1354,7 +1057,8 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 
 	toolbar_show_accelerators = show_accelerators;
 
-	tb = GTK_TOOLBAR(toolbar);
+	tb = GTK_TOOLBAR(gtk_builder_get_object(builder, "toolbar"));
+	g_return_if_fail(tb != NULL);
 
 	n = gtk_toolbar_get_n_items(tb);
 	for (i = 0; i < n; i++) {
@@ -1366,58 +1070,36 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 		ti = gtk_toolbar_get_nth_item(tb, i);
 		tbtn = GTK_TOOL_BUTTON(ti);
 		g_assert(tbtn != NULL);
-		if (gtk_major_version == 2 && gtk_minor_version == 10) {
-			/* Work around a gtk+ 2.10 bug (#434261) that
-			 * mishandles strings like (Fn) in labels.
-			 */
-			/** @todo BW 2007-04-29 Remove this when gtk 2.10
-			 * is no longer supported. */
-			gtk_tool_button_set_use_underline(tbtn, FALSE);
-		}
+
 		text = g_strdup(gtk_tool_button_get_label(tbtn));
 		if (strchr(text, '\n'))
 			*strchr(text, '\n') = '\0';
 		/* Find the matching entry */
-		for (j = 0; j < G_N_ELEMENTS(entries); j++) {
-			if (strcmp(text, _(entries[j].label)) == 0) {
+		for (j = 0; j < G_N_ELEMENTS(toolbar_accelerators); j++) {
+			if (strcmp(text, _(toolbar_accelerators[j].text))
+			    == 0) {
 				if (show_accelerators) {
 					gchar *label;
 
-					if (entries[j].accelerator == NULL
-					    ||
-					    strlen(entries[j].accelerator)
-					    == 0)
-						label =
-						    g_strdup_printf("%s\n",
-								    text);
-					else {
-						gchar *accelerator_text;
-						guint accelerator_key;
-						GdkModifierType
-						    accelerator_mods;
-						gtk_accelerator_parse
-						    (entries
-						     [j].accelerator,
-						     &accelerator_key,
-						     &accelerator_mods);
-						accelerator_text =
-						    gtk_accelerator_get_label
-						    (accelerator_key,
-						     accelerator_mods);
+					if (toolbar_accelerators
+					    [j].accelerator == NULL)
 						label =
 						    g_strdup_printf
-						    ("%s\n(%s)", text,
-						     accelerator_text);
-						g_free(accelerator_text);
+						    ("%s\n", text);
+					else {
+						label =
+						    g_strdup_printf
+						    ("%s\n(%s)",
+						     text,
+						     toolbar_accelerators
+						     [j].accelerator);
 					}
-					gtk_tool_button_set_label(tbtn,
-								  label);
+					gtk_tool_button_set_label
+					    (tbtn, label);
 					g_free(label);
 				} else {
-					gtk_tool_button_set_label(tbtn,
-								  _(entries
-								    [j].
-								    label));
+					gtk_tool_button_set_label
+					    (tbtn, text);
 				}
 				break;
 			}
@@ -1429,26 +1111,13 @@ static void gui_toolbar_show_accelerators(gboolean show_accelerators)
 }
 
 /** Show or hide a button in the toolbar */
-static void gui_toolbar_show_button(const gchar * path, gboolean visible)
+static void gui_toolbar_show_button(const gchar * id, gboolean visible)
 {
-	gchar *fullpath;
-	GtkWidget *w;
-	GtkToolItem *item;
+	GtkToolItem *item =
+	    GTK_TOOL_ITEM(gtk_builder_get_object(builder, id));
 
-	fullpath = g_strdup_printf("ui/MainToolbar/%s", path);
-	w = gtk_ui_manager_get_widget(ui_manager, fullpath);
-	if (w == NULL) {
-		g_assert(!"Widget not found");
-		return;
-	}
-	item = GTK_TOOL_ITEM(w);
-	if (item == NULL) {
-		g_assert(!"Widget is not a tool button");
-		return;
-	}
+	g_return_if_fail(item != NULL);
 	gtk_tool_item_set_visible_horizontal(item, visible);
-
-	g_free(fullpath);
 }
 
 void gui_rules_register_callback(GCallback callback)
@@ -1540,88 +1209,47 @@ static GtkWidget *build_status_bar(void)
 
 static void register_pixmaps(void)
 {
-	guint idx;
+	GtkIconTheme *iconTheme = gtk_icon_theme_get_default();
+	gchar *path;
 
-	GtkIconFactory *factory = gtk_icon_factory_new();
+	path = g_build_filename(DATADIR, "pixmaps", "pioneers", NULL);
+	gtk_icon_theme_append_search_path(iconTheme, path);
+	g_free(path);
+}
 
-	for (idx = 0; idx < G_N_ELEMENTS(pioneers_pixmaps); idx++) {
-		gchar *filename;
-		GtkIconSet *icon;
-
-		icon = NULL;
-		/* determine full path to pixmap file */
-		filename = g_build_filename(DATADIR, "pixmaps",
-					    pioneers_pixmaps[idx], NULL);
-		if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
-			GdkPixbuf *pixbuf;
-			GError *error = NULL;
-			pixbuf =
-			    gdk_pixbuf_new_from_file(filename, &error);
-			if (error != NULL) {
-				g_warning("Error loading pixmap %s\n",
-					  filename);
-				g_error_free(error);
-			} else {
-				icon =
-				    gtk_icon_set_new_from_pixbuf(pixbuf);
-			}
-		} else {
-			/* Missing pixmap */
-			g_warning("Pixmap not found: %s", filename);
-		}
-
-		gtk_icon_factory_add(factory, pioneers_pixmaps[idx], icon);
-		g_free(filename);
-		gtk_icon_set_unref(icon);
-	}
-
-	gtk_icon_factory_add_default(factory);
-	g_object_unref(factory);
+static void add_guievent_action(GActionGroup * action_group,
+				const gchar * name, GuiEvent event)
+{
+	GSimpleAction *action = g_simple_action_new(name, NULL);
+	g_signal_connect(action, "activate",
+			 G_CALLBACK(redirect_gui_event_cb),
+			 g_variant_new_int32(event));
+	g_action_map_add_action(G_ACTION_MAP(action_group),
+				G_ACTION(action));
 }
 
 GtkWidget *gui_build_interface(void)
 {
 	GtkWidget *vbox;
-	GtkWidget *menubar;
-	GtkActionGroup *action_group;
-	GtkAccelGroup *accel_group;
-	GError *error = NULL;
 	gchar *icon_file;
+	GSimpleAction *action;
 
 	player_init();
 
 	gmap = guimap_new();
 
 	register_pixmaps();
-	app_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+
+	builder =
+	    gtk_builder_new_from_resource
+	    ("/net/sourceforge/pio/client/gtk/client.ui");
+	app_window =
+	    GTK_WIDGET(gtk_builder_get_object(builder, "toplevel"));
 	/* The name of the application */
 	gtk_window_set_title(GTK_WINDOW(app_window), _("Pioneers"));
+	gtk_builder_connect_signals(builder, app_window);
 
-	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-	gtk_widget_show(vbox);
-	gtk_container_add(GTK_CONTAINER(app_window), vbox);
-
-	action_group = gtk_action_group_new("MenuActions");
-	gtk_action_group_set_translation_domain(action_group, PACKAGE);
-	gtk_action_group_add_actions(action_group, entries,
-				     G_N_ELEMENTS(entries), app_window);
-	gtk_action_group_add_toggle_actions(action_group, toggle_entries,
-					    G_N_ELEMENTS(toggle_entries),
-					    app_window);
-
-	ui_manager = gtk_ui_manager_new();
-	gtk_ui_manager_insert_action_group(ui_manager, action_group, 0);
-
-	accel_group = gtk_ui_manager_get_accel_group(ui_manager);
-	gtk_window_add_accel_group(GTK_WINDOW(app_window), accel_group);
-
-	error = NULL;
-	if (!gtk_ui_manager_add_ui_from_string
-	    (ui_manager, ui_description, -1, &error)) {
-		g_message("building menus failed: %s", error->message);
-		g_error_free(error);
-		return NULL;
-	}
+	vbox = GTK_WIDGET(gtk_builder_get_object(builder, "vbox"));
 
 	icon_file =
 	    g_build_filename(DATADIR, "pixmaps", PIONEERS_ICON_FILE, NULL);
@@ -1653,26 +1281,50 @@ GtkWidget *gui_build_interface(void)
 	legend_page_enabled =
 	    config_get_int_with_default("settings/legend_page", FALSE);
 
-	menubar = gtk_ui_manager_get_widget(ui_manager, "/MainMenu");
-	gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
-	toolbar = gtk_ui_manager_get_widget(ui_manager, "/MainToolbar");
-	gtk_box_pack_start(GTK_BOX(vbox), toolbar, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), build_main_interface(), TRUE,
 			   TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), build_status_bar(), FALSE, FALSE,
 			   0);
 
-	gtk_toggle_action_set_active(GTK_TOGGLE_ACTION
-				     (gtk_ui_manager_get_action
-				      (ui_manager,
-				       "ui/MainMenu/SettingsMenu/ShowHideToolbar")),
-				     config_get_int_with_default
-				     ("settings/show_toolbar", TRUE));
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM
+				       (gtk_builder_get_object
+					(builder,
+					 "toolbar_visible")),
+				       config_get_int_with_default
+				       ("settings/show_toolbar", TRUE));
 
 	g_signal_connect(G_OBJECT(app_window), "key_press_event",
 			 G_CALLBACK(hotkeys_handler), NULL);
 
 	gtk_widget_show(app_window);
+
+	action_group = G_ACTION_GROUP(g_simple_action_group_new());
+	add_guievent_action(action_group, "action_game_new", GUI_CONNECT);
+	action = g_simple_action_new("action_game_leave", NULL);
+	g_signal_connect(action, "activate",
+			 G_CALLBACK(game_leave_cb), NULL);
+	g_action_map_add_action(G_ACTION_MAP(action_group),
+				G_ACTION(action));
+	add_guievent_action(action_group, "action_player_name",
+			    GUI_CHANGE_NAME);
+	add_guievent_action(action_group, "action_roll_dice", GUI_ROLL);
+	add_guievent_action(action_group, "action_trade", GUI_TRADE);
+	add_guievent_action(action_group, "action_undo", GUI_UNDO);
+	add_guievent_action(action_group, "action_finish", GUI_FINISH);
+	add_guievent_action(action_group, "action_build_road", GUI_ROAD);
+	add_guievent_action(action_group, "action_build_ship", GUI_SHIP);
+	add_guievent_action(action_group, "action_move_ship",
+			    GUI_MOVE_SHIP);
+	add_guievent_action(action_group, "action_build_bridge",
+			    GUI_BRIDGE);
+	add_guievent_action(action_group,
+			    "action_build_settlement", GUI_SETTLEMENT);
+	add_guievent_action(action_group, "action_build_city", GUI_CITY);
+	add_guievent_action(action_group, "action_buy_development",
+			    GUI_BUY_DEVELOP);
+	add_guievent_action(action_group, "action_build_city_wall",
+			    GUI_CITY_WALL);
+	gtk_widget_insert_action_group(app_window, "win", action_group);
 
 	frontend_gui_register_action(getAction(GUI_CONNECT), GUI_CONNECT);
 	frontend_gui_register_action(getAction(GUI_DISCONNECT),
@@ -1683,6 +1335,9 @@ GtkWidget *gui_build_interface(void)
 				     (manager,
 				      "ui/MainMenu/GameMenu/GameAdmin"),
 				     GUI_ADMIN);
+	gtk_menu_item_set_visible(GTK_MENU_ITEM
+				  (gtk_builder_get_object
+				   (builder, "admin")), TRUE);
 #endif
 	frontend_gui_register_action(getAction(GUI_CHANGE_NAME),
 				     GUI_CHANGE_NAME);
@@ -1706,19 +1361,25 @@ GtkWidget *gui_build_interface(void)
 	frontend_gui_register_destroy(gtk_ui_manager_get_action
 				      (manager, "GameQuit"), GUI_QUIT);
 #endif
+#ifdef HAVE_HELP
+	gtk_widget_set_visible(GTK_WIDGET
+			       (gtk_builder_get_object
+				(builder, "help_manual")), TRUE);
+#endif
+
 
 	gui_toolbar_show_button("BuildShip", FALSE);
 	gui_toolbar_show_button("MoveShip", FALSE);
 	gui_toolbar_show_button("BuildBridge", FALSE);
+	gui_toolbar_show_button("BuildCityWall", FALSE);
 
 	gui_toolbar_show_accelerators(config_get_int_with_default
 				      ("settings/toolbar_show_accelerators",
 				       TRUE));
 
-	gtk_ui_manager_ensure_update(ui_manager);
 	gtk_widget_show(app_window);
 	g_signal_connect(G_OBJECT(app_window), "delete_event",
-			 G_CALLBACK(quit_cb), NULL);
+			 G_CALLBACK(game_quit_cb), NULL);
 
 	return app_window;
 }
