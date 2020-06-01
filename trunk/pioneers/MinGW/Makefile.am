@@ -21,47 +21,71 @@ if IS_MINGW_PORT
 
 install-exec-hook: install-MinGW
 
-install-MinGW:
-	cp /mingw/bin/libatk-1.0-0.dll /usr/local
-	cp /mingw/bin/libcairo-2.dll /usr/local
-	cp /mingw/bin/libcairo-gobject-2.dll /usr/local
-	cp /mingw/bin/libcroco-0.6-3.dll /usr/local
-	cp /mingw/bin/libffi-6.dll /usr/local
-	cp /mingw/bin/libfontconfig-1.dll /usr/local
-	cp /mingw/bin/libfreetype-6.dll /usr/local
-	cp /mingw/bin/libgcc_s_dw2-1.dll /usr/local
-	cp /mingw/bin/libgdk-3-0.dll /usr/local
-	cp /mingw/bin/libgdk_pixbuf-2.0-0.dll /usr/local
-	cp /mingw/bin/libgio-2.0-0.dll /usr/local
-	cp /mingw/bin/libglib-2.0-0.dll /usr/local
-	cp /mingw/bin/libgmodule-2.0-0.dll /usr/local
-	cp /mingw/bin/libgobject-2.0-0.dll /usr/local
-	cp /mingw/bin/libgtk-3-0.dll /usr/local
-	cp /mingw/bin/libiconv-2.dll /usr/local
-	cp /mingw/bin/libintl-8.dll /usr/local
-	cp /mingw/bin/liblzma-5.dll /usr/local
-	cp /mingw/bin/libpango-1.0-0.dll /usr/local
-	cp /mingw/bin/libpangocairo-1.0-0.dll /usr/local
-	cp /mingw/bin/libpangoft2-1.0-0.dll /usr/local
-	cp /mingw/bin/libpangowin32-1.0-0.dll /usr/local
-	cp /mingw/lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.dll /usr/local
-	cp /mingw/bin/libpixman-1-0.dll /usr/local
-	cp /mingw/bin/libpng15-15.dll /usr/local
-	cp /mingw/bin/librsvg-2-2.dll /usr/local
-	cp /mingw/bin/libssp-0.dll /usr/local
-	cp /mingw/bin/libxml2-2.dll /usr/local
-	cp /mingw/bin/pthreadGC2.dll /usr/local
-	cp /mingw/bin/zlib1.dll /usr/local
-	cp /mingw/bin/gspawn-win32-helper.exe /usr/local
-	cp /mingw/bin/gspawn-win32-helper-console.exe /usr/local
-	mkdir -p /usr/local/lib/gdk-pixbuf-2.0/2.10.0
-	cp $(srcdir)/MinGW/loaders.cache /usr/local/lib/gdk-pixbuf-2.0/2.10.0
-	mkdir -p /usr/local/share/icons/hicolor
-	cp /mingw/share/icons/hicolor/index.theme /usr/local/share/icons/hicolor
-	mkdir -p /usr/local/share/icons/hicolor/24x24/actions
-	cp /mingw/share/gtk-doc/html/gtk3/edit-undo-ltr.png /usr/local/share/icons/hicolor/24x24/actions/edit-undo.png
-	mkdir -p /usr/local/share/glib-2.0/schemas
-	cp /mingw/share/glib-2.0/schemas/gschemas.compiled /usr/local/share/glib-2.0/schemas
+install-MinGW: install-MinGW-DLLs install-MinGW-icons
+
+install-MinGW-DLLs:
+	cp /mingw64/bin/libgdk-3-0.dll $(bindir)
+	cp /mingw64/bin/libgio-2.0-0.dll $(bindir)
+	cp /mingw64/bin/libgdk_pixbuf-2.0-0.dll $(bindir)
+	cp /mingw64/bin/libcairo-2.dll $(bindir)
+	cp /mingw64/bin/libglib-2.0-0.dll $(bindir)
+	cp /mingw64/bin/libgtk-3-0.dll $(bindir)
+	cp /mingw64/bin/libgobject-2.0-0.dll $(bindir)
+	cp /mingw64/bin/libintl-8.dll $(bindir)
+	cp /mingw64/bin/libpango-1.0-0.dll $(bindir)
+	cp /mingw64/bin/libpangocairo-1.0-0.dll $(bindir)
+	cp /mingw64/bin/libnotify-4.dll $(bindir)
+	cp /mingw64/bin/libfontconfig-1.dll $(bindir)
+	cp /mingw64/bin/libfreetype-6.dll $(bindir)
+	cp /mingw64/bin/libpangoft2-1.0-0.dll $(bindir)
+	cp /mingw64/bin/libpangowin32-1.0-0.dll $(bindir)
+	cp /mingw64/bin/libfribidi-0.dll $(bindir)
+	cp /mingw64/bin/libthai-0.dll $(bindir)
+	cp /mingw64/bin/libiconv-2.dll $(bindir)
+	cp /mingw64/bin/libgcc_s_seh-1.dll $(bindir)
+	cp /mingw64/bin/libexpat-1.dll $(bindir)
+	cp /mingw64/bin/libbz2-1.dll $(bindir)
+	cp /mingw64/bin/libharfbuzz-0.dll $(bindir)
+	cp /mingw64/bin/libpng16-16.dll $(bindir)
+	cp /mingw64/bin/zlib1.dll $(bindir)
+	cp /mingw64/bin/libpixman-1-0.dll $(bindir)
+	cp /mingw64/bin/libcairo-gobject-2.dll $(bindir)
+	cp /mingw64/bin/libepoxy-0.dll $(bindir)
+	cp /mingw64/bin/libgmodule-2.0-0.dll $(bindir)
+	cp /mingw64/bin/libwinpthread-1.dll $(bindir)
+	cp /mingw64/bin/libpcre-1.dll $(bindir)
+	cp /mingw64/bin/libbrotlidec.dll $(bindir)
+	cp /mingw64/bin/libbrotlicommon.dll $(bindir)
+	cp /mingw64/bin/libgraphite2.dll $(bindir)
+	cp /mingw64/bin/libffi-7.dll $(bindir)
+	cp /mingw64/bin/libatk-1.0-0.dll $(bindir)
+	cp /mingw64/bin/libdatrie-1.dll $(bindir)
+	cp /mingw64/bin/libstdc++-6.dll $(bindir)
+	mkdir -p $(bindir)/lib/gdk-pixbuf-2.0/2.10.0
+	cp $(srcdir)/MinGW/loaders.cache $(bindir)/lib/gdk-pixbuf-2.0/2.10.0
+	mkdir -p $(bindir)/lib/gdk-pixbuf-2.0/2.10.0/loaders
+	cp /mingw64/lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.dll $(bindir)/lib/gdk-pixbuf-2.0/2.10.0/loaders
+	cp /mingw64/lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.dll $(bindir)/lib/gdk-pixbuf-2.0/2.10.0/loaders
+	cp /mingw64/bin/librsvg-2-2.dll $(bindir)
+	cp /mingw64/bin/libgdk_pixbuf-2.0-0.dll $(bindir)
+	cp /mingw64/bin/libxml2-2.dll $(bindir)
+	cp /mingw64/bin/liblzma-5.dll $(bindir)
+	cp /mingw64/bin/gspawn-win64-helper.exe $(bindir)
+	cp /mingw64/bin/gspawn-win64-helper-console.exe $(bindir)
+
+install-MinGW-icons:
+	mkdir -p $(bindir)/share/icons/hicolor
+	cp /mingw64/share/icons/hicolor/index.theme $(bindir)/share/icons/hicolor
+	mkdir -p $(bindir)/share/icons/Adwaita/scalable/actions
+	cp /mingw64/share/icons/Adwaita/index.theme $(bindir)/share/icons/Adwaita
+	cp /mingw64/share/icons/Adwaita/scalable/actions/list-add-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
+	cp /mingw64/share/icons/Adwaita/scalable/actions/list-remove-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
+	cp /mingw64/share/icons/Adwaita/scalable/actions/edit-undo-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
+	cp /mingw64/share/icons/Adwaita/scalable/actions/edit-delete-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions/edit-delete.svg
+	mkdir -p $(bindir)/share/icons/Adwaita/scalable/ui
+	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-down-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-up-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+	cp /mingw64/share/icons/Adwaita/scalable/ui/window-close-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
 
 endif # IS_MINGW_PORT
 
