@@ -44,7 +44,6 @@ static TradeRow we_receive_rows[NO_RESOURCE];
 
 static gint active_supply_request[NO_RESOURCE];
 static gint active_receive_request[NO_RESOURCE];
-static gboolean trade_since_selection_changed;
 
 /** This button can be hidden in games without interplayer trade */
 static GtkWidget *call_btn;
@@ -106,7 +105,7 @@ gboolean can_call_for_quotes(void)
 	 * given away for free */
 	return (have_we_receive || have_we_supply)
 	    && can_trade_domestic()
-	    && (different_call || trade_since_selection_changed);
+	    && different_call;
 }
 
 /** @return the current quote */
@@ -234,7 +233,6 @@ void trade_new_trade(void)
 		active_supply_request[idx] = we_supply_rows[idx].enabled;
 		active_receive_request[idx] = we_receive_rows[idx].enabled;
 	}
-	trade_since_selection_changed = FALSE;
 
 	resource_format_type(we_supply_desc, active_supply_request);
 	resource_format_type(we_receive_desc, active_receive_request);
@@ -595,5 +593,4 @@ static void trade_update(void)
 		set_row_sensitive(we_supply_rows + idx);
 	}
 	quote_view_check_validity_of_trades(QUOTEVIEW(quoteview));
-	trade_since_selection_changed = TRUE;
 }
