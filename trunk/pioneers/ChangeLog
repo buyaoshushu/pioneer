@@ -1,3 +1,6 @@
+2020-06-03  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/trade.c: Fixed logic for enabling Call for Quotes button.
+
 2020-06-01  Roland Clobus <rclobus@rclobus.nl>
 	* MinGW/Makefile.am, MinGW/loaders.cache: Runtime version of Pioneers
 	works with MinGW64 and Windows 10 (1909).
