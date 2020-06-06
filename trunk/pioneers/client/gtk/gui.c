@@ -101,6 +101,7 @@ static GActionGroup *action_group = NULL;	/* Global action group */
 static gboolean toolbar_show_accelerators = TRUE;
 static gboolean color_messages_enabled = TRUE;
 static gboolean legend_page_enabled = TRUE;
+static gboolean charity_enabled = TRUE;
 
 static GList *rules_callback_list = NULL;
 
@@ -694,6 +695,20 @@ static void toolbar_shortcuts_cb(void)
 	gui_toolbar_show_accelerators(!toolbar_show_accelerators);
 }
 
+gboolean get_charity_enabled(void)
+{
+	return charity_enabled;
+}
+
+void set_charity_enabled(gboolean new_charity_enabled)
+{
+	if (new_charity_enabled != charity_enabled) {
+		charity_enabled = new_charity_enabled;
+		config_set_int("settings/charity_enabled",
+			       charity_enabled);
+	}
+}
+
 void preferences_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
 	GtkWidget *silent_mode_widget;
@@ -1277,6 +1292,8 @@ GtkWidget *gui_build_interface(void)
 			    ("settings/announce_player", TRUE));
 	set_show_notifications(config_get_int_with_default
 			       ("settings/show_notifications", TRUE));
+	set_charity_enabled(config_get_int_with_default
+			    ("settings/charity_enabled", TRUE));
 
 	legend_page_enabled =
 	    config_get_int_with_default("settings/legend_page", FALSE);
