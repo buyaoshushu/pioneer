@@ -5,6 +5,7 @@
 	client/gtk/trade.c: Added a new checkbox: 'Enable Charity'. When
 	enabled, you can give away resources without getting anything back in
 	return.
+	* client/gtk/gui.c: The default for charity is off.
 
 2020-06-03  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/trade.c: Fixed logic for enabling Call for Quotes button.

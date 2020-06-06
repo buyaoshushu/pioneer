@@ -101,7 +101,7 @@ static GActionGroup *action_group = NULL;	/* Global action group */
 static gboolean toolbar_show_accelerators = TRUE;
 static gboolean color_messages_enabled = TRUE;
 static gboolean legend_page_enabled = TRUE;
-static gboolean charity_enabled = TRUE;
+static gboolean charity_enabled = FALSE;
 
 static GList *rules_callback_list = NULL;
 
@@ -1293,7 +1293,7 @@ GtkWidget *gui_build_interface(void)
 	set_show_notifications(config_get_int_with_default
 			       ("settings/show_notifications", TRUE));
 	set_charity_enabled(config_get_int_with_default
-			    ("settings/charity_enabled", TRUE));
+			    ("settings/charity_enabled", FALSE));
 
 	legend_page_enabled =
 	    config_get_int_with_default("settings/legend_page", FALSE);
