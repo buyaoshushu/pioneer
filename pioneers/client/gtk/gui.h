@@ -85,4 +85,7 @@ void gui_rules_register_callback(GCallback callback);
 
 void gui_set_show_no_setup_nodes(gboolean show);
 
+gboolean get_charity_enabled(void);
+void set_charity_enabled(gboolean new_charity_enabled);
+
 #endif

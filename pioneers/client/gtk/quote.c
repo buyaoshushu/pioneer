@@ -35,6 +35,8 @@ static GtkWidget *submit_btn;
 static GtkWidget *delete_btn;
 static GtkWidget *reject_btn;
 static GtkWidget *quoteview;
+/** Enable charity */
+static GtkWidget *charity_enabled_checkbutton;
 
 static GtkWidget *want_table;
 static GtkWidget *give_table;
@@ -54,17 +56,29 @@ gboolean can_submit_quote(void)
 {
 	gint want_quote[NO_RESOURCE];
 	gint give_quote[NO_RESOURCE];
+	gint amount_want;
+	gint amount_give;
 
 	resource_table_get_amount(RESOURCETABLE(want_table), want_quote);
 	resource_table_get_amount(RESOURCETABLE(give_table), give_quote);
 
-	if (resource_count(want_quote) == 0
-	    && resource_count(give_quote) == 0)
-		return FALSE;
+	amount_want = resource_count(want_quote);
+	amount_give = resource_count(give_quote);
 
-	return !quote_view_trade_exists(QUOTEVIEW(quoteview), give_quote,
+	/* The quote is valid when all applies:
+	 * 1) at least one resource type is requested
+	 * 2) the quote doesn't already exist
+	 * 3) the player is not a spectator
+	 * 4) either
+	 *    a. the trade is not a donation
+	 *    b. the trade is a donation, and charity is allowed
+	 */
+	return !(amount_want == 0 && amount_give == 0)
+	    && !quote_view_trade_exists(QUOTEVIEW(quoteview), give_quote,
 					want_quote)
-	    && !player_is_spectator(my_player_num());
+	    && !player_is_spectator(my_player_num())
+	    && (amount_want != 0
+		|| (amount_want == 0 && get_charity_enabled()));
 }
 
 gboolean can_delete_quote(void)
@@ -235,6 +249,9 @@ void quote_begin(gint player_num, const gint * we_receive,
 	quote_update();
 	set_resource_tables_filter(we_receive, we_supply);
 	frontend_gui_update();
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
+				     (charity_enabled_checkbutton),
+				     get_charity_enabled());
 	/* finally, show the page so the user can see it */
 	gui_show_quote_page(TRUE);
 	msg = g_strdup_printf(
@@ -265,6 +282,14 @@ static void amount_changed_cb(G_GNUC_UNUSED ResourceTable * rt,
 			      G_GNUC_UNUSED gpointer user_data)
 {
 	quote_view_clear_selected_quote(QUOTEVIEW(quoteview));
+	frontend_gui_update();
+}
+
+static void charity_enabled_cb(GtkToggleButton * widget,
+			       G_GNUC_UNUSED gpointer user_data)
+{
+	gboolean charity_enabled = gtk_toggle_button_get_active(widget);
+	set_charity_enabled(charity_enabled);
 	frontend_gui_update();
 }
 
@@ -346,6 +371,22 @@ GtkWidget *quote_build_page(void)
 	frontend_gui_register(delete_btn, GUI_QUOTE_DELETE, "clicked");
 	gtk_widget_show(delete_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), delete_btn);
+
+	/* Label text, trade: charity */
+	charity_enabled_checkbutton =
+	    gtk_check_button_new_with_label(_("Enable Charity"));
+	gtk_widget_show(charity_enabled_checkbutton);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
+				     (charity_enabled_checkbutton),
+				     get_charity_enabled());
+	g_signal_connect(G_OBJECT(charity_enabled_checkbutton), "toggled",
+			 G_CALLBACK(charity_enabled_cb), NULL);
+	gtk_box_pack_start(GTK_BOX(vbox), charity_enabled_checkbutton,
+			   FALSE, TRUE, 0);
+	gtk_widget_set_tooltip_text(charity_enabled_checkbutton,
+				    /* Tooltip for the option to enable charity */
+				    _(""
+				      "When checked, a resource can be given away without receiving anything back"));
 
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
 	gtk_widget_show(vbox);

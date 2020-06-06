@@ -51,17 +51,21 @@ static GtkWidget *call_btn;
 static GtkWidget *we_receive_frame;
 /** The last quote that is called */
 static GtkWidget *active_quote_label;
+/** Prevent charity, can be hidden in games without interplayer trade */
+static GtkWidget *charity_enabled_checkbutton;
 
 /** @return TRUE is we can accept this domestic quote */
 static gboolean is_good_quote(const QuoteInfo * quote)
 {
 	gint idx;
 	gboolean interested;
+	gboolean have_we_receive;
 
 	g_assert(quote != NULL);
 	g_assert(quote->is_domestic);
 
 	interested = FALSE;
+	have_we_receive = FALSE;
 	for (idx = 0; idx < NO_RESOURCE; idx++) {
 		gint we_supply = quote->var.d.receive[idx];
 		gint we_receive = quote->var.d.supply[idx];
@@ -75,8 +79,10 @@ static gboolean is_good_quote(const QuoteInfo * quote)
 		if (we_receive > 0 && we_receive_rows[idx].enabled) {
 			interested = TRUE;
 		}
+		have_we_receive = have_we_receive || (we_receive > 0);
 	}
-	return interested;
+	/* We also also interested if we allow giving away resources */
+	return interested || (!have_we_receive && get_charity_enabled());
 }
 
 /** @return TRUE if at least one resource is asked/offered */
@@ -86,6 +92,7 @@ gboolean can_call_for_quotes(void)
 	gboolean have_we_receive;
 	gboolean have_we_supply;
 	gboolean different_call;
+	gboolean is_charity;
 
 	different_call = FALSE;
 	have_we_receive = have_we_supply = FALSE;
@@ -101,11 +108,20 @@ gboolean can_call_for_quotes(void)
 		if (we_supply_rows[idx].enabled)
 			have_we_supply = TRUE;
 	}
-	/* don't require both supply and receive, for resources may be
-	 * given away for free */
+	is_charity = !have_we_receive || !have_we_supply;
+
+	/* Trade is allowed when all applies:
+	 * 1) at least one resource type is requested
+	 * 2) domestic trade is allowed
+	 * 3) the request differs from the active request
+	 * 4) either
+	 *    a. the trade is not a donation
+	 *    b. the trade is a donation, and charity is allowed
+	 */
 	return (have_we_receive || have_we_supply)
 	    && can_trade_domestic()
-	    && different_call;
+	    && different_call
+	    && (!is_charity || (is_charity && get_charity_enabled()));
 }
 
 /** @return the current quote */
@@ -391,11 +407,16 @@ void trade_begin(void)
 		gtk_widget_hide(we_receive_frame);
 		gtk_widget_hide(call_btn);
 		gtk_widget_hide(active_quote_label);
+		gtk_widget_hide(charity_enabled_checkbutton);
 	} else {
 		gtk_widget_show(we_receive_frame);
 		gtk_widget_show(call_btn);
 		gtk_widget_show(active_quote_label);
 		gtk_label_set_text(GTK_LABEL(active_quote_label), "");
+		gtk_widget_show(charity_enabled_checkbutton);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
+					     (charity_enabled_checkbutton),
+					     get_charity_enabled());
 	}
 	quote_view_clear_selected_quote(QUOTEVIEW(quoteview));
 	update_rows();		/* Always update */
@@ -413,6 +434,15 @@ static void quote_selected_cb(G_GNUC_UNUSED QuoteView * quoteview,
 			      G_GNUC_UNUSED gpointer user_data)
 {
 	update_rows();
+	frontend_gui_update();
+}
+
+static void charity_enabled_cb(GtkToggleButton * widget,
+			       G_GNUC_UNUSED gpointer user_data)
+{
+	gboolean charity_enabled = gtk_toggle_button_get_active(widget);
+	set_charity_enabled(charity_enabled);
+	trade_update();
 	frontend_gui_update();
 }
 
@@ -481,6 +511,7 @@ GtkWidget *trade_build_page(void)
 	/*                       trade_resources_frame */
 	/*                       hbox - bbox */
 	/*                               call_btn */
+	/*                       charity */
 	/*               vbox */
 	/*                       active_quote_label */
 	/*                       quoteview */
@@ -534,6 +565,22 @@ GtkWidget *trade_build_page(void)
 	frontend_gui_register(call_btn, GUI_TRADE_CALL, "clicked");
 	gtk_widget_show(call_btn);
 	gtk_container_add(GTK_CONTAINER(bbox), call_btn);
+
+	/* Label text, trade: charity */
+	charity_enabled_checkbutton =
+	    gtk_check_button_new_with_label(_("Enable Charity"));
+	gtk_widget_show(charity_enabled_checkbutton);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
+				     (charity_enabled_checkbutton),
+				     get_charity_enabled());
+	g_signal_connect(G_OBJECT(charity_enabled_checkbutton), "toggled",
+			 G_CALLBACK(charity_enabled_cb), NULL);
+	gtk_box_pack_start(GTK_BOX(vbox), charity_enabled_checkbutton,
+			   FALSE, TRUE, 0);
+	gtk_widget_set_tooltip_text(charity_enabled_checkbutton,
+				    /* Tooltip for the option to prevent charity */
+				    _(""
+				      "When checked, a resource can be given away without receiving anything back"));
 
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
 	gtk_widget_show(vbox);
