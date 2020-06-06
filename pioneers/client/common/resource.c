@@ -226,6 +226,12 @@ void resource_format_type(gchar * str, const gint * resources)
 		return;
 	}
 
+	if (num_types == NO_RESOURCE) {
+		/* All resource types are active in the trade */
+		strcpy(str, _("any resource"));
+		return;
+	}
+
 	if (num_types == 1) {
 		for (idx = 0; idx < NO_RESOURCE; idx++) {
 			gint num = resources[idx];
