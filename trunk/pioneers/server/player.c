@@ -664,6 +664,9 @@ void player_archive(Player * player)
 		return;
 	}
 
+	/* Mark the player as disconnected */
+	player->disconnected = TRUE;
+
 	/* If the player was in the middle of a trade, pop the state
 	   machine and inform others as necessary */
 	state = sm_current(player->sm);
@@ -694,8 +697,7 @@ void player_archive(Player * player)
 	    || state == (StateFunc) mode_select_pirated)
 		robber_undo(player);
 
-	/* Mark the player as disconnected */
-	player->disconnected = TRUE;
+	/* Inform the metaserver */
 	game->num_players--;
 	meta_report_num_players(game->num_players);
 
