@@ -130,18 +130,18 @@ void gold_choose_player_prepare(gint player_num, gint num)
 	GdkPixbuf *pixbuf;
 	enum TFindResult found;
 
-	/* Search for a place to add information about the player */
+	/* Use the order of the server */
 	found =
 	    find_integer_in_tree(GTK_TREE_MODEL(gold_store), &iter,
 				 GOLD_COLUMN_PLAYER_NUM, player_num);
 	switch (found) {
 	case FIND_NO_MATCH:
+	case FIND_MATCH_INSERT_BEFORE:
 		gtk_list_store_append(gold_store, &iter);
 		break;
-	case FIND_MATCH_INSERT_BEFORE:
-		gtk_list_store_insert_before(gold_store, &iter, &iter);
-		break;
 	case FIND_MATCH_EXACT:
+		g_error
+		    ("gold_store was not properly cleared before in gold_choose_player_prepare");
 		break;
 	default:
 		g_error("unknown case in gold_choose_player_prepare");
@@ -163,17 +163,21 @@ void gold_choose_player_did(gint player_num,
 	GtkTreeIter iter;
 	enum TFindResult found;
 
-	/* check if the player was in the list.  If not, it is not an error.
-	 * That happens if the player auto-discards. */
+	/* check if the player was in the list.  If not, report it. */
 	found =
 	    find_integer_in_tree(GTK_TREE_MODEL(gold_store), &iter,
 				 GOLD_COLUMN_PLAYER_NUM, player_num);
 	if (found == FIND_MATCH_EXACT) {
 		gtk_list_store_remove(gold_store, &iter);
-		if (player_num == my_player_num()) {
-			gtk_widget_destroy(gold.dlg);
-			gold.dlg = NULL;
-		}
+	} else {
+		g_warning
+		    ("Could not find player %d in the list of players that are choosing gold",
+		     player_num);
+	}
+	/* gold.dlg can be NULL when the server auto-selects */
+	if (player_num == my_player_num() && gold.dlg != NULL) {
+		gtk_widget_destroy(gold.dlg);
+		gold.dlg = NULL;
 	}
 }
 

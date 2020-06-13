@@ -1,3 +1,6 @@
+2020-06-13  Roland Clobus <rclobus@rclobus.nl>
+	* client/gtk/gold.c: Show the order of the players that select gold.
+
 2020-06-06  Roland Clobus <rclobus@rclobus.nl>
 	* client/common/resource.c: When all resources are selected for a
 	trade, use the wording 'any resource'.
