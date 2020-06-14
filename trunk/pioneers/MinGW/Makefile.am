@@ -34,7 +34,7 @@ install-MinGW-DLLs:
 	cp /mingw64/bin/libintl-8.dll $(bindir)
 	cp /mingw64/bin/libpango-1.0-0.dll $(bindir)
 	cp /mingw64/bin/libpangocairo-1.0-0.dll $(bindir)
-	cp /mingw64/bin/libnotify-4.dll $(bindir)
+	-cp /mingw64/bin/libnotify-4.dll $(bindir)
 	cp /mingw64/bin/libfontconfig-1.dll $(bindir)
 	cp /mingw64/bin/libfreetype-6.dll $(bindir)
 	cp /mingw64/bin/libpangoft2-1.0-0.dll $(bindir)
