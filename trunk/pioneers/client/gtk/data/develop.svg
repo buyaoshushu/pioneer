@@ -10,7 +10,7 @@
    sodipodi:docname="develop.svg"
    height="256"
    width="256"
-   inkscape:version="1.0rc1 (09960d6f05, 2020-04-09)"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
    version="1.1"
    id="svg2">
   <metadata
@@ -49,15 +49,15 @@
      bordercolor="#666666"
      pagecolor="#ffffff" />
   <text
-     transform="scale(0.99998318,1.0000168)"
      id="text1621"
-     y="247.83777"
-     x="53.703644"
-     style="font-size:340.878px;line-height:159.786px;font-family:Gentium;-inkscape-font-specification:'Gentium, Normal';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;stroke:#000000;stroke-width:0.999998;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     xml:space="preserve"><tspan
-       style="fill:#000000;stroke:#000000;stroke-width:0.999998;stroke-miterlimit:4;stroke-dasharray:none"
-       y="247.83777"
-       x="53.703644"
+     y="241.17822"
+     x="54.529926"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:321.978px;line-height:150.928px;font-family:Gentium, 'Times New Roman';-inkscape-font-specification:'Gentium, Times New Roman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;stroke:#000000;stroke-width:0.999996;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     xml:space="preserve"
+     transform="scale(0.99987001,1.00013)"><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:321.978px;font-family:Gentium, 'Times New Roman';-inkscape-font-specification:'Gentium, Times New Roman, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;stroke:#000000;stroke-width:0.999996;stroke-miterlimit:4;stroke-dasharray:none"
+       y="241.17822"
+       x="54.529926"
        id="tspan1619"
        sodipodi:role="line">?</tspan></text>
 </svg>
