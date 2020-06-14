@@ -2,6 +2,7 @@
 	* client/gtk/gold.c: Show the order of the players that select gold.
 	* client/gtk/data/develop.svg: Use Times New Roman on Windows.
 	* MinGW/Makefile.am: libnotify is optional on Windows.
+	* MinGW/Makefile.am: Fix File|Open in the editor (Windows).
 
 2020-06-06  Roland Clobus <rclobus@rclobus.nl>
 	* client/common/resource.c: When all resources are selected for a

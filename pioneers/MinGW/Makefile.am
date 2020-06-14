@@ -21,7 +21,7 @@ if IS_MINGW_PORT
 
 install-exec-hook: install-MinGW
 
-install-MinGW: install-MinGW-DLLs install-MinGW-icons
+install-MinGW: install-MinGW-DLLs install-MinGW-icons install-MinGW-fileopen
 
 install-MinGW-DLLs:
 	cp /mingw64/bin/libgdk-3-0.dll $(bindir)
@@ -86,6 +86,32 @@ install-MinGW-icons:
 	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-down-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
 	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-up-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
 	cp /mingw64/share/icons/Adwaita/scalable/ui/window-close-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+
+install-MinGW-fileopen:
+	mkdir -p $(bindir)/share/glib-2.0/schemas
+	cp /mingw64/share/glib-2.0/schemas/gschemas.compiled $(bindir)/share/glib-2.0/schemas
+	cp /mingw64/share/icons/Adwaita/scalable/actions/document-open-recent-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
+	cp /mingw64/share/icons/Adwaita/scalable/actions/media-eject-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
+	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-start-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-end-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-down-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-up-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+	mkdir -p $(bindir)/share/icons/Adwaita/scalable/places
+	cp /mingw64/share/icons/Adwaita/scalable/places/user-home-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	cp /mingw64/share/icons/Adwaita/scalable/places/user-desktop-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	cp /mingw64/share/icons/Adwaita/scalable/places/folder-documents-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	cp /mingw64/share/icons/Adwaita/scalable/places/folder-download-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	cp /mingw64/share/icons/Adwaita/scalable/places/folder-music-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	cp /mingw64/share/icons/Adwaita/scalable/places/folder-pictures-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	cp /mingw64/share/icons/Adwaita/scalable/places/folder-videos-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	cp /mingw64/share/icons/Adwaita/scalable/places/user-trash-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	cp /mingw64/share/icons/Adwaita/scalable/places/folder-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	mkdir -p $(bindir)/share/icons/Adwaita/scalable/devices
+	cp /mingw64/share/icons/Adwaita/scalable/devices/drive-harddisk-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/devices
+	cp /mingw64/share/icons/Adwaita/scalable/devices/drive-harddisk-usb-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/devices
+	cp /mingw64/share/icons/Adwaita/scalable/devices/drive-optical-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/devices
+	mkdir -p $(bindir)/share/icons/Adwaita/scalable/mimetypes
+	cp /mingw64/share/icons/Adwaita/scalable/mimetypes/text-x-generic-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/mimetypes
 
 endif # IS_MINGW_PORT
 
