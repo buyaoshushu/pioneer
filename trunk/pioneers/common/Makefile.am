@@ -45,6 +45,8 @@ libpioneers_a_SOURCES = \
 	common/game.h \
 	common/game-list.c \
 	common/game-list.h \
+	common/gettext.c \
+	common/gettext.h \
 	common/log.c \
 	common/log.h \
 	common/map.c \

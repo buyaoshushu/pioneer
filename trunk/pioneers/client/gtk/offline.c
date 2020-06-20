@@ -21,7 +21,6 @@
  */
 
 #include "config.h"
-#include <stdlib.h>
 #include "frontend.h"
 #include "common_gtk.h"
 #include "config-gnome.h"
@@ -199,12 +198,6 @@ void frontend_init_gtk_et_al(int argc, char **argv)
 		g_print("\n");
 		exit(0);
 	}
-#if ENABLE_NLS
-	/* Gtk+ handles the locale, we must bind the translations */
-	bindtextdomain(PACKAGE, LOCALEDIR);
-	textdomain(PACKAGE);
-	bind_textdomain_codeset(PACKAGE, "UTF-8");
-#endif
 	/* Name of the application */
 	g_set_application_name(_("Pioneers"));
 

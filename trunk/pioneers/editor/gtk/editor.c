@@ -23,10 +23,6 @@
 #include "config.h"
 #include "version.h"
 
-#ifdef HAVE_LOCALE_H
-#include <locale.h>
-#endif
-
 #include <string.h>
 #include "aboutbox.h"
 #include "config-gnome.h"
@@ -44,6 +40,7 @@
 #include "common_gtk.h"
 #include "cards.h"
 #include "network.h"
+#include "gettext.h"
 
 #define MAINICON_FILE "pioneers-editor.png"
 
@@ -1756,13 +1753,8 @@ int main(int argc, char *argv[])
 	/* set the UI driver to GTK_Driver, since we're using gtk */
 	set_ui_driver(&GTK_Driver);
 
-#if ENABLE_NLS
-	/* Gtk+ handles the locale, we must bind the translations */
-	setlocale(LC_ALL, "");
-	bindtextdomain(PACKAGE, LOCALEDIR);
-	textdomain(PACKAGE);
-	bind_textdomain_codeset(PACKAGE, "UTF-8");
-#endif
+	/* Initialize translations */
+	gettext_init();
 
 	context =
 	    /* Long description in the command line: --help */

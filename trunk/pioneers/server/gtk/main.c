@@ -23,17 +23,14 @@
 #include "config.h"
 #include "version.h"
 
-#ifdef HAVE_LOCALE_H
-#include <locale.h>
-#endif
 #include <ctype.h>
 #include <gtk/gtk.h>
-#include <string.h>
 
 #include "aboutbox.h"
 #include "game.h"
 #include "game-list.h"
 #include "common_gtk.h"
+#include "gettext.h"
 
 #include "config-gnome.h"
 #include "server.h"
@@ -1146,13 +1143,8 @@ int main(int argc, char *argv[])
 	/* Initialize frontend inspecific things */
 	server_init();
 
-#ifdef ENABLE_NLS
-	setlocale(LC_ALL, "");
-	/* Gtk+ handles the locale, we must bind the translations */
-	bindtextdomain(PACKAGE, LOCALEDIR);
-	textdomain(PACKAGE);
-	bind_textdomain_codeset(PACKAGE, "UTF-8");
-#endif
+	/* Initialize translations */
+	gettext_init();
 
 	/* Long description in the commandline for server-gtk: help */
 	context = g_option_context_new(_("- Host a game of Pioneers"));
