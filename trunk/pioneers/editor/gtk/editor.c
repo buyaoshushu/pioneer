@@ -1725,16 +1725,16 @@ gchar **filenames;
 gboolean show_version = FALSE;
 
 static GOptionEntry commandline_entries[] = {
-	{G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY,
+	{ G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY,
 	 &filenames,
 	 /* Long help for commandline option (editor): filename */
 	 N_("Open this file"),
 	 /* Commandline option for editor: filename */
-	 N_("filename")},
-	{"version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
+	 N_("filename") },
+	{ "version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
 	 /* Commandline option of editor: version */
-	 N_("Show version information"), NULL},
-	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+	 N_("Show version information"), NULL },
+	{ NULL, '\0', 0, 0, NULL, NULL, NULL }
 };
 
 int main(int argc, char *argv[])

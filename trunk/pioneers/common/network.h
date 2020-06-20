@@ -34,8 +34,8 @@ typedef enum {
 typedef struct _Service Service;
 typedef struct _Session Session;
 
-typedef void (*NetNotifyFunc) (Session * ses, NetEvent event,
-			       const gchar * line, gpointer user_data);
+typedef void (*NetNotifyFunc)(Session * ses, NetEvent event,
+			      const gchar * line, gpointer user_data);
 
 /** Initialize the network drivers */
 void net_init(void);

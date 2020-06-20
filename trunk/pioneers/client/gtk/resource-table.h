@@ -65,7 +65,7 @@ struct _ResourceTable {
 struct _ResourceTableClass {
 	GtkGridClass parent_class;
 
-	void (*change) (ResourceTable * rt);
+	void (*change)(ResourceTable * rt);
 };
 
 GType resource_table_get_type(void);

@@ -73,89 +73,89 @@ static gboolean enable_debug = FALSE;
 static gboolean show_version = FALSE;
 
 static GOptionEntry commandline_game_entries[] = {
-	{"game-title", 'g', 0, G_OPTION_ARG_STRING, &game_title,
+	{ "game-title", 'g', 0, G_OPTION_ARG_STRING, &game_title,
 	 /* Commandline server-console: game-title */
-	 N_("Game title to use"), NULL},
-	{"file", 0, 0, G_OPTION_ARG_STRING, &game_file,
+	 N_("Game title to use"), NULL },
+	{ "file", 0, 0, G_OPTION_ARG_STRING, &game_file,
 	 /* Commandline server-console: file */
-	 N_("Game file to use"), NULL},
-	{"port", 'p', 0, G_OPTION_ARG_STRING, &server_port,
+	 N_("Game file to use"), NULL },
+	{ "port", 'p', 0, G_OPTION_ARG_STRING, &server_port,
 	 /* Commandline server-console: port */
-	 N_("Port to listen on"), PIONEERS_DEFAULT_GAME_PORT},
-	{"players", 'P', 0, G_OPTION_ARG_INT, &num_players,
+	 N_("Port to listen on"), PIONEERS_DEFAULT_GAME_PORT },
+	{ "players", 'P', 0, G_OPTION_ARG_INT, &num_players,
 	 /* Commandline server-console: players */
-	 N_("Override number of players"), NULL},
-	{"points", 'v', 0, G_OPTION_ARG_INT, &num_points,
+	 N_("Override number of players"), NULL },
+	{ "points", 'v', 0, G_OPTION_ARG_INT, &num_points,
 	 /* Commandline server-console: points */
-	 N_("Override number of points needed to win"), NULL},
-	{"seven-rule", 'R', 0, G_OPTION_ARG_INT, &sevens_rule,
+	 N_("Override number of points needed to win"), NULL },
+	{ "seven-rule", 'R', 0, G_OPTION_ARG_INT, &sevens_rule,
 	 /* Commandline server-console: seven-rule */
-	 N_("Override seven-rule handling"), "0|1|2"},
-	{"use-dice-deck", 'd', 0, G_OPTION_ARG_INT, &use_dice_deck,
+	 N_("Override seven-rule handling"), "0|1|2" },
+	{ "use-dice-deck", 'd', 0, G_OPTION_ARG_INT, &use_dice_deck,
 	 /* Commandline server-console: dice-deck */
-	 N_("Override dice-deck handling"), "0|1"},
-	{"dice-deck", 'D', 0, G_OPTION_ARG_INT, &num_dice_decks,
+	 N_("Override dice-deck handling"), "0|1" },
+	{ "dice-deck", 'D', 0, G_OPTION_ARG_INT, &num_dice_decks,
 	 /* Commandline server-console: num-dice-decks */
-	 N_("Override num-dice-decks handling"), "0|1"},
-	{"num-removed-dice-cards", 'C', 0, G_OPTION_ARG_INT,
+	 N_("Override num-dice-decks handling"), "0|1" },
+	{ "num-removed-dice-cards", 'C', 0, G_OPTION_ARG_INT,
 	 &num_removed_dice_cards,
 	 /* Commandline server-console: num-removed-dice-cards */
-	 N_("Override num-removed-dice-cards handling"), NULL},
-	{"terrain", 'T', 0, G_OPTION_ARG_INT, &terrain,
+	 N_("Override num-removed-dice-cards handling"), NULL },
+	{ "terrain", 'T', 0, G_OPTION_ARG_INT, &terrain,
 	 /* Commandline server-console: terrain */
-	 N_("Override terrain type, 0=default 1=random"), "0|1"},
-	{"computer-players", 'c', 0, G_OPTION_ARG_INT, &num_ai_players,
+	 N_("Override terrain type, 0=default 1=random"), "0|1" },
+	{ "computer-players", 'c', 0, G_OPTION_ARG_INT, &num_ai_players,
 	 /* Commandline server-console: computer-players */
-	 N_("Add N computer players"), "N"},
-	{"version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
+	 N_("Add N computer players"), "N" },
+	{ "version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
 	 /* Commandline option of server-console: version */
-	 N_("Show version information"), NULL},
-	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+	 N_("Show version information"), NULL },
+	{ NULL, '\0', 0, 0, NULL, NULL, NULL }
 };
 
 static GOptionEntry commandline_meta_entries[] = {
-	{"register", 'r', 0, G_OPTION_ARG_NONE, &register_server,
+	{ "register", 'r', 0, G_OPTION_ARG_NONE, &register_server,
 	 /* Commandline server-console: register */
-	 N_("Register server with metaserver"), NULL},
-	{"metaserver", 'm', 0, G_OPTION_ARG_STRING, &metaserver_name,
+	 N_("Register server with metaserver"), NULL },
+	{ "metaserver", 'm', 0, G_OPTION_ARG_STRING, &metaserver_name,
 	 /* Commandline server-console: metaserver */
 	 N_("Register at metaserver name (implies -r)"),
-	 PIONEERS_DEFAULT_METASERVER},
-	{"hostname", 'n', 0, G_OPTION_ARG_STRING, &hostname,
+	 PIONEERS_DEFAULT_METASERVER },
+	{ "hostname", 'n', 0, G_OPTION_ARG_STRING, &hostname,
 	 /* Commandline server-console: hostname */
-	 N_("Use this hostname when registering"), NULL},
-	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+	 N_("Use this hostname when registering"), NULL },
+	{ NULL, '\0', 0, 0, NULL, NULL, NULL }
 };
 
 static GOptionEntry commandline_other_entries[] = {
-	{"auto-quit", 'x', 0, G_OPTION_ARG_NONE, &quit_when_done,
+	{ "auto-quit", 'x', 0, G_OPTION_ARG_NONE, &quit_when_done,
 	 /* Commandline server-console: auto-quit */
-	 N_("Quit after a player has won"), NULL},
-	{"empty-timeout", 'k', 0, G_OPTION_ARG_INT, &timeout,
+	 N_("Quit after a player has won"), NULL },
+	{ "empty-timeout", 'k', 0, G_OPTION_ARG_INT, &timeout,
 	 /* Commandline server-console: empty-timeout */
-	 N_("Quit after N seconds with no players"), "N"},
-	{"tournament", 't', 0, G_OPTION_ARG_INT, &tournament_time,
+	 N_("Quit after N seconds with no players"), "N" },
+	{ "tournament", 't', 0, G_OPTION_ARG_INT, &tournament_time,
 	 /* Commandline server-console: tournament */
 	 N_("Tournament mode, computer players added after N minutes"),
-	 "N"},
-	{"admin-port", 'a', 0, G_OPTION_ARG_STRING, &admin_port,
+	 "N" },
+	{ "admin-port", 'a', 0, G_OPTION_ARG_STRING, &admin_port,
 	 /* Commandline server-console: admin-port */
-	 N_("Admin port to listen on"), PIONEERS_DEFAULT_ADMIN_PORT},
-	{"admin-wait", 's', 0, G_OPTION_ARG_NONE, &disable_game_start,
+	 N_("Admin port to listen on"), PIONEERS_DEFAULT_ADMIN_PORT },
+	{ "admin-wait", 's', 0, G_OPTION_ARG_NONE, &disable_game_start,
 	 /* Commandline server-console: admin-wait */
 	 N_(""
 	    "Don't start game immediately, wait for a command on admin port"),
-	 NULL},
-	{"fixed-seating-order", 0, 0, G_OPTION_ARG_NONE,
+	 NULL },
+	{ "fixed-seating-order", 0, 0, G_OPTION_ARG_NONE,
 	 &fixed_seating_order,
 	 /* Commandline server-console: fixed-seating-order */
 	 N_(""
 	    "Give players numbers according to the order they enter the game"),
-	 NULL},
-	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
+	 NULL },
+	{ "debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
 	 /* Commandline option of server: enable debug logging */
-	 N_("Enable debug messages"), NULL},
-	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+	 N_("Enable debug messages"), NULL },
+	{ NULL, '\0', 0, 0, NULL, NULL, NULL }
 };
 
 int main(int argc, char *argv[])

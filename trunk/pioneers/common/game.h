@@ -134,7 +134,7 @@ typedef enum {
 } PlayerType;
 #define NUM_PLAYER_TYPES (PLAYER_UNKNOWN + 1)
 
-typedef void (*WriteLineFunc) (gpointer user_data, const gchar *);
+typedef void (*WriteLineFunc)(gpointer user_data, const gchar *);
 
 /** Default style for a player. */
 extern const gchar *default_player_style;

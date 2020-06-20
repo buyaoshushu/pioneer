@@ -136,7 +136,8 @@ static struct {
 	/** The settings of a game */
 	GameParams *params;
 } metaserver_info = {
-NULL, NULL, 0, 0, 0, FALSE, NULL, 0u, NULL};
+	NULL, NULL, 0, 0, 0, FALSE, NULL, 0u, NULL
+};
 
 #define STRARG_LEN 128
 #define INTARG_LEN 16

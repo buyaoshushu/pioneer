@@ -111,54 +111,50 @@ static struct tvars {
 	int override;
 	size_t offset;
 } theme_vars[] = {
-	{
-	"name", TRUE, STR, -1, offs(name)}, {
-	"hill-tile", FALSE, FNAME, HILL_TILE,
-		    offs(terrain_tile_names[HILL_TILE])}, {
-	"field-tile", FALSE, FNAME, FIELD_TILE,
-		    offs(terrain_tile_names[FIELD_TILE])}, {
-	"mountain-tile", FALSE, FNAME, MOUNTAIN_TILE,
-		    offs(terrain_tile_names[MOUNTAIN_TILE])}, {
-	"pasture-tile", FALSE, FNAME, PASTURE_TILE,
-		    offs(terrain_tile_names[PASTURE_TILE])}, {
-	"forest-tile", FALSE, FNAME, FOREST_TILE,
-		    offs(terrain_tile_names[FOREST_TILE])}, {
-	"desert-tile", FALSE, FNAME, -1,
-		    offs(terrain_tile_names[DESERT_TILE])}, {
-	"sea-tile", FALSE, FNAME, SEA_TILE,
-		    offs(terrain_tile_names[SEA_TILE])}, {
-	"gold-tile", FALSE, FNAME, GOLD_TILE,
-		    offs(terrain_tile_names[GOLD_TILE])}, {
-	"board-tile", FALSE, FNAME, -1,
-		    offs(terrain_tile_names[BOARD_TILE])}, {
-	"brick-port-tile", TRUE, FNAME, -1,
-		    offs(port_tile_names[HILL_PORT_TILE])}, {
-	"grain-port-tile", TRUE, FNAME, -1,
-		    offs(port_tile_names[FIELD_PORT_TILE])}, {
-	"ore-port-tile", TRUE, FNAME, -1,
-		    offs(port_tile_names[MOUNTAIN_PORT_TILE])}, {
-	"wool-port-tile", TRUE, FNAME, -1,
-		    offs(port_tile_names[PASTURE_PORT_TILE])}, {
-	"lumber-port-tile", TRUE, FNAME, -1,
-		    offs(port_tile_names[FOREST_PORT_TILE])}, {
-	"nores-port-tile", TRUE, FNAME, -1,
-		    offs(port_tile_names[ANY_PORT_TILE])}, {
-	"chip-bg-color", TRUE, COL, -1, offs(colors[TC_CHIP_BG])}, {
-	"chip-fg-color", TRUE, COL, -1, offs(colors[TC_CHIP_FG])}, {
-	"chip-bd-color", TRUE, COL, -1, offs(colors[TC_CHIP_BD])}, {
-	"chip-hi-bg-color", TRUE, COL, -1, offs(colors[TC_CHIP_H_BG])},
-	{
-	"chip-hi-fg-color", TRUE, COL, -1, offs(colors[TC_CHIP_H_FG])},
-	{
-	"port-bg-color", TRUE, COL, -1, offs(colors[TC_PORT_BG])}, {
-	"port-fg-color", TRUE, COL, -1, offs(colors[TC_PORT_FG])}, {
-	"port-bd-color", TRUE, COL, -1, offs(colors[TC_PORT_BD])}, {
-	"robber-fg-color", TRUE, COL, -1, offs(colors[TC_ROBBER_FG])},
-	{
-	"robber-bd-color", TRUE, COL, -1, offs(colors[TC_ROBBER_BD])},
-	{
-	"hex-bd-color", TRUE, COL, -1, offs(colors[TC_HEX_BD])}, {
-	"scaling", FALSE, SCMODE, -1, offs(scaling)}
+	{ "name", TRUE, STR, -1, offs(name) },
+	{ "hill-tile", FALSE, FNAME, HILL_TILE,
+	 offs(terrain_tile_names[HILL_TILE]) },
+	{ "field-tile", FALSE, FNAME, FIELD_TILE,
+	 offs(terrain_tile_names[FIELD_TILE]) },
+	{ "mountain-tile", FALSE, FNAME, MOUNTAIN_TILE,
+	 offs(terrain_tile_names[MOUNTAIN_TILE]) },
+	{ "pasture-tile", FALSE, FNAME, PASTURE_TILE,
+	 offs(terrain_tile_names[PASTURE_TILE]) },
+	{ "forest-tile", FALSE, FNAME, FOREST_TILE,
+	 offs(terrain_tile_names[FOREST_TILE]) },
+	{ "desert-tile", FALSE, FNAME, -1,
+	 offs(terrain_tile_names[DESERT_TILE]) },
+	{ "sea-tile", FALSE, FNAME, SEA_TILE,
+	 offs(terrain_tile_names[SEA_TILE]) },
+	{ "gold-tile", FALSE, FNAME, GOLD_TILE,
+	 offs(terrain_tile_names[GOLD_TILE]) },
+	{ "board-tile", FALSE, FNAME, -1,
+	 offs(terrain_tile_names[BOARD_TILE]) },
+	{ "brick-port-tile", TRUE, FNAME, -1,
+	 offs(port_tile_names[HILL_PORT_TILE]) },
+	{ "grain-port-tile", TRUE, FNAME, -1,
+	 offs(port_tile_names[FIELD_PORT_TILE]) },
+	{ "ore-port-tile", TRUE, FNAME, -1,
+	 offs(port_tile_names[MOUNTAIN_PORT_TILE]) },
+	{ "wool-port-tile", TRUE, FNAME, -1,
+	 offs(port_tile_names[PASTURE_PORT_TILE]) },
+	{ "lumber-port-tile", TRUE, FNAME, -1,
+	 offs(port_tile_names[FOREST_PORT_TILE]) },
+	{ "nores-port-tile", TRUE, FNAME, -1,
+	 offs(port_tile_names[ANY_PORT_TILE]) },
+	{ "chip-bg-color", TRUE, COL, -1, offs(colors[TC_CHIP_BG]) },
+	{ "chip-fg-color", TRUE, COL, -1, offs(colors[TC_CHIP_FG]) },
+	{ "chip-bd-color", TRUE, COL, -1, offs(colors[TC_CHIP_BD]) },
+	{ "chip-hi-bg-color", TRUE, COL, -1, offs(colors[TC_CHIP_H_BG]) },
+
+	{ "chip-hi-fg-color", TRUE, COL, -1, offs(colors[TC_CHIP_H_FG]) },
+	{ "port-bg-color", TRUE, COL, -1, offs(colors[TC_PORT_BG]) },
+	{ "port-fg-color", TRUE, COL, -1, offs(colors[TC_PORT_FG]) },
+	{ "port-bd-color", TRUE, COL, -1, offs(colors[TC_PORT_BD]) },
+	{ "robber-fg-color", TRUE, COL, -1, offs(colors[TC_ROBBER_FG]) },
+	{ "robber-bd-color", TRUE, COL, -1, offs(colors[TC_ROBBER_BD]) },
+	{ "hex-bd-color", TRUE, COL, -1, offs(colors[TC_HEX_BD]) },
+	{ "scaling", FALSE, SCMODE, -1, offs(scaling) }
 };
 
 static GList *theme_list = NULL;

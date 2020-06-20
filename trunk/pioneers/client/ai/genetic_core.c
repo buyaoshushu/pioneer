@@ -50,26 +50,31 @@ static float strategyProfit(float time_a, float time_b, float turn,
 			    int num_players);
 
 static int resourcesNeededForAction[NUM_ACTIONS][5] = {
-	/*Resources of every type needed to perform every action possible */
-	{1, 1, 0, 1, 1}, /*SET*/ {0, 2, 3, 0, 0}, /*CIT*/ {0, 1, 1, 1, 0}, /*DEV*/ {2, 1, 0, 1, 2}, /*RSET*/ {3, 1, 0, 1, 3}, /*RRSET*/ {2, 2, 0, 2, 2},	/*SET+SET */
-	{1, 3, 3, 1, 1},	/*SET+CIT */
-	{1, 2, 1, 2, 1},	/*SET+DEV */
-	{3, 2, 0, 2, 3},	/*SET+RSET */
-	{4, 2, 0, 2, 4},	/*SET+RRSET */
+/*Resources of every type needed to perform every action possible */
+	{ 1, 1, 0, 1, 1 },	/*SET */
+	{ 0, 2, 3, 0, 0 },	/*CIT */
+	{ 0, 1, 1, 1, 0 },	/*DEV */
+	{ 2, 1, 0, 1, 2 },	/*RSET */
+	{ 3, 1, 0, 1, 3 },	/*RRSET */
+	{ 2, 2, 0, 2, 2 },	/*SET+SET */
+	{ 1, 3, 3, 1, 1 },	/*SET+CIT */
+	{ 1, 2, 1, 2, 1 },	/*SET+DEV */
+	{ 3, 2, 0, 2, 3 },	/*SET+RSET */
+	{ 4, 2, 0, 2, 4 },	/*SET+RRSET */
 
-	{0, 4, 6, 0, 0},	/*CIT+CIT */
-	{0, 3, 4, 1, 0},	/*CIT+DEV */
-	{2, 3, 3, 1, 2},	/*CIT+RSET */
-	{3, 3, 3, 1, 3},	/*CIT+RRSET */
+	{ 0, 4, 6, 0, 0 },	/*CIT+CIT */
+	{ 0, 3, 4, 1, 0 },	/*CIT+DEV */
+	{ 2, 3, 3, 1, 2 },	/*CIT+RSET */
+	{ 3, 3, 3, 1, 3 },	/*CIT+RRSET */
 
-	{0, 2, 2, 2, 0},	/*DEV+DEV */
-	{2, 2, 1, 2, 2},	/*DEV+RSET */
-	{3, 2, 1, 2, 3},	/*DEV+RRSET */
+	{ 0, 2, 2, 2, 0 },	/*DEV+DEV */
+	{ 2, 2, 1, 2, 2 },	/*DEV+RSET */
+	{ 3, 2, 1, 2, 3 },	/*DEV+RRSET */
 
-	{4, 2, 0, 2, 4},	/*RSET+RSET */
-	{5, 2, 0, 2, 5},	/*RSET+RRSET */
+	{ 4, 2, 0, 2, 4 },	/*RSET+RSET */
+	{ 5, 2, 0, 2, 5 },	/*RSET+RRSET */
 
-	{6, 2, 0, 2, 6}		/*RRSET+RRSET */
+	{ 6, 2, 0, 2, 6 }	/*RRSET+RRSET */
 };				/*First index is the action, second index the kind of resource */
 
 int totalResources(const struct gameState_t *myGameState)

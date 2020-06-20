@@ -49,20 +49,20 @@ typedef struct {
 } Statistic;
 
 static Statistic statistics[] = {
-	{N_("Settlement"), N_("Settlements"), &ps_settlement},
-	{N_("City"), N_("Cities"), &ps_city},
-	{N_("City wall"), N_("City walls"), &ps_city_wall},
-	{N_("Largest army"), NULL, &ps_largest},
-	{N_("Longest road"), NULL, &ps_largest},
-	{N_("Chapel"), N_("Chapels"), &ps_building},
-	{N_("Pioneer university"), N_("Pioneer universities"),
-	 &ps_building},
-	{N_("Governor's house"), N_("Governor's houses"), &ps_building},
-	{N_("Library"), N_("Libraries"), &ps_building},
-	{N_("Market"), N_("Markets"), &ps_building},
-	{N_("Soldier"), N_("Soldiers"), &ps_soldier},
-	{N_("Resource card"), N_("Resource cards"), &ps_resource},
-	{N_("Development card"), N_("Development cards"), &ps_development}
+	{ N_("Settlement"), N_("Settlements"), &ps_settlement },
+	{ N_("City"), N_("Cities"), &ps_city },
+	{ N_("City wall"), N_("City walls"), &ps_city_wall },
+	{ N_("Largest army"), NULL, &ps_largest },
+	{ N_("Longest road"), NULL, &ps_largest },
+	{ N_("Chapel"), N_("Chapels"), &ps_building },
+	{ N_("Pioneer university"), N_("Pioneer universities"),
+	 &ps_building },
+	{ N_("Governor's house"), N_("Governor's houses"), &ps_building },
+	{ N_("Library"), N_("Libraries"), &ps_building },
+	{ N_("Market"), N_("Markets"), &ps_building },
+	{ N_("Soldier"), N_("Soldiers"), &ps_soldier },
+	{ N_("Resource card"), N_("Resource cards"), &ps_resource },
+	{ N_("Development card"), N_("Development cards"), &ps_development }
 };
 
 enum {

@@ -279,8 +279,8 @@ GtkWidget *guimap_build_drawingarea(GuiMap * gmap, gint width, gint height)
 }
 
 static GdkPoint settlement_points[] = {
-	{20, 20}, {20, -8}, {0, -28}, {-20, -8},
-	{-20, 20}, {20, 20}
+	{ 20, 20 }, { 20, -8 }, { 0, -28 }, { -20, -8 },
+	{ -20, 20 }, { 20, 20 }
 };
 
 static Polygon settlement_poly = {
@@ -289,8 +289,8 @@ static Polygon settlement_poly = {
 };
 
 static GdkPoint city_points[] = {
-	{40, 20}, {40, -16}, {2, -16}, {2, -28},
-	{-19, -48}, {-40, -28}, {-40, 20}, {40, 20}
+	{ 40, 20 }, { 40, -16 }, { 2, -16 }, { 2, -28 },
+	{ -19, -48 }, { -40, -28 }, { -40, 20 }, { 40, 20 }
 };
 
 static Polygon city_poly = {
@@ -299,7 +299,7 @@ static Polygon city_poly = {
 };
 
 static GdkPoint city_wall_points[] = {
-	{50, 36}, {50, -64}, {-50, -64}, {-50, 36}
+	{ 50, 36 }, { 50, -64 }, { -50, -64 }, { -50, 36 }
 };
 
 static Polygon city_wall_poly = {
@@ -308,8 +308,8 @@ static Polygon city_wall_poly = {
 };
 
 static GdkPoint nosetup_points[] = {
-	{0, 30}, {26, 15}, {26, -15}, {0, -30},
-	{-26, -15}, {-26, 15}, {0, 30}
+	{ 0, 30 }, { 26, 15 }, { 26, -15 }, { 0, -30 },
+	{ -26, -15 }, { -26, 15 }, { 0, 30 }
 };
 
 static Polygon nosetup_poly = {
@@ -324,10 +324,10 @@ static Polygon nosetup_poly = {
 #define NODE_MAX_Y 36
 
 static GdkPoint largest_node_points[] = {
-	{NODE_MIN_X, NODE_MIN_Y},
-	{NODE_MIN_X, NODE_MAX_Y},
-	{NODE_MAX_X, NODE_MAX_Y},
-	{NODE_MAX_X, NODE_MIN_Y}
+	{ NODE_MIN_X, NODE_MIN_Y },
+	{ NODE_MIN_X, NODE_MAX_Y },
+	{ NODE_MAX_X, NODE_MAX_Y },
+	{ NODE_MAX_X, NODE_MIN_Y }
 };
 
 static Polygon largest_node_poly = {
@@ -336,8 +336,8 @@ static Polygon largest_node_poly = {
 };
 
 static GdkPoint road_points[] = {
-	{10, 40}, {10, -40}, {-10, -40}, {-10, 40},
-	{10, 40}
+	{ 10, 40 }, { 10, -40 }, { -10, -40 }, { -10, 40 },
+	{ 10, 40 }
 };
 
 static Polygon road_poly = {
@@ -346,10 +346,10 @@ static Polygon road_poly = {
 };
 
 static GdkPoint ship_points[] = {
-	{10, 32}, {10, 8}, {24, 18}, {42, 8},
-	{48, 0}, {50, -12}, {10, -12}, {10, -32},
-	{2, -32}, {-6, -26}, {-10, -16}, {-10, 16},
-	{-6, 26}, {2, 32}, {10, 32}
+	{ 10, 32 }, { 10, 8 }, { 24, 18 }, { 42, 8 },
+	{ 48, 0 }, { 50, -12 }, { 10, -12 }, { 10, -32 },
+	{ 2, -32 }, { -6, -26 }, { -10, -16 }, { -10, 16 },
+	{ -6, 26 }, { 2, 32 }, { 10, 32 }
 };
 
 static Polygon ship_poly = {
@@ -358,9 +358,9 @@ static Polygon ship_poly = {
 };
 
 static GdkPoint bridge_points[] = {
-	{13, 40}, {-14, 40}, {-14, 30}, {-1, 15},
-	{-1, -15}, {-14, -30}, {-14, -40}, {13, -40},
-	{13, 40}
+	{ 13, 40 }, { -14, 40 }, { -14, 30 }, { -1, 15 },
+	{ -1, -15 }, { -14, -30 }, { -14, -40 }, { 13, -40 },
+	{ 13, 40 }
 };
 
 static Polygon bridge_poly = {
@@ -375,10 +375,10 @@ static Polygon bridge_poly = {
 #define EDGE_MAX_Y 40
 
 static GdkPoint largest_edge_points[] = {
-	{EDGE_MIN_X, EDGE_MIN_Y},
-	{EDGE_MIN_X, EDGE_MAX_Y},
-	{EDGE_MAX_X, EDGE_MAX_Y},
-	{EDGE_MAX_X, EDGE_MIN_Y}
+	{ EDGE_MIN_X, EDGE_MIN_Y },
+	{ EDGE_MIN_X, EDGE_MAX_Y },
+	{ EDGE_MAX_X, EDGE_MAX_Y },
+	{ EDGE_MAX_X, EDGE_MIN_Y }
 };
 
 static Polygon largest_edge_poly = {
@@ -387,11 +387,11 @@ static Polygon largest_edge_poly = {
 };
 
 static GdkPoint robber_points[] = {
-	{30, 60}, {30, 4}, {28, -6}, {22, -15},
-	{12, -20}, {22, -32}, {22, -48}, {10, -60},
-	{-10, -60}, {-22, -48}, {-22, -32}, {-12, -20},
-	{-22, -15}, {-28, -6}, {-30, 4}, {-30, 60},
-	{30, 60}
+	{ 30, 60 }, { 30, 4 }, { 28, -6 }, { 22, -15 },
+	{ 12, -20 }, { 22, -32 }, { 22, -48 }, { 10, -60 },
+	{ -10, -60 }, { -22, -48 }, { -22, -32 }, { -12, -20 },
+	{ -22, -15 }, { -28, -6 }, { -30, 4 }, { -30, 60 },
+	{ 30, 60 }
 };
 
 static Polygon robber_poly = {
@@ -400,10 +400,10 @@ static Polygon robber_poly = {
 };
 
 static GdkPoint pirate_points[] = {
-	{42, 15}, {18, 15}, {28, 1}, {18, -17},
-	{10, -23}, {-2, -25}, {-2, 15}, {-22, 15},
-	{-22, 23}, {-16, 31}, {-6, 35}, {26, 35},
-	{36, 31}, {42, 23}, {42, 15}
+	{ 42, 15 }, { 18, 15 }, { 28, 1 }, { 18, -17 },
+	{ 10, -23 }, { -2, -25 }, { -2, 15 }, { -22, 15 },
+	{ -22, 23 }, { -16, 31 }, { -6, 35 }, { 26, 35 },
+	{ 36, 31 }, { 42, 23 }, { 42, 15 }
 };
 
 static Polygon pirate_poly = {
@@ -1625,23 +1625,23 @@ void guimap_draw_hex(GuiMap * gmap, const Hex * hex)
 }
 
 typedef struct {
-	void (*find) (GuiMap * gmap, MapElement * element);
-	void (*erase_cursor) (GuiMap * gmap);
-	void (*draw_cursor) (GuiMap * gmap);
+	void (*find)(GuiMap * gmap, MapElement * element);
+	void (*erase_cursor)(GuiMap * gmap);
+	void (*draw_cursor)(GuiMap * gmap);
 } ModeCursor;
 
 /* This array must follow the enum CursorType */
 static ModeCursor cursors[] = {
-	{NULL, NULL, NULL},	/* NO_CURSOR */
-	{find_edge, erase_edge_cursor, draw_road_cursor},	/* ROAD_CURSOR */
-	{find_edge, erase_edge_cursor, draw_ship_cursor},	/* SHIP_CURSOR */
-	{find_edge, erase_edge_cursor, draw_bridge_cursor},	/* BRIDGE_CURSOR */
-	{find_node, erase_node_cursor, draw_settlement_cursor},	/* SETTLEMENT_CURSOR */
-	{find_node, erase_node_cursor, draw_city_cursor},	/* CITY_CURSOR */
-	{find_node, erase_node_cursor, draw_city_wall_cursor},	/* CITY_WALL_CURSOR */
-	{find_node, erase_node_cursor, draw_steal_building_cursor},	/* STEAL_BUILDING_CURSOR */
-	{find_edge, erase_edge_cursor, draw_steal_ship_cursor},	/* STEAL_SHIP_CURSOR */
-	{find_hex, erase_robber_cursor, draw_robber_cursor}	/* ROBBER_CURSOR */
+	{ NULL, NULL, NULL },	/* NO_CURSOR */
+	{ find_edge, erase_edge_cursor, draw_road_cursor },	/* ROAD_CURSOR */
+	{ find_edge, erase_edge_cursor, draw_ship_cursor },	/* SHIP_CURSOR */
+	{ find_edge, erase_edge_cursor, draw_bridge_cursor },	/* BRIDGE_CURSOR */
+	{ find_node, erase_node_cursor, draw_settlement_cursor },	/* SETTLEMENT_CURSOR */
+	{ find_node, erase_node_cursor, draw_city_cursor },	/* CITY_CURSOR */
+	{ find_node, erase_node_cursor, draw_city_wall_cursor },	/* CITY_WALL_CURSOR */
+	{ find_node, erase_node_cursor, draw_steal_building_cursor },	/* STEAL_BUILDING_CURSOR */
+	{ find_edge, erase_edge_cursor, draw_steal_ship_cursor },	/* STEAL_SHIP_CURSOR */
+	{ find_hex, erase_robber_cursor, draw_robber_cursor }	/* ROBBER_CURSOR */
 };
 
 gboolean roadM, shipM, bridgeM, settlementM, cityM, cityWallM, shipMoveM;

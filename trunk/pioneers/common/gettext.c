@@ -36,9 +36,12 @@ void gettext_init(void)
 	setlocale(LC_ALL, "");
 #endif
 #ifdef G_OS_WIN32
-	gchar *root_glib_encoding = g_win32_get_package_installation_directory_of_module(NULL);
-	gchar *full_path_glib_encoding = g_build_filename(root_glib_encoding, LOCALEDIR, NULL);
-	gchar *full_path_local_encoding = g_win32_locale_filename_from_utf8(full_path_glib_encoding);
+	gchar *root_glib_encoding =
+	    g_win32_get_package_installation_directory_of_module(NULL);
+	gchar *full_path_glib_encoding =
+	    g_build_filename(root_glib_encoding, LOCALEDIR, NULL);
+	gchar *full_path_local_encoding =
+	    g_win32_locale_filename_from_utf8(full_path_glib_encoding);
 	bindtextdomain(PACKAGE, full_path_local_encoding);
 	g_free(full_path_local_encoding);
 	g_free(full_path_glib_encoding);
@@ -48,5 +51,5 @@ void gettext_init(void)
 #endif
 	textdomain(PACKAGE);
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
-#endif /* ENABLE_NLS */
+#endif				/* ENABLE_NLS */
 }

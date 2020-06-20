@@ -73,8 +73,8 @@ struct _QuoteView {
 struct _QuoteViewClass {
 	GtkScrolledWindowClass parent_class;
 
-	void (*selection_changed) (QuoteView * qv);
-	void (*selection_activated) (QuoteView * qv);
+	void (*selection_changed)(QuoteView * qv);
+	void (*selection_activated)(QuoteView * qv);
 };
 
 GType quote_view_get_type(void);

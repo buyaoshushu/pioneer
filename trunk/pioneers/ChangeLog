@@ -5,6 +5,17 @@
 	initialisation for gettext to a single location. This fixes the
 	translation for the MinGW port (selectable with the environment
 	variable LANG). Note that on Linux you should use LANGUAGE.
+	* client/ai/ai.c, client/ai/genetic.c, client/ai/genetic_core.c,
+	client/callback.h, client/common/resource.c, client/gtk/connect.c,
+	client/gtk/gui.h, client/gtk/identity.c, client/gtk/offline.c,
+	client/gtk/player.c, client/gtk/quote-view.h,
+	client/gtk/resource-table.h, common/driver.h, common/game.c,
+	common/game.h, common/gettext.c, common/gtk/colors.c,
+	common/gtk/game-settings.h, common/gtk/guimap.c, common/gtk/guimap.h,
+	common/gtk/select-game.h, common/gtk/theme.c, common/log.h,
+	common/network.h, common/set.h, editor/gtk/editor.c,
+	metaserver/main.c, server/gtk/main.c, server/main.c: Upgraded from
+	indent 2.2.11 to 2.2.12.
 
 2020-06-13  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/gold.c: Show the order of the players that select gold.

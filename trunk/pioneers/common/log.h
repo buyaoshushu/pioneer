@@ -27,7 +27,7 @@
 #include <glib/gi18n.h>
 
 /** Type of logging functions */
-typedef void (*LogFunc) (gint msg_type, const gchar * text);
+typedef void (*LogFunc)(gint msg_type, const gchar * text);
 
 /* Message Types */
 #define MSG_ERROR	1
