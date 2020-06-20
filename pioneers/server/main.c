@@ -23,9 +23,6 @@
 #include "config.h"
 #include "version.h"
 
-#ifdef HAVE_LOCALE_H
-#include <locale.h>
-#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -46,6 +43,7 @@
 
 #include "common_glib.h"
 #include "glib-driver.h"
+#include "gettext.h"
 
 #include "admin.h"
 
@@ -179,16 +177,10 @@ int main(int argc, char *argv[])
 
 	g_type_init();
 
-#ifdef ENABLE_NLS
-	setlocale(LC_ALL, "");
-	bindtextdomain(PACKAGE, LOCALEDIR);
-	textdomain(PACKAGE);
-
-	/* have gettext return strings in UTF-8 */
-	bind_textdomain_codeset(PACKAGE, "UTF-8");
-#endif
-
 	server_init();
+
+	/* Initialize translations */
+	gettext_init();
 
 	/* Long description in the commandline for server-console: help */
 	context = g_option_context_new(_("- Host a game of Pioneers"));

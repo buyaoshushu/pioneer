@@ -21,9 +21,6 @@
  */
 
 #include "config.h"
-#ifdef HAVE_LOCALE_H
-#include <locale.h>
-#endif
 #include <stdlib.h>
 #include <errno.h>
 #include <syslog.h>
@@ -39,6 +36,7 @@
 #include "log.h"
 #include "common_glib.h"
 #include "game-list.h"
+#include "gettext.h"
 
 typedef enum {
 	META_UNKNOWN,
@@ -662,14 +660,8 @@ int main(int argc, char *argv[])
 	set_ui_driver(&Glib_Driver);
 	g_type_init();
 
-#ifdef ENABLE_NLS
-	setlocale(LC_ALL, "");
-	bindtextdomain(PACKAGE, LOCALEDIR);
-	textdomain(PACKAGE);
-
-	/* have gettext return strings in UTF-8 */
-	bind_textdomain_codeset(PACKAGE, "UTF-8");
-#endif
+	/* Initialize translations */
+	gettext_init();
 
 	/* Long description in the commandline for metaserver: help */
 	context = g_option_context_new(_("- Metaserver for Pioneers"));

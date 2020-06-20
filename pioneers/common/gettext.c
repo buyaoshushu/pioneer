@@ -1,8 +1,7 @@
 /* Pioneers - Implementation of the excellent Settlers of Catan board game.
  *   Go buy a copy.
  *
- * Copyright (C) 1999 Dave Cole
- * Copyright (C) 2003 Bas Wijnen <shevek@fmf.nl>
+ * Copyright (C) 2020 Roland Clobus <rclobus@rclobus.nl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,52 +19,34 @@
  */
 
 #include "config.h"
+#ifdef ENABLE_NLS
 #include <glib.h>
+#include <libintl.h>
+#ifdef HAVE_SETLOCALE
+#include <locale.h>
+#endif
+#endif
 
-#include "client.h"
-#include "callback.h"
-#include "network.h"
 #include "gettext.h"
 
-static GMainLoop *loop;
-
-static void run_main(void)
+void gettext_init(void)
 {
-	loop = g_main_loop_new(NULL, FALSE);
-	g_main_loop_run(loop);
-	g_main_loop_unref(loop);
-}
-
-static void quit(void)
-{
-	if (loop != NULL) {
-		g_main_loop_quit(loop);
-	}
-	callbacks.mainloop = NULL;
-}
-
-int main(int argc, char *argv[])
-{
-	net_init();
-
-	client_init();
-	callbacks.mainloop = &run_main;
-	callbacks.quit = &quit;
-	loop = NULL;
-
-	/* Initialize translations */
-	gettext_init();
-
-	frontend_set_callbacks();
-
-	/* this must come after the frontend_set_callbacks, because it sets the
-	 * mode to offline, which means a callback is called. */
-	client_start(argc, argv);
-
-	if (callbacks.mainloop != NULL) {
-		callbacks.mainloop();
-	}
-
-	net_finish();
-	return 0;
+#ifdef ENABLE_NLS
+#ifdef HAVE_SETLOCALE
+	setlocale(LC_ALL, "");
+#endif
+#ifdef G_OS_WIN32
+	gchar *root_glib_encoding = g_win32_get_package_installation_directory_of_module(NULL);
+	gchar *full_path_glib_encoding = g_build_filename(root_glib_encoding, LOCALEDIR, NULL);
+	gchar *full_path_local_encoding = g_win32_locale_filename_from_utf8(full_path_glib_encoding);
+	bindtextdomain(PACKAGE, full_path_local_encoding);
+	g_free(full_path_local_encoding);
+	g_free(full_path_glib_encoding);
+	g_free(root_glib_encoding);
+#else
+	bindtextdomain(PACKAGE, LOCALEDIR);
+#endif
+	textdomain(PACKAGE);
+	bind_textdomain_codeset(PACKAGE, "UTF-8");
+#endif /* ENABLE_NLS */
 }

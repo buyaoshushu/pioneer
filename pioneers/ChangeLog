@@ -1,3 +1,11 @@
+2020-06-20  Roland Clobus <rclobus@rclobus.nl>
+	* client/common/main.c, client/gtk/offline.c, common/Makefile.am,
+	common/gettext.c, common/gettext.h, configure.ac, editor/gtk/editor.c,
+	metaserver/main.c, server/gtk/main.c, server/main.c: Moved the
+	initialisation for gettext to a single location. This fixes the
+	translation for the MinGW port (selectable with the environment
+	variable LANG). Note that on Linux you should use LANGUAGE.
+
 2020-06-13  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/gold.c: Show the order of the players that select gold.
 	* client/gtk/data/develop.svg: Use Times New Roman on Windows.

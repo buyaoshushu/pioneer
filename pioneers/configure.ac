@@ -461,16 +461,17 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [The gettext package nam
 if test $pioneers_is_mingw_port = yes; then
 	# No console window for the graphical applications
 	AC_SUBST(GTK_LIBS, "$GTK_LIBS -mwindows")
-	# Don't use bin, lib and share subdirectories
+	# Don't use the share subdirectory for themes and pixmaps
 	datadir='${prefix}'
+	# Don't use bin subdirectories
 	bindir='${prefix}'
-	libdir='${prefix}'
+	# Use a relative path, to make the executable relocatable
 	pioneers_datadir=.
 	pioneers_iconthemedir=$datadir/share/icons/hicolor
+	# Use a flat hierarchy for the themes
 	pioneers_themedir=$datadir/themes
 	pioneers_themedir_embed=themes
-	pioneers_localedir=locale
-	DATADIRNAME=.
+	pioneers_localedir=share/locale
 else
 	pioneers_datadir=$datadir
 	pioneers_iconthemedir=$datadir/icons/hicolor
