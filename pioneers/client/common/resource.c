@@ -32,23 +32,23 @@
 static gint bank[NO_RESOURCE];
 
 static const gchar *resource_names[][2] = {
-	{N_("brick"), N_("Brick")},
-	{N_("grain"), N_("Grain")},
-	{N_("ore"), N_("Ore")},
-	{N_("wool"), N_("Wool")},
-	{N_("lumber"), N_("Lumber")},
-	{N_("no resource (bug)"), N_("No resource (bug)")},
-	{N_("any resource (bug)"), N_("Any resource (bug)")},
-	{N_("gold"), N_("Gold")}
+	{ N_("brick"), N_("Brick") },
+	{ N_("grain"), N_("Grain") },
+	{ N_("ore"), N_("Ore") },
+	{ N_("wool"), N_("Wool") },
+	{ N_("lumber"), N_("Lumber") },
+	{ N_("no resource (bug)"), N_("No resource (bug)") },
+	{ N_("any resource (bug)"), N_("Any resource (bug)") },
+	{ N_("gold"), N_("Gold") }
 };
 
 
 static const gchar *resource_lists[][2] = {
-	{N_("a brick card"), N_("%d brick cards")},
-	{N_("a grain card"), N_("%d grain cards")},
-	{N_("an ore card"), N_("%d ore cards")},
-	{N_("a wool card"), N_("%d wool cards")},
-	{N_("a lumber card"), N_("%d lumber cards")}
+	{ N_("a brick card"), N_("%d brick cards") },
+	{ N_("a grain card"), N_("%d grain cards") },
+	{ N_("an ore card"), N_("%d ore cards") },
+	{ N_("a wool card"), N_("%d wool cards") },
+	{ N_("a lumber card"), N_("%d lumber cards") }
 };
 
 typedef enum {

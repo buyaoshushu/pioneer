@@ -71,7 +71,7 @@ gint hotkeys_handler(GtkWidget * w, GdkEvent * e, gpointer data);
 extern GtkWidget *app_window;	/* main application window */
 
 /* gui states */
-typedef void (*GuiState) (GuiEvent event);
+typedef void (*GuiState)(GuiEvent event);
 
 #define set_gui_state(A) do \
 		{ debug("New GUI_state: %s %p\n", #A, A); \

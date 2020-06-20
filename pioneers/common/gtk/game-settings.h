@@ -37,9 +37,9 @@ struct _GameSettings {
 struct _GameSettingsClass {
 	GtkGridClass parent_class;
 
-	void (*change) (GameSettings * gs);
-	void (*change_players) (GameSettings * gs);
-	void (*check) (GameSettings * gs);
+	void (*change)(GameSettings * gs);
+	void (*change_players)(GameSettings * gs);
+	void (*check)(GameSettings * gs);
 };
 
 GType game_settings_get_type(void);

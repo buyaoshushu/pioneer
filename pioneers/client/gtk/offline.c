@@ -47,27 +47,28 @@ static gboolean show_version = FALSE;
 
 static GOptionEntry commandline_entries[] = {
 	/* Commandline option of client: hostname of the server */
-	{"server", 's', 0, G_OPTION_ARG_STRING, &server, N_("Server host"),
-	 PIONEERS_DEFAULT_GAME_HOST},
+	{ "server", 's', 0, G_OPTION_ARG_STRING, &server,
+	 N_("Server host"),
+	 PIONEERS_DEFAULT_GAME_HOST },
 	/* Commandline option of client: port of the server */
-	{"port", 'p', 0, G_OPTION_ARG_STRING, &port, N_("Server port"),
-	 PIONEERS_DEFAULT_GAME_PORT},
+	{ "port", 'p', 0, G_OPTION_ARG_STRING, &port, N_("Server port"),
+	 PIONEERS_DEFAULT_GAME_PORT },
 	/* Commandline option of client: name of the player */
-	{"name", 'n', 0, G_OPTION_ARG_STRING, &name, N_("Player name"),
-	 NULL},
+	{ "name", 'n', 0, G_OPTION_ARG_STRING, &name, N_("Player name"),
+	 NULL },
 	/* Commandline option of client: do we want to be a spectator */
-	{"spectator", 'v', 0, G_OPTION_ARG_NONE, &spectator,
-	 N_("Connect as a spectator"), NULL},
+	{ "spectator", 'v', 0, G_OPTION_ARG_NONE, &spectator,
+	 N_("Connect as a spectator"), NULL },
 	/* Commandline option of client: hostname of the metaserver */
-	{"metaserver", 'm', 0, G_OPTION_ARG_STRING, &metaserver,
-	 N_("Metaserver Host"), PIONEERS_DEFAULT_METASERVER},
-	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
+	{ "metaserver", 'm', 0, G_OPTION_ARG_STRING, &metaserver,
+	 N_("Metaserver Host"), PIONEERS_DEFAULT_METASERVER },
+	{ "debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
 	 /* Commandline option of client: enable debug logging */
-	 N_("Enable debug messages"), NULL},
-	{"version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
+	 N_("Enable debug messages"), NULL },
+	{ "version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
 	 /* Commandline option of client: version */
-	 N_("Show version information"), NULL},
-	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+	 N_("Show version information"), NULL },
+	{ NULL, '\0', 0, 0, NULL, NULL, NULL }
 };
 
 static void frontend_offline_start_connect_cb(void)

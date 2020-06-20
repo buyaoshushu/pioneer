@@ -77,7 +77,7 @@ guint set_size(Set * set);
  */
 void set_free(Set * set);
 
-typedef void (*SetForEachFunc) (gpointer element, gpointer user_data);
+typedef void (*SetForEachFunc)(gpointer element, gpointer user_data);
 
 /** Iterate through all elements in the Set.
  * @memberof _Set

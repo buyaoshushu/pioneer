@@ -58,9 +58,9 @@ typedef union {
 
 typedef gboolean(*CheckFunc) (const MapElement element, gint owner,
 			      const MapElement user_data);
-typedef void (*SelectFunc) (const MapElement obj,
-			    const MapElement user_data);
-typedef void (*CancelFunc) (void);
+typedef void (*SelectFunc)(const MapElement obj,
+			   const MapElement user_data);
+typedef void (*CancelFunc)(void);
 
 typedef struct _Mode Mode;
 typedef struct {

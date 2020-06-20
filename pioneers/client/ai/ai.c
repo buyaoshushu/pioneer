@@ -66,7 +66,7 @@ static const struct algorithm_info {
 	/** Name of the algorithm (for commandline) */
 	const gchar *name;
 	/** Init function */
-	void (*init_func) (void);
+	void (*init_func)(void);
 	/** Request to be a player? */
 	gboolean request_player;
 	/** Quit if request not honoured */
@@ -85,34 +85,34 @@ static guint active_algorithm = 0;
 UIDriver Glib_Driver;
 
 static GOptionEntry commandline_entries[] = {
-	{"chromosome-file", '\0', 0, G_OPTION_ARG_STRING, &chromosomeFile,
+	{ "chromosome-file", '\0', 0, G_OPTION_ARG_STRING, &chromosomeFile,
 	 /* Commandline pioneersai: chromosome-file */
-	 N_("Chromosome File"), NULL},
-	{"server", 's', 0, G_OPTION_ARG_STRING, &server,
+	 N_("Chromosome File"), NULL },
+	{ "server", 's', 0, G_OPTION_ARG_STRING, &server,
 	 /* Commandline pioneersai: server */
-	 N_("Server Host"), PIONEERS_DEFAULT_GAME_HOST},
-	{"port", 'p', 0, G_OPTION_ARG_STRING, &port,
+	 N_("Server Host"), PIONEERS_DEFAULT_GAME_HOST },
+	{ "port", 'p', 0, G_OPTION_ARG_STRING, &port,
 	 /* Commandline pioneersai: port */
-	 N_("Server Port"), PIONEERS_DEFAULT_GAME_PORT},
-	{"name", 'n', 0, G_OPTION_ARG_STRING, &name,
+	 N_("Server Port"), PIONEERS_DEFAULT_GAME_PORT },
+	{ "name", 'n', 0, G_OPTION_ARG_STRING, &name,
 	 /* Commandline pioneersai: name */
-	 N_("Computer name (mandatory)"), NULL},
-	{"time", 't', 0, G_OPTION_ARG_INT, &waittime,
+	 N_("Computer name (mandatory)"), NULL },
+	{ "time", 't', 0, G_OPTION_ARG_INT, &waittime,
 	 /* Commandline pioneersai: time */
-	 N_("Time to wait between turns (in milliseconds)"), "1000"},
-	{"chat-free", 'c', 0, G_OPTION_ARG_NONE, &silent,
+	 N_("Time to wait between turns (in milliseconds)"), "1000" },
+	{ "chat-free", 'c', 0, G_OPTION_ARG_NONE, &silent,
 	 /* Commandline pioneersai: chat-free */
-	 N_("Stop computer player from talking"), NULL},
-	{"algorithm", 'a', 0, G_OPTION_ARG_STRING, &ai,
+	 N_("Stop computer player from talking"), NULL },
+	{ "algorithm", 'a', 0, G_OPTION_ARG_STRING, &ai,
 	 /* Commandline pioneersai: algorithm */
-	 N_("Type of computer player"), "greedy"},
-	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
+	 N_("Type of computer player"), "greedy" },
+	{ "debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
 	 /* Commandline option of ai: enable debug logging */
-	 N_("Enable debug messages"), NULL},
-	{"version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
+	 N_("Enable debug messages"), NULL },
+	{ "version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
 	 /* Commandline option of ai: version */
-	 N_("Show version information"), NULL},
-	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+	 N_("Show version information"), NULL },
+	{ NULL, '\0', 0, 0, NULL, NULL, NULL }
 };
 
 static void ai_init_glib_et_al(int argc, char **argv)

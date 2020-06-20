@@ -90,143 +90,143 @@ struct callbacks {
 	/* This function is called when the client is initializing.  The
 	 * frontend should initialize its libraries and use the command
 	 * line for the default commands. */
-	void (*init_glib_et_al) (int argc, char **argv);
+	void (*init_glib_et_al)(int argc, char **argv);
 	/* This function is called when the client is initialized.  The
 	 * frontend should initialize itself now and process its own
 	 * command line options. */
-	void (*init) (void);
+	void (*init)(void);
 	/* Allows the frontend to show a message considering the network
 	 * status, probably in the status bar */
-	void (*network_status) (const gchar * description);
+	void (*network_status)(const gchar * description);
 	/* playing instructions.  conventionally shown in the "development
 	 * panel", but they can of course be put anywhere */
-	void (*instructions) (const gchar * message);
+	void (*instructions)(const gchar * message);
 	/* Message if client is waiting for network.  If it is, it may be
 	 * a good idea to disable all user controls and put a message in the
 	 * status bar. */
-	void (*network_wait) (gboolean is_waiting);
+	void (*network_wait)(gboolean is_waiting);
 	/* we are in mode_offline, do something (probably call cb_connect).
 	 * This function is called every time the mode is entered, which is
 	 * at the start of the game and after every network event (after a
 	 * failed connect, that is) */
-	void (*offline) (void);
+	void (*offline)(void);
 	/* some people must discard resources.  this hook allows the frontend
 	 * to prepare for it. */
-	void (*discard) (void);
+	void (*discard)(void);
 	/* add a player to the list of players who must discard.  Note that
 	 * if player_num == my_player_num (), the frontend is supposed to
 	 * call cb_discard. */
-	void (*discard_add) (gint player_num, gint discard_num);
+	void (*discard_add)(gint player_num, gint discard_num);
 	/* a player discarded resources */
-	void (*discard_remove) (gint player_num);
+	void (*discard_remove)(gint player_num);
 	/* discard mode is finished. */
-	void (*discard_done) (void);
+	void (*discard_done)(void);
 	/* starting gold distribution */
-	void (*gold) (void);
+	void (*gold)(void);
 	/* someone is added to the list of receiving players.  No special
 	 * reaction is required if player_num == my_player_num () */
-	void (*gold_add) (gint player_num, gint gold_num);
+	void (*gold_add)(gint player_num, gint gold_num);
 	/* someone chose gold resources */
-	void (*gold_remove) (gint player_num, gint * resources);
+	void (*gold_remove)(gint player_num, gint * resources);
 	/* You must choose the resources for your gold. */
-	void (*gold_choose) (gint gold_num, const gint * bank);
+	void (*gold_choose)(gint gold_num, const gint * bank);
 	/* all players chose their gold, the game continues. */
-	void (*gold_done) (void);
+	void (*gold_done)(void);
 	/* the game is over, someone won. */
-	void (*game_over) (gint player_num, gint points);
+	void (*game_over)(gint player_num, gint points);
 	/* The game is about to (re)start, nothing is known about the new game */
-	void (*init_game) (void);
+	void (*init_game)(void);
 	/* The game is about to start, all rules are known. */
-	void (*start_game) (void);
+	void (*start_game)(void);
 	/* You must setup.  Num_* is the number of settlements/roads that
 	 * should still be built. */
-	void (*setup) (gint num_settlements, gint num_roads);
+	void (*setup)(gint num_settlements, gint num_roads);
 	/* Someone did a call for quotes */
-	void (*quote) (gint player_num, gint * they_supply,
-		       gint * they_receive);
+	void (*quote)(gint player_num, gint * they_supply,
+		      gint * they_receive);
 	/* you played a roadbuilding development card, so start building. */
-	void (*roadbuilding) (gint num_roads);
+	void (*roadbuilding)(gint num_roads);
 	/* choose your monopoly. */
-	void (*monopoly) (void);
+	void (*monopoly)(void);
 	/* choose the resources for your year of plenty. */
-	void (*plenty) (const gint * bank);
+	void (*plenty)(const gint * bank);
 	/* it's your turn, do something */
-	void (*turn) (void);
+	void (*turn)(void);
 	/* it's someone else's turn */
-	void (*player_turn) (gint player_num);
+	void (*player_turn)(gint player_num);
 	/* you're trading */
-	void (*trade) (void);
+	void (*trade)(void);
 	/* while you're trading, someone else rejects the trade */
-	void (*trade_player_end) (gint player_num);
+	void (*trade_player_end)(gint player_num);
 	/* while you're trading, someone else offers you a quote */
-	void (*trade_add_quote) (gint player_num, gint quote_num,
-				 const gint * they_supply,
-				 const gint * they_receive);
+	void (*trade_add_quote)(gint player_num, gint quote_num,
+				const gint * they_supply,
+				const gint * they_receive);
 	/* while you're trading, someone revokes a quote */
-	void (*trade_remove_quote) (gint player_num, gint quote_num);
+	void (*trade_remove_quote)(gint player_num, gint quote_num);
 	/* you're trading, and a trade has just been performed. */
-	void (*trade_domestic) (gint partner_num, gint quote_num,
-				const gint * we_supply,
-				const gint * we_receive);
+	void (*trade_domestic)(gint partner_num, gint quote_num,
+			       const gint * we_supply,
+			       const gint * we_receive);
 	/* you're trading, and a trade has just been performed. */
-	void (*trade_maritime) (gint ratio, Resource we_supply,
-				Resource we_receive);
+	void (*trade_maritime)(gint ratio, Resource we_supply,
+			       Resource we_receive);
 	/* while someone else is trading, a player rejects the trade */
-	void (*quote_player_end) (gint player_num);
+	void (*quote_player_end)(gint player_num);
 	/* while someone else is trading, a player makes a quote */
-	void (*quote_add) (gint player_num, gint quote_num,
-			   const gint * they_supply,
-			   const gint * they_receive);
+	void (*quote_add)(gint player_num, gint quote_num,
+			  const gint * they_supply,
+			  const gint * they_receive);
 	/* while someone else is trading, a player revokes a quote */
-	void (*quote_remove) (gint player_num, gint quote_num);
+	void (*quote_remove)(gint player_num, gint quote_num);
 	/* someone else makes a call for quotes.  This is an initialization
 	 * callback, it is only called once.  After that, quote is called
 	 * for every call for quotes (at least once, immediately after this
 	 * function returns.  quote can be called more times, until quote_end
 	 * is called, which marks the end of the trading session. */
-	void (*quote_start) (void);
+	void (*quote_start)(void);
 	/* someone else finishes trading */
-	void (*quote_end) (void);
+	void (*quote_end)(void);
 	/* you rejected the trade, now you're monitoring it */
-	void (*quote_monitor) (void);
+	void (*quote_monitor)(void);
 	/* while someone else is trading, a quote is accepted. */
-	void (*quote_trade) (gint player_num, gint partner_num,
-			     gint quote_num, const gint * they_supply,
-			     const gint * they_receive);
+	void (*quote_trade)(gint player_num, gint partner_num,
+			    gint quote_num, const gint * they_supply,
+			    const gint * they_receive);
 	/* the dice have been rolled */
-	void (*rolled_dice) (gint die1, gint die2, gint player_num);
+	void (*rolled_dice)(gint die1, gint die2, gint player_num);
 	/* An edge changed, it should be drawn */
-	void (*draw_edge) (Edge * edge);
+	void (*draw_edge)(Edge * edge);
 	/* A node changed, it should be drawn */
-	void (*draw_node) (Node * node);
+	void (*draw_node)(Node * node);
 	/* You bought a development card */
-	void (*bought_develop) (DevelType type);
+	void (*bought_develop)(DevelType type);
 	/* someone played a development card */
-	void (*played_develop) (gint player_num, guint card_idx,
-				DevelType type);
+	void (*played_develop)(gint player_num, guint card_idx,
+			       DevelType type);
 	/* Something happened to your resources.  The frontend should not
 	 * apply the change.  When this function is called, the value is
 	 * already changed. */
-	void (*resource_change) (Resource type, gint num);
+	void (*resource_change)(Resource type, gint num);
 	/* a hex has changed, it should be drawn. */
-	void (*draw_hex) (Hex * hex);
+	void (*draw_hex)(Hex * hex);
 	/* something happened to your pieces stock (ships, roads, etc.) */
-	void (*update_stock) (void);
+	void (*update_stock)(void);
 	/* You should move the robber or pirate */
-	void (*robber) (void);
+	void (*robber)(void);
 	/* Someone moved the robber */
-	void (*robber_moved) (Hex * old, Hex * new);
+	void (*robber_moved)(Hex * old, Hex * new);
 	/* You should steal something from a building */
-	void (*steal_building) (void);
+	void (*steal_building)(void);
 	/* The robber placement has finished, continue normally */
-	void (*robber_done) (void);
+	void (*robber_done)(void);
 	/* You should steal something from a ship */
-	void (*steal_ship) (void);
+	void (*steal_ship)(void);
 	/* Someone has been robbed.  The frontend should allow player_num to
 	 * be negative, meaning no one was robbed.  This is not implemented
 	 * yet. */
-	void (*player_robbed) (gint robber_num, gint victim_num,
-			       Resource resource);
+	void (*player_robbed)(gint robber_num, gint victim_num,
+			      Resource resource);
 	/* The dice have been rolled, and resources are being distributed.
 	 * This is called once for every player receiving resources.  The
 	 * frontend should also be able to handle players not getting any
@@ -235,46 +235,46 @@ struct callbacks {
 	 * been a call to resource_change when this is called.
 	 * If resources is different from wanted, the player should have
 	 * received resources, but the bank was empty.  */
-	void (*get_rolled_resources) (gint player_num,
-				      const gint * resources,
-				      const gint * wanted);
+	void (*get_rolled_resources)(gint player_num,
+				     const gint * resources,
+				     const gint * wanted);
 	/* Something happened to someones stats.  As with resource_change,
 	 * the value must not be updated by the frontend, it has already been
 	 * done by the client. */
-	void (*new_statistics) (gint player_num, StatisticType type,
-				gint num);
+	void (*new_statistics)(gint player_num, StatisticType type,
+			       gint num);
 	/* Something happened to someones special points. As with
 	 * resource_change, the value must not be updated by the frontend,
 	 * it has already been done by the client. */
-	void (*new_points) (gint player_num, Points * points,
-			    gboolean added);
+	void (*new_points)(gint player_num, Points * points,
+			   gboolean added);
 	/* a spectator changed his/her name */
-	void (*spectator_name) (gint spectator_num, const gchar * name);
+	void (*spectator_name)(gint spectator_num, const gchar * name);
 	/* a player changed his/her name */
-	void (*player_name) (gint player_num, const gchar * name);
+	void (*player_name)(gint player_num, const gchar * name);
 	/* a player changed his/her style */
-	void (*player_style) (gint player_num, const gchar * style);
+	void (*player_style)(gint player_num, const gchar * style);
 	/* a player left the game */
-	void (*player_quit) (gint player_num);
+	void (*player_quit)(gint player_num);
 	/* a spectator left the game */
-	void (*spectator_quit) (gint player_num);
+	void (*spectator_quit)(gint player_num);
 	/* respond to incoming chat messages */
-	void (*incoming_chat) (gint player_num, const gchar * chat);
+	void (*incoming_chat)(gint player_num, const gchar * chat);
 	/* something changed in the bank. */
-	void (*new_bank) (const gint * new_bank);
+	void (*new_bank)(const gint * new_bank);
 	/* some communication error occurred, and it has already been logged */
-	void (*error) (const gchar * message);
+	void (*error)(const gchar * message);
 	/* get the map */
-	Map *(*get_map) (void);
+	Map *(*get_map)(void);
 	/* set the map */
-	void (*set_map) (Map * map);
+	void (*set_map)(Map * map);
 	/* mainloop.  This is initialized to run the glib main loop.  It can
 	 * be overridden */
-	void (*mainloop) (void);
+	void (*mainloop)(void);
 	/* exit the main loop.  The program will then quit.  This is
 	 * initialized to quit the main loop.  It should be overridden if
 	 * mainloop is. */
-	void (*quit) (void);
+	void (*quit)(void);
 };
 
 extern struct callbacks callbacks;

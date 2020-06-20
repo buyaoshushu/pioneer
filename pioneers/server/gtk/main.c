@@ -1110,13 +1110,13 @@ void request_server_stop(Game * game)
 }
 
 static GOptionEntry commandline_entries[] = {
-	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
+	{ "debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
 	 /* Commandline option of server-gtk: enable debug logging */
-	 N_("Enable debug messages"), NULL},
-	{"version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
+	 N_("Enable debug messages"), NULL },
+	{ "version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
 	 /* Commandline option of server-gtk: version */
-	 N_("Show version information"), NULL},
-	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+	 N_("Show version information"), NULL },
+	{ NULL, '\0', 0, 0, NULL, NULL, NULL }
 };
 
 int main(int argc, char *argv[])

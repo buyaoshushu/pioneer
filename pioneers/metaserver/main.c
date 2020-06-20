@@ -603,37 +603,37 @@ static void convert_to_daemon(void)
 }
 
 static GOptionEntry commandline_entries[] = {
-	{"daemon", 'd', 0, G_OPTION_ARG_NONE, &make_daemon,
+	{ "daemon", 'd', 0, G_OPTION_ARG_NONE, &make_daemon,
 	 /* Commandline metaserver: daemon */
-	 N_("Daemonize the metaserver on start"), NULL},
-	{"pidfile", 'P', 0, G_OPTION_ARG_STRING, &pidfile,
+	 N_("Daemonize the metaserver on start"), NULL },
+	{ "pidfile", 'P', 0, G_OPTION_ARG_STRING, &pidfile,
 	 /* Commandline metaserver: pidfile */
 	 N_("Pidfile to create when daemonizing (implies -d)"),
 	 /* Commandline metaserver: pidfile argument */
-	 N_("filename")},
-	{"redirect", 'r', 0, G_OPTION_ARG_STRING, &redirect_location,
+	 N_("filename") },
+	{ "redirect", 'r', 0, G_OPTION_ARG_STRING, &redirect_location,
 	 /* Commandline metaserver: redirect */
-	 N_("Redirect clients to another metaserver"), NULL},
-	{"servername", 's', 0, G_OPTION_ARG_STRING, &myhostname,
+	 N_("Redirect clients to another metaserver"), NULL },
+	{ "servername", 's', 0, G_OPTION_ARG_STRING, &myhostname,
 	 /* Commandline metaserver: server */
 	 N_("Use this hostname when creating new games"),
 	 /* Commandline metaserver: server argument */
-	 N_("hostname")},
-	{"port-range", 'p', 0, G_OPTION_ARG_STRING, &port_range,
+	 N_("hostname") },
+	{ "port-range", 'p', 0, G_OPTION_ARG_STRING, &port_range,
 	 /* Commandline metaserver: port-range */
 	 N_("Use this port range when creating new games"),
 	 /* Commandline metaserver: port-range argument */
-	 N_("from-to")},
-	{"debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
+	 N_("from-to") },
+	{ "debug", '\0', 0, G_OPTION_ARG_NONE, &enable_debug,
 	 /* Commandline option of metaserver: enable debug logging */
-	 N_("Enable debug messages"), NULL},
-	{"syslog-debug", '\0', 0, G_OPTION_ARG_NONE, &enable_syslog_debug,
+	 N_("Enable debug messages"), NULL },
+	{ "syslog-debug", '\0', 0, G_OPTION_ARG_NONE, &enable_syslog_debug,
 	 /* Commandline option of metaserver: syslog-debug */
-	 N_("Debug syslog messages"), NULL},
-	{"version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
+	 N_("Debug syslog messages"), NULL },
+	{ "version", '\0', 0, G_OPTION_ARG_NONE, &show_version,
 	 /* Commandline option of metaserver: version */
-	 N_("Show version information"), NULL},
-	{NULL, '\0', 0, 0, NULL, NULL, NULL}
+	 N_("Show version information"), NULL },
+	{ NULL, '\0', 0, 0, NULL, NULL, NULL }
 };
 
 static gboolean handle_break_quit_request(G_GNUC_UNUSED gpointer user_data)

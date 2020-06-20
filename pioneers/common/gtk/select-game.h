@@ -35,7 +35,7 @@ struct _SelectGame {
 struct _SelectGameClass {
 	GtkGridClass parent_class;
 
-	void (*activate) (SelectGame * sg);
+	void (*activate)(SelectGame * sg);
 };
 
 GType select_game_get_type(void);

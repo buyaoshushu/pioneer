@@ -828,12 +828,11 @@ static struct ClientVersionTypeConversion {
 	ClientVersionType type;
 	const gchar *string;
 } client_version_type_conversions[] = {
-	{
-	V15, "15"}, {
-	V14, "14"}, {
-	V0_12, "0.12"}, {
-	V0_11, "0.11"}, {
-	V0_10, "0.10"}
+	{ V15, "15" },
+	{ V14, "14" },
+	{ V0_12, "0.12" },
+	{ V0_11, "0.11" },
+	{ V0_10, "0.10" }
 };
 
 ClientVersionType client_version_type_from_string(const gchar * cvt)

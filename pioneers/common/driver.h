@@ -25,17 +25,17 @@
 
 typedef struct {
 	/* function for clearing the event queue */
-	void (*event_queue) (void);
+	void (*event_queue)(void);
 
 	/* Function to write logs and data to the system display */
 	LogFunc log_write;	/* ==> void log_write( gint msg_type, gchar *text ); */
 
 	/* callbacks for the server */
-	void (*player_added) (void *player);	/* these really should be ... */
-	void (*player_renamed) (void *player);	/* ... `Player *player', but */
-	void (*player_removed) (void *player);	/* that requires more headers */
+	void (*player_added)(void *player);	/* these really should be ... */
+	void (*player_renamed)(void *player);	/* ... `Player *player', but */
+	void (*player_removed)(void *player);	/* that requires more headers */
 
-	void (*player_change) (void *game);	/* Should be Game *game */
+	void (*player_change)(void *game);	/* Should be Game *game */
 
 } UIDriver;
 

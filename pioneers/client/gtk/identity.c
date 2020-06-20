@@ -45,7 +45,7 @@ static IdentityPosition identity_positions[LAST_BUILD_TYPE -
 					   FIRST_BUILD_TYPE + 1];
 
 typedef struct {
-	void (*get_polygon) (const GuiMap * gmap, Polygon * poly);
+	void (*get_polygon)(const GuiMap * gmap, Polygon * poly);
 	 gint(*stock_num) (void);
 	GuiEvent gui_event;
 } TypeData;
@@ -84,14 +84,14 @@ static void identity_get_city_wall_polygon(const GuiMap * gmap,
 }
 
 static const TypeData TYPE_DATA[LAST_BUILD_TYPE - FIRST_BUILD_TYPE + 1] = {
-	{identity_get_road_polygon, stock_num_roads, GUI_ROAD},
-	{identity_get_bridge_polygon, stock_num_bridges, GUI_BRIDGE},
-	{identity_get_ship_polygon, stock_num_ships, GUI_SHIP},
-	{identity_get_settlement_polygon, stock_num_settlements,
-	 GUI_SETTLEMENT},
-	{identity_get_city_polygon, stock_num_cities, GUI_CITY},
-	{identity_get_city_wall_polygon, stock_num_city_walls,
-	 GUI_CITY_WALL},
+	{ identity_get_road_polygon, stock_num_roads, GUI_ROAD },
+	{ identity_get_bridge_polygon, stock_num_bridges, GUI_BRIDGE },
+	{ identity_get_ship_polygon, stock_num_ships, GUI_SHIP },
+	{ identity_get_settlement_polygon, stock_num_settlements,
+	 GUI_SETTLEMENT },
+	{ identity_get_city_polygon, stock_num_cities, GUI_CITY },
+	{ identity_get_city_wall_polygon, stock_num_city_walls,
+	 GUI_CITY_WALL },
 };
 
 static gint calculate_width(GtkWidget * area, BuildType build_type)
@@ -205,22 +205,22 @@ static void show_die(cairo_t * cr, gint x_offset, gint num,
 		     GdkRGBA * die_dots_color)
 {
 	static GdkPoint die_points[4] = {
-		{0, 0}, {30, 0}, {30, 30}, {0, 30}
+		{ 0, 0 }, { 30, 0 }, { 30, 30 }, { 0, 30 }
 	};
 	static Polygon die_shape =
 	    { die_points, G_N_ELEMENTS(die_points) };
 	static GdkPoint dot_pos[7] = {
-		{7, 7}, {22, 7},
-		{7, 15}, {15, 15}, {22, 15},
-		{7, 22}, {22, 22}
+		{ 7, 7 }, { 22, 7 },
+		{ 7, 15 }, { 15, 15 }, { 22, 15 },
+		{ 7, 22 }, { 22, 22 }
 	};
 	static gint draw_list[6][7] = {
-		{0, 0, 0, 1, 0, 0, 0},
-		{0, 1, 0, 0, 0, 1, 0},
-		{1, 0, 0, 1, 0, 0, 1},
-		{1, 1, 0, 0, 0, 1, 1},
-		{1, 1, 0, 1, 0, 1, 1},
-		{1, 1, 1, 0, 1, 1, 1}
+		{ 0, 0, 0, 1, 0, 0, 0 },
+		{ 0, 1, 0, 0, 0, 1, 0 },
+		{ 1, 0, 0, 1, 0, 0, 1 },
+		{ 1, 1, 0, 0, 0, 1, 1 },
+		{ 1, 1, 0, 1, 0, 1, 1 },
+		{ 1, 1, 1, 0, 1, 1, 1 }
 	};
 	gint y_offset;
 	gint *list = draw_list[num - 1];
