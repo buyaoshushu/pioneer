@@ -320,8 +320,8 @@ static void launchclient_clicked_cb(G_GNUC_UNUSED GtkButton * widget,
 	/* Spawn the child. */
 	if (!g_spawn_async(NULL, child_argv, NULL, child_flags,
 			   NULL, NULL, NULL, &error)) {
-		/* Error message when program %1 is started, reason is %2 */
 		log_message(MSG_ERROR,
+			    /* Error message when program %1 is started, reason is %2 */
 			    _("Error starting %s: %s\n"),
 			    child_argv[0], error->message);
 		g_error_free(error);

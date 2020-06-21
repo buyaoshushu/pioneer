@@ -60,10 +60,10 @@ static void start_reconnect_timer(Game * game)
 	}
 	log_message(MSG_INFO,
 		    /* The connection to the metaserver was lost */
-		    ngettext
-		    ("An attempt to reconnect is scheduled in %u second.\n",
-		     "An attempt to reconnect is scheduled in %u seconds.\n",
-		     reconnect_interval), reconnect_interval);
+		    ngettext(""
+			     "An attempt to reconnect is scheduled in %u second.\n",
+			     "An attempt to reconnect is scheduled in %u seconds.\n",
+			     reconnect_interval), reconnect_interval);
 	reconnect_timer =
 	    g_timeout_add(reconnect_interval * 1000, timed_out, game);
 }

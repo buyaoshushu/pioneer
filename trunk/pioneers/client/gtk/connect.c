@@ -1010,8 +1010,8 @@ static void launch_server_gtk(G_GNUC_UNUSED GtkWidget * widget,
 	child_argv[2] = NULL;
 	if (!g_spawn_async(NULL, child_argv, NULL, flags, NULL, NULL, NULL,
 			   &error)) {
-		/* Error message when program %1 is started, reason is %2 */
 		log_message(MSG_ERROR,
+			    /* Error message when program %1 is started, reason is %2 */
 			    _("Error starting %s: %s\n"),
 			    child_argv[0], error->message);
 		g_error_free(error);
