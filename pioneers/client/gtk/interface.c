@@ -430,6 +430,43 @@ void frontend_turn(void)
 	play_sound(SOUND_TURN);
 	/* Notification */
 	notification_send(_("It is your turn."), ICON_DICE);
+
+	if (!have_rolled_dice()) {
+		gboolean have_resource_card;
+		gboolean have_soldier_card;
+		guint i;
+		const Deck *deck = get_devel_deck();
+		TAutomaticRoll automatic_roll = get_automatic_roll();
+
+		have_soldier_card = FALSE;
+		for (i = 0; i < deck_count(deck); i++) {
+			DevelType cardtype = deck_get_guint(deck, i);
+			if (cardtype == DEVEL_SOLDIER
+			    && can_play_develop(i)) {
+				have_soldier_card = TRUE;
+				break;
+			}
+		}
+		have_resource_card = (deck_count(deck) != 0);
+
+		switch (automatic_roll) {
+		case ROLL_MANUALLY:
+			break;
+		case ROLL_AUTOMATICALLY_EXCEPT_WITH_SOLDIER_CARD:
+			if (!have_soldier_card) {
+				cb_roll();
+			}
+			break;
+		case ROLL_AUTOMATICALLY_EXCEPT_WITH_RESOURCE_CARD:
+			if (!have_resource_card) {
+				cb_roll();
+			}
+			break;
+		case ROLL_AUTOMATICALLY:
+			cb_roll();
+			break;
+		}
+	}
 }
 
 /* development card actions */

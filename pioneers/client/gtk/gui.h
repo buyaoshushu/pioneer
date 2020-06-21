@@ -88,4 +88,14 @@ void gui_set_show_no_setup_nodes(gboolean show);
 gboolean get_charity_enabled(void);
 void set_charity_enabled(gboolean new_charity_enabled);
 
+typedef enum {
+	ROLL_MANUALLY = 0,
+	ROLL_AUTOMATICALLY_EXCEPT_WITH_SOLDIER_CARD = 1,
+	ROLL_AUTOMATICALLY_EXCEPT_WITH_RESOURCE_CARD = 2,
+	ROLL_AUTOMATICALLY = 3
+} TAutomaticRoll;
+
+TAutomaticRoll get_automatic_roll(void);
+void set_automatic_roll(TAutomaticRoll automatic_roll);
+
 #endif

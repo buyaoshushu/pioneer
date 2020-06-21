@@ -1,6 +1,8 @@
 2020-06-21  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/connect.c, client/gtk/offline.c, server/gtk/main.c,
 	server/meta.c: Fixed hints for translators.
+	* client/gtk/gui.c, client/gtk/gui.h, client/gtk/interface.c: Allow
+	automatic rolling of the dice. The default still is manual rolling.
 
 2020-06-20  Roland Clobus <rclobus@rclobus.nl>
 	* client/common/main.c, client/gtk/offline.c, common/Makefile.am,
