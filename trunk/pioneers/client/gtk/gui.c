@@ -102,6 +102,7 @@ static gboolean toolbar_show_accelerators = TRUE;
 static gboolean color_messages_enabled = TRUE;
 static gboolean legend_page_enabled = TRUE;
 static gboolean charity_enabled = FALSE;
+static TAutomaticRoll automatic_roll = ROLL_MANUALLY;
 
 static GList *rules_callback_list = NULL;
 
@@ -709,6 +710,32 @@ void set_charity_enabled(gboolean new_charity_enabled)
 	}
 }
 
+TAutomaticRoll get_automatic_roll(void)
+{
+	return automatic_roll;
+}
+
+void set_automatic_roll(TAutomaticRoll new_automatic_roll)
+{
+	if (new_automatic_roll != automatic_roll) {
+		automatic_roll = new_automatic_roll;
+		config_set_int("settings/automatic_roll", automatic_roll);
+	}
+}
+
+static void automatic_roll_changed_cb(GtkComboBox * widget,
+				      G_GNUC_UNUSED gpointer user_data)
+{
+	GtkTreeIter iter;
+
+	if (gtk_combo_box_get_active_iter(widget, &iter)) {
+		gint value;
+		gtk_tree_model_get(gtk_combo_box_get_model(widget), &iter,
+				   1, &value, -1);
+		set_automatic_roll(value);
+	}
+}
+
 void preferences_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
 	GtkWidget *silent_mode_widget;
@@ -717,6 +744,10 @@ void preferences_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 	GtkWidget *theme_label;
 	GtkWidget *theme_list;
 	GtkWidget *layout;
+	GtkListStore *auto_roll_list;
+	GtkCellRenderer *cell;
+	GtkTreeIter iter;
+	GtkTreeIter active_iter;
 
 	guint row;
 	gint color_summary;
@@ -921,6 +952,63 @@ void preferences_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 				    _(""
 				      "Use a 16:9 friendly layout for the window"));
 	row++;
+
+	auto_roll_list = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
+	gtk_list_store_append(auto_roll_list, &iter);
+	gtk_list_store_set(auto_roll_list, &iter,
+			   0, _("Roll the dice manually each turn"),
+			   1, ROLL_MANUALLY, -1);
+	if (get_automatic_roll() == ROLL_MANUALLY) {
+		active_iter = iter;
+	}
+	gtk_list_store_append(auto_roll_list, &iter);
+	gtk_list_store_set(auto_roll_list, &iter,
+			   0,
+			   _(""
+			     "Roll the dice automatically, except when you have a soldier card"),
+			   1, ROLL_AUTOMATICALLY_EXCEPT_WITH_SOLDIER_CARD,
+			   -1);
+	if (get_automatic_roll() ==
+	    ROLL_AUTOMATICALLY_EXCEPT_WITH_SOLDIER_CARD) {
+		active_iter = iter;
+	}
+	gtk_list_store_append(auto_roll_list, &iter);
+	gtk_list_store_set(auto_roll_list, &iter,
+			   0,
+			   _(""
+			     "Roll the dice automatically, except when you have a development card"),
+			   1, ROLL_AUTOMATICALLY_EXCEPT_WITH_RESOURCE_CARD,
+			   -1);
+	if (get_automatic_roll() ==
+	    ROLL_AUTOMATICALLY_EXCEPT_WITH_RESOURCE_CARD) {
+		active_iter = iter;
+	}
+	gtk_list_store_append(auto_roll_list, &iter);
+	gtk_list_store_set(auto_roll_list, &iter,
+			   0, _("Roll the dice automatically"),
+			   1, ROLL_AUTOMATICALLY, -1);
+	if (get_automatic_roll() == ROLL_AUTOMATICALLY) {
+		active_iter = iter;
+	}
+	widget =
+	    gtk_combo_box_new_with_model(GTK_TREE_MODEL(auto_roll_list));
+	gtk_combo_box_set_active_iter(GTK_COMBO_BOX(widget), &active_iter);
+
+	cell = gtk_cell_renderer_text_new();
+	gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(widget), cell, TRUE);
+	gtk_cell_layout_set_attributes(GTK_CELL_LAYOUT(widget),
+				       cell, "text", 0, NULL);
+
+	gtk_widget_show(widget);
+	gtk_grid_attach(GTK_GRID(layout), widget, 0, row, 2, 1);
+	g_signal_connect(G_OBJECT(widget), "changed",
+			 G_CALLBACK(automatic_roll_changed_cb), NULL);
+	gtk_widget_set_tooltip_text(widget,
+				    /* Tooltip for automatic roll option. */
+				    _(""
+				      "Automate the rolling of the dice"));
+	row++;
+
 }
 
 void help_about_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
@@ -1294,6 +1382,9 @@ GtkWidget *gui_build_interface(void)
 			       ("settings/show_notifications", TRUE));
 	set_charity_enabled(config_get_int_with_default
 			    ("settings/charity_enabled", FALSE));
+	set_automatic_roll(config_get_int_with_default
+			   ("settings/automatic_roll",
+			    get_automatic_roll()));
 
 	legend_page_enabled =
 	    config_get_int_with_default("settings/legend_page", FALSE);
