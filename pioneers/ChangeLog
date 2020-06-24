@@ -1,3 +1,6 @@
+2020-06-24  Roland Clobus <rclobus@rclobus.nl>
+	* MinGW/Makefile.am: Use the MKDIR_P and INSTALL_x macros.
+
 2020-06-21  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/connect.c, client/gtk/offline.c, server/gtk/main.c,
 	server/meta.c: Fixed hints for translators.
