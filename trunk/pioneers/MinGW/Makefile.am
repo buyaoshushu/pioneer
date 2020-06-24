@@ -24,94 +24,94 @@ install-exec-hook: install-MinGW
 install-MinGW: install-MinGW-DLLs install-MinGW-icons install-MinGW-fileopen
 
 install-MinGW-DLLs:
-	cp /mingw64/bin/libgdk-3-0.dll $(bindir)
-	cp /mingw64/bin/libgio-2.0-0.dll $(bindir)
-	cp /mingw64/bin/libgdk_pixbuf-2.0-0.dll $(bindir)
-	cp /mingw64/bin/libcairo-2.dll $(bindir)
-	cp /mingw64/bin/libglib-2.0-0.dll $(bindir)
-	cp /mingw64/bin/libgtk-3-0.dll $(bindir)
-	cp /mingw64/bin/libgobject-2.0-0.dll $(bindir)
-	cp /mingw64/bin/libintl-8.dll $(bindir)
-	cp /mingw64/bin/libpango-1.0-0.dll $(bindir)
-	cp /mingw64/bin/libpangocairo-1.0-0.dll $(bindir)
-	-cp /mingw64/bin/libnotify-4.dll $(bindir)
-	cp /mingw64/bin/libfontconfig-1.dll $(bindir)
-	cp /mingw64/bin/libfreetype-6.dll $(bindir)
-	cp /mingw64/bin/libpangoft2-1.0-0.dll $(bindir)
-	cp /mingw64/bin/libpangowin32-1.0-0.dll $(bindir)
-	cp /mingw64/bin/libfribidi-0.dll $(bindir)
-	cp /mingw64/bin/libthai-0.dll $(bindir)
-	cp /mingw64/bin/libiconv-2.dll $(bindir)
-	cp /mingw64/bin/libgcc_s_seh-1.dll $(bindir)
-	cp /mingw64/bin/libexpat-1.dll $(bindir)
-	cp /mingw64/bin/libbz2-1.dll $(bindir)
-	cp /mingw64/bin/libharfbuzz-0.dll $(bindir)
-	cp /mingw64/bin/libpng16-16.dll $(bindir)
-	cp /mingw64/bin/zlib1.dll $(bindir)
-	cp /mingw64/bin/libpixman-1-0.dll $(bindir)
-	cp /mingw64/bin/libcairo-gobject-2.dll $(bindir)
-	cp /mingw64/bin/libepoxy-0.dll $(bindir)
-	cp /mingw64/bin/libgmodule-2.0-0.dll $(bindir)
-	cp /mingw64/bin/libwinpthread-1.dll $(bindir)
-	cp /mingw64/bin/libpcre-1.dll $(bindir)
-	cp /mingw64/bin/libbrotlidec.dll $(bindir)
-	cp /mingw64/bin/libbrotlicommon.dll $(bindir)
-	cp /mingw64/bin/libgraphite2.dll $(bindir)
-	cp /mingw64/bin/libffi-7.dll $(bindir)
-	cp /mingw64/bin/libatk-1.0-0.dll $(bindir)
-	cp /mingw64/bin/libdatrie-1.dll $(bindir)
-	cp /mingw64/bin/libstdc++-6.dll $(bindir)
-	mkdir -p $(bindir)/lib/gdk-pixbuf-2.0/2.10.0
-	cp $(srcdir)/MinGW/loaders.cache $(bindir)/lib/gdk-pixbuf-2.0/2.10.0
-	mkdir -p $(bindir)/lib/gdk-pixbuf-2.0/2.10.0/loaders
-	cp /mingw64/lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.dll $(bindir)/lib/gdk-pixbuf-2.0/2.10.0/loaders
-	cp /mingw64/lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.dll $(bindir)/lib/gdk-pixbuf-2.0/2.10.0/loaders
-	cp /mingw64/bin/librsvg-2-2.dll $(bindir)
-	cp /mingw64/bin/libgdk_pixbuf-2.0-0.dll $(bindir)
-	cp /mingw64/bin/libxml2-2.dll $(bindir)
-	cp /mingw64/bin/liblzma-5.dll $(bindir)
-	cp /mingw64/bin/gspawn-win64-helper.exe $(bindir)
-	cp /mingw64/bin/gspawn-win64-helper-console.exe $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libgdk-3-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libgio-2.0-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libgdk_pixbuf-2.0-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libcairo-2.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libglib-2.0-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libgtk-3-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libgobject-2.0-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libintl-8.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libpango-1.0-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libpangocairo-1.0-0.dll $(bindir)
+	-$(INSTALL_PROGRAM) /mingw64/bin/libnotify-4.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libfontconfig-1.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libfreetype-6.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libpangoft2-1.0-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libpangowin32-1.0-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libfribidi-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libthai-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libiconv-2.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libgcc_s_seh-1.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libexpat-1.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libbz2-1.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libharfbuzz-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libpng16-16.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/zlib1.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libpixman-1-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libcairo-gobject-2.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libepoxy-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libgmodule-2.0-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libwinpthread-1.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libpcre-1.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libbrotlidec.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libbrotlicommon.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libgraphite2.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libffi-7.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libatk-1.0-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libdatrie-1.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libstdc++-6.dll $(bindir)
+	$(MKDIR_P) $(bindir)/lib/gdk-pixbuf-2.0/2.10.0
+	$(INSTALL_DATA) $(srcdir)/MinGW/loaders.cache $(bindir)/lib/gdk-pixbuf-2.0/2.10.0
+	$(MKDIR_P) $(bindir)/lib/gdk-pixbuf-2.0/2.10.0/loaders
+	$(INSTALL_PROGRAM) /mingw64/lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.dll $(bindir)/lib/gdk-pixbuf-2.0/2.10.0/loaders
+	$(INSTALL_PROGRAM) /mingw64/lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.dll $(bindir)/lib/gdk-pixbuf-2.0/2.10.0/loaders
+	$(INSTALL_PROGRAM) /mingw64/bin/librsvg-2-2.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libgdk_pixbuf-2.0-0.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/libxml2-2.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/liblzma-5.dll $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/gspawn-win64-helper.exe $(bindir)
+	$(INSTALL_PROGRAM) /mingw64/bin/gspawn-win64-helper-console.exe $(bindir)
 
 install-MinGW-icons:
-	mkdir -p $(bindir)/share/icons/hicolor
-	cp /mingw64/share/icons/hicolor/index.theme $(bindir)/share/icons/hicolor
-	mkdir -p $(bindir)/share/icons/Adwaita/scalable/actions
-	cp /mingw64/share/icons/Adwaita/index.theme $(bindir)/share/icons/Adwaita
-	cp /mingw64/share/icons/Adwaita/scalable/actions/list-add-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
-	cp /mingw64/share/icons/Adwaita/scalable/actions/list-remove-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
-	cp /mingw64/share/icons/Adwaita/scalable/actions/edit-undo-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
-	cp /mingw64/share/icons/Adwaita/scalable/actions/edit-delete-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions/edit-delete.svg
-	mkdir -p $(bindir)/share/icons/Adwaita/scalable/ui
-	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-down-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
-	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-up-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
-	cp /mingw64/share/icons/Adwaita/scalable/ui/window-close-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+	$(MKDIR_P) $(bindir)/share/icons/hicolor
+	$(INSTALL_DATA) /mingw64/share/icons/hicolor/index.theme $(bindir)/share/icons/hicolor
+	$(MKDIR_P) $(bindir)/share/icons/Adwaita/scalable/actions
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/index.theme $(bindir)/share/icons/Adwaita
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/actions/list-add-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/actions/list-remove-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/actions/edit-undo-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/actions/edit-delete-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions/edit-delete.svg
+	$(MKDIR_P) $(bindir)/share/icons/Adwaita/scalable/ui
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/ui/pan-down-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/ui/pan-up-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/ui/window-close-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
 
 install-MinGW-fileopen:
-	mkdir -p $(bindir)/share/glib-2.0/schemas
-	cp /mingw64/share/glib-2.0/schemas/gschemas.compiled $(bindir)/share/glib-2.0/schemas
-	cp /mingw64/share/icons/Adwaita/scalable/actions/document-open-recent-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
-	cp /mingw64/share/icons/Adwaita/scalable/actions/media-eject-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
-	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-start-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
-	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-end-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
-	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-down-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
-	cp /mingw64/share/icons/Adwaita/scalable/ui/pan-up-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
-	mkdir -p $(bindir)/share/icons/Adwaita/scalable/places
-	cp /mingw64/share/icons/Adwaita/scalable/places/user-home-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
-	cp /mingw64/share/icons/Adwaita/scalable/places/user-desktop-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
-	cp /mingw64/share/icons/Adwaita/scalable/places/folder-documents-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
-	cp /mingw64/share/icons/Adwaita/scalable/places/folder-download-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
-	cp /mingw64/share/icons/Adwaita/scalable/places/folder-music-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
-	cp /mingw64/share/icons/Adwaita/scalable/places/folder-pictures-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
-	cp /mingw64/share/icons/Adwaita/scalable/places/folder-videos-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
-	cp /mingw64/share/icons/Adwaita/scalable/places/user-trash-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
-	cp /mingw64/share/icons/Adwaita/scalable/places/folder-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
-	mkdir -p $(bindir)/share/icons/Adwaita/scalable/devices
-	cp /mingw64/share/icons/Adwaita/scalable/devices/drive-harddisk-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/devices
-	cp /mingw64/share/icons/Adwaita/scalable/devices/drive-harddisk-usb-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/devices
-	cp /mingw64/share/icons/Adwaita/scalable/devices/drive-optical-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/devices
-	mkdir -p $(bindir)/share/icons/Adwaita/scalable/mimetypes
-	cp /mingw64/share/icons/Adwaita/scalable/mimetypes/text-x-generic-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/mimetypes
+	$(MKDIR_P) $(bindir)/share/glib-2.0/schemas
+	$(INSTALL_DATA) /mingw64/share/glib-2.0/schemas/gschemas.compiled $(bindir)/share/glib-2.0/schemas
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/actions/document-open-recent-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/actions/media-eject-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/ui/pan-start-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/ui/pan-end-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/ui/pan-down-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/ui/pan-up-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
+	$(MKDIR_P) $(bindir)/share/icons/Adwaita/scalable/places
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/places/user-home-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/places/user-desktop-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/places/folder-documents-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/places/folder-download-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/places/folder-music-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/places/folder-pictures-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/places/folder-videos-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/places/user-trash-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/places/folder-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/places
+	$(MKDIR_P) $(bindir)/share/icons/Adwaita/scalable/devices
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/devices/drive-harddisk-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/devices
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/devices/drive-harddisk-usb-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/devices
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/devices/drive-optical-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/devices
+	$(MKDIR_P) $(bindir)/share/icons/Adwaita/scalable/mimetypes
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/mimetypes/text-x-generic-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/mimetypes
 
 endif # IS_MINGW_PORT
 
