@@ -1,5 +1,7 @@
 2020-06-24  Roland Clobus <rclobus@rclobus.nl>
 	* MinGW/Makefile.am: Use the MKDIR_P and INSTALL_x macros.
+	* MinGW/Makefile.am, MinGW/pioneers.nsi.in, configure.ac: Use a
+	portable-zip package instead of an installer for MinGW.
 
 2020-06-21  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/connect.c, client/gtk/offline.c, server/gtk/main.c,
