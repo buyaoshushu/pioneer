@@ -24,6 +24,7 @@
 #include "version.h"
 
 #include <string.h>
+#include <sys/stat.h>
 #include "aboutbox.h"
 #include "config-gnome.h"
 #include "game.h"
@@ -1534,6 +1535,24 @@ static void add_file_filter(GtkFileChooser * file_chooser)
 	gtk_file_chooser_add_filter(file_chooser, filter);
 }
 
+static gchar *prepare_local_games_folder(void)
+{
+	gchar *directory;
+
+	if (g_strcmp0(g_get_user_data_dir(), g_get_user_config_dir()) == 0) {
+		directory =
+		    g_build_filename(g_get_user_data_dir(),
+				     "pioneers_games", NULL);
+	} else {
+		directory =
+		    g_build_filename(g_get_user_data_dir(), "pioneers",
+				     NULL);
+	}
+	g_mkdir_with_parents(directory, S_IRWXU);
+
+	return directory;
+}
+
 void load_game_menu_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 {
 	GtkWidget *dialog;
@@ -1550,8 +1569,7 @@ void load_game_menu_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 						    /* Button text */
 						    _("_Open"),
 						    GTK_RESPONSE_OK, NULL);
-	directory =
-	    g_build_filename(g_get_user_data_dir(), "pioneers", NULL);
+	directory = prepare_local_games_folder();
 	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog),
 					    directory);
 	gtk_file_chooser_add_shortcut_folder(GTK_FILE_CHOOSER(dialog),
@@ -1592,8 +1610,7 @@ void save_as_menu_cb(G_GNUC_UNUSED GObject * gobject, gpointer user_data)
 						    _("Save _As"),
 						    GTK_RESPONSE_ACCEPT,
 						    NULL);
-	directory =
-	    g_build_filename(g_get_user_data_dir(), "pioneers", NULL);
+	directory = prepare_local_games_folder();
 	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog),
 					    directory);
 	gtk_file_chooser_add_shortcut_folder(GTK_FILE_CHOOSER(dialog),

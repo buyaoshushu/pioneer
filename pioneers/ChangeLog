@@ -2,6 +2,9 @@
 	* MinGW/Makefile.am: Use the MKDIR_P and INSTALL_x macros.
 	* MinGW/Makefile.am, MinGW/pioneers.nsi.in, configure.ac: Use a
 	portable-zip package instead of an installer for MinGW.
+	* editor/gtk/editor.c: If the config_dir and the data_dir are
+	identical (as on Windows), use another folder name for the custom
+	games. Also ensure that the folder exists.
 
 2020-06-21  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/connect.c, client/gtk/offline.c, server/gtk/main.c,
