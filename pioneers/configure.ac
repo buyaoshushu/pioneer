@@ -519,7 +519,6 @@ AM_CONDITIONAL(IS_MINGW_PORT, [test "$pioneers_is_mingw_port" = "yes"])
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([pioneers.spec])
 AC_CONFIG_FILES([Doxyfile])
-AC_CONFIG_FILES([MinGW/pioneers.nsi])
 AC_CONFIG_FILES([po/Makefile.in])
 AC_CONFIG_FILES([client/help/Makefile])
 

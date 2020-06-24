@@ -113,6 +113,13 @@ install-MinGW-fileopen:
 	$(MKDIR_P) $(bindir)/share/icons/Adwaita/scalable/mimetypes
 	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/mimetypes/text-x-generic-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/mimetypes
 
+package: install-strip
+	$(INSTALL_DATA) NEWS $(bindir)/NEWS.txt
+	$(INSTALL_DATA) AUTHORS $(bindir)/AUTHORS.txt
+	$(INSTALL_DATA) COPYING $(bindir)/COPYING.txt
+	$(INSTALL_DATA) README $(bindir)/README.txt
+	cd $(bindir); zip -r $(abs_top_srcdir)/pioneers-$(VERSION)-portable.zip *
+
 endif # IS_MINGW_PORT
 
 EXTRA_DIST += \
