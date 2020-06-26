@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Pioneers 15.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-06-21 13:39+0200\n"
-"PO-Revision-Date: 2020-06-26 07:50+0200\n"
+"PO-Revision-Date: 2020-06-26 08:31+0200\n"
 "Last-Translator: Roland Clobus <rclobus@rclobus.nl>\n"
 "Language-Team: Bas Wijnen <shevek@fmf.nl> Roland Clobus <rclobus@rclobus."
 "nl>\n"
@@ -1359,13 +1359,13 @@ msgstr "Normaal"
 #: ../client/gtk/connect.c:707 ../client/gtk/settingscreen.c:179
 #: ../common/gtk/game-rules.c:93
 msgid "Reroll on 1st 2 turns"
-msgstr "Rol de eerste 2 beurten opnieuw"
+msgstr "De eerste 2 beurten opnieuw rollen"
 
 #. Sevens rule: reroll all 7s
 #: ../client/gtk/connect.c:711 ../client/gtk/settingscreen.c:181
 #: ../common/gtk/game-rules.c:100
 msgid "Reroll all 7s"
-msgstr "Rol alle zevens opnieuw"
+msgstr "Alle zevens opnieuw rollen"
 
 #: ../client/gtk/connect.c:725
 msgid "Default"
@@ -1795,7 +1795,7 @@ msgstr "Kies een van de thema's"
 #. Label for the option to show the legend
 #: ../client/gtk/gui.c:822
 msgid "Show legend"
-msgstr "Toon legenda"
+msgstr "Legenda tonen"
 
 #. Tooltip for the option to show the legend
 #: ../client/gtk/gui.c:831
@@ -2299,7 +2299,7 @@ msgstr "Willekeurig terrein:"
 
 #: ../client/gtk/settingscreen.c:157
 msgid "Allow trade between players:"
-msgstr "Sta handel tussen spelers toe:"
+msgstr "Handel tussen spelers toestaan:"
 
 #: ../client/gtk/settingscreen.c:162
 msgid "Allow trade only before building or buying:"
@@ -2307,7 +2307,7 @@ msgstr "Handelen alleen toegestaan voor het bouwen:"
 
 #: ../client/gtk/settingscreen.c:167
 msgid "Check victory only at end of turn:"
-msgstr "Controleer op winst alleen aan het einde van de beurt:"
+msgstr "Op winst controleren alleen aan het einde van de beurt:"
 
 #: ../client/gtk/settingscreen.c:172
 msgid "Amount of each resource:"
@@ -2319,7 +2319,7 @@ msgstr "Regel voor zevens:"
 
 #: ../client/gtk/settingscreen.c:192
 msgid "Use dice deck instead of dice:"
-msgstr "Gebruik dobbelsteenkaarten in plaats van dobbelstenen:"
+msgstr "Dobbelsteenkaarten gebruiken in plaats van dobbelstenen:"
 
 #: ../client/gtk/settingscreen.c:197
 msgid "Number of dice decks:"
@@ -2331,7 +2331,7 @@ msgstr "Aantal kaarten dat verwijderd wordt na het schudden:"
 
 #: ../client/gtk/settingscreen.c:210
 msgid "Use the pirate to block ships:"
-msgstr "Gebruik de piraat om schepen te blokkeren:"
+msgstr "De piraat gebruiken om schepen te blokkeren:"
 
 #: ../client/gtk/settingscreen.c:239
 msgid "Island discovery bonuses:"
@@ -2623,7 +2623,7 @@ msgstr "Piraat gebruiken"
 
 #: ../common/gtk/game-rules.c:131
 msgid "Use the pirate to block ships"
-msgstr "Gebruik de piraat om schepen te blokkeren"
+msgstr "De piraat gebruiken om schepen te blokkeren"
 
 #: ../common/gtk/game-rules.c:133
 msgid "Strict trade"
@@ -2651,12 +2651,12 @@ msgstr "Controleer op winst alleen aan het einde van de beurt"
 
 #: ../common/gtk/game-rules.c:143
 msgid "Use dice deck"
-msgstr "Gebruik dobbelsteenkaarten"
+msgstr "Dobbelsteenkaarten gebruiken"
 
 #: ../common/gtk/game-rules.c:145
 msgid "Use a deck of 36 dice cards instead of real dice"
 msgstr ""
-"Gebruik een pak van 36 dobbelsteenkaarten in plaats van echte dobbelstenen"
+"Een pak van 36 dobbelsteenkaarten gebruiken in plaats van echte dobbelstenen"
 
 #. Label
 #: ../common/gtk/game-rules.c:153
@@ -2665,7 +2665,7 @@ msgstr "Aantal pakken dobbelsteenkaarten"
 
 #: ../common/gtk/game-rules.c:169
 msgid "The number of dice decks (of 36 cards each)"
-msgstr "The aantal pakken dobbelsteenkaarten (van elk 36 kaarten)"
+msgstr "Het aantal pakken dobbelsteenkaarten (van elk 36 kaarten)"
 
 #. Label
 #: ../common/gtk/game-rules.c:176
@@ -3380,7 +3380,7 @@ msgstr "Omleiding naar een andere metaserver"
 #. Commandline metaserver: server
 #: ../metaserver/main.c:619
 msgid "Use this hostname when creating new games"
-msgstr "Gebruik deze hostname bij nieuwe spellen"
+msgstr "Deze hostname gebruiken bij nieuwe spellen"
 
 #. Commandline metaserver: server argument
 #: ../metaserver/main.c:621
@@ -3390,7 +3390,7 @@ msgstr "hostname"
 #. Commandline metaserver: port-range
 #: ../metaserver/main.c:624
 msgid "Use this port range when creating new games"
-msgstr "Gebruik dit bereik voor de poorten van nieuwe spellen"
+msgstr "Dit bereik gebruiken voor de poorten van nieuwe spellen"
 
 #. Commandline metaserver: port-range argument
 #: ../metaserver/main.c:626
@@ -3724,7 +3724,7 @@ msgstr "Voeg N computerspelers toe"
 #. Commandline server-console: register
 #: ../server/main.c:119
 msgid "Register server with metaserver"
-msgstr "Registreer dit spel bij de metaserver"
+msgstr "Dit spel bij de metaserver aanmelden"
 
 #. Commandline server-console: metaserver
 #: ../server/main.c:122
@@ -3734,7 +3734,7 @@ msgstr "Registreer bij metaserver naam (betekent -r)"
 #. Commandline server-console: hostname
 #: ../server/main.c:126
 msgid "Use this hostname when registering"
-msgstr "Gebruik deze hostname bij registratie"
+msgstr "Deze hostname gebruiken bij registratie"
 
 #. Commandline server-console: auto-quit
 #: ../server/main.c:133
@@ -3899,7 +3899,7 @@ msgstr "Na lang wachten zijn er nog steeds geen spelers... Doei.\n"
 #: ../server/player.c:726
 msgid "The last human player left. Waiting for the return of a player."
 msgstr ""
-"The laatste menselijke speler heeft het spel verlaten. Wacht op de terugkeer "
+"De laatste menselijke speler heeft het spel verlaten. Wacht op de terugkeer "
 "van een speler."
 
 #: ../server/player.c:747
