@@ -1,3 +1,6 @@
+2020-06-27  Roland Clobus <rclobus@rclobus.nl>
+	* MinGW/README.txt: Updated building instructions.
+
 2020-06-24  Roland Clobus <rclobus@rclobus.nl>
 	* MinGW/Makefile.am: Use the MKDIR_P and INSTALL_x macros.
 	* MinGW/Makefile.am, MinGW/pioneers.nsi.in, configure.ac: Use a
