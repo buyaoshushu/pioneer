@@ -92,6 +92,8 @@ install-MinGW-fileopen:
 	$(INSTALL_DATA) /mingw64/share/glib-2.0/schemas/gschemas.compiled $(bindir)/share/glib-2.0/schemas
 	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/actions/document-open-recent-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
 	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/actions/media-eject-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/actions/folder-new-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
+	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/actions/bookmark-new-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/actions
 	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/ui/pan-start-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
 	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/ui/pan-end-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
 	$(INSTALL_DATA) /mingw64/share/icons/Adwaita/scalable/ui/pan-down-symbolic.svg $(bindir)/share/icons/Adwaita/scalable/ui
