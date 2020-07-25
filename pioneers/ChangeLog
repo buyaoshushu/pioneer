@@ -1,3 +1,6 @@
+2020-07-25  Roland Clobus <rclobus@rclobus.nl>
+	* editor/gtk/editor.c: Prevent writing invalid games (SF bug 307).
+
 2020-06-27  Roland Clobus <rclobus@rclobus.nl>
 	* MinGW/README.txt: Updated building instructions.
 	* MinGW/Makefile.am: Added two more missing icons.
