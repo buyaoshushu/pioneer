@@ -223,6 +223,15 @@ static void fill_map(Map * map)
 	}
 }
 
+static gboolean terrain_has_chit(Terrain terrain)
+{
+	if (terrain == HILL_TERRAIN || terrain == FIELD_TERRAIN ||
+	    terrain == MOUNTAIN_TERRAIN || terrain == PASTURE_TERRAIN ||
+	    terrain == FOREST_TERRAIN || terrain == GOLD_TERRAIN)
+		return TRUE;
+	return FALSE;
+}
+
 static void canonicalize_map(Map * map)
 {
 	Hex *hex;
@@ -238,23 +247,23 @@ static void canonicalize_map(Map * map)
 			hex = map->grid[y][x];
 			if (hex == NULL)
 				continue;
-			if (hex->roll > 0) {
+			if (terrain_has_chit(hex->terrain)) {
+				if (hex->roll <= 0) {
+					/* Should not happen, but we do not want to throw away the work of the user, so correct and continue */
+					g_warning
+					    ("The dice roll is corrected for hex %d,%d",
+					     hex->x, hex->y);
+					hex->roll = 2;
+				}
 				g_array_append_val(map->chits, hex->roll);
 				hex->chit_pos = sequence_number++;
 			} else if (hex->terrain == DESERT_TERRAIN) {
 				hex->chit_pos = sequence_number++;
+			} else {
+				hex->chit_pos = -1;
 			}
 		}
 	}
-}
-
-static gboolean terrain_has_chit(Terrain terrain)
-{
-	if (terrain == HILL_TERRAIN || terrain == FIELD_TERRAIN ||
-	    terrain == MOUNTAIN_TERRAIN || terrain == PASTURE_TERRAIN ||
-	    terrain == FOREST_TERRAIN || terrain == GOLD_TERRAIN)
-		return TRUE;
-	return FALSE;
 }
 
 /** Changes the terrain of a hex to terrain.
@@ -270,14 +279,13 @@ static void change_terrain(Hex * hex, Terrain terrain)
 		return;
 
 	hex->terrain = terrain;
-	if (terrain_has_chit(terrain)) {
-		if (hex->roll == 0)
-			hex->roll = 2;
-	} else
+	if (terrain_has_chit(terrain) && (hex->roll == 0)) {
+		hex->roll = 2;
+	} else {
 		hex->roll = 0;
-
-	if (terrain != SEA_TERRAIN)
-		hex->resource = NO_RESOURCE;
+	}
+	hex->resource = NO_RESOURCE;
+	hex->facing = 0;
 
 	/* If terrain is not land,
 	 * remove all ports on adjacent hexes that point to hex */
@@ -1504,11 +1512,20 @@ static void load_game(const gchar * file, gboolean is_reload)
 static void save_game(const gchar * file)
 {
 	GameParams *params = get_params();
+	GameParams *reloaded_params;
 	canonicalize_map(params->map);
 	if (!params_write_file(params, file))
 		error_dialog(_("Failed to save to '%s'"), file);
-	else
-		config_set_string("editor/last-game", file);
+	else {
+		reloaded_params = params_load_file(file);
+		if (reloaded_params != NULL) {
+			config_set_string("editor/last-game", file);
+		} else {
+			error_dialog
+			    ("You found a bug.The saved game could not be loaded.");
+		}
+		params_free(reloaded_params);
+	}
 	params_free(params);
 }
 
