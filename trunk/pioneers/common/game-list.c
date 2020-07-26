@@ -159,4 +159,5 @@ void game_list_cleanup(void)
 		games = g_slist_next(games);
 	}
 	g_slist_free(_game_list);
+	_game_list = NULL;
 }
