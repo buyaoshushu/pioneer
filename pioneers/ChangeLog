@@ -1,3 +1,6 @@
+2020-07-26  Roland Clobus <rclobus@rclobus.nl>
+	* common/game-list.c: Set pointer to NULL after free (SF bug 304).
+
 2020-07-25  Roland Clobus <rclobus@rclobus.nl>
 	* editor/gtk/editor.c: Prevent writing invalid games (SF bug 307).
 
