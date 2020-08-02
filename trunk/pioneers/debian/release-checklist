@@ -2,7 +2,7 @@
 # What to do for a release of a new version in Debian:
 
 #- Read about the changes in the policy
-sensible-browser file:///usr/share/doc/debian-policy/upgrading-checklist-1.html
+sensible-browser file:///usr/share/doc/debian-policy/policy.html/upgrading-checklist.html
 
 #- Get released tarball
 cd "`dirname "$0"`"/..
@@ -24,7 +24,10 @@ svn export debian "$dir/$pdir/debian"
 
 cd "$dir/$pdir"
 
-#- update the version number in the builddep package
+#- Update the builddep package
+#  - update the version number (remove ~local1)
+#  - update Standards-Version
+#
 vim debian/pioneers-builddep
 
 #- dch, mark bugs as closed
@@ -58,11 +61,11 @@ pioneers
 piuparts *deb
 
 #- upload
-#dput mentors pioneers_15.5-1_amd64.changes
+#dput mentors pioneers_15.6-1_amd64.changes
 
 #- update subversion debian directory
 #  Copy the debian directory in $dir/$pdir to a folder which is controlled by svn
 #  Commit
 #- svn copy https://svn.code.sf.net/p/pio/code/trunk/pioneers/debian \
-#  https://svn.code.sf.net/p/pio/code/tags/debian-release-15.5-1 \
-#  -m "tag debian release 15.5-1"
+#  https://svn.code.sf.net/p/pio/code/tags/debian-release-15.6-1 \
+#  -m "tag debian release 15.6-1"
