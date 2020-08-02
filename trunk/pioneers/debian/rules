@@ -19,3 +19,9 @@ override_dh_clean:
 	debconf-updatepo	
 	dh_clean
 
+override_dh_installdocs:
+	dh_installdocs --all NEWS
+
+override_dh_installchangelogs:
+	dh_installchangelogs -XChangeLog
+
