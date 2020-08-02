@@ -1,10 +1,23 @@
+Subversion release 15.6
+* Fix for #307: Prevent writing invalid games in the editor
+* Re-enabled the Windows port (15.5 was not released for Windows)
+* New feature: Allow automatic rolling of the dice
+* New feature: When trading, charity can be prevented
+* Explicit language selection with an environment variable: LANG for Windows, LANGUAGE for Linux
+* Better IPv6 support for games found with Avahi
+* Support for building with gcc 10
+* Cosmetic improvements for many themes
+* Use a more modern 'beep' on Linux
+* New default: wide-screen layout
+* Various improvements in the editor
+* Code quality improvements
+
 Subversion release 15.5
 * Fix for #298: Allow trade after a road building development card
 * Use more modern helper libraries for the inline help
 * Minor code quality improvements
 
 Subversion release 15.4
-
 * New theme Nouvellia, by Brian Mansberger
 * Fixed rendering issues in ccFlickr theme
 * Improvements for the MinGW port
@@ -16,11 +29,9 @@ Subversion release 15.4
 * Minor code quality improvements
 
 Subversion release 15.3
-
 * Relicense of the desktop icons to CC-BY-SA-4.0
 
 Subversion release 15.2
-
 * Ported from GTK+2 to GTK+3
 * A new computer player, by Rodrigo Espiga Gómez
 
