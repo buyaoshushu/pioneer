@@ -8,10 +8,14 @@ export DH_OPTIONS
 %:
 	dh $@
 
+override_dh_update_autotools_config:
+	NOCONFIGURE=1 ./autogen.sh
+	dh_update_autotools_config
+
 override_dh_auto_configure:
-	./autogen.sh --prefix=/usr --bindir=/usr/games --mandir=/usr/share/man \
+	dh_auto_configure -- \
+		--bindir=/usr/games \
 		--enable-warnings \
-		--disable-dependency-tracking \
 		--disable-deprecation-checks
 
 override_dh_clean:

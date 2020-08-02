@@ -11,6 +11,7 @@ pioneers (15.6-1~local1) UNRELEASED; urgency=medium
     If it has not been written yet, an init script is encouraged.
   * Explicitly added CC-BY-SA-3.0 and 4.0 licenses in copyright.
   * Fixed Lintian warning file-contains-trailing-whitespace.
+  * Pass-along all arguments to dh_auto_configure. (closes: #893586)
 
  -- Roland Clobus <roland@silent.lan>  Wed, 14 Mar 2018 18:54:08 +0100
 
