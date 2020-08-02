@@ -6,8 +6,8 @@ pioneers (15.6-1~local1) UNRELEASED; urgency=medium
   * The game uses the Gentium font.
   * Upgrade standards version to 4.5.0.
     Supply /usr/share/doc/package/NEWS.gz instead of changelog.gz
-    TODO: According to section 9.3.1,
-    a systemd service unit should be included.
+  * Kept Lintian warning 'missing-systemd-service-for-init.d-script':
+    According to section 9.3.1, a systemd service unit should be included.
     If it has not been written yet, an init script is encouraged.
   * Explicitly added CC-BY-SA-3.0 and 4.0 licenses in copyright.
 
