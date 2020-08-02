@@ -155,8 +155,8 @@ clean-local:
 	rm -rf html
 
 distclean-local:
-	rm -f *~
-	rm -rf autom4te.cache
+	-rm -f *~
+	-rm -rf autom4te.cache
 
 # Reformat the code.
 reindent:
