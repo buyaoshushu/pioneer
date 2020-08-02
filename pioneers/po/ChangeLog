@@ -1,3 +1,8 @@
+2020-08-02  Roland Clobus <rclobus@rclobus.nl>
+	* all: Line number update for 15.6
+	* en_GB.po: Updated to 15.6
+	* de.po: Added a few translations
+
 2020-06-26  Roland Clobus <rclobus@rclobus.nl>
 	* nl.po: Updated to 15.6
 	* nl.po: Use infinitives instead of imperatives
