@@ -591,7 +591,7 @@ static int facingOK(const Node * node, Hex * hex)
 
 
 
-/* It returns the value given to an hex surrounding a node. We also need to know the node to check (for maritime hexes) if it has acces to the port */
+/* It returns the value given to an hex surrounding a node. We also need to know the node to check (for maritime hexes) if it has access to the port */
 static float genetic_score_hex(const Node * node, Hex * hex,
 			       const struct chromosome_t *myChromosome,
 			       const struct gameState_t *myGameState)

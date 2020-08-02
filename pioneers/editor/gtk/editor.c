@@ -649,7 +649,7 @@ static gboolean enter_notify_map_cb(GtkWidget * widget,
 {
 	if (event->mode != GDK_CROSSING_GTK_UNGRAB) {
 		/* Do not grab the focus when a ScrollableTextView
-		 * is focussed on another tab page */
+		 * is focused on another tab page */
 		gtk_widget_grab_focus(widget);
 	}
 	return FALSE;

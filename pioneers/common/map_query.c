@@ -397,7 +397,7 @@ gboolean can_bridge_be_setup(const Edge * edge)
  * 2 - Edge must be adjacent to a land hex.
  * 3 - Edge must be adjacent to a building that is owned by the
  *     specified player, or must be adjacent to another road segment
- *     owned by the specifed player, but not separated by a building
+ *     owned by the specified player, but not separated by a building
  *     owned by a different player.
  */
 gboolean can_road_be_built(const Edge * edge, gint owner)
@@ -415,7 +415,7 @@ gboolean can_road_be_built(const Edge * edge, gint owner)
  * 2 - Edge must be adjacent to a sea hex.
  * 3 - Edge must be adjacent to a building that is owned by the
  *     specified player, or must be adjacent to another ship segment
- *     owned by the specifed player, but not separated by a building
+ *     owned by the specified player, but not separated by a building
  *     owned by a different player.
  */
 gboolean can_ship_be_built(const Edge * edge, gint owner)
@@ -487,7 +487,7 @@ gboolean can_ship_be_moved(const Edge * edge, gint owner)
  * 2 - Edge must not be adjacent to a land hex.
  * 3 - Edge must be adjacent to a building that is owned by the
  *     specified player, or must be adjacent to another road/bridge
- *     segment owned by the specifed player, but not separated by a
+ *     segment owned by the specified player, but not separated by a
  *     building owned by a different player.
  */
 gboolean can_bridge_be_built(const Edge * edge, gint owner)
