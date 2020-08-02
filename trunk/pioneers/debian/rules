@@ -16,7 +16,7 @@ override_dh_auto_configure:
 
 override_dh_clean:
 	-rm ltmain.sh config.sub config.guess aclocal.m4
-	debconf-updatepo	
+	debconf-updatepo
 	dh_clean
 
 override_dh_installdocs:
@@ -24,4 +24,3 @@ override_dh_installdocs:
 
 override_dh_installchangelogs:
 	dh_installchangelogs -XChangeLog
-

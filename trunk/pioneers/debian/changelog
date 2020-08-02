@@ -10,6 +10,7 @@ pioneers (15.6-1~local1) UNRELEASED; urgency=medium
     According to section 9.3.1, a systemd service unit should be included.
     If it has not been written yet, an init script is encouraged.
   * Explicitly added CC-BY-SA-3.0 and 4.0 licenses in copyright.
+  * Fixed Lintian warning file-contains-trailing-whitespace.
 
  -- Roland Clobus <roland@silent.lan>  Wed, 14 Mar 2018 18:54:08 +0100
 
