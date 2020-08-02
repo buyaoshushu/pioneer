@@ -578,7 +578,7 @@ GtkWidget *trade_build_page(void)
 	gtk_box_pack_start(GTK_BOX(vbox), charity_enabled_checkbutton,
 			   FALSE, TRUE, 0);
 	gtk_widget_set_tooltip_text(charity_enabled_checkbutton,
-				    /* Tooltip for the option to prevent charity */
+				    /* Tooltip for the option to enable charity */
 				    _(""
 				      "When checked, a resource can be given away without receiving anything back"));
 
