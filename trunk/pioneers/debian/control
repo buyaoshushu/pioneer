@@ -26,10 +26,10 @@ Vcs-Browser: https://sourceforge.net/p/pio/code/HEAD/tree/trunk/pioneers/
 
 Package: pioneers
 Architecture: any
-Depends: librsvg2-common,
+Depends: fonts-sil-gentium,
+         librsvg2-common,
          pioneers-console (=${binary:Version}),
          pioneers-data (=${source:Version}),
-         fonts-sil-gentium,
          ${misc:Depends},
          ${shlibs:Depends}
 Recommends: yelp
