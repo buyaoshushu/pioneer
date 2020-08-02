@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-21 13:39+0200\n"
+"POT-Creation-Date: 2020-08-02 14:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,7 +69,7 @@ msgstr ""
 #. Commandline option of metaserver: version
 #. Commandline option of server-gtk: version
 #. Commandline option of server-console: version
-#: ../client/ai/ai.c:114 ../client/gtk/offline.c:69 ../editor/gtk/editor.c:1736
+#: ../client/ai/ai.c:114 ../client/gtk/offline.c:69 ../editor/gtk/editor.c:1770
 #: ../metaserver/main.c:635 ../server/gtk/main.c:1118 ../server/main.c:112
 msgid "Show version information"
 msgstr ""
@@ -80,7 +80,7 @@ msgid "- Computer player for Pioneers"
 msgstr ""
 
 #: ../client/ai/ai.c:137 ../client/gtk/offline.c:195
-#: ../editor/gtk/editor.c:1772 ../metaserver/main.c:679
+#: ../editor/gtk/editor.c:1806 ../metaserver/main.c:679
 #: ../server/gtk/main.c:1161 ../server/main.c:218
 #, c-format
 msgid "Pioneers version:"
@@ -332,8 +332,8 @@ msgstr ""
 #: ../client/ai/lobbybot.c:119
 msgid ""
 "This board is not intended to be a game that can be played. Instead, players "
-"can find each other here, and decide which board they want to play. Then, one "
-"of the players will host the proposed game by starting a server, and "
+"can find each other here, and decide which board they want to play. Then, "
+"one of the players will host the proposed game by starting a server, and "
 "registers it at the metaserver. The other players can subsequently "
 "disconnect from the lobby, and enter that game."
 msgstr ""
@@ -1407,8 +1407,8 @@ msgstr ""
 #. Button text
 #: ../client/gtk/connect.c:1040 ../client/gtk/connect.c:1191
 #: ../client/gtk/connect.c:1440 ../client/gtk/connect.c:1731
-#: ../client/gtk/name.c:147 ../editor/gtk/editor.c:1548
-#: ../editor/gtk/editor.c:1589 ../editor/gtk/editor.c:1639
+#: ../client/gtk/name.c:147 ../editor/gtk/editor.c:1584
+#: ../editor/gtk/editor.c:1624 ../editor/gtk/editor.c:1673
 msgid "_Cancel"
 msgstr ""
 
@@ -1659,7 +1659,7 @@ msgstr ""
 #. Button text
 #: ../client/gtk/discard.c:83 ../client/gtk/gameover.c:38
 #: ../client/gtk/gold.c:78 ../client/gtk/monopoly.c:88 ../client/gtk/name.c:150
-#: ../client/gtk/plenty.c:67 ../editor/gtk/editor.c:1642
+#: ../client/gtk/plenty.c:67 ../editor/gtk/editor.c:1676
 msgid "_OK"
 msgstr ""
 
@@ -1729,7 +1729,7 @@ msgid "<b>Messages</b>"
 msgstr ""
 
 #. Tab page name
-#: ../client/gtk/gui.c:398 ../editor/gtk/editor.c:1810
+#: ../client/gtk/gui.c:398 ../editor/gtk/editor.c:1844
 msgid "Map"
 msgstr ""
 
@@ -2112,7 +2112,7 @@ msgid "Resource cards"
 msgstr ""
 
 #. Caption
-#: ../client/gtk/player.c:65 ../editor/gtk/editor.c:1329
+#: ../client/gtk/player.c:65 ../editor/gtk/editor.c:1338
 msgid "Development cards"
 msgstr ""
 
@@ -2177,7 +2177,6 @@ msgid "Enable Charity"
 msgstr ""
 
 #. Tooltip for the option to enable charity
-#. Tooltip for the option to prevent charity
 #: ../client/gtk/quote.c:388 ../client/gtk/trade.c:582
 msgid ""
 "When checked, a resource can be given away without receiving anything back"
@@ -2868,368 +2867,368 @@ msgid "State stack overflow. Stack dump sent to standard error.\n"
 msgstr ""
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:130
+#: ../editor/gtk/editor.c:131
 msgid "_Hill"
 msgstr ""
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:132
+#: ../editor/gtk/editor.c:133
 msgid "_Field"
 msgstr ""
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:134
+#: ../editor/gtk/editor.c:135
 msgid "_Mountain"
 msgstr ""
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:136
+#: ../editor/gtk/editor.c:137
 msgid "_Pasture"
 msgstr ""
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:138
+#: ../editor/gtk/editor.c:139
 msgid "F_orest"
 msgstr ""
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:140
+#: ../editor/gtk/editor.c:141
 msgid "_Desert"
 msgstr ""
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:142
+#: ../editor/gtk/editor.c:143
 msgid "_Sea"
 msgstr ""
 
 #. Use an unique shortcut key for each resource
-#: ../editor/gtk/editor.c:144
+#: ../editor/gtk/editor.c:145
 msgid "_Gold"
 msgstr ""
 
 #. Use an unique shortcut key for each resource
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:146 ../editor/gtk/editor.c:161
+#: ../editor/gtk/editor.c:147 ../editor/gtk/editor.c:162
 msgid "_None"
 msgstr ""
 
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:151
+#: ../editor/gtk/editor.c:152
 msgid "_Brick (2:1)"
 msgstr ""
 
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:153
+#: ../editor/gtk/editor.c:154
 msgid "_Grain (2:1)"
 msgstr ""
 
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:155
+#: ../editor/gtk/editor.c:156
 msgid "_Ore (2:1)"
 msgstr ""
 
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:157
+#: ../editor/gtk/editor.c:158
 msgid "_Wool (2:1)"
 msgstr ""
 
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:159
+#: ../editor/gtk/editor.c:160
 msgid "_Lumber (2:1)"
 msgstr ""
 
 #. Use an unique shortcut key for each port type
-#: ../editor/gtk/editor.c:163
+#: ../editor/gtk/editor.c:164
 msgid "_Any (3:1)"
 msgstr ""
 
 #. East
-#: ../editor/gtk/editor.c:168
+#: ../editor/gtk/editor.c:169
 msgid "East|E"
 msgstr ""
 
 #. North east
-#: ../editor/gtk/editor.c:170
+#: ../editor/gtk/editor.c:171
 msgid "North East|NE"
 msgstr ""
 
 #. North west
-#: ../editor/gtk/editor.c:172
+#: ../editor/gtk/editor.c:173
 msgid "North West|NW"
 msgstr ""
 
 #. West
-#: ../editor/gtk/editor.c:174
+#: ../editor/gtk/editor.c:175
 msgid "West|W"
 msgstr ""
 
 #. South west
-#: ../editor/gtk/editor.c:176
+#: ../editor/gtk/editor.c:177
 msgid "South West|SW"
 msgstr ""
 
 #. South east
-#: ../editor/gtk/editor.c:178
+#: ../editor/gtk/editor.c:179
 msgid "South East|SE"
 msgstr ""
 
-#: ../editor/gtk/editor.c:387
+#: ../editor/gtk/editor.c:396
 msgid "Place a hill hex"
 msgstr ""
 
-#: ../editor/gtk/editor.c:388
+#: ../editor/gtk/editor.c:397
 msgid "Place a field hex"
 msgstr ""
 
-#: ../editor/gtk/editor.c:389
+#: ../editor/gtk/editor.c:398
 msgid "Place a mountain hex"
 msgstr ""
 
-#: ../editor/gtk/editor.c:390
+#: ../editor/gtk/editor.c:399
 msgid "Place a pasture hex"
 msgstr ""
 
-#: ../editor/gtk/editor.c:391
+#: ../editor/gtk/editor.c:400
 msgid "Place a forest hex"
 msgstr ""
 
-#: ../editor/gtk/editor.c:392
+#: ../editor/gtk/editor.c:401
 msgid "Place a desert hex"
 msgstr ""
 
-#: ../editor/gtk/editor.c:393
+#: ../editor/gtk/editor.c:402
 msgid "Place a sea hex"
 msgstr ""
 
-#: ../editor/gtk/editor.c:394
+#: ../editor/gtk/editor.c:403
 msgid "Place a gold hex"
 msgstr ""
 
-#: ../editor/gtk/editor.c:395
+#: ../editor/gtk/editor.c:404
 msgid "Clear the hex"
 msgstr ""
 
-#: ../editor/gtk/editor.c:403
+#: ../editor/gtk/editor.c:412
 msgid "Place a 2 chit"
 msgstr ""
 
-#: ../editor/gtk/editor.c:404
+#: ../editor/gtk/editor.c:413
 msgid "Place a 3 chit"
 msgstr ""
 
-#: ../editor/gtk/editor.c:405
+#: ../editor/gtk/editor.c:414
 msgid "Place a 4 chit"
 msgstr ""
 
-#: ../editor/gtk/editor.c:406
+#: ../editor/gtk/editor.c:415
 msgid "Place a 5 chit"
 msgstr ""
 
-#: ../editor/gtk/editor.c:407
+#: ../editor/gtk/editor.c:416
 msgid "Place a 6 chit"
 msgstr ""
 
-#: ../editor/gtk/editor.c:409
+#: ../editor/gtk/editor.c:418
 msgid "Place an 8 chit"
 msgstr ""
 
-#: ../editor/gtk/editor.c:410
+#: ../editor/gtk/editor.c:419
 msgid "Place a 9 chit"
 msgstr ""
 
-#: ../editor/gtk/editor.c:411
+#: ../editor/gtk/editor.c:420
 msgid "Place a 10 chit"
 msgstr ""
 
-#: ../editor/gtk/editor.c:412
+#: ../editor/gtk/editor.c:421
 msgid "Place an 11 chit"
 msgstr ""
 
-#: ../editor/gtk/editor.c:413
+#: ../editor/gtk/editor.c:422
 msgid "Place a 12 chit"
 msgstr ""
 
-#: ../editor/gtk/editor.c:419
+#: ../editor/gtk/editor.c:428
 msgid "Place a brick 2:1 port"
 msgstr ""
 
-#: ../editor/gtk/editor.c:420
+#: ../editor/gtk/editor.c:429
 msgid "Place a grain 2:1 port"
 msgstr ""
 
-#: ../editor/gtk/editor.c:421
+#: ../editor/gtk/editor.c:430
 msgid "Place an ore 2:1 port"
 msgstr ""
 
-#: ../editor/gtk/editor.c:422
+#: ../editor/gtk/editor.c:431
 msgid "Place a wool 2:1 port"
 msgstr ""
 
-#: ../editor/gtk/editor.c:423
+#: ../editor/gtk/editor.c:432
 msgid "Place a lumber 2:1 port"
 msgstr ""
 
 #. Tooltip to remove a port tile in the editor
-#: ../editor/gtk/editor.c:425
+#: ../editor/gtk/editor.c:434
 msgid "Remove a port"
 msgstr ""
 
-#: ../editor/gtk/editor.c:426
+#: ../editor/gtk/editor.c:435
 msgid "Place a 3:1 port"
 msgstr ""
 
-#: ../editor/gtk/editor.c:463
+#: ../editor/gtk/editor.c:472
 msgid ""
 "Select the terrain type with the context menu on the left click or toggle a "
 "node to exclude it from being used during the setup phase"
 msgstr ""
 
-#: ../editor/gtk/editor.c:592
+#: ../editor/gtk/editor.c:601
 msgid "Insert a row"
 msgstr ""
 
-#: ../editor/gtk/editor.c:593
+#: ../editor/gtk/editor.c:602
 msgid "Delete a row"
 msgstr ""
 
-#: ../editor/gtk/editor.c:594
+#: ../editor/gtk/editor.c:603
 msgid "Insert a column"
 msgstr ""
 
-#: ../editor/gtk/editor.c:595
+#: ../editor/gtk/editor.c:604
 msgid "Delete a column"
 msgstr ""
 
 #. Label
-#: ../editor/gtk/editor.c:1000
+#: ../editor/gtk/editor.c:1009
 msgid "_Title"
 msgstr ""
 
 #. Label
-#: ../editor/gtk/editor.c:1013
+#: ../editor/gtk/editor.c:1022
 msgid "_Description"
 msgstr ""
 
 #. Label
-#: ../editor/gtk/editor.c:1031
+#: ../editor/gtk/editor.c:1040
 msgid "_Comments"
 msgstr ""
 
 #. Menu item
-#: ../editor/gtk/editor.c:1162
+#: ../editor/gtk/editor.c:1171
 msgid "Shuffle"
 msgstr ""
 
 #. Caption
 #. Game settings frame
-#: ../editor/gtk/editor.c:1318 ../server/gtk/main.c:913
+#: ../editor/gtk/editor.c:1327 ../server/gtk/main.c:913
 msgid "Game parameters"
 msgstr ""
 
 #. Caption
 #. Rules frame
-#: ../editor/gtk/editor.c:1321 ../server/gtk/main.c:928
+#: ../editor/gtk/editor.c:1330 ../server/gtk/main.c:928
 msgid "Rules"
 msgstr ""
 
 #. Caption
-#: ../editor/gtk/editor.c:1323
+#: ../editor/gtk/editor.c:1332
 msgid "Resources"
 msgstr ""
 
 #. Caption
-#: ../editor/gtk/editor.c:1326
+#: ../editor/gtk/editor.c:1335
 msgid "Buildings"
 msgstr ""
 
 #. The game in the editor does not have a name yet
-#: ../editor/gtk/editor.c:1343
+#: ../editor/gtk/editor.c:1352
 msgid "Untitled"
 msgstr ""
 
 #. Application caption
-#: ../editor/gtk/editor.c:1348 ../editor/gtk/pioneers-editor.desktop.in.h:1
+#: ../editor/gtk/editor.c:1357 ../editor/gtk/pioneers-editor.desktop.in.h:1
 msgid "Pioneers Editor"
 msgstr ""
 
-#: ../editor/gtk/editor.c:1458
+#: ../editor/gtk/editor.c:1467
 #, c-format
 msgid "Failed to load '%s'"
 msgstr ""
 
-#: ../editor/gtk/editor.c:1508
+#: ../editor/gtk/editor.c:1518
 #, c-format
 msgid "Failed to save to '%s'"
 msgstr ""
 
 #. Name of the file filter: show only games
-#: ../editor/gtk/editor.c:1526
+#: ../editor/gtk/editor.c:1544
 msgid "Games"
 msgstr ""
 
 #. Name of the file filter: show all files
-#: ../editor/gtk/editor.c:1532
+#: ../editor/gtk/editor.c:1550
 msgid "Unfiltered"
 msgstr ""
 
 #. Dialog caption
-#: ../editor/gtk/editor.c:1544
+#: ../editor/gtk/editor.c:1580
 msgid "Open Game"
 msgstr ""
 
 #. Button text
-#: ../editor/gtk/editor.c:1551
+#: ../editor/gtk/editor.c:1587
 msgid "_Open"
 msgstr ""
 
 #. Dialog caption
-#: ../editor/gtk/editor.c:1585
+#: ../editor/gtk/editor.c:1620
 msgid "Save As..."
 msgstr ""
 
 #. Button text
-#: ../editor/gtk/editor.c:1592
+#: ../editor/gtk/editor.c:1627
 msgid "Save _As"
 msgstr ""
 
 #. Dialog caption
-#: ../editor/gtk/editor.c:1634
+#: ../editor/gtk/editor.c:1668
 msgid "Change Title"
 msgstr ""
 
 #. Label
-#: ../editor/gtk/editor.c:1659
+#: ../editor/gtk/editor.c:1693
 msgid "New title:"
 msgstr ""
 
 #. Caption of about box
-#: ../editor/gtk/editor.c:1698
+#: ../editor/gtk/editor.c:1732
 msgid "About Pioneers Game Editor"
 msgstr ""
 
 #. Long help for commandline option (editor): filename
-#: ../editor/gtk/editor.c:1731
+#: ../editor/gtk/editor.c:1765
 msgid "Open this file"
 msgstr ""
 
 #. Commandline option for editor: filename
 #. Commandline metaserver: pidfile argument
-#: ../editor/gtk/editor.c:1733 ../metaserver/main.c:613
+#: ../editor/gtk/editor.c:1767 ../metaserver/main.c:613
 msgid "filename"
 msgstr ""
 
 #. Long description in the command line: --help
-#: ../editor/gtk/editor.c:1761
+#: ../editor/gtk/editor.c:1795
 msgid "- Editor for games of Pioneers"
 msgstr ""
 
 #. Tab page name
-#: ../editor/gtk/editor.c:1815
+#: ../editor/gtk/editor.c:1849
 msgid "Settings"
 msgstr ""
 
 #. Tab page name
-#: ../editor/gtk/editor.c:1818
+#: ../editor/gtk/editor.c:1852
 msgid "Comments"
 msgstr ""
 
