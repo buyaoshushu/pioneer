@@ -1,3 +1,10 @@
+pioneers (15.7-1~local1) UNRELEASED; urgency=medium
+
+  * Waiting for new upstream release.
+  * Updated signature and watch file. 
+
+ -- Roland Clobus <roland@silent.lan>  Sun, 02 Aug 2020 22:19:54 +0200
+
 pioneers (15.6-1) unstable; urgency=medium
 
   * New upstream release.
