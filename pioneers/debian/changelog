@@ -4,6 +4,11 @@ pioneers (15.6-1~local1) UNRELEASED; urgency=medium
   * Replaced beep by libcanberra.
   * Fixed FTBFS for gcc-10. (closes: #957687)
   * The game uses the Gentium font.
+  * Upgrade standards version to 4.5.0.
+    Supply /usr/share/doc/package/NEWS.gz instead of changelog.gz
+    TODO: According to section 9.3.1,
+    a systemd service unit should be included.
+    If it has not been written yet, an init script is encouraged.
 
  -- Roland Clobus <roland@silent.lan>  Wed, 14 Mar 2018 18:54:08 +0100
 
