@@ -118,7 +118,7 @@ static void lobbybot_chat_parser(gint player_num, const gchar * chat)
 		/* AI chat that explains '/why' */
 		ai_chat(N_("This board is not intended to be a game that "
 			   "can be played. Instead, players can find "
-			   "eachother here, and decide which board they "
+			   "each other here, and decide which board they "
 			   "want to play. Then, one of the players will "
 			   "host the proposed game by starting a server, "
 			   "and registers it at the metaserver. The other "
