@@ -335,7 +335,7 @@ msgstr "'/news' megtudhatod az utolsó kiadott verziót"
 #: ../client/ai/lobbybot.c:119
 msgid ""
 "This board is not intended to be a game that can be played. Instead, players "
-"can find eachother here, and decide which board they want to play. Then, one "
+"can find each other here, and decide which board they want to play. Then, one "
 "of the players will host the proposed game by starting a server, and "
 "registers it at the metaserver. The other players can subsequently "
 "disconnect from the lobby, and enter that game."
