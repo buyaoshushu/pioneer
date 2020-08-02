@@ -6,6 +6,7 @@
 	common/map_query.c, editor/gtk/editor.c: Apply 'make codespell'.
 	* client/ai/lobbybot.c, po/*: Apply 'make codespell' for a
 	translatable string.
+	* client/gtk/trade.c: Fixed translator comment.
 
 2020-07-26  Roland Clobus <rclobus@rclobus.nl>
 	* common/game-list.c: Set pointer to NULL after free (SF bug 304).
