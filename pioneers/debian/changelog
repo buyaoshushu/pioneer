@@ -1,6 +1,6 @@
-pioneers (15.6-1~local1) UNRELEASED; urgency=medium
+pioneers (15.6-1) unstable; urgency=medium
 
-  * Waiting for a new release.
+  * New upstream release.
   * Replaced beep by libcanberra.
   * Fixed FTBFS for gcc-10. (closes: #957687)
   * The game uses the Gentium font.
@@ -13,7 +13,7 @@ pioneers (15.6-1~local1) UNRELEASED; urgency=medium
   * Fixed Lintian warning file-contains-trailing-whitespace.
   * Pass-along all arguments to dh_auto_configure. (closes: #893586)
 
- -- Roland Clobus <roland@silent.lan>  Wed, 14 Mar 2018 18:54:08 +0100
+ -- Roland Clobus <rclobus@rclobus.nl>  Sun, 02 Aug 2020 15:39:59 +0200
 
 pioneers (15.5-1) unstable; urgency=medium
 

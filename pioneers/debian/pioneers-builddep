@@ -14,7 +14,7 @@ Vcs-Browser: https://sourceforge.net/p/pio/code/HEAD/tree/trunk/pioneers/
 Standards-Version: 4.5.0
 
 Package: pioneers-builddep
-Version: 15.6-1~local1
+Version: 15.6-1
 Maintainer: Roland Clobus <rclobus@rclobus.nl>
 # Provides: <comma-separated list of packages>
 # Replaces: <comma-separated list of packages>
