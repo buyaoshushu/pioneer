@@ -95,7 +95,7 @@ StateMachine *SM(void)
 
 /* When commands are sent to the server, front ends may want to update
  * the status bar or something to indicate the the game is currently
- * waiting for server respose.
+ * waiting for server response.
  * Since the GUI may get disabled while waiting, it is good to let the
  * user know why all controls are unresponsive.
  */
@@ -609,7 +609,7 @@ static gboolean global_unhandled(StateMachine * sm, gint event)
 }
 
 /*----------------------------------------------------------------------
- * Server notifcations about player name changes and chat messages.
+ * Server notifications about player name changes and chat messages.
  * These can happen in any state (maybe this should be moved to
  * global_filter()?).
  */
@@ -637,7 +637,7 @@ static gboolean check_chat_or_name(StateMachine * sm)
 }
 
 /*----------------------------------------------------------------------
- * Server notifcations about other players name changes and chat
+ * Server notifications about other players name changes and chat
  * messages.  These can happen in almost any state in which the game
  * is running.
  */

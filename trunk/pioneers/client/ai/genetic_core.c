@@ -278,7 +278,7 @@ void updateConditionsMet(float probability, struct simulationsData_t *Data)
 	for (sim = 0; sim < MAX_SIMS; sim++) {
 		updateSimulation(sim, probability, Data);
 	}
-	/*At this point numberOfSimulationsOK will hold, for avery action, the number of simulations that, up to the turn calculated, meet the requirements to do it */
+	/*At this point numberOfSimulationsOK will hold, for every action, the number of simulations that, up to the turn calculated, meet the requirements to do it */
 }
 
 void updateTurnsToAction(float probability, int currentTurn,
@@ -296,7 +296,7 @@ void updateTurnsToAction(float probability, int currentTurn,
 
 #if 0
 
-/*This should ne rewriten in orden to take acount of the order change in resources (Now it should go Br,Gr,Or,Wo and Lu)*/
+/*This should be rewritten in order to take account of the order change in resources (Now it should go Br,Gr,Or,Wo and Lu)*/
 
 void outputSims(int number, int turn, struct simulationsData_t *Data)
 {
@@ -454,7 +454,7 @@ float strategyProfit(float time_a, float time_b, float turn,
 		     int num_players)
 {
 	/*Returns the benefit I get in a given turn if I try to do firstAction ending at time_a and then secondAction ending at time_b
-	 * time_a, time_b and turn should be possitive numbers, turn>=0, time_b>=time_a>=0*/
+	 * time_a, time_b and turn should be positive numbers, turn>=0, time_b>=time_a>=0*/
 	float profit;
 	float firstActionValue = myGameState.actionValue[oneStrategy[0]];
 	float secondActionValue = myGameState.actionValue[oneStrategy[1]];
@@ -465,7 +465,7 @@ float strategyProfit(float time_a, float time_b, float turn,
 	int roadsWillBuild;
 	if (firstActionValue == 0)
 		return 0;	/*It is impossible to do first action (not enough tokens, no place for it, etc.), so this strategy is worthless */
-	/*If this strategy requires doing nothing now, the amount of resources I finsh the turn with can decrease this strategy value depending on the risk of being affected by the thief */
+	/*If this strategy requires doing nothing now, the amount of resources I finish the turn with can decrease this strategy value depending on the risk of being affected by the thief */
 	if ((time_a != 0) && (myTurn)) {	/*I am waiting to do something, will I finish my turn with a "risky" amount of resources? */
 		endOfTurnResources = totalResources(&myGameState);
 		roadsWillBuild =

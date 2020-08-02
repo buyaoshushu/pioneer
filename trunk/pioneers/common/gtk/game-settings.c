@@ -252,7 +252,7 @@ static void game_settings_update(GameSettings * gs)
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(gs->victory_spin),
 				  gs->victory_points);
 
-	/* Reenable the signals */
+	/* Re-enable the signals */
 	g_signal_handlers_unblock_matched(G_OBJECT(gs->players_spin),
 					  G_SIGNAL_MATCH_DATA,
 					  0, 0, NULL, NULL, gs);
