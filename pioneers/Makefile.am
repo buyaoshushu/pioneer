@@ -172,8 +172,8 @@ codespell:
 
 # Remove ALL generated files
 pristine: maintainer-clean
-	rm -fr m4
-	svn status --no-ignore | awk '$$1=="I" { print substr($$0, 9, 255) }' | tr '\n' '\0' | xargs -0 rm
+	rm -rf m4
+	svn status --no-ignore | awk '$$1=="I" { print substr($$0, 9, 255) }' | tr '\n' '\0' | xargs -0 rm -rf
 
 # Application icons, in various sizes
 BUILT_SOURCES += $(subst .svg,.48x48_apps.png,$(icons))
