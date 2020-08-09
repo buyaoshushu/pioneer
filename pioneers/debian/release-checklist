@@ -47,7 +47,7 @@ debuild -uc -us
 
 # sign
 cd ..
-debsign -k50554B33905D8FB1922446FE62C57C6AA61495BD *changes
+debsign -kA61495BD *changes
 
 #- install, test
 sudo dpkg -i *deb
