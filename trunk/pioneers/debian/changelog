@@ -5,6 +5,7 @@ pioneers (15.6-2~local1) UNRELEASED; urgency=medium
   * Re-enable hardening and enable lfs.
   * gob2 requires maintenance mode.
   * Set Rules-Requires-Root: no.
+  * Added debian/upstream/metadata.
 
  -- Roland Clobus <roland@silent.lan>  Sun, 02 Aug 2020 22:19:54 +0200
 
