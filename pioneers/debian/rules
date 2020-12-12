@@ -4,6 +4,7 @@
 #export DH_VERBOSE=1
 
 export DH_OPTIONS
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all future=+lfs
 
 %:
 	dh $@
@@ -13,9 +14,14 @@ override_dh_update_autotools_config:
 	dh_update_autotools_config
 
 override_dh_auto_configure:
+	# Maintainer mode is required for gob2
+	# Note: hardening flags are enabled by DEB_BUILD_MAINT_OPTIONS
 	dh_auto_configure -- \
 		--bindir=/usr/games \
+		--enable-maintainer-mode \
 		--enable-warnings \
+		--disable-debug \
+		--disable-hardening \
 		--disable-deprecation-checks
 
 override_dh_clean:

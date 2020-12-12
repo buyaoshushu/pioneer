@@ -1,7 +1,9 @@
-pioneers (15.7-1~local1) UNRELEASED; urgency=medium
+pioneers (15.6-2~local1) UNRELEASED; urgency=medium
 
   * Waiting for new upstream release.
-  * Updated signature and watch file. 
+  * Updated signature and watch file.
+  * Re-enable hardening and enable lfs.
+  * gob2 requires maintenance mode.
 
  -- Roland Clobus <roland@silent.lan>  Sun, 02 Aug 2020 22:19:54 +0200
 
