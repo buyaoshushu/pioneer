@@ -47,10 +47,8 @@ gtk_cflags = \
 	$(GTK_CFLAGS) \
 	$(GTK_DEPRECATION)
 
-# The Fink port needs an explicit reference to driver.o
 console_libs = \
 	libpioneers.a \
-	$(top_builddir)/common/libpioneers_a-driver.o \
 	$(GLIB2_LIBS) \
 	$(GIO2_LIBS)
 
