@@ -1,4 +1,4 @@
-2021-05-14  orbea <ovariegata@users.sourceforge.net>
+2021-05-14  orbea <orbea@riseup.net>
 	* Makefile.am: Removed the hack from 2005-12-21. This makes Pioneers
 	build with slibtool (SF patch 680).
 
