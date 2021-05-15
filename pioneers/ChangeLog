@@ -3,6 +3,8 @@
 	client/gtk/resource-table.c, client/gtk/resource.c,
 	client/gtk/settingscreen.c, client/gtk/trade.c: Replaced
 	GTK_ALIGNMENT. Added indentation in the trade dialogs.
+	* client/gtk/develop.c, client/gtk/discard.c, client/gtk/gold.c,
+	client/gtk/player.c, client/gtk/resource.c: Replaced GTK_ALIGNMENT.
 
 2021-05-14  Doug Miller <dooglius@users.sourceforge.net>
 	* server/default.game, server/5-6-player.game: Adjusted the sequence

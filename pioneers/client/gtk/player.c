@@ -552,6 +552,7 @@ GtkWidget *player_build_summary(void)
 	/* Caption for the overview of the points and card of other players */
 	gtk_label_set_markup(GTK_LABEL(label), _("<b>Player summary</b>"));
 	gtk_widget_set_margin_start(label, 3);
+	gtk_widget_set_margin_end(label, 3);
 	gtk_widget_show(label);
 	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 0);
