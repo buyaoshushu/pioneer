@@ -295,7 +295,7 @@ static void add_trade_row(GtkWidget * grid, TradeRow * row,
 	col++;
 
 	row->curr = gtk_entry_new();
-	gtk_entry_set_width_chars(GTK_ENTRY(row->curr), 3);
+	gtk_entry_set_width_chars(GTK_ENTRY(row->curr), 2);
 	gtk_entry_set_alignment(GTK_ENTRY(row->curr), 1.0);
 	gtk_widget_set_sensitive(row->curr, FALSE);
 	gtk_widget_show(row->curr);
@@ -456,13 +456,11 @@ static GtkWidget *build_trade_resources_frame(const gchar * title,
 {
 	/* vbox */
 	/*       label */
-	/*       alignment */
-	/*               grid */
-	/*                       trade rows */
+	/*       grid */
+	/*               trade rows */
 
 	GtkWidget *vbox;
 	GtkWidget *label;
-	GtkWidget *alignment;
 	GtkWidget *grid;
 
 	gchar *title_with_markup;
@@ -479,16 +477,10 @@ static GtkWidget *build_trade_resources_frame(const gchar * title,
 	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
 
-	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
-	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 3, 0 * 12,
-				  0);
-	gtk_widget_show(alignment);
-	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
-
 	grid = gtk_grid_new();
+	gtk_widget_set_margin_start(grid, 12);
 	gtk_widget_show(grid);
-	gtk_container_add(GTK_CONTAINER(alignment), grid);
-	gtk_container_set_border_width(GTK_CONTAINER(grid), 0);
+	gtk_box_pack_start(GTK_BOX(vbox), grid, FALSE, FALSE, 0);
 	gtk_grid_set_row_spacing(GTK_GRID(grid), 3);
 	gtk_grid_set_column_spacing(GTK_GRID(grid), 3);
 
@@ -509,8 +501,7 @@ GtkWidget *trade_build_page(void)
 	/*               vbox */
 	/*                       trade_resources_frame */
 	/*                       trade_resources_frame */
-	/*                       hbox - bbox */
-	/*                               call_btn */
+	/*                       call_btn */
 	/*                       charity */
 	/*               vbox */
 	/*                       active_quote_label */
@@ -556,15 +547,11 @@ GtkWidget *trade_build_page(void)
 	gtk_box_pack_start(GTK_BOX(vbox), we_receive_frame, FALSE, TRUE,
 			   0);
 
-	bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-	gtk_widget_show(bbox);
-	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
-
 	/* Button text, trade: call for quotes from other players */
 	call_btn = gtk_button_new_with_mnemonic(_("_Call for Quotes"));
 	frontend_gui_register(call_btn, GUI_TRADE_CALL, "clicked");
 	gtk_widget_show(call_btn);
-	gtk_container_add(GTK_CONTAINER(bbox), call_btn);
+	gtk_box_pack_start(GTK_BOX(vbox), call_btn, FALSE, TRUE, 0);
 
 	/* Label text, trade: charity */
 	charity_enabled_checkbutton =

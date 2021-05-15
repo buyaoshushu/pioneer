@@ -160,6 +160,7 @@ GtkWidget *resource_table_new(const gchar * title,
 
 		widget = rt->row[i].label_widget =
 		    gtk_label_new(resource_name(i, TRUE));
+		gtk_widget_set_margin_start(widget, 12);
 		gtk_widget_show(widget);
 		gtk_grid_attach(GTK_GRID(rt), widget, 0, row, 1, 1);
 		gtk_label_set_xalign(GTK_LABEL(widget), 0.0);
@@ -167,7 +168,7 @@ GtkWidget *resource_table_new(const gchar * title,
 		widget = rt->row[i].hand_widget = gtk_entry_new();
 		gtk_widget_show(widget);
 		gtk_grid_attach(GTK_GRID(rt), widget, 1, row, 1, 1);
-		gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
+		gtk_entry_set_width_chars(GTK_ENTRY(widget), 2);
 		gtk_widget_set_sensitive(widget, FALSE);
 		gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
 		gtk_widget_set_tooltip_text(widget,
@@ -182,7 +183,7 @@ GtkWidget *resource_table_new(const gchar * title,
 			gtk_widget_show(widget);
 			gtk_grid_attach(GTK_GRID(rt), widget, 2, row, 1,
 					1);
-			gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
+			gtk_entry_set_width_chars(GTK_ENTRY(widget), 2);
 			gtk_widget_set_sensitive(widget, FALSE);
 			gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
 			gtk_widget_set_tooltip_text(widget,
@@ -196,7 +197,7 @@ GtkWidget *resource_table_new(const gchar * title,
 		gtk_widget_show(widget);
 		gtk_grid_attach(GTK_GRID(rt), widget, 2 + rt->bank_offset,
 				row, 1, 1);
-		gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
+		gtk_entry_set_width_chars(GTK_ENTRY(widget), 2);
 		gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
 		g_signal_connect(G_OBJECT(widget), "value-changed",
 				 G_CALLBACK(value_changed_cb),
@@ -242,7 +243,7 @@ void resource_table_set_total(ResourceTable * rt, const gchar * text,
 	gtk_widget_show(widget);
 	gtk_grid_attach(GTK_GRID(rt), widget, 2 + rt->bank_offset, row, 1,
 			1);
-	gtk_entry_set_width_chars(GTK_ENTRY(widget), 3);
+	gtk_entry_set_width_chars(GTK_ENTRY(widget), 2);
 	gtk_widget_set_sensitive(widget, FALSE);
 	gtk_entry_set_alignment(GTK_ENTRY(widget), 1.0);
 	gtk_widget_set_tooltip_text(widget,
