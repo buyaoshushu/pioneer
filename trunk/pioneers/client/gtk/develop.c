@@ -110,7 +110,6 @@ GtkWidget *develop_build_page(void)
 	GtkWidget *vbox;
 	GtkWidget *scroll_win;
 	GtkWidget *bbox;
-	GtkWidget *alignment;
 	GtkTreeViewColumn *column;
 	GtkCellRenderer *renderer;
 	GtkWidget *play_develop_btn;
@@ -119,18 +118,15 @@ GtkWidget *develop_build_page(void)
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_widget_show(vbox);
 
-	alignment = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
-	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 0, 3, 3);
-	gtk_widget_show(alignment);
-	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
-
 	label = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(label),
 			     /* Caption for list of bought development cards */
 			     _("<b>Development cards</b>"));
+	gtk_widget_set_margin_start(label, 3);
+	gtk_widget_set_margin_end(label, 3);
 	gtk_widget_show(label);
 	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
-	gtk_container_add(GTK_CONTAINER(alignment), label);
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 0);
 
 	/* Create model */
 	store = gtk_list_store_new(DEVELOP_COLUMN_LAST,

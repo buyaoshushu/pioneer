@@ -64,6 +64,7 @@ GtkWidget *resource_build_panel(void)
 	/* Caption for overview of the resources of the player */
 	gtk_label_set_markup(GTK_LABEL(label), _("<b>Resources</b>"));
 	gtk_widget_set_margin_start(label, 3);
+	gtk_widget_set_margin_end(label, 3);
 	gtk_widget_show(label);
 	gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 2, 1);
 	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
