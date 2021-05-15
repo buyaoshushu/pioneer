@@ -101,7 +101,6 @@ static GtkWidget *legend_create_content_with_scrolling(gboolean
 	GtkWidget *label;
 	GtkWidget *grid;
 	GtkWidget *vsep;
-	GtkWidget *alignment;
 	guint num_rows;
 	GtkWidget *viewport;
 	GtkWidget *scrolled_window;
@@ -118,14 +117,10 @@ static GtkWidget *legend_create_content_with_scrolling(gboolean
 	gtk_widget_show(label);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
 
-	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
-	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 0, 12, 0);
-	gtk_widget_show(alignment);
-	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
-
 	grid = gtk_grid_new();
+	gtk_widget_set_margin_start(grid, 12);
 	gtk_widget_show(grid);
-	gtk_container_add(GTK_CONTAINER(alignment), grid);
+	gtk_box_pack_start(GTK_BOX(vbox), grid, FALSE, FALSE, 0);
 	gtk_grid_set_row_spacing(GTK_GRID(grid), 3);
 	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 
@@ -150,14 +145,10 @@ static GtkWidget *legend_create_content_with_scrolling(gboolean
 	gtk_widget_show(label);
 	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
 
-	alignment = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
-	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 0, 12, 0);
-	gtk_widget_show(alignment);
-	gtk_box_pack_start(GTK_BOX(vbox), alignment, FALSE, FALSE, 0);
-
 	grid = gtk_grid_new();
+	gtk_widget_set_margin_start(grid, 12);
 	gtk_widget_show(grid);
-	gtk_container_add(GTK_CONTAINER(alignment), grid);
+	gtk_box_pack_start(GTK_BOX(vbox), grid, FALSE, FALSE, 0);
 	gtk_grid_set_row_spacing(GTK_GRID(grid), 3);
 	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 

@@ -51,7 +51,6 @@ GtkWidget *resource_build_panel(void)
 {
 	GtkWidget *grid;
 	GtkWidget *label;
-	GtkWidget *alignment;
 	GtkWidget *total;
 	PangoLayout *layout;
 	gint width_00, height_00;
@@ -61,16 +60,12 @@ GtkWidget *resource_build_panel(void)
 	gtk_grid_set_column_spacing(GTK_GRID(grid), 5);
 	gtk_grid_set_column_homogeneous(GTK_GRID(grid), TRUE);
 
-	alignment = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
-	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 0, 0, 3, 3);
-	gtk_widget_show(alignment);
-	gtk_grid_attach(GTK_GRID(grid), alignment, 0, 0, 2, 1);
-
 	label = gtk_label_new(NULL);
 	/* Caption for overview of the resources of the player */
 	gtk_label_set_markup(GTK_LABEL(label), _("<b>Resources</b>"));
+	gtk_widget_set_margin_start(label, 3);
 	gtk_widget_show(label);
-	gtk_container_add(GTK_CONTAINER(alignment), label);
+	gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 2, 1);
 	gtk_label_set_xalign(GTK_LABEL(label), 0.0);
 
 	create_resource_image(GTK_GRID(grid), BRICK_RESOURCE, 0, 1);
