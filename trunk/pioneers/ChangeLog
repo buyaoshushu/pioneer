@@ -1,6 +1,7 @@
 2021-05-16  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/ai.c, configure.ac, metaserver/main.c, server/main.c:
 	g_type_init is deprecated since glib 2.36.
+	* Makefile.am: Fixed compiler warnings in GOB generated code.
 
 2021-05-15  Roland Clobus <rclobus@rclobus.nl>
 	* client/gtk/legend.c, client/gtk/player.c,

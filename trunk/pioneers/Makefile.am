@@ -89,9 +89,15 @@ BUILT_SOURCES =
 icons = 
 
 # Use GOB to create new classes
+# Continue to use GOB for some more time, add local hacks to the generated files:
+# - _class_init -> needs a second argument now, which is not used
+# - _init -> needs a second argument now, which is not used
+# The 2 sed lines fix the declaration and the implementation
 %.gob.stamp %.c %.h %-private.h: %.gob
 	$(MKDIR_P) $(dir $@)
 	$(GOB2) --output-dir $(dir $@) $<
+	sed -i -e '/_init (/s/) G_GNUC_UNUSED/, gpointer class_data) G_GNUC_UNUSED/' $(dir $@)/$(notdir $(<:.gob=.c))
+	sed -i -e '/_init (/s/G_GNUC_UNUSED)/G_GNUC_UNUSED, gpointer class_data G_GNUC_UNUSED)/' $(dir $@)/$(notdir $(<:.gob=.c))
 	touch $@
 
 # creating icons
