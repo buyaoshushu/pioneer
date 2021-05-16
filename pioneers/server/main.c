@@ -175,7 +175,10 @@ int main(int argc, char *argv[])
 
 	driver->player_change = srv_player_change;
 
+#if !GLIB_CHECK_VERSION(2,36,0)
+	/* Starting with glib 2.36, this function does nothing */
 	g_type_init();
+#endif
 
 	server_init();
 
