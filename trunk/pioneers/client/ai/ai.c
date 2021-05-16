@@ -141,7 +141,10 @@ static void ai_init_glib_et_al(int argc, char **argv)
 		exit(0);
 	}
 
+#if !GLIB_CHECK_VERSION(2,36,0)
+	/* Starting with glib 2.36, this function does nothing */
 	g_type_init();
+#endif
 	set_ui_driver(&Glib_Driver);
 	log_set_func_default();
 }
