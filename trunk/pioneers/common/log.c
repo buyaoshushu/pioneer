@@ -234,8 +234,9 @@ void log_message(gint msg_type, const gchar * fmt, ...)
 	t = time(NULL);
 	alpha = localtime(&t);
 
-	timestamp = g_strdup_printf("%02d\u2236%02d\u2236%02d ", alpha->tm_hour,
-				    alpha->tm_min, alpha->tm_sec);
+	timestamp =
+	    g_strdup_printf("%02d\u2236%02d\u2236%02d ", alpha->tm_hour,
+			    alpha->tm_min, alpha->tm_sec);
 
 	if (driver->log_write) {
 		driver->log_write(MSG_TIMESTAMP, timestamp);
