@@ -348,7 +348,7 @@ GtkWidget *create_label_with_close_button(const gchar * label_text,
 					 GTK_ICON_SIZE_MENU);
 	*button = gtk_button_new();
 	gtk_button_set_relief(GTK_BUTTON(*button), GTK_RELIEF_NONE);
-	gtk_button_set_focus_on_click(GTK_BUTTON(*button), FALSE);
+	gtk_widget_set_focus_on_click(*button, FALSE);
 	gtk_container_add(GTK_CONTAINER(*button), close_image);
 	gtk_widget_set_tooltip_text(*button, tooltip_text);
 	gtk_box_pack_start(GTK_BOX(hbox), *button, FALSE, FALSE, 0);
@@ -407,27 +407,15 @@ void set_tooltip_on_column(GtkTreeViewColumn * column,
 /* Code based on gtk_widget_get_pointer in gtkwidget.c */
 void get_mouse_position(GtkWidget * widget, gdouble * x, gdouble * y)
 {
-	gint xi;
-	gint yi;
+	GdkSeat *seat;
 
 	g_return_if_fail(GTK_IS_WIDGET(widget));
+	g_return_if_fail(gtk_widget_get_realized(widget));
 
-	xi = -1;
-	yi = -1;
-
-	if (gtk_widget_get_realized(widget)) {
-		gdk_window_get_device_position(gtk_widget_get_window
-					       (widget),
-					       gdk_device_manager_get_client_pointer
-					       (gdk_display_get_device_manager
-						(gtk_widget_get_display
-						 (widget))), &xi, &yi,
-					       NULL);
-
-	}
-
-	if (x)
-		*x = xi;
-	if (y)
-		*y = yi;
+	seat =
+	    gdk_display_get_default_seat(gtk_widget_get_display(widget));
+	gdk_window_get_device_position_double(gtk_widget_get_window
+					      (widget),
+					      gdk_seat_get_pointer(seat),
+					      x, y, NULL);
 }
