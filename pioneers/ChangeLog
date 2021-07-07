@@ -1,3 +1,7 @@
+2021-07-07  Roland CLobus <rclobus@rclobus.nl>
+	* client/gtk/connect.c: Use g_strlcpy to prevent a potentially
+	non-terminated string.
+
 2021-05-16  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/ai.c, configure.ac, metaserver/main.c, server/main.c:
 	g_type_init is deprecated since glib 2.36.
