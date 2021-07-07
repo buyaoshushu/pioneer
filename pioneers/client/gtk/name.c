@@ -289,20 +289,18 @@ void update_icon(DialogData * data)
 {
 	GdkPixbuf *pixbuf;
 	cairo_surface_t *surface;
-	GtkAllocation allocation;
+	gint width;
+	gint height;
 
 	if (!gtk_widget_get_realized(data->image)) {
 		return;
 	}
-	gtk_widget_get_allocation(data->image, &allocation);
+	gtk_widget_get_size_request(data->image, &width, &height);
 	surface = playericon_create_icon(data->current_style,
 					 player_or_spectator_color
 					 (my_player_num()), FALSE, TRUE,
-					 allocation.width,
-					 allocation.height);
-	pixbuf =
-	    gdk_pixbuf_get_from_surface(surface, 0, 0, allocation.width,
-					allocation.height);
+					 width, height);
+	pixbuf = gdk_pixbuf_get_from_surface(surface, 0, 0, width, height);
 	cairo_surface_destroy(surface);
 
 	gtk_image_set_from_pixbuf(GTK_IMAGE(data->image), pixbuf);
