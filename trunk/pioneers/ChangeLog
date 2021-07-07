@@ -2,6 +2,8 @@
 	* client/gtk/connect.c: Use g_strlcpy to prevent a potentially
 	non-terminated string.
 	* common/gtk/common_gtk.c: Replaced deprecated functions.
+	* client/gtk/quote.c, client/gtk/trade.c: Replaced deprecated function
+	gtk_scrolled_window_add_with_viewport.
 
 2021-05-16  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/ai.c, configure.ac, metaserver/main.c, server/main.c:
