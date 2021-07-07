@@ -140,7 +140,6 @@ static void ai_init_glib_et_al(int argc, char **argv)
 		g_print("\n");
 		exit(0);
 	}
-
 #if !GLIB_CHECK_VERSION(2,36,0)
 	/* Starting with glib 2.36, this function does nothing */
 	g_type_init();
