@@ -528,8 +528,7 @@ GtkWidget *trade_build_page(void)
 	panel_mainbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
 	gtk_widget_show(panel_mainbox);
 	gtk_container_set_border_width(GTK_CONTAINER(panel_mainbox), 6);
-	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW
-					      (scroll_win), panel_mainbox);
+	gtk_container_add(GTK_CONTAINER(scroll_win), panel_mainbox);
 
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
 	gtk_widget_show(vbox);
