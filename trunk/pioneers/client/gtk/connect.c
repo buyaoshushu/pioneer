@@ -506,8 +506,7 @@ static gboolean check_str_info(const gchar * line, const gchar * prefix,
 
 	if (strncmp(line, prefix, len) != 0)
 		return FALSE;
-	strncpy(data, line + len, STRARG_LEN);
-	return TRUE;
+	return g_strlcpy(data, line + len, STRARG_LEN) < STRARG_LEN;
 }
 
 static gboolean check_int_info(const gchar * line, const gchar * prefix,
