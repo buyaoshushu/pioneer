@@ -6,6 +6,7 @@
 	gtk_scrolled_window_add_with_viewport.
 	* client/gtk/name.c: Ensure that the avatar is shown when the dialog
 	is opened.
+	* common/log.c: Use U+2236 RATIO in the timestamp, see the HIG.
 
 2021-05-16  Roland Clobus <rclobus@rclobus.nl>
 	* client/ai/ai.c, configure.ac, metaserver/main.c, server/main.c:
